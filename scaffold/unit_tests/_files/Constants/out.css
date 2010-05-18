@@ -1,0 +1,24 @@
+
+
+#id
+{
+	background:none;
+	color:#FFF;
+	background-image:url(http://www.google.com);
+	border:blue 1px;
+
+	div
+	{
+		color:#EEE;
+	}
+}
+
+#id
+{
+	content:'http://google.com';
+}
+
+#id
+{
+	background:http://www.google.com/blah.jpg;
+}

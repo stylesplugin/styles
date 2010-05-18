@@ -1,0 +1,110 @@
+p a, p a:hover {
+	text-decoration: none;
+}
+
+.wrap {
+	right:20px;
+	top:15px;
+}
+
+p.pdm_submit {
+	border-top: none;
+	float: right;
+	margin-left: 0;
+}
+
+table.pdm_form-table th {
+	width: 250px;
+}
+
+.pdm_highlight-option th, .pdm_highlight-option td {
+	background: #FFFAD4;
+}
+
+th.pdm_form-h2 h2 {
+	padding: 0;
+	margin: 0;
+	display: inline;
+	clear: none;
+	border-bottom: none;
+	white-space:nowrap;
+}
+
+td.pdm_form-update p.pdm_submit {
+	padding: 0;
+	margin: 0;
+}
+
+th.pdm_form-h2,
+td.pdm_form-update {
+	background-color: #FFF;
+}
+
+#pdm_farbtastic {
+	position: absolute;
+	z-index: 100;
+}
+
+.pdm_colorpicker {
+	width: 50px;
+	cursor: pointer;
+}
+
+
+.help label {
+	padding:10px 0;
+}
+
+label, #your-profile label + a {
+	vertical-align:middle;
+}
+
+label {
+	cursor:pointer;
+}
+
+
+.help-label {
+	text-decoration:none; 
+	color:black;
+}
+
+.help-label-img {
+	vertical-align:middle;
+	padding-left:5px;
+}
+
+
+.help-img-input {
+	vertical-align:top;
+	text-decoration:none; 
+	color:black;
+	padding-left:10px;
+	padding-top:5px;
+}
+
+
+th.pdm_form-h2 h2 {
+	padding: 0;
+	margin: 0;
+	display: inline;
+	clear: none;
+	border-bottom: none;
+	white-space:nowrap;
+}
+
+th.pdm_form-h2,
+td.pdm_form-update {
+	background-color: #FFF;
+}
+
+
+#commentform input.error, #commentform textarea.error {
+	background-color: #f99;
+}
+#commentform div.error, #commentform label.error {
+	color: red;
+}
+#commentform div.errorlabels label {
+	display: block;
+}

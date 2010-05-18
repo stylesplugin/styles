@@ -1,0 +1,35 @@
+@constants
+{ 
+	normal_color:#FFF;
+	hover_color:#EEE;
+	test:'none';
+	test2:'http://www.google.com';
+	test3:blue;
+	test4:{$test2}/blah.jpg;
+	prefix:'http://';
+	string:'{$prefix}google.com';
+	test_string:'1px';
+}
+
+#id
+{
+	background:$test;
+	color:$normal_color;
+	background-image:url($test2);
+	border:$test3 $test_string;
+
+	div
+	{
+		color:$hover_color;
+	}
+}
+
+#id
+{
+	content:'{$string}';
+}
+
+#id
+{
+	background:$test4;
+}

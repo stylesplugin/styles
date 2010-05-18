@@ -1,0 +1,13 @@
+#id
+{
+	position:absolute;left:10px;
+	position:absolute;bottom:10px;
+	position:absolute;right:10px;
+	position:absolute;
+	
+	position:relative;left:10px;
+	position:relative;top:-10px;
+	position:relative;left:-10px;
+	
+	width:1px;height:100px;
+}

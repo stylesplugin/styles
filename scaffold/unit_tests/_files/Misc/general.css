@@ -1,0 +1,58 @@
+/* some CSS to try to exercise things in general */
+
+@import     url( /more.css );
+
+    body, td, th {
+        font-family: Verdana , "Bitstream Vera Sans" , sans-serif ;
+
+	font-size  : 12px;
+}
+
+.nav {
+    margin-left: 20%;
+}
+#main-nav {
+    background-color: red;
+    border: 1px solid #00ff77;
+}
+
+div#content 
+h1 + p {
+    padding-top: 0;
+    margin-top: 0;
+}
+
+@media all and (min-width: 640px) {
+	#media-queries-1 { background-color: #0f0; }
+}	
+
+@media screen and (max-width: 2000px) {
+	#media-queries-2 { background-color: #0f0; }
+}
+
+/* test unusual, but valid strings in CSS */
+
+foo[attr="multiple  spaces"] {
+    content: "Hello  World!";
+}
+
+foo[attr="Hel\
+lo"] {
+    content: " \"World\"";
+}
+
+nav 
+{
+	float:left;
+	
+	ol { margin:0; }
+	li { margin-bottom:0; }
+	ol ul 
+	{ 
+		list-style:square; 
+		a { font-weight:normal; color:#00aaCC; } 
+	}
+	ol ul ul { list-style:circle; margin-bottom:0; margin-left:20px; }
+	ol ul ul ul {  font-size:11px; line-height:15px;  }
+	ol ul ul ul ul { margin-left:15px; list-style-type:lower-roman;  }
+}

@@ -1,0 +1,13 @@
+@grid
+{
+	column-count:12;
+	column-width:30;
+	gutter-width:10;
+	baseline:18;
+	unit: px;
+}
+
+#id
+{
+	height: baseline(1442);
+}

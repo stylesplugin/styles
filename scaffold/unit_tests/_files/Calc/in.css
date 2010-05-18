@@ -1,0 +1,18 @@
+#id
+{
+	opacity:0.75;
+	-moz-opacity:0.75;
+	-khtml-opacity:0.75;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=calc(0.75*100))";
+	filter:alpha(opacity=calc(0.75*100));
+}
+
+#id
+{
+	height: calc( floor( (100 * 5.3256) + (5/3) - 10) )px;
+}
+
+#id
+{
+	margin:calc( floor( (10+1) / 2 + (421 + 3) ))px calc(42*2)px calc(234-23)px calc(32323-1)px;
+}

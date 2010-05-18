@@ -1,0 +1,17 @@
+// Without quotes
+#id
+{
+	image-replace:url(../_files/images/image.png);
+}
+
+// With quotes
+#id
+{
+	image-replace:url('../_files/images/image.png');
+}
+
+// File doesn't exist
+#id
+{
+	image-replace:url(file.png);
+}

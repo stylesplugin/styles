@@ -1,0 +1,10 @@
+adjacent foo { background: red url(/red.gif); }
+adjacent bar { background: url('../green.gif') }
+adjacent2 foo { background: red url(/red.gif); }
+adjacent2 bar { background: url('../green.gif') }
+
+tv foo { background: red url(/red.gif); }
+tv bar { background: url('../green.gif') }
+
+input foo { background: red url(/red.gif); }
+input bar { background: url('../green.gif') }

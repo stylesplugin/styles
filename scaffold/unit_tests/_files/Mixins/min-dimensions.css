@@ -1,0 +1,25 @@
+#id
+{
+	+min-height(200px);
+	+min-width(200px);
+}
+
+=min-height($h)
+{
+    & { min-height:$h; }
+
+    * html & 
+    {
+    	height:auto;
+    }
+}
+
+=min-width($w)
+{
+    & { min-width:$w; }
+    
+    * html & 
+    {
+    	width:auto;
+    }
+}

@@ -1,0 +1,12 @@
+#id
+{
+	+background-size(10px,10px);	
+}
+
+=background-size($x = 10,$y)
+{
+	-o-background-size:$x $y;
+	-webkit-background-size:$x $y;
+	-khtml-background-size:$x $y;
+	-moz-background-size:$x $y;
+}

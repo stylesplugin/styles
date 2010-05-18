@@ -16,7 +16,7 @@
 	ob_start();
 ?>
 
-<? include('superfish/css/superfish.css'); ?>
+<? include('lib/superfish/css/superfish.css'); ?>
 
 $mc li {
 	list-style-type: none;

@@ -1,0 +1,17 @@
+@constants {
+  ul_padding_top: 511;
+  ul_padding_right: 20;
+  ul_padding_bottom: 5;
+  ul_padding_left: 20;
+  sample_1: ;
+  sample_3: ;
+  sample_4: Item 3;
+  sample_5: custom;
+  sample_5_text: ;
+  sample_6: ;
+  sample_6_color: ;
+}
+
+.something {
+	padding-top: $ul_padding_top;
+}

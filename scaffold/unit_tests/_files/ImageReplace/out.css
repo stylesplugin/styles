@@ -1,0 +1,25 @@
+// Without quotes
+#id
+{
+	background:url(/scaffold_unit_tests/_files/images/image.png) no-repeat 0 0;
+	height:1px;
+	width:1px;
+	display:block;
+	text-indent:-9999px;
+	overflow:hidden;
+}
+
+// With quotes
+#id
+{	
+	background:url(/scaffold_unit_tests/_files/images/image.png) no-repeat 0 0;
+	height:1px;
+	width:1px;
+	display:block;
+	text-indent:-9999px;
+	overflow:hidden;					
+}
+
+// File doesn't exist
+#id
+{}

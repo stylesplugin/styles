@@ -1,0 +1,32 @@
+#id
+{
+	+horizontal-list;
+}
+
+#id
+{
+	+no-bullets;
+}
+
+=horizontal-list
+{	
+	li
+	{
+		+no-bullet;
+		white-space:nowrap;
+	}
+}
+
+=no-bullet
+{
+	list-style-type:none;
+	margin-left:0;
+}
+
+=no-bullets
+{
+	li
+	{
+		+no-bullet;
+	}
+}

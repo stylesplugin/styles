@@ -1,0 +1,16 @@
+#id
+{
+	 & { min-height:200px; }
+
+    * html & 
+    {
+    	height:auto;
+    }
+
+	 & { min-width:200px; }
+    
+    * html & 
+    {
+    	width:auto;
+    }
+}

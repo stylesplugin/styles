@@ -1,0 +1,25 @@
+#id
+{
+	+mixin;
+}
+
+=mixin
+{
+	+mixin2;
+}
+
+=mixin2
+{
+	+mixin3;
+}
+
+=mixin3
+{
+	+mixin4;
+	+mixin;
+}
+
+=mixin4
+{
+	color:#fff;
+}

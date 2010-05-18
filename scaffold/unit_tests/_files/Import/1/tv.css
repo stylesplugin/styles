@@ -1,0 +1,4 @@
+@include 'adjacent.css';
+@include '../in.css';
+tv foo { background: red url(/red.gif); }
+tv bar { background: url('../green.gif') }

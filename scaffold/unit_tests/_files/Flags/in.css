@@ -1,0 +1,19 @@
+@flag(flag1,flag2)
+{
+	color:red;
+	
+	#id
+	{
+		color:red;
+		
+		@flag(flag3)
+		{
+			background:black;
+		}
+		
+		@flag(flag4)
+		{
+			background:lightblue;
+		}
+	}
+}

@@ -1,0 +1,5 @@
+@include 'adjacent.css';
+@include '1/tv.css';
+
+input foo { background: red url(/red.gif); }
+input bar { background: url('../green.gif') }

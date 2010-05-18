@@ -1,0 +1,15 @@
+@import '/foo.css'; /* When they go back more than the document root */
+@import '/unit_tests/_files/Absolute_Urls/foo.css';
+@import '/unit_tests/_files/Absolute_Urls/bar/foo.css' print;
+@import '/unit_tests/_files/bar/foo.css' print;
+@import '/unit_tests/foo.css' print;
+@import '/css/foo.css'; /* abs, should not alter */
+@import 'http://foo.com/css/foo.css'; /* abs, should not alter */
+@import '/unit_tests/_files/foo.css' tv,projection;
+@import url("/css/foo.css"); /* abs, should not alter */
+@import url(/css2/foo.css); /* abs, should not alter */
+@import url(data:image/gif;base64,AAAA); /* data, should not alter */
+foo {background:url(/unit_tests/_files/Absolute_Urls/bar/foo.png)}
+foo {background:url('http://foo.com/css/foo.css');} /* abs, should not alter */
+foo {background:url("//foo.com/css/foo.css");} /* protocol relative, should not alter */
+foo {background:url(data:image/gif;base64,AAAA);} /* data, should not alter */

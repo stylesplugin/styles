@@ -1,0 +1,15 @@
+#id
+{
+	background-position: top left;
+	background-repeat: repeat-x;
+	background-color: #ffffff;
+	background-image: url(/scaffold_unit_tests/Gradient/cache/gradients/000000-ffffff-10-20.png);
+}
+
+#id2
+{
+	background-position: top left;
+	background-repeat: repeat-x;
+	background-color: #000222;
+	background-image: url(/scaffold_unit_tests/Gradient/cache/gradients/f02ef2-000222-100-50.png);
+}

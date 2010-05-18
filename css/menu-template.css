@@ -1,0 +1,22 @@
+@include '../lib/superfish/css/superfish.css';
+
+
+.something {
+	padding-top: $ul_padding_top;
+}
+.pdn1 {
+	li {
+		float:left;
+		list-style-type: none;
+		margin:0;
+		padding:0;
+		div {
+			
+			a {
+				border:1px solid red;
+				padding: $ul_padding_top $ul_padding_right $ul_padding_bottom $ul_padding_left;
+				display:block;
+			}
+		}
+	}
+}

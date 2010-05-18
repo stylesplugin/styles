@@ -1,0 +1,44 @@
+@media screen
+{
+	/* This is a comment */
+	#id2
+	{
+		// This is an inline comment
+		color:blue;
+		background:red;
+	
+		/* This is a CSS comment */
+		border:1px;
+		
+		#inner2
+		{
+			/* I like this color */
+			color:white;
+			font-weight: normal;
+		}
+	}
+}
+
+/* This is a /* comment */
+#id
+{
+	// This is an inline comment
+	color:rgb(125,24,55);
+	color:rgba(125,24,55,0.5);
+	background:red;
+
+	/* This is a CSS comment 'with " some' quotes */
+	border:1px;
+	margin:0px;
+	padding:0.1em;
+	font-weight:bold;
+	
+	#inner
+	{
+		/* I like this color */
+		color:white;
+	}
+}
+
+@import 'some/url.css';
+@import 'someother/file.css' screen,print;

@@ -1,0 +1,8 @@
+#id
+{
+	opacity:0.75;
+	-moz-opacity:0.75;
+	-khtml-opacity:0.75;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=#[0.75*100])";
+	filter:alpha(opacity=#[0.75*100]);
+}

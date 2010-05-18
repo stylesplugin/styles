@@ -1,0 +1,26 @@
+.mixin-conditional 
+{
+	+conditional-test(true);
+}
+
+.mixin-conditional-2
+{
+	+conditional-test;
+}
+
+=conditional-test($bg = false)
+{
+	@if($bg == false)
+	{
+		+another-mixin;
+	}
+	@else
+	{
+		background:#eee;
+	}
+}
+
+=another-mixin
+{
+	color:#fff;
+}
