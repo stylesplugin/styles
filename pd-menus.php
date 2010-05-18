@@ -159,6 +159,174 @@ function add_my_stylesheet() {
 }
 
 
+add_action('admin_init', 'pd_nav_menu_setup');
+
+/**
+ * Register nav menu metaboxes and advanced menu items
+ *
+ * @since 3.0.0
+ **/
+function pd_nav_menu_setup() {
+	// Register meta boxes
+	add_meta_box( 'add-pd-nav-options', __('PD Menus'), 'pd_nav_menu_item_link_meta_box', 'nav-menus', 'side', 'low' );
+	#	wp_nav_menu_post_type_meta_boxes();
+	#	wp_nav_menu_taxonomy_meta_boxes();
+    #	
+	#	// Register advanced menu items (columns)
+	#	add_filter( 'manage_nav-menus_columns', 'wp_nav_menu_manage_columns');
+    #	
+	#	add_filter( 'columns_prefs_header', create_function( '', "return __('Show advanced menu properties');" ));
+    #	
+	#	// If first time editing, disable advanced items by default.
+	#	if( false === get_user_option( 'managenav-menuscolumnshidden' ) ) {
+	#		$user = wp_get_current_user();
+	#		update_user_option($user->ID, 'managenav-menuscolumnshidden',
+	#			array( 0 => 'link-target', 1 => 'css-classes', 2 => 'xfn', 3 => 'description', ),
+	#			true);
+	#	}
+	
+	
+	wp_enqueue_script( 'jquery');
+	//wp_enqueue_script( 'jquery-form');
+	//wp_enqueue_script( 'jquery-color');
+	//wp_enqueue_script( 'jquery-ui-core');
+	//wp_enqueue_script( 'jquery-ui-tabs');
+	//wp_enqueue_script( 'jquery-ui-sortable');
+	//wp_enqueue_script( 'jquery-ui-draggable');
+	//wp_enqueue_script( 'jquery-ui-droppable');
+	//wp_enqueue_script( 'jquery-ui-selectable');
+	//wp_enqueue_script( 'jquery-ui-resizable');
+	//wp_enqueue_script( 'jquery-ui-dialog');
+	//wp_enqueue_script( 'interface');
+	//wp_enqueue_script( 'schedule');
+	//wp_enqueue_script( 'suggest');
+}
+
+/**
+ * Displays a metabox for the custom links menu item.
+ *
+ * @since 3.0.0
+ */
+function pd_nav_menu_item_link_meta_box() {
+	//	global $_nav_menu_placeholder;
+	//	$_nav_menu_placeholder = 0 > $_nav_menu_placeholder ? $_nav_menu_placeholder - 1 : -1;
+    //	
+	//	// @note: hacky query, see #12660
+	//	$args = array( 'post_type' => 'nav_menu_item', 'post_status' => 'any', 'meta_key' => '_menu_item_type', 'numberposts' => -1, 'orderby' => 'title', );
+    //	
+	//	// @todo transient caching of these results with proper invalidation on updating links
+	//	$links = get_posts( $args );
+    //	
+	//	$current_tab = 'create';
+	//	if ( isset( $_REQUEST['customlink-tab'] ) && in_array( $_REQUEST['customlink-tab'], array('create', 'all') ) ) {
+	//		$current_tab = $_REQUEST['customlink-tab'];
+	//	}
+    //	
+	//	$removed_args = array(
+	//		'action',
+	//		'customlink-tab',
+	//		'edit-menu-item',
+	//		'menu-item',
+	//		'page-tab',
+	//		'_wpnonce',
+	//	);
+	
+
+	?>
+	<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+  <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script> -->
+    <style type="text/css">
+    #slider { margin: 10px; }
+  </style>
+
+	
+	<div class="pdnavdiv">
+			
+			<div id="slider"></div>
+			
+			<input type="hidden" value="custom" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-type]" />
+			<p id="menu-item-url-wrap">
+				<label class="howto" for="custom-menu-item-url">
+					<span><?php _e('URL'); ?></span>
+					<input id="custom-menu-item-url" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-url]" type="text" class="code menu-item-textbox" value="http://" />
+				</label>
+			</p>
+
+			<p id="menu-item-name-wrap">
+				<label class="howto" for="custom-menu-item-name">
+					<span><?php _e('Label'); ?></span>
+					<input id="custom-menu-item-name" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-title]" type="text" class="regular-text menu-item-textbox input-with-default-title" title="<?php esc_attr_e('Menu Item'); ?>" />
+				</label>
+			</p>
+
+		<p class="button-controls">
+			<span class="list-controls">
+				<a href="#" class="select-all add-home-link"><?php _e('Add Home Link'); ?></a>
+			</span>
+			<span class="add-to-menu">
+				<img class="waiting" src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" alt="" />
+				<input type="submit" class="button-secondary" value="<?php esc_attr_e('Add to Menu'); ?>" name="add-custom-menu-item" />
+			</span>
+		</p>
+		
+		
+
+		<div class="clear"></div>
+	</div><!-- /.customlinkdiv -->
+	<?php
+}
+
+/*
+    * This example will work at least on WordPress 2.6.3, 
+    * but maybe on older versions too.
+    */
+
+   add_action('admin_init', 'my_plugin_admin_init');
+   add_action('admin_menu', 'my_plugin_admin_menu');
+   
+   function my_plugin_admin_init()
+   {
+       /* Register our script. */
+		wp_register_script('pd-menus-admin', WP_PLUGIN_URL . '/pd-menus/admin.js', array('jqui'), null, true);
+		wp_register_script('jqui', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js', array('jquery'), null, true);
+		
+		wp_enqueue_script('pd-menus-admin');
+		
+		
+		
+   }
+   
+   function my_plugin_admin_menu()
+   {
+       /* Register our plugin page */
+       $page = add_submenu_page( 'themes.php', 
+                                 __('PD Menu Styles', 'pd_menu'), 
+                                 __('PD Menu Styles', 'pd_menu'), 9,  __FILE__, 
+                                 'pd_menu_styles_manage_menu');
+  
+       /* Using registered $page handle to hook script load */
+       add_action('admin_print_scripts-' . $page, 'pd_menu_admin_styles');
+   }
+   
+   function pd_menu_admin_styles()
+   {
+       /*
+        * It will be called only on your plugin admin page, enqueue our script here
+        */
+       wp_enqueue_script('pd-menus-admin');
+   }
+   
+   function pd_menu_styles_manage_menu()
+   {
+		echo pd_nav_menu2();
+		?>
+			Yo homeh.
+		<?php
+		pd_nav_menu_item_link_meta_box();
+   }
+
+
 
 
 
