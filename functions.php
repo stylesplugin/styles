@@ -404,4 +404,25 @@ if ( ! defined( 'WP_PLUGIN_DIR' ) )
 define( 'WP_PLUGIN_DIR', WP_CONTENT_DIR . '/plugins' );
 
 
+/**
+*
+* Convert an object to an array
+*
+* @param    object  $object The object to convert
+* @reeturn      array
+*
+*/
+function pdm_object_to_array( $object )
+{
+    if( !is_object( $object ) && !is_array( $object ) )
+    {
+        return $object;
+    }
+    if( is_object( $object ) )
+    {
+        $object = get_object_vars( $object );
+    }
+    return array_map( 'pdm_object_to_array', $object );
+}
+
 ?>

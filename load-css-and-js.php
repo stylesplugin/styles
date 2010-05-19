@@ -2,9 +2,10 @@
 
 function pdm_admin_init() {
 	
-	wp_register_style('facebox', PDM_URL . '/widgets/facebox/facebox.css');
-	wp_register_style('farbtastic', admin_url().'/css/farbtastic.css');
-	wp_register_style('pdm-options', PDM_URL . '/css/options.css');
+	wp_register_style( 'facebox',         PDM_URL . '/widgets/facebox/facebox.css' );
+	wp_register_style( 'farbtastic',      admin_url().'/css/farbtastic.css' );
+	wp_register_style( 'pdm-options',     PDM_URL . '/css/options.css' );
+	wp_register_style( 'jqui',            'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' );
 
 	// CSScaffold
 	// http://tayloraldridge.com/c/plugins/pd-menu/scaffold/?f=/c/plugins/pd-menu/css/menu-template.css
@@ -18,8 +19,17 @@ function pdm_admin_print_css() {
 	wp_enqueue_style( 'facebox');
 	wp_enqueue_style( 'farbtastic');
 	wp_enqueue_style( 'pdm-options');
+	wp_enqueue_style( 'jqui');
 }
 add_action('admin_print_styles-'.'pd-menu_page_pdm-submenu-options', 'pdm_admin_print_css');
+
+function pdm_admin_load_js() {
+	wp_register_script('jqui', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js', array('jquery'), null, true);
+	wp_register_script('pdm-options',  plugins_url('lib/js/options.js', __FILE__), array('jqui'), null, true);
+	
+	wp_enqueue_script('pdm-options');
+}
+add_action('admin_init', 'pdm_admin_load_js');
 
 
 function pdm_load_js()
@@ -83,7 +93,8 @@ function pdm_load_js()
 		
 	}
 	## -- End:  jQueryValidation   ##
-
+	# 
+		
 }
 add_action( 'init', 'pdm_load_js' ); # Loads JavaScript and CSS files
 ?>

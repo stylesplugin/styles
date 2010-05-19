@@ -27,6 +27,7 @@ to create additional option pages using this sample.
  *       then you must create an invisible <input> and add the current value to it inside the form. 
  */
 
+require_once(PDM_LIB.'/xml_constants/xml_constants.php');
 
 pdm_options_page_options();
 
@@ -36,14 +37,7 @@ function pdm_options_page_options() {
 		'pdm_options' => array(
 			'purge_data' => pdm_PURGE_DATA, #  When plugin is deactivated, if 'true', all tables, and options will be removed.
 			
-			'ul_padding' => array(
-				'top'=>10, 
-				'right'=>20, 
-				'bottom'=>10, 
-				'left'=>20,
-			),
-			'ul_width' => '2.5em',
-			'sub_li_top' => '3em',
+			'css' => pdm_object_to_array( pdm_options_css_structure() ),
 			
 			// ------------------------------- //
 			'sample_1' => 'Sample Text #1',
@@ -65,9 +59,6 @@ function pdm_options_page_options() {
 }
 
 
-/* Save settings page meta boxes. */
-add_action( 'pdm_update_settings_page', 'hybrid_save_theme_settings' );
-
 
 pdm_options_page_options_excluded();
 
@@ -84,6 +75,33 @@ function pdm_options_page_submenu() {
 	pdm_options_page_html(); 	// display the options page.
 }
 
+function pdm_options_quick_css_fields() {
+	$structure = pdm_options_css_structure();
+	extract( pdm_get_options( $options, $options_excluded ) ); // Returns $css array of values
+	$option = 'pdm_options[css]';
+	
+	foreach ($structure as $key => $s) {
+		$id = "{$option}[{$key}]";
+		switch($s->type) {
+			case 'slider':
+				?>
+				<tr valign="top">
+					<th scope="row">
+						<label for="<?php echo $id; ?>">
+							<?php if (empty($s->title)) { echo $key; }else { echo $s->title; } ?>:
+						</label>
+					</th>
+					<td>
+						<input class="slider" type="text" name="<?php echo $id; ?>" id="<?php echo $id; ?>" value="<?php echo $css[$key]; ?>" />
+						<?php echo $s->description; ?>
+					</td>
+				</tr>
+				<?php
+				break;
+		}
+	}
+}
+
 
 /**
  *
@@ -96,7 +114,7 @@ function pdm_options_page_html() {
 	$options_excluded = pdm_options_page_options_excluded();
 
 	extract( pdm_get_options( $options, $options_excluded ) );
- 	FB::log($ul_padding, '$ul_padding');
+	FB::log($css, '$css');
 	?>
 
   	<div class="wrap">
@@ -119,31 +137,33 @@ function pdm_options_page_html() {
 			<td class="pdm_form-update"><p class="submit pdm_submit"><input type="submit" name="Submit" value="Update &raquo;" /></p></td>
 		</tr>
 		
+		<?php pdm_options_quick_css_fields(); ?>
+		<?php /*
 		<tr valign="top">
-			<th scope="row"><label for="pdm_options[ul_padding][top]">Padding Top:</label></th>
+			<th scope="row"><label for="pdm_options[css][ul_padding][top]">Padding Top:</label></th>
 			<td>
-				<input type="text" name="pdm_options[ul_padding][top]" value="<?php echo $ul_padding['top']; ?>"/>
+				<input type="text" name="pdm_options[css][ul_padding][top]" value="<?php echo $css['ul_padding']['top']; ?>"/>
 				
 			</td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="pdm_options[ul_padding][right]">Padding Right:</label></th>
+			<th scope="row"><label for="pdm_options[css][ul_padding][right]">Padding Right:</label></th>
 			<td>
-				<input type="text" name="pdm_options[ul_padding][right]" value="<?php echo $ul_padding['right']; ?>"/>
+				<input type="text" name="pdm_options[css][ul_padding][right]" value="<?php echo $css['ul_padding']['right']; ?>"/>
 				
 			</td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="pdm_options[ul_padding][bottom]">Padding Bottom:</label></th>
+			<th scope="row"><label for="pdm_options[css][ul_padding][bottom]">Padding Bottom:</label></th>
 			<td>
-				<input type="text" name="pdm_options[ul_padding][bottom]" value="<?php echo $ul_padding['bottom']; ?>"/>
+				<input type="text" name="pdm_options[css][ul_padding][bottom]" value="<?php echo $css['ul_padding']['bottom']; ?>"/>
 				
 			</td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="pdm_options[ul_padding][left]">Padding Left:</label></th>
+			<th scope="row"><label for="pdm_options[css][ul_padding][left]">Padding Left:</label></th>
 			<td>
-				<input type="text" name="pdm_options[ul_padding][left]" value="<?php echo $ul_padding['left']; ?>"/>
+				<input type="text" name="pdm_options[css][ul_padding][left]" value="<?php echo $css['ul_padding']['left']; ?>"/>
 				
 			</td>
 		</tr>
@@ -155,19 +175,20 @@ function pdm_options_page_html() {
 		</tr>
 		
 		<tr valign="top">
-			<th scope="row"><label for="pdm_options[ul_width]">Width:</label></th>
+			<th scope="row"><label for="pdm_options[css][ul_width]">Width:</label></th>
 			<td>
-				<input type="text" name="pdm_options[ul_width]" value="<?php echo $ul_width; ?>"/>
+				<input type="text" name="pdm_options[css][ul_width]" value="<?php echo $css['ul_width']; ?>"/>
 				
 			</td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="pdm_options[sub_li_top]">sub_li_top:</label></th>
+			<th scope="row"><label for="pdm_options[css][sub_li_top]">sub_li_top:</label></th>
 			<td>
-				<input type="text" name="pdm_options[sub_li_top]" value="<?php echo $sub_li_top; ?>"/>
+				<input type="text" name="pdm_options[css][sub_li_top]" value="<?php echo $css['sub_li_top']; ?>"/>
 				
 			</td>
 		</tr>
+		*/ ?>
 		
 		
 		

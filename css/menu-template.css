@@ -1,9 +1,5 @@
 @include '../lib/superfish/css/superfish.css';
 
-
-.something {
-	padding-top: $ul_padding_top;
-}
 .pdn1 {
 	li {
 		float:left;
