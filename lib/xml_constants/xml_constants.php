@@ -25,7 +25,7 @@ function pdm_options_css_structure() {
 	
 	$c->ul_width->type                = 'slider';
 	$c->ul_width->default             = '2.5';
-	$c->ul_width->unit             = 'em';
+	$c->ul_width->unit       	      = 'em';
 	
 	$c->sub_li_top->type              = 'slider';
 	$c->sub_li_top->default           = '3';
@@ -77,7 +77,14 @@ function pdm_css_constants_add_units($opts) {
 	
 	foreach ($opts as $key => $val) {
 		if (!empty($c->$key->unit)) {
-			$opts[$key] = $val.$c->$key->unit;
+			// Convert PX to EMs
+			if ($c->$key->unit == 'px') {
+				$opts[$key] = ((int)$val/10).'em';
+			}else {
+				$opts[$key] = $val.$c->$key->unit;
+			}
+			
+			
 		}
 	}
 	

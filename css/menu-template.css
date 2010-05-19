@@ -1,6 +1,11 @@
+
+
 @include '../lib/superfish/css/superfish.css';
 
 .pdn1 {
+	* {
+		font-size: 10px;
+	}
 	li {
 		float:left;
 		list-style-type: none;
