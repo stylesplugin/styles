@@ -75,33 +75,6 @@ function pdm_options_page_submenu() {
 	pdm_options_page_html(); 	// display the options page.
 }
 
-function pdm_options_quick_css_fields() {
-	$structure = pdm_options_css_structure();
-	extract( pdm_get_options( $options, $options_excluded ) ); // Returns $css array of values
-	$option = 'pdm_options[css]';
-	
-	foreach ($structure as $key => $s) {
-		$id = "{$option}[{$key}]";
-		switch($s->type) {
-			case 'slider':
-				?>
-				<tr valign="top">
-					<th scope="row">
-						<label for="<?php echo $id; ?>">
-							<?php if (empty($s->title)) { echo $key; }else { echo $s->title; } ?>:
-						</label>
-					</th>
-					<td>
-						<input class="slider" type="text" name="<?php echo $id; ?>" id="<?php echo $id; ?>" value="<?php echo $css[$key]; ?>" />
-						<?php echo $s->description; ?>
-					</td>
-				</tr>
-				<?php
-				break;
-		}
-	}
-}
-
 
 /**
  *
@@ -259,7 +232,7 @@ function pdm_options_page_html() {
 			<th scope="row"><label for="pdm_options_sample_6">Sample #6 - Color Selection:</label></th>
 			<td>
 				<input class="pdm_colorpicker_text" type="text" name="pdm_options[sample_6]" id="pdm_options_sample_6" value="<?php echo preg_replace('/^0x/', '', $sample_6);?>" size="8" maxlength="8" />&nbsp;&nbsp;
-				<input class="pdm_colorpicker" readonly="true"  name="pdm_options[sample_6_color]" style="background:<?php echo preg_replace('/^0x/', '', $sample_6);?>" />&nbsp;&nbsp;(Click on the square to change the color.)
+				<input class="pdm_colorpicker" readonly="true" name="pdm_options[sample_6_color]" style="background:<?php echo preg_replace('/^0x/', '', $sample_6);?>" />&nbsp;&nbsp;(Click on the square to change the color.)
 			</td>
 		</tr>
 		<!-- End: Fabrastic Color Picker -->
