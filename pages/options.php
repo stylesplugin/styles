@@ -203,7 +203,7 @@ function pdm_options_page_html() {
        <tr valign="top">
 			<th scope="row">
 				<label for="pdm_options_facebox_sample1">
-					<a class="help-label" href="#info" rel="facebox">Facebox Text Sample:<img class="help-label-img" src="<?php echo plugins_url('images/information.png', pdm_FILE_PATH); ?>"></a>		
+					<a class="help-label" href="#info" rel="facebox">Facebox Text Sample:<img class="help-label-img" src="<?php echo plugins_url('lib/img/information.png', pdm_FILE_PATH); ?>"></a>		
 				</label>
 				<div id="info" style="display:none;">
 				    <h4>Facebox Text Sample</h4>
@@ -224,7 +224,7 @@ function pdm_options_page_html() {
        <tr valign="top">
 			<th scope="row">
 				<label for="pdm_options_facebox_sample2">
-					<a class="help-label" href="<?php echo plugins_url('widgets/facebox/stairs.jpg', pdm_FILE_PATH); ?>" rel="facebox">Facebox Image Sample:<img class="help-label-img" src="<?php echo plugins_url('images/information.png', pdm_FILE_PATH); ?>"></a>		
+					<a class="help-label" href="<?php echo plugins_url('widgets/facebox/stairs.jpg', pdm_FILE_PATH); ?>" rel="facebox">Facebox Image Sample:<img class="help-label-img" src="<?php echo plugins_url('lib/img/information.png', pdm_FILE_PATH); ?>"></a>		
 				</label>
 			</th>
 			<td>

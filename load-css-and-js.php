@@ -2,14 +2,14 @@
 
 function pdm_admin_init() {
 	
-	wp_register_style( 'facebox',         PDM_URL . '/widgets/facebox/facebox.css' );
+	wp_register_style( 'facebox',         PDM_URL . '/lib/facebox/facebox.css' );
 	wp_register_style( 'farbtastic',      admin_url().'/css/farbtastic.css' );
-	wp_register_style( 'pdm-options',     PDM_URL . '/css/options.css' );
+	wp_register_style( 'pdm-options',     PDM_URL . '/lib/css/options.css' );
 	wp_register_style( 'jqui',            'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' );
 
 	// CSScaffold
-	// http://tayloraldridge.com/c/plugins/pd-menu/scaffold/?f=/c/plugins/pd-menu/css/menu-template.css
-	wp_register_style('pdm-menu-style', PDM_URL . '/scaffold/?f='.PDF_PATH_REL.'/css/menu-template.css');
+	// http://tayloraldridge.com/c/plugins/pd-menu/scaffold/?f=/c/plugins/pd-menu/lib/css/menu-template.css
+	wp_register_style('pdm-menu-style', PDM_URL . '/scaffold/?f='.PDF_PATH_REL.'/lib/css/menu-template.css');
 
 }
 add_action('admin_init', 'pdm_admin_init');
@@ -41,7 +41,7 @@ function pdm_load_js()
 	
 	## -- Start: Facebox  ##
 	if (  in_array( $_GET['page'], array( 'pdm-submenu-options', 'pdm-submenu-setup', 'pdm-submenu-setup' ) ) ) { # load js for options page
-		wp_enqueue_script( 'facebox', plugins_url('widgets/facebox/facebox.js', PDM_FILE_PATH), array( 'jquery' ) );
+		wp_enqueue_script( 'facebox', plugins_url('lib/facebox/facebox.js', PDM_FILE_PATH), array( 'jquery' ) );
 		wp_localize_script('jquery','SlidePress', array(
 		'sspurl' => plugins_url('', __FILE__) . '/'
 		));
@@ -62,8 +62,8 @@ function pdm_load_js()
 		## provided below under <!--
 		## Website/Reference: ( http://acko.net/blog/farbtastic-color-picker-released )
 
-		wp_enqueue_script( 'pdm_farbtastic', plugins_url('widgets/pdm.farbtastic.js', __FILE__), array( 'jquery', 'farbtastic', 'rgbcolor' ) ); // this is very important
-		wp_enqueue_script( 'rgbcolor', plugins_url('widgets/rgbcolor.js', __FILE__)   );
+		wp_enqueue_script( 'pdm_farbtastic', plugins_url('lib/js/pdm.farbtastic.js', __FILE__), array( 'jquery', 'farbtastic', 'rgbcolor' ) ); // this is very important
+		wp_enqueue_script( 'rgbcolor', plugins_url('lib/js/rgbcolor.js', __FILE__)   );
 
 		## Do not remove the 'pdm_insert_colorpicker' action or function unless you don't want to use farbastic.
 
@@ -87,8 +87,8 @@ function pdm_load_js()
 	## -- NOTE: Help is needed in setting up the jQueryValidation tool, if you know how to do it please send us an e-mail with explaining how it can be done.
 	
 	if (  in_array( $_GET['page'], array( 'pdm-submenu-options', 'pdm-submenu-setup') ) ) { # load js for options page
-		//wp_enqueue_script( 'jquery_validate', plugins_url('widgets/jquery-validate/jquery.validate.js', pdm_FILE_PATH), array( 'jquery' ) );
-		//wp_enqueue_script( 'pdm_jquery_validation', plugins_url('widgets/jquery-validate/pdm.validate.js', pdm_FILE_PATH), array( 'jquery' ) );
+		//wp_enqueue_script( 'jquery_validate', plugins_url('lib/js/jquery-validate/jquery.validate.js', pdm_FILE_PATH), array( 'jquery' ) );
+		//wp_enqueue_script( 'pdm_jquery_validation', plugins_url('lib/js/jquery-validate/pdm.validate.js', pdm_FILE_PATH), array( 'jquery' ) );
 		
 		
 	}

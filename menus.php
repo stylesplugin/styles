@@ -76,7 +76,7 @@ function pdm_menu() {
 
 	*/
 
-	$icon_url = plugins_url('images/swpf-icon-menu.png', __FILE__);
+	$icon_url = plugins_url('lib/img/swpf-icon-menu.png', __FILE__);
 
 	## add_menu_page (page_title, menu_title, user_level, file, [function], [icon_url]);  //  adds a new top-level menu:
 	add_menu_page('', 'PD Menu', 'administrator', pdm_plugin, 'pdm_submenu_welcome', $icon_url) ;

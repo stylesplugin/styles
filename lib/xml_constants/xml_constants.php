@@ -131,26 +131,8 @@ function pdm_css_constants_calculate_dependencies($o) {
 	$o = (object) $o;
 	$c = pdm_options_css_structure();
 	
-	
-	
-	$tab_a_ratio = $o->tab_a_font_size / $c->fontpx;
-	
-	// Convert <a> padding based on font-size ratio
-	// $o->tab_padding_top    = $o->tab_padding_top    / $tab_a_ratio;
-	// $o->tab_padding_right  = $o->tab_padding_right  / $tab_a_ratio;
-	// $o->tab_padding_bottom = $o->tab_padding_bottom / $tab_a_ratio;
-	// $o->tab_padding_left   = $o->tab_padding_left   / $tab_a_ratio;
-	// $o->tab_a_height       = $o->tab_a_height       / $tab_a_ratio;
-	
 	// Line up top of submenu with bottom of tabs
 	$o->sub_top = $o->tab_a_height + $o->tab_padding_top + $o->tab_padding_bottom + $o->tab_border_top_width + $o->tab_border_bottom_width ;
-
-
-	// pr($o);
-	// exit();
-	
-	// Convert sub <a> based on relative size to tab <a>
-	// $o->sub_a_font_size = $sub_a_font_size * ( $sub_a_font_size / $tab_a_font_size );
 	
 	return (array) $o;
 }

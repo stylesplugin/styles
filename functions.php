@@ -379,7 +379,7 @@ function pdm_display_CategoryOptions ( $main_category, $selected_cat_id = -1 ) {
  */
 function pdm_header_icon() {
 
-	$icon_url = plugins_url('images/swpf-icon-header.png',  __FILE__ ); ?>
+	$icon_url = plugins_url('lib/img/swpf-icon-header.png',  __FILE__ ); ?>
   	
 	<div id="icon-pdm" class="icon32"><img src="<?php echo $icon_url; ?>"></div><?php
 
