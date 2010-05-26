@@ -3,6 +3,7 @@
 function pdm_admin_init() {
 	
 	wp_register_style( 'facebox',         PDM_URL . '/lib/facebox/facebox.css' );
+	wp_register_style( 'pdm-colorpicker',     PDM_URL . '/lib/colorpicker/css/colorpicker.css' );
 	wp_register_style( 'farbtastic',      admin_url().'/css/farbtastic.css' );
 	wp_register_style( 'pdm-options',     PDM_URL . '/lib/css/options.css' );
 	wp_register_style( 'jqui',            'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' );
@@ -17,7 +18,8 @@ add_action('admin_init', 'pdm_admin_init');
 function pdm_admin_print_css() {
 	wp_enqueue_style( 'pdm-menu-style');
 	wp_enqueue_style( 'facebox');
-	wp_enqueue_style( 'farbtastic');
+	// wp_enqueue_style( 'farbtastic');
+	wp_enqueue_style( 'pdm-colorpicker');
 	wp_enqueue_style( 'pdm-options');
 	wp_enqueue_style( 'jqui');
 }
@@ -25,7 +27,8 @@ add_action('admin_print_styles-'.'pd-menu_page_pdm-submenu-options', 'pdm_admin_
 
 function pdm_admin_load_js() {
 	wp_register_script('jqui', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js', array('jquery'), null, true);
-	wp_register_script('pdm-options',  plugins_url('lib/js/options.js', __FILE__), array('jqui'), null, true);
+	wp_register_script('pdm-options',  plugins_url('lib/js/options.js', __FILE__), array('jqui', 'pdm-colorpicker'), null, true);
+	wp_register_script('pdm-colorpicker',  plugins_url('lib/colorpicker/js/colorpicker.js', __FILE__), array('jquery'), null, true);
 	
 	wp_enqueue_script('pdm-options');
 }
@@ -54,27 +57,27 @@ function pdm_load_js()
 	*/
 	
 	## -- Start: Fabrastic Color Picker --	
-	if (  in_array( $_GET['page'],  array( 'pdm-submenu-options' ))) { # load js for options page
-
-		## ------------------------------------------------------------------------------------------
-		## Fabrastic is a circular color selector.  It uses two JavaScript routines that are located in the
-		## 'swpframework/widgets' directory: 1) rgbcolor.js and 2) farbtastic.  It also uses HTML code which I
-		## provided below under <!--
-		## Website/Reference: ( http://acko.net/blog/farbtastic-color-picker-released )
-
-		wp_enqueue_script( 'pdm_farbtastic', plugins_url('lib/js/pdm.farbtastic.js', __FILE__), array( 'jquery', 'farbtastic', 'rgbcolor' ) ); // this is very important
-		wp_enqueue_script( 'rgbcolor', plugins_url('lib/js/rgbcolor.js', __FILE__)   );
-
-		## Do not remove the 'pdm_insert_colorpicker' action or function unless you don't want to use farbastic.
-
-		add_action('admin_footer', 'pdm_insert_colorpicker');
-		function pdm_insert_colorpicker()
-		{
-			echo "\n";
-			echo '<div id="pdm_farbtastic" style="display:none"> </div>'."\n";
-			echo "\n";
-		}
-	}
+	#	if (  in_array( $_GET['page'],  array( 'pdm-submenu-options' ))) { # load js for options page
+    #	
+	#		## ------------------------------------------------------------------------------------------
+	#		## Fabrastic is a circular color selector.  It uses two JavaScript routines that are located in the
+	#		## 'swpframework/widgets' directory: 1) rgbcolor.js and 2) farbtastic.  It also uses HTML code which I
+	#		## provided below under <!--
+	#		## Website/Reference: ( http://acko.net/blog/farbtastic-color-picker-released )
+    #	
+	#		wp_enqueue_script( 'pdm_farbtastic', plugins_url('lib/js/pdm.farbtastic.js', __FILE__), array( 'jquery', 'farbtastic', 'rgbcolor' ) ); // this is very important
+	#		wp_enqueue_script( 'rgbcolor', plugins_url('lib/js/rgbcolor.js', __FILE__)   );
+    #	
+	#		## Do not remove the 'pdm_insert_colorpicker' action or function unless you don't want to use farbastic.
+    #	
+	#		add_action('admin_footer', 'pdm_insert_colorpicker');
+	#		function pdm_insert_colorpicker()
+	#		{
+	#			echo "\n";
+	#			echo '<div id="pdm_farbtastic" style="display:none"> </div>'."\n";
+	#			echo "\n";
+	#		}
+	#	}
 	## -- End: Fabrastic Color Picker --
 
 	

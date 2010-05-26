@@ -138,19 +138,6 @@ function pdm_css_constants_calculate_dependencies($o) {
 }
 add_filter('pdm_css_constants_array', 'pdm_css_constants_calculate_dependencies', 30);
 
-function pdm_css_constants_set_defaults($o) {
-	$c = pdm_options_css_structure();
-	
-	foreach ($o as $key => $val) {
-		if (empty($val)) {
-			$o[$key] = $c->$key->default;
-		}
-	}
-	
-	return $o;
-}
-add_filter('pdm_css_constants_array', 'pdm_css_constants_set_defaults', 70);
-
 function pdm_css_constants_add_units($opts) {
 	$c = pdm_options_css_structure();
 	
@@ -170,6 +157,33 @@ function pdm_css_constants_add_units($opts) {
 	return $opts;
 }
 add_filter('pdm_css_constants_array', 'pdm_css_constants_add_units', 50);
+
+function pdm_css_constants_format_hex($o) {
+	$c = pdm_options_css_structure();
+	
+	foreach ($o as $key => $val) {
+		if ($c->$key->type == 'hex') {
+			$o[$key] = '#'.str_replace('#','',$val); // Regex filter would be nicer
+		}
+	}
+	
+	return $o;
+}
+add_filter('pdm_css_constants_array', 'pdm_css_constants_format_hex', 60);
+
+function pdm_css_constants_set_defaults($o) {
+	$c = pdm_options_css_structure();
+	
+	foreach ($o as $key => $val) {
+		if (empty($val)) {
+			$o[$key] = $c->$key->default;
+		}
+	}
+	
+	return $o;
+}
+add_filter('pdm_css_constants_array', 'pdm_css_constants_set_defaults', 70);
+
 
 function pdm_options_quick_css_fields() {
 	$structure = pdm_options_css_structure();
@@ -215,9 +229,7 @@ function pdm_options_quick_css_fields() {
 						</label>
 					</th>
 					<td>
-						<input class="pdm_colorpicker_text" type="text" name="<?php echo $id; ?>" id="<?php echo $id; ?>" value="<?php echo $value ?>" size="8" maxlength="8" />&nbsp;&nbsp;
-						<input class="pdm_colorpicker" readonly="true" <?php /* name="<?php echo $id_color; ?>" */ ?> style="background:<?php echo $value; ?>" />
-						(Click on the square to change the color.)
+						<input class="pdm_hex" type="text" name="<?php echo $id; ?>" id="<?php echo $id; ?>" value="<?php echo $value ?>" size="8" maxlength="8" />
 					</td>
 				</tr>
 				<?php
