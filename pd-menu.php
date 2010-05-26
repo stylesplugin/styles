@@ -183,6 +183,8 @@ add_action('plugins_loaded', 'pdm_check_for_updates' );   // Checks if this plug
 			'echo' => false,
 			'before' => '<div>',
 			'after' => '</div>',
+			'link_before' => '<span>',
+			'link_after' => '</span>',
 			'menu' => '',
 			'menu_class' => 'menu sf-menu',
 			#'container' => 'div',

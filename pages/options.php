@@ -39,6 +39,8 @@ function pdm_options_page_options() {
 			
 			'css' => pdm_object_to_array( pdm_options_css_structure() ),
 			
+			'pdm_dev_force_update' => '0',
+			
 			// ------------------------------- //
 			'sample_1' => 'Sample Text #1',
 			'sample_2' => 1,
@@ -105,65 +107,13 @@ function pdm_options_page_html() {
 	
 	<!-- Default Settings: -->
 	<table class="form-table pdm_form-table">
-		<tr valign="top">
-			<th scope="row" class="pdm_form-h2"><h2>Top Tabs:</h2></th>
-			<td class="pdm_form-update"><p class="submit pdm_submit"><input type="submit" name="Submit" value="Update &raquo;" /></p></td>
-		</tr>
+		
+		<input name="pdm_options[pdm_dev_force_update]" value="<?php echo rand(1,1000); ?>" type="hidden" />
 		
 		<?php pdm_options_quick_css_fields(); ?>
+		
+		
 		<?php /*
-		<tr valign="top">
-			<th scope="row"><label for="pdm_options[css][ul_padding][top]">Padding Top:</label></th>
-			<td>
-				<input type="text" name="pdm_options[css][ul_padding][top]" value="<?php echo $css['ul_padding']['top']; ?>"/>
-				
-			</td>
-		</tr>
-		<tr valign="top">
-			<th scope="row"><label for="pdm_options[css][ul_padding][right]">Padding Right:</label></th>
-			<td>
-				<input type="text" name="pdm_options[css][ul_padding][right]" value="<?php echo $css['ul_padding']['right']; ?>"/>
-				
-			</td>
-		</tr>
-		<tr valign="top">
-			<th scope="row"><label for="pdm_options[css][ul_padding][bottom]">Padding Bottom:</label></th>
-			<td>
-				<input type="text" name="pdm_options[css][ul_padding][bottom]" value="<?php echo $css['ul_padding']['bottom']; ?>"/>
-				
-			</td>
-		</tr>
-		<tr valign="top">
-			<th scope="row"><label for="pdm_options[css][ul_padding][left]">Padding Left:</label></th>
-			<td>
-				<input type="text" name="pdm_options[css][ul_padding][left]" value="<?php echo $css['ul_padding']['left']; ?>"/>
-				
-			</td>
-		</tr>
-		<tr valign="top">
-			<th scope="row"><h3>Submenus</h3></th>
-			<td>
-				
-			</td>
-		</tr>
-		
-		<tr valign="top">
-			<th scope="row"><label for="pdm_options[css][ul_width]">Width:</label></th>
-			<td>
-				<input type="text" name="pdm_options[css][ul_width]" value="<?php echo $css['ul_width']; ?>"/>
-				
-			</td>
-		</tr>
-		<tr valign="top">
-			<th scope="row"><label for="pdm_options[css][sub_li_top]">sub_li_top:</label></th>
-			<td>
-				<input type="text" name="pdm_options[css][sub_li_top]" value="<?php echo $css['sub_li_top']; ?>"/>
-				
-			</td>
-		</tr>
-		*/ ?>
-		
-		
 		
 		<tr valign="top">
 			<th scope="row" class="pdm_form-h2"><h2>Default Settings:</h2></th>
@@ -189,7 +139,7 @@ function pdm_options_page_html() {
 		<tr valign="top">
 			<th scope="row"><label for="pdm_options_sample_3">Sample #3 - Checkbox Inactive:</label></th>
 			<td>
-				<input type="checkbox" <?php /*name="pdm_options_sample_3" */?> id="pdm_options_sample_3" value="1" disabled="disabled" <?php echo (!strcmp($sample_3, 'On' ) || !strcmp($sample_3, '1' )) ? ' checked="checked"' : ''; ?> />
+				<input type="checkbox" <!-- name="pdm_options_sample_3" --> id="pdm_options_sample_3" value="1" disabled="disabled" <?php echo (!strcmp($sample_3, 'On' ) || !strcmp($sample_3, '1' )) ? ' checked="checked"' : ''; ?> />
 				&nbsp;&nbsp;Sample #3 checkbox has been disabled.  Use <strong>[disabled="disabled"]</strong> inside the HTML <code>&#8249;input&#8250;</code> tag.
 				<input type='hidden' name='pdm_options[sample_3]' value='<?php echo $sample_3; ### Required, for a disabled input value. If this hidden field is not included the value will be reset to fales and show as inactive/not checked. ?>' />
 			</td>
@@ -283,9 +233,9 @@ function pdm_options_page_html() {
 			</td>
 		</tr>
 		<!-- End: Facebox Popup Sample -->
-
+		*/ ?>
 	</table>
-
+	
 
 	<!-- Start: Purge Data -->
 	<table class="form-table pdm_form-table pdm_form-table-highlight">
