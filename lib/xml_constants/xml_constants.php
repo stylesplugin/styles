@@ -203,6 +203,9 @@ function pdm_options_quick_css_fields() {
 				break;
 				
 			case 'slider':
+				if (empty($css[$key])) {
+					$css[$key] = 0;
+				}
 				?>
 				<tr valign="top">
 					<th scope="row">

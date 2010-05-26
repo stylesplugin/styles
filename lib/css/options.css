@@ -45,9 +45,23 @@ td.pdm_form-update {
 	z-index: 100;
 }
 
-.pdm_colorpicker {
-	width: 50px;
+.pdm_hex {
+	width: 30px;
+	height: 30px;
+	padding:0;
 	cursor: pointer;
+}
+
+.colorpicker {
+	z-index:999;
+}
+
+input.slider {
+	width:50px;
+}
+
+.ui-slider {
+	width:200px;
 }
 
 
