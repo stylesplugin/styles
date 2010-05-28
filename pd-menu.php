@@ -3,7 +3,7 @@
 Plugin Name: PD Menu
 Plugin URI: http://pdclark.com
 Description: So amazing.
-Version: Beta 0.0.1
+Version: Alpha 0.0.1
 Author: Paul Clark
 Author URI: http://pdclark.com
 */
@@ -185,7 +185,7 @@ add_action('plugins_loaded', 'pdm_check_for_updates' );   // Checks if this plug
 			'after' => '</div>',
 			'link_before' => '<span>',
 			'link_after' => '</span>',
-			'menu' => '',
+			'menu' => 'pd-menu-test',
 			'menu_class' => 'menu sf-menu',
 			#'container' => 'div',
 			#'fallback_cb' => 'wp_page_menu',

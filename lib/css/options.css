@@ -62,6 +62,10 @@ input.slider {
 
 .ui-slider {
 	width:200px;
+	left:65px;
+	position:relative;
+	top:-18px;
+	z-index:1;
 }
 
 

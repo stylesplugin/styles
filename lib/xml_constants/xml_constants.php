@@ -2,11 +2,25 @@
 
 define('PDM_CONSTANTS_XML', PDM_LIB.'/cache/constants.xml');
 
+//require_once('pd_ui.php');
+
 /*
 	Define CSS Constants structure and meta
 */
 function pdm_options_css_structure() {
 	$c = new stdClass();
+	
+	/* TODO
+	
+		Nav Menu: Always show at top
+		Transparent colors
+		Seperator glyphs
+		Preview background color
+		Fonts / Google Fonts
+		Add image / hover image (hide text?)
+	
+	*/
+	
 	
 	###	Tabs
 	$c->top_tabs->type							= 'header';
@@ -14,32 +28,25 @@ function pdm_options_css_structure() {
 	
 	$c->tab_padding_top->type					= 'slider';
 	$c->tab_padding_top->title					= 'Top Padding';
-	$c->tab_padding_top->description			= 'You know... for the tabs';
-	$c->tab_padding_top->unit					= 'px';
+	// $c->tab_padding_top->description			= 'You know... for the tabs';
 	                                    		
 	$c->tab_padding_right->type					= 'slider';
-	$c->tab_padding_right->unit					= 'px';
-	                                    		
 	$c->tab_padding_bottom->type				= 'slider';
-	$c->tab_padding_bottom->unit				= 'px';
-	                                    		
 	$c->tab_padding_left->type					= 'slider';
-	$c->tab_padding_left->unit					= 'px';
+	
+	$c->tab_margin_top->type					= 'slider';
+	$c->tab_margin_right->type					= 'slider';
+	$c->tab_margin_bottom->type					= 'slider';
+	$c->tab_margin_left->type					= 'slider';
 	
 	$c->tab_border_top_width->type				= 'slider';  
 	$c->tab_border_left_width->type 			= 'slider';
 	$c->tab_border_right_width->type			= 'slider';
 	$c->tab_border_bottom_width->type			= 'slider';
-	$c->tab_border_top_width->unit				= 'px';  
-	$c->tab_border_left_width->unit 			= 'px';
-	$c->tab_border_right_width->unit			= 'px';
-	$c->tab_border_bottom_width->unit			= 'px';
 	
-	$c->tab_a_height->type						= 'slider'; 
-	$c->tab_a_height->unit						= 'px'; 
+	// $c->tab_a_height->type						= 'slider'; 
 	
 	$c->tab_a_font_size->type					= 'slider';
-	$c->tab_a_font_size->unit					= 'px';
 	
 	$c->tab_border_top_color->type				= 'hex';  
 	$c->tab_border_left_color->type 			= 'hex';
@@ -50,28 +57,51 @@ function pdm_options_css_structure() {
 	$c->tab_background_hover->type				= 'hex';
 	$c->tab_background->type					= 'hex';
 	
+	$c->tab_background_gradient->type			= 'gradient';
+	$c->tab_background_gradient_size->type		= 'slider';
+	$c->tab_background_gradient_size->unit		= ' ';
+	
 	###	Sub menu
 	$c->sub_menu->type							= 'header';
 	$c->sub_menu->title							= 'Sub menu';
-	
-	$c->sub_a_height->type						= 'slider'; 
-	$c->sub_a_height->unit						= 'px'; 
 	    
 	$c->sub_a_font_size->type					= 'slider';
-	$c->sub_a_font_size->unit					= 'px';
 	                                    	
 	$c->sub_width->type							= 'slider';
-	$c->sub_width->unit							= 'em';
 	                                    		
+	$c->sub_margin_top->type					= 'slider';
+	
+	$c->sub_margin_right->type					= 'slider';
+	                                    		
+	$c->sub_margin_bottom->type					= 'slider';
+	                                    		
+	$c->sub_margin_left->type					= 'slider';
+	
+	$c->sub_border_top_width->type				= 'slider';  
+	$c->sub_border_left_width->type 			= 'slider';
+	$c->sub_border_right_width->type			= 'slider';
+	$c->sub_border_bottom_width->type			= 'slider';
+	
 	$c->sub_top->unit							= 'px';
 	                                    		
 	$c->sub_background->type					= 'hex';
+	
+	$c->sub_border_top_color->type				= 'hex';  
+	$c->sub_border_left_color->type 			= 'hex';
+	$c->sub_border_right_color->type			= 'hex';
+	$c->sub_border_bottom_color->type			= 'hex';
+	
+	###	Sub Sub menu
+	$c->sub_sub_menu->type							= 'header';
+	$c->sub_sub_menu->title							= 'Sub-sub menu';
+	
 	$c->sub_sub_background->type				= 'hex';
 	
 	###	Constants
 	$c->fontpx									= '10';
 	
 	foreach( $c as $key => $v ) {
+		// Set defaults for blanks
 		if (empty($v->default)) {
 			if (
 				strpos($key, 'width') !== false
@@ -82,6 +112,13 @@ function pdm_options_css_structure() {
 			
 			if ( strpos($key, 'color') !== false ) {
 				$v->default = 'transparent';
+			}
+		}
+		
+		// Set slider units to PX
+		if (empty($v->unit)) {
+			if ($v->type == 'slider') {
+				$v->unit = 'px-to-em';
 			}
 		}
 	}
@@ -131,6 +168,9 @@ function pdm_css_constants_calculate_dependencies($o) {
 	$o = (object) $o;
 	$c = pdm_options_css_structure();
 	
+	$o->tab_a_height = $o->tab_a_font_size;
+	$o->sub_a_height = $o->sub_a_font_size;
+	
 	// Line up top of submenu with bottom of tabs
 	$o->sub_top = $o->tab_a_height + $o->tab_padding_top + $o->tab_padding_bottom + $o->tab_border_top_width + $o->tab_border_bottom_width ;
 	
@@ -144,7 +184,7 @@ function pdm_css_constants_add_units($opts) {
 	foreach ($opts as $key => $val) {
 		if (!empty($c->$key->unit)) {
 			// Convert PX to EMs
-			if ($c->$key->unit == 'px') {
+			if ($c->$key->unit == 'px-to-em') {
 				$opts[$key] = ( (int)$val / $c->fontpx ).'em';
 			}else {
 				$opts[$key] = $val.$c->$key->unit;
@@ -164,6 +204,10 @@ function pdm_css_constants_format_hex($o) {
 	foreach ($o as $key => $val) {
 		if ($c->$key->type == 'hex') {
 			$o[$key] = '#'.str_replace('#','',$val); // Regex filter would be nicer
+		}
+		if ($c->$key->type == 'gradient') {
+			$o[$key.'_from'] = '#'.str_replace('#','',$o[$key.'_from']); // Regex filter would be nicer
+			$o[$key.'_to'] = '#'.str_replace('#','',$o[$key.'_to']); // Regex filter would be nicer
 		}
 	}
 	
@@ -222,7 +266,6 @@ function pdm_options_quick_css_fields() {
 				break;
 				
 			case 'hex':
-				$id_color = "{$option}[{$key}_color]";
 				$value = preg_replace('/^0x/', '', $css[$key]);
 				?>
 		       <tr valign="top" class="hex">
@@ -236,6 +279,27 @@ function pdm_options_quick_css_fields() {
 					</td>
 				</tr>
 				<?php
+				break;
+				
+			case 'gradient':
+				$id_from = "{$option}[{$key}_from]";
+				$id_to = "{$option}[{$key}_to]";
+				$value_from = preg_replace('/^0x/', '', $css[$key.'_from']);
+				$value_to = preg_replace('/^0x/', '', $css[$key.'_to']);
+				?>
+		       <tr valign="top" class="gradient">
+					<th scope="row">
+						<label for="<?php echo $id; ?>">
+							<?php if (empty($s->title)) { echo $key; }else { echo $s->title; } ?>:
+						</label>
+					</th>
+					<td>
+						<input class="pdm_gradient from pdm_hex" type="text" name="<?php echo $id_from; ?>" id="<?php echo $id_from; ?>" value="<?php echo $value_from ?>" size="8" maxlength="8" />
+						<input class="pdm_gradient to pdm_hex" type="text" name="<?php echo $id_to; ?>" id="<?php echo $id_to; ?>" value="<?php echo $value_to ?>" size="8" maxlength="8" />
+					</td>
+				</tr>
+				<?php
+				
 				break;
 		}
 	}

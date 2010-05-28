@@ -76,15 +76,17 @@ function pdm_menu() {
 
 	*/
 
-	$icon_url = plugins_url('lib/img/swpf-icon-menu.png', __FILE__);
+	$icon_url = plugins_url('images/swpf-icon-menu.png', __FILE__);
 
 	## add_menu_page (page_title, menu_title, user_level, file, [function], [icon_url]);  //  adds a new top-level menu:
+	// add_menu_page('', 'PD Menu', 'administrator', pdm_plugin, 'pdm_submenu_welcome', $icon_url) ;
 	add_menu_page('', 'PD Menu', 'administrator', pdm_plugin, 'pdm_submenu_welcome', $icon_url) ;
 
 	## add_submenu_page (parent, page_title, menu_title, user_level, file, [function]);   // adds a new submenu to the custom top-level menu
 	add_submenu_page(pdm_plugin, 'Welcome to PD Menu', 'Welcome', 'administrator', pdm_plugin, 'pdm_submenu_welcome');
-	add_submenu_page(pdm_plugin, 'Page Title: Submenu #1', 'Submenu #1', 'administrator', 'pdm-submenu-1', 'pdm_submenu_1');
-	add_submenu_page(pdm_plugin, 'Page Title: Submenu #2', 'Submenu #2', 'administrator', 'pdm-submenu-2', 'pdm_submenu_2');
+	// add_submenu_page(pdm_plugin, 'Page Title: Submenu #1', 'Submenu #1', 'administrator', 'pdm-submenu-1', 'pdm_submenu_1');
+	// add_submenu_page(pdm_plugin, 'Page Title: Submenu #2', 'Submenu #2', 'administrator', 'pdm-submenu-2', 'pdm_submenu_2');
+	// add_submenu_page(pdm_plugin, 'PD Menu Options',  'Options',    'administrator', 'pdm-submenu-options', 'pdm_submenu_options');
 	add_submenu_page(pdm_plugin, 'PD Menu Options',  'Options',    'administrator', 'pdm-submenu-options', 'pdm_submenu_options');
 
 }

@@ -12,10 +12,9 @@
 		margin:0;
 		padding:0;
 		div {
-			border-top:    $tab_border_top_width    solid $tab_border_top_color;
-			border-left:   $tab_border_left_width   solid $tab_border_left_color;
-			border-right:  $tab_border_right_width  solid $tab_border_right_color;
-			border-bottom: $tab_border_bottom_width solid $tab_border_bottom_color;
+			border-width: $tab_border_top_width $tab_border_right_width $tab_border_bottom_width $tab_border_left_width;
+			border-color: $tab_border_top_color $tab_border_right_color $tab_border_bottom_color $tab_border_left_color;
+			border-style: solid;
 			a {
 				padding: $tab_padding_top $tab_padding_right $tab_padding_bottom $tab_padding_left;
 				display:block;
@@ -40,9 +39,20 @@
 			}
 		}
 		li { /* tab */
-			background-color: $tab_background;
+			padding: $tab_margin_top $tab_margin_right $tab_margin_bottom $tab_margin_left;
+			div {
+				background-color: $tab_background;
+				background-gradient: vertical, $tab_background_gradient_size, from($tab_background_gradient_from), to($tab_background_gradient_to);
+			}
 			li { /* sub-menu */
-				background-color: $sub_background;
+				padding: $tab_margin_top $tab_margin_right $tab_margin_bottom $tab_margin_left;
+				div {
+					border-width: $sub_border_top_width $sub_border_right_width $sub_border_bottom_width $sub_border_left_width;
+					border-color: $sub_border_top_color $sub_border_right_color $sub_border_bottom_color $sub_border_left_color;
+					border-style: solid;
+					background-color: $sub_background;
+					background-image: url();
+				}
 				a {
 					height: $sub_a_height;
 					span {
@@ -50,7 +60,9 @@
 					}
 				}
 				li {
-					background-color: $sub_sub_background;
+					div {
+						background-color: $sub_sub_background;
+					}
 				}
 			}
 			&:hover, &:sfHover {
