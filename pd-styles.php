@@ -178,8 +178,7 @@ class PDStyles {
 		wp_die ( $message );
 	}
 	
-	
-} // END 
+} // END PDStyles class
 
 /**
  * Instantiate the PDStylesFrontend or PDStylesAdmin Class

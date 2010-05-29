@@ -276,7 +276,7 @@ class PDStylesAdmin extends PDStyles {
 		$defaults = array (
 			'version'           => $this->dbversion ,
 			'language'          => $this->set_lang () ,
-			'library'           => 'base' ,
+			/*'library'           => 'base' ,
 			'smartLoad'         => 'false' ,
 			'autoimg'           => 'true' ,
 			'automov'           => 'true' ,
@@ -317,6 +317,7 @@ class PDStylesAdmin extends PDStyles {
 			'slideshowDelay'    => 0 ,
 			'useSizzle'         => 'false' ,
 			'viewportPadding'   => 20
+			*/
 		);
 		return $defaults;
 	}
@@ -541,7 +542,7 @@ class PDStylesAdmin extends PDStyles {
 	 */
 	function add_page () {
 		if ( current_user_can ( 'manage_options' ) ) {
-			$this->options_page_hookname = add_options_page ( __( 'PD Styles' , 'pd-styles' ) , __( 'PD Styles' , 'pd-styles' ) , 'manage_options' , 'pd-styles' , array ( &$this , 'admin_page' ) );
+			$this->options_page_hookname = add_theme_page ( __( 'PD Styles' , 'pd-styles' ) , __( 'PD Styles' , 'pd-styles' ) , 'manage_options' , 'pd-styles' , array ( &$this , 'admin_page' ) );
 			add_action ( "admin_print_scripts-{$this->options_page_hookname}" , array ( &$this , 'admin_js' ) );
 			add_action ( "admin_print_styles-{$this->options_page_hookname}" , array ( &$this , 'admin_css' ) );
 			add_filter ( "plugin_action_links_{$this->plugin_basename}" , array ( &$this , 'filter_plugin_actions' ) );
@@ -556,7 +557,7 @@ class PDStylesAdmin extends PDStyles {
 	 * @since 0.1
 	 */
 	function filter_plugin_actions ( $links ) { 
-		$settings_link = '<a href="options-general.php?page=pd-styles">' . __( 'Settings' , 'pd-styles' ) . '</a>'; 
+		$settings_link = '<a href="themes.php?page=pd-styles">' . __( 'Settings' , 'pd-styles' ) . '</a>'; 
 		array_unshift ( $links, $settings_link ); 
 		return $links;
 	}
