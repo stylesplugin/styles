@@ -49,7 +49,7 @@ class PDStylesAdminController extends PDStyles {
 		}
         
 		// Full path and plugin basename of the main plugin file
-		$this->plugin_file = dirname ( dirname ( __FILE__ ) ) . '/pd-styles.php';
+		$this->plugin_file = dirname ( dirname ( dirname ( __FILE__ ) ) ) . '/pd-styles.php';
 		$this->plugin_basename = plugin_basename ( $this->plugin_file );
         
 		// ajax hooks so that we can build/output shadowbox.js
@@ -274,7 +274,7 @@ class PDStylesAdminController extends PDStyles {
 	 */
 	function defaults () {
 		$defaults = array (
-			'version'           => $this->dbversion ,
+			'version'           => $this->db_version ,
 			'language'          => $this->set_lang () ,
 			/*'library'           => 'base' ,
 			'smartLoad'         => 'false' ,

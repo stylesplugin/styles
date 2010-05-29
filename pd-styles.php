@@ -185,6 +185,13 @@ class PDStyles {
 	 * @return void
 	 **/
 	function load_view ($view) {
+		
+		// ->load_model($name); $date = $this->model[$name]->fetch_data(); $this->view($name, $data);
+		// $this->load_view("content", new ModelName());
+		
+		// model = data being available for my use. If get_options is my model, then being inside 
+		// this class might be enough, because I have access to all my options and data!!!
+		
 		$file = dirname ( __FILE__ ) . '/lib/views/'.$view;
 		
 		if ( ! @include ( $file ) ) {

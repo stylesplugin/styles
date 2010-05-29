@@ -64,6 +64,8 @@
 	I've just gotten that far.
 	[1:48pm] pdclark:
 	It was when I saw global vars being used to output data into this guys template that I started wondering what the best way to get data into the template / view was
+	
+	################
 	[1:49pm] HNSZ:
 	you can make a method in your parent controller ->load_model($name), ->load_view($name). 
 	[1:51pm] pdclark:
