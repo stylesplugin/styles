@@ -1,6 +1,39 @@
-
 <?php
 
+// Menu structure
+	// Read Menu
+		// From WP Menus
+		// From Menubar plugin
+		// From Thesis
+	
+	// Write Menu
+		// Output via do_action
+		// Output via premium theme hook detection
+			// Thesis
+			// Hybrid
+		// Enqueue CSS
+		
+// Settings
+	// Adjust menu styling via Admin GUI
+	// Output CSS file
+	// Output javascript
+	
+// CSS
+	// units: px or em
+	// Tabs
+		// Borders, colors, margins, padding
+	// Submenus
+		// Borders, colors, margins, padding
+	// Vertical or Horizontal menus
+	// Background images
+
+// Javascript
+	// Animations
+	// Fade-in & Out
+	
+	
+// Impliment multiple version of one class: listing 9.03
+// Impliment different classes based on sitation: listing 4.03.php
 
 ######################################################
 ######################################################
