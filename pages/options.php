@@ -35,7 +35,7 @@ function pdm_options_page_options() {
 
 	$options = array (
 		'pdm_options' => array(
-			'purge_data' => pdm_PURGE_DATA, #  When plugin is deactivated, if 'true', all tables, and options will be removed.
+			'purge_data' => PDM_PURGE_DATA, #  When plugin is deactivated, if 'true', all tables, and options will be removed.
 			
 			'css' => pdm_object_to_array( pdm_options_css_structure() ),
 			

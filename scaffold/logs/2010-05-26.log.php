@@ -25,3 +25,10 @@
 2010-05-26 17:40:57 +00:00 --- Error: Cannot find the file: //c/plugins/pd-menu//css/menu-template.css
 2010-05-26 17:42:22 +00:00 --- Error: Cannot find the file: //c/plugins/pd-menu//css/menu-template.css
 2010-05-26 17:42:33 +00:00 --- Error: Cannot find the file: //c/plugins/pd-menu//css/menu-template.css
+2010-05-26 20:00:04 +00:00 --- Error: Missing constant - tab_margin_top
+2010-05-26 20:07:31 +00:00 --- Error: Missing constant - sub_border_top_width
+2010-05-26 20:07:38 +00:00 --- Error: Missing constant - sub_border_top_color
+2010-05-26 20:08:12 +00:00 --- Error: Missing constant - sub_border_top_color
+2010-05-26 21:03:52 +00:00 --- Error: Missing constants XML file. The file (../lib/cache/constants.xml) doesn't exist.
+2010-05-26 21:03:52 +00:00 --- Error: Missing constants XML file. The file (../lib/cache/constants.xml) doesn't exist.
+2010-05-26 21:21:46 +00:00 --- Error: Missing constant - tab_background_gradient_size

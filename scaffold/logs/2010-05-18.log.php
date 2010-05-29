@@ -27,9 +27,9 @@
 2010-05-18 17:57:34 +00:00 --- Error: Cannot find the file: //css/menu-template.css
 2010-05-18 17:57:34 +00:00 --- Error: Cannot find the file: //css/menu-template.css
 2010-05-18 18:11:52 +00:00 --- Error: Cannot find the file: /PDM_PATH_REL/css/menu-template.css
-2010-05-18 18:23:35 +00:00 --- Error: Missing image - /c/plugins/pd-menu/images/arrows-ffffff.png
-2010-05-18 18:23:45 +00:00 --- Error: Missing image - /c/plugins/pd-menu/images/arrows-ffffff.png
-2010-05-18 18:23:45 +00:00 --- Error: Missing image - /c/plugins/pd-menu/images/arrows-ffffff.png
+2010-05-18 18:23:35 +00:00 --- Error: Missing image - /c/plugins/pd-menu/lib/img/arrows-ffffff.png
+2010-05-18 18:23:45 +00:00 --- Error: Missing image - /c/plugins/pd-menu/lib/img/arrows-ffffff.png
+2010-05-18 18:23:45 +00:00 --- Error: Missing image - /c/plugins/pd-menu/lib/img/arrows-ffffff.png
 2010-05-18 21:34:16 +00:00 --- Error: Missing constant - foo
 2010-05-18 21:34:30 +00:00 --- Error: Missing constant - foo
 2010-05-18 21:34:55 +00:00 --- Error: Missing constant - foo
