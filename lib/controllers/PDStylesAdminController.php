@@ -9,7 +9,7 @@
  * @subpackage Admin
  * @author pdclark
  **/
-class PDStylesAdmin extends PDStyles {
+class PDStylesAdminController extends PDStyles {
 	
 	/**
 	 * Full file system path to the main plugin file
@@ -42,7 +42,7 @@ class PDStylesAdmin extends PDStyles {
 	 * @since 0.1
 	 */
 	function __construct () {
-		PDStyles::__construct ();
+		parent::__construct ();
 
 		if ( version_compare ( $this->get_option ( 'version' ) , $this->dbversion , '!=' ) && ! empty ( $this->options ) ) {
 			$this->check_upgrade ();
@@ -106,7 +106,7 @@ class PDStylesAdmin extends PDStyles {
 	 * @since 0.1
 	 */
 	function admin_css () {
-		// wp_enqueue_style ( 'shadowbox-admin-css' , apply_filters ( 'shadowbox-admin-css' , $this->plugin_url () . '/css/admin.css' ) , false , $this->version , 'screen' );
+		wp_enqueue_style ( 'pd-styles-admin-css' , apply_filters ( 'pd-styles-admin-css' , $this->plugin_url () . '/lib/css/admin.css' ) , false , $this->version , 'screen' );
 	}
 	
 	/**
@@ -569,12 +569,10 @@ class PDStylesAdmin extends PDStyles {
 	 * @since 0.1
 	 */
 	function admin_page () {
-		if ( ! @include ( 'options-page.php' ) ) {
-			_e ( sprintf ( '<div id="message" class="updated fade"><p>The options page for the <strong>PD Styles</strong> cannot be displayed.  The file <strong>%s</strong> is missing.  Please reinstall the plugin.</p></div>' , dirname ( __FILE__ ) . '/options-page.php' ) );
-		}
+		$this->load_view('pd-styles.php');
 	}
 
-} // END class PDStylesAdmin extends PDStyles
+} // END class PDStylesAdminController extends PDStyles
 
 
 ?>

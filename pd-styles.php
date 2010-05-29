@@ -178,10 +178,25 @@ class PDStyles {
 		wp_die ( $message );
 	}
 	
+	/**
+	 * Load and output a view file. Pass it some data somehow.
+	 * 
+	 * @since 0.1
+	 * @return void
+	 **/
+	function load_view ($view) {
+		$file = dirname ( __FILE__ ) . '/lib/views/'.$view;
+		
+		if ( ! @include ( $file ) ) {
+			_e ( sprintf ( '<div id="message" class="updated fade"><p>The file <strong>%s</strong> is missing.  Please reinstall the plugin.</p></div>' , $file ), 'pd-styles' );
+		}
+	}
+	
+	
 } // END PDStyles class
 
 /**
- * Instantiate the PDStylesFrontend or PDStylesAdmin Class
+ * Instantiate the PDStylesFrontend or $PDStylesAdminController Class
  *
  * Deactivate and die if files can not be included
  */
@@ -189,8 +204,8 @@ if ( is_admin () ) {
 	
 	// include admin class
 	
-	if ( @include ( dirname ( __FILE__ ) . '/inc/admin.php' ) ) {
-		$PDStylesAdmin = new PDStylesAdmin ();
+	if ( @include ( dirname ( __FILE__ ) . '/lib/controllers/PDStylesAdminController.php' ) ) {
+		$PDStylesAdminController = new PDStylesAdminController ();
 	} else {
 		PDStyles::deactivate_and_die ( dirname ( __FILE__ ) . '/inc/admin.php' );
 	}
@@ -203,10 +218,6 @@ if ( is_admin () ) {
 	} else {
 		PDStyles::deactivate_and_die ( dirname ( __FILE__ ) . '/inc/front-end.php' );
 	}
-}
-
-
-
-
+} 
 
 ?>
