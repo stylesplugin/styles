@@ -68,3 +68,7 @@ When organizing the new plugin, I was looking at:
 
 * Sivel's [Shadowbox]() for class structure. Sivel runs the #wordpress IRC channel. This plugin is recommended by a lot of high-level WP developers as an example of great code structure. He has a choppy lecture on Intermediate Plugin development at [WordPress.tv](http://wordpress.tv/2009/11/14/matt-martz-plugins-nyc09/)
 * Blair Williams' [Mingle](http://wordpress.org/extend/plugins/mingle/). He uses a pseudo MVC structure, and this plugin is a bit larger of a project. He lectures on it at [WordPress.tv](http://wordpress.tv/2010/04/24/blair-williams-wordpress-plugins-oc10/), but also comments that some of the methods he used weren't best practice, like lots of global vars.
+
+## Git Stuff $$ 
+Branching from master using a handy little tool called git flow ( http://github.com/nvie/gitflow ) so I can start breaking things without polluting the master branch. I'd recommend using it as well if you haven't already though - it's quite the nice tool. 
+
