@@ -1,1 +1,0 @@
-@for !i from 1 to 12{.columns-!i { +span(!i); }}

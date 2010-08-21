@@ -36,6 +36,14 @@ class PDStylesAdminController extends PDStyles {
 	var $options_page_hookname;
 	
 	/**
+	 * Variables loaded from CSS @variables declarations
+	 * 
+	 * @since 0.1
+	 * @var array
+	 **/
+	var $css_variables;
+	
+	/**
 	 * Setup backend functionality in WordPress
 	 *
 	 * @return none
@@ -67,6 +75,10 @@ class PDStylesAdminController extends PDStyles {
         
 		// Activate the options page
 		add_action ( 'admin_menu' , array ( &$this , 'add_page' ) ) ;
+		
+		// Load CSScaffold
+		$this->scaffold_init();
+		$this->css_variables_load( $this->plugin_dir_path() . '/example/vars.css' );
 	}
 	
 	/**
@@ -569,8 +581,96 @@ class PDStylesAdminController extends PDStyles {
 	 * @since 0.1
 	 */
 	function admin_page () {
-		$this->load_view('pd-styles.php');
+		$this->load_view('admin-main.php');
 	}
+	
+	/**
+	 * Initialize CSScaffold
+	 * 
+	 * @since 0.1
+	 * @return void
+	 **/
+	function scaffold_init () {
+		global $PDStylesScaffold;
+		if ( $PDStylesScaffold ) {
+			return;
+		}
+
+		// Scaffold Configuration
+		$config = array(
+			'extensions' => array(
+				'Variables',
+				'XMLVariables'
+			)
+		);
+
+		// Setup the env
+		date_default_timezone_set('GMT');
+		$system = $this->plugin_dir_path() . '/scaffold';
+		$environment = $system.'/lib/Scaffold/Environment.php';
+		
+		if ( @require_once ( $environment ) ) {
+			Scaffold_Environment::auto_load(true);
+
+			// Create Scaffold instance
+			$container 	= new Scaffold_Container( $system, $config );
+			$PDStylesScaffold 	= $container->build();
+			
+		} else {
+			PDStyles::deactivate_and_die ( $environment );
+		}
+		
+	}
+	
+	/**
+	 * Load variables from CSS into array
+	 * 
+	 * @since 0.1
+	 * @return void
+	 **/
+	function css_variables_load( $file ) {
+		global $PDStylesScaffold;
+		if ( ! $PDStylesScaffold ) {
+			$this->scaffold_init();
+		}
+
+		// Load in the CSS file
+		$source = new Scaffold_Source_File( $file );
+
+		// Rather than parsing the whole thing through Scaffold, we just want the
+		// variables that are inside that source. So to save some time, we just get them manually.
+		$ext = $PDStylesScaffold->extensions['Variables'];
+
+		// Pull out the variables into an array 
+		/* !!TODO: Make this a recursive array_merge !! */
+		$this->css_variables = array_merge( (array) $this->css_variables, $ext->extract($source) );
+		
+		//	$this->css_variables_to_md_array();
+	}
+	
+	//	/**
+	//	 * Convert dot notation in CSS variables to PHP multi-dimensional array
+	//	 * 
+	//	 * @since 0.1
+	//	 * @return void
+	//	 **/
+	//	function css_variables_to_md_array() {
+	//		$tmp = array();
+	//		
+	//		foreach ( $this->css_variables as $group => $variables ) {
+	//			foreach ( $variables as $key => $value ) {
+	//				if ( strpos( $key, '.' ) !== false ) {
+	//					$parts = explode( '.', $key );
+	//					
+	//					$tmp[ $group ][ $parts[0] ][ $parts[1] ] = $value;
+	//				}
+	//			}
+	//		}
+	//		echo '<pre>';
+	//		print_r($tmp);
+	//		echo '</pre>';
+	//	}
+	
 
 } // END class PDStylesAdminController extends PDStyles
 

@@ -2,8 +2,8 @@
 /*
 Plugin Name: PD Styles
 Plugin URI: http://pdclark.com
-Description: The snazziest snizz that ever snozzed.
-Version: Pre-Alpha 0.0.1
+Description: Rewrite.
+Version: 0.0.2
 Author: Paul Clark
 Author URI: http://pdclark.com
 Author URI: http://pdclark.com
@@ -55,8 +55,15 @@ Copyright 2010  Paul Clark  (email : support (at) pdclark.com)
 	
 ##}end WP Notes
 
-	
 */  
+
+// Normally I'd include this in wp-config.php
+// It's here so I don't have to get anyone else to install it
+// When sharing code
+if ( !class_exists('FirePHP') ) {
+	ob_start();
+	include_once ('inc/FirePHPCore/fb.php');
+}
 
 /**
  * PD Styles class for common actions between admin and frontend.
@@ -210,9 +217,12 @@ class PDStyles {
 if ( is_admin () ) {
 	
 	// include admin class
-	
+
 	if ( @include ( dirname ( __FILE__ ) . '/lib/controllers/PDStylesAdminController.php' ) ) {
+	
+		@include ( dirname ( __FILE__ ) . '/lib/helpers/PDStylesUIColor.php' );
 		$PDStylesAdminController = new PDStylesAdminController ();
+
 	} else {
 		PDStyles::deactivate_and_die ( dirname ( __FILE__ ) . '/inc/admin.php' );
 	}
@@ -220,7 +230,7 @@ if ( is_admin () ) {
 	
 	// include subadmin class
 	
-	if ( @include ( dirname ( __FILE__ ) . '/inc/frontend.php' ) ) {
+	if ( @include ( dirname ( __FILE__ ) . '/inc/front-end.php' ) ) {
 		// $ShadowboxFrontend = new ShadowboxFrontend ();
 	} else {
 		PDStyles::deactivate_and_die ( dirname ( __FILE__ ) . '/inc/front-end.php' );

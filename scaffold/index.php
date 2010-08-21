@@ -1,103 +1,74 @@
 <?php
+
 /**
- * This file acts as the front controller for CSScaffold.
- * If you plan on using Scaffold anywhere else, you
- * probably want to do what this file is doing. True story.
- *
- * @package CSScaffold
+ * The location of this system folder
  */
- 
-ini_set('display_errors', TRUE);
-error_reporting(E_ALL & ~E_STRICT);
+$system = dirname(__FILE__).'/';
 
 /**
- * Set the server variable for document root. A lot of 
- * the utility functions depend on this. Windows servers
- * don't set this, so we'll add it manually if it isn't set.
+ * The environment class helps us handle errors
+ * and autoloading of classes. It's not required
+ * to make Scaffold function, but makes it a bit
+ * nicer to use.
  */
-if(!isset($_SERVER['DOCUMENT_ROOT']))
-{
-	if (isset($_SERVER['SERVER_SOFTWARE']) && 0 === strpos($_SERVER['SERVER_SOFTWARE'], 'Microsoft-IIS/'))
-	{
-	    $_SERVER['DOCUMENT_ROOT'] = rtrim(substr(
-	        $_SERVER['PATH_TRANSLATED']
-	        ,0
-	        ,strlen($_SERVER['PATH_TRANSLATED']) - strlen($_SERVER['SCRIPT_NAME'])
-	    ), '\\');
-	    if ($unsetPathInfo) {
-	        unset($_SERVER['PATH_INFO']);
-	    }
-	}
-}
-
-# Include the config file
-include 'config.php';
-
-# Load the libraries. Do it manually if you don't like this way.
-include 'libraries/Bootstrap.php';
+include $system.'/lib/Scaffold/Environment.php';
 
 /**
- * Set timezone, just in case it isn't set. PHP 5.2+ 
+ * Set timezone, just in case it isn't set. PHP 5.3+ 
  * throws a tantrum if you try and use time() without
  * this being set.
  */
-if (function_exists('date_default_timezone_set'))
-{
-	date_default_timezone_set('GMT');
-}
-
-# And we're off!
-if(isset($_GET['f']))
-{
-	/**
-	 * The files we want to parse. Full absolute URL file paths work best.
-	 * eg. request=/themes/stylesheets/master.css,/themes/stylesheets/screen.css
-	 */
-	$files = explode(',', $_GET['f']);
-	
-	/**
-	 * Various options can be set in the URL. Scaffold
-	 * itself doesn't use these, but they are handy hooks
-	 * for modules to activate functionality if they are 
-	 * present.
-	 */
-	$options = (isset($_GET['options'])) ? array_flip(explode(',',$_GET['options'])) : array();
-	
-	/**
-	 * Whether to output the CSS, or return the result of Scaffold
-	 */
-	$display = true;
-
-	/**
-	 * Set a base directory
-	 */	
-	if(isset($_GET['d']))
-	{
-		foreach($files as $key => $file)
-		{
-			$files[$key] = Scaffold_Utils::join_path($_GET['d'],$file);
-		}
-	}
-
-	/**
-	 * Parse and join an array of files
-	 */
-	$result = Scaffold::parse($files,$config,$options,$display);
-	
-	if($display === false)
-		stop($result);
-}
+date_default_timezone_set('GMT');
 
 /**
- * Prints out the value and exits.
- *
- * @author Anthony Short
- * @param $var
+ * Automatically load any Scaffold Classes
  */
-function stop($var = '') 
+Scaffold_Environment::auto_load();
+
+/**
+ * Let Scaffold handle errors
+ */
+Scaffold_Environment::handle_errors();
+
+/** 
+ * Set the view to use for errors and exceptions
+ */
+Scaffold_Environment::set_view(realpath($system.'/views/error.php'));
+
+// =========================================
+// = Start the scaffolding magic  =
+// =========================================
+
+// Make sure the config var is set
+if(!isset($config)) $config = array();
+
+// The container creates Scaffold objects
+$container = new Scaffold_Container($system,$config);
+
+// This is where the magic happens
+$scaffold = $container->build();
+
+// Get the requested source
+if(isset($_GET['file']))
 {
-	if( $var == '' ) $var = 'Hammer time! Line ' . __LINE__;
-	header('Content-Type: text/plain');
-	print_r($var);
+	$source = new Scaffold_Source_File( $scaffold->helper->load->file($_GET['file']) );
+}
+elseif(isset($_GET['url']) AND $config['enable_url'] === true)
+{
+	$source = new Scaffold_Source_Url($_GET['url']);
+}
+elseif(isset($_GET['string']) AND $config['enable_string'] === true)
+{
+	$source = new Scaffold_Source_String($_GET['string']);
+}
+else
+{
+	echo 'No source :(';
 	exit;
 }
+
+// Compiles the source object
+$source = $scaffold->compile($source);
+
+// Use the result to render it to the browser. Hooray!
+$scaffold->render($source);
