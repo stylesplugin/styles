@@ -1,22 +1,4 @@
-/*
-	NOTE!!
-	
-	loading vars.xml with:
-		@variables 'vars.xml';
-	SHOULD override values for vars set in the CSS. For some reason,
-	XMLVariables aren't loading in this tag of Scaffold.
-	
-	I've e-mailed Anthony about it.
-
-*/
-
-.test {
-	a {
-		color: white;
-		
-	}
-}
-
+@variables 'vars.xml';
 
 
 @variables grid
@@ -24,7 +6,13 @@
 	column-width:40px;
 	gutter-width:20px;
 	column-count:12;
-	baseline:18px; 
+	baseline:18px;
+	width: fail;
+	width2: ok;
+}
+.test {
+	width: grid.width;
+	line-height: grid.baseline;
 }
 
 @variables color {
