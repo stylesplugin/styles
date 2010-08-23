@@ -60,9 +60,11 @@ class PDStylesAdminController extends PDStyles {
 		$this->plugin_file = dirname ( dirname ( dirname ( __FILE__ ) ) ) . '/pd-styles.php';
 		$this->plugin_basename = plugin_basename ( $this->plugin_file );
         
-		// ajax hooks so that we can build/output shadowbox.js
-		// add_action ( 'wp_ajax_shadowboxjs' , array ( &$this , 'build_shadowbox' ) );
-		// add_action ( 'wp_ajax_nopriv_shadowboxjs' , array ( &$this , 'build_shadowbox' ) );
+		// ajax hooks so that we can access WordPress within Scaffold
+		// Use the URL /wp-admin/admin-ajax.php?action=scaffold&file=filename.css
+		// file will be searched for in this plugin directory and the current template directory
+		add_action ( 'wp_ajax_scaffold' , array ( &$this , 'parse_ajax' ) );
+		add_action ( 'wp_ajax_nopriv_scaffold' , array ( &$this , 'parse_ajax' ) );
         
 		// Load localizations if available
 		// load_plugin_textdomain ( 'shadowbox-js' , false , 'shadowbox-js/localization' );
@@ -75,10 +77,6 @@ class PDStylesAdminController extends PDStyles {
         
 		// Activate the options page
 		add_action ( 'admin_menu' , array ( &$this , 'add_page' ) ) ;
-		
-		// Load CSScaffold
-		$this->scaffold_init();
-		$this->css_variables_load( $this->plugin_dir_path() . '/example/vars.css' );
 	}
 	
 	/**
@@ -581,6 +579,9 @@ class PDStylesAdminController extends PDStyles {
 	 * @since 0.1
 	 */
 	function admin_page () {
+		// Move to auto-detection later
+		$this->css_variables_load( $this->plugin_dir_path() . '/example/vars.css' );
+		
 		$this->load_view('admin-main.php');
 	}
 	
@@ -646,6 +647,29 @@ class PDStylesAdminController extends PDStyles {
 		$this->css_variables = array_merge( (array) $this->css_variables, $ext->extract($source) );
 		
 		//	$this->css_variables_to_md_array();
+	}
+	
+	/**
+	 * Pass /wp-admin/admin-ajax.php?action=scaffold&file=XX.css to Scaffold
+	 * All $_GET variables stay intact
+	 * 
+	 * @since 0.1
+	 * @return void
+	 **/
+	function parse_ajax() {
+		
+	    // Would be nice to pull settings from plugin options instead
+		$config['load_paths'] = array(
+			get_template_directory(),
+			$this->plugin_dir_path(),
+		);
+
+		$scaffold_include = $this->plugin_dir_path() . 'scaffold/parse.php';
+		if ( ! @include( $scaffold_include ) ) {
+			exit( 'Could not find ' . $scaffold_include );
+		}
+		
+		exit;
 	}
 	
 	//	/**
