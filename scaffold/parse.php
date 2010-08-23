@@ -1,7 +1,4 @@
 <?php
-ob_start();
-include '/Users/pdclark/Sites/pdstyles/wp-content/plugins/pd-styles/inc/FirePHPCore/fb.php';
-
 
 // =========================================
 // = Scaffold Configuration =
@@ -10,7 +7,7 @@ include '/Users/pdclark/Sites/pdstyles/wp-content/plugins/pd-styles/inc/FirePHPC
 /**
  * The location of the Scaffold system folder
  */
-$system = './';
+$system = dirname(__FILE__);
 
 /**
  * Production Mode
@@ -42,7 +39,9 @@ $config['max_age'] = false;
  * Paths for Scaffold to search for files. It will use these paths to try and find
  * @import and url() paths (and others).
  */
-$config['load_paths'] = array();
+if ( empty( $config['load_paths'] ) ) {
+	$config['load_paths'] = array();
+}
 
 /**
  * PHP gzip compression
