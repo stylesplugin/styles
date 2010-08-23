@@ -1,4 +1,7 @@
 <?php
+ob_start();
+include '/Users/pdclark/Sites/pdstyles/wp-content/plugins/pd-styles/inc/FirePHPCore/fb.php';
+
 
 // =========================================
 // = Scaffold Configuration =
@@ -94,8 +97,9 @@ $config['extensions'] = array(
 	'Import',
 	'Mixins',
 	'NestedSelectors',
-	'Variables',
 	'XMLVariables',
+	'Variables',
+	
 	
 	# Process-heavy Extensions
 	//'Sass',
@@ -110,7 +114,7 @@ $config['extensions'] = array(
  */
 //$config['AbsoluteUrls']['require_files'] = false;
 $config['XMLVariables']['files'] = array(
-   '/Users/pdclark/Sites/pdstyles/wp-content/plugins/pd-styles/example/vars.xml',
+   // '/Users/pdclark/Sites/pdstyles/wp-content/plugins/pd-styles/example/vars.xml',
 );
 
 // =========================================
