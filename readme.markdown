@@ -37,9 +37,12 @@ By the end, a UI should be built just by putting into CSS:
 	}
 	
 **AJAX**
-The beginning of calling CSScaffold through WordPress (and having the WP database and plugin settings available to Scaffold) are in PDStylesFrontendController::parse_request. In the future, it would be nice to have this:
+CSS files can now be processed with the URL:
+	http://site.com/wp-admin/admin-ajax.php?action=scaffold&file=XXX.css
+"file" will be searched for from siteroot, the plugin directory, and the current theme directory.
 
-* Handle file, src, or url
+The beginning of calling CSScaffold through WordPress (and having the WP database and plugin settings available to Scaffold) are in PDStylesFrontendController::parse_request. In the future, it would be nice to:
+
 * Pull Scaffold's $config from plugin settings instead of using include 'parse.php';
   * Change Scaffold settings from GUI
 * Automatically run CSS files through Scaffold using some sort of flag set in wp\_enqueue\_style
@@ -47,7 +50,6 @@ The beginning of calling CSScaffold through WordPress (and having the WP databas
   * Scaffold allows processing CSS strings. We could auto-generate strings if necessary
   * Scaffold can process (and concatenate) multiple files into one. wp\_enqueue\_style
 	  would give us dependency information
-* We could add to Scaffold's default search directories to include the current theme
 
 ## UI Types ##
 I planned on starting with Color, since it's fairly simple.
