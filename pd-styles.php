@@ -206,7 +206,6 @@ class PDStyles {
 		}
 	}
 	
-	
 } // END PDStyles class
 
 /**
@@ -230,8 +229,8 @@ if ( is_admin () ) {
 	
 	// include subadmin class
 	
-	if ( @include ( dirname ( __FILE__ ) . '/inc/front-end.php' ) ) {
-		// $ShadowboxFrontend = new ShadowboxFrontend ();
+	if ( @include ( dirname ( __FILE__ ) . '/lib/controllers/PDStylesFrontendController.php' ) ) {
+		$PDStylesFrontendController = new PDStylesFrontendController ();
 	} else {
 		PDStyles::deactivate_and_die ( dirname ( __FILE__ ) . '/inc/front-end.php' );
 	}
