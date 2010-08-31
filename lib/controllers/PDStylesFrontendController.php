@@ -37,7 +37,7 @@ class PDStylesFrontendController extends PDStyles {
 		
 			// Would be nice to pull settings from plugin options instead
 			$config['load_paths'] = array(
-				get_template_directory(),
+				get_stylesheet_directory(),
 				$this->plugin_dir_path(),
 			);
 			
