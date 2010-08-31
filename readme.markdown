@@ -38,7 +38,7 @@ By the end, a UI should be built just by putting into CSS:
 	
 **AJAX**
 CSS files can now be processed with the URL:
-	http://site.com/wp-admin/admin-ajax.php?action=scaffold&file=XXX.css
+	http://site.com/?scaffold&file=XXX.css
 "file" will be searched for from siteroot, the plugin directory, and the current theme directory.
 
 The beginning of calling CSScaffold through WordPress (and having the WP database and plugin settings available to Scaffold) are in PDStylesFrontendController::parse_request. In the future, it would be nice to:
