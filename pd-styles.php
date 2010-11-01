@@ -112,6 +112,10 @@ class PDStyles {
 	 **/
 	function __construct () {
 		$this->options = get_option( 'pd-styles' );
+		
+		// ajax hooks so that we can access WordPress within Scaffold
+		add_action('parse_request', array( &$this, 'parse_request') );
+		add_filter('query_vars', array( &$this, 'query_vars') );
 	}
 	
 	/**
@@ -150,6 +154,16 @@ class PDStyles {
 	 **/
 	function plugin_dir_path() {
 		return plugin_dir_path( __FILE__ );
+	}
+	
+	/**
+	 * Strip ABSPATH from a path.
+	 * 
+	 * @since 0.1
+	 * @return string
+	 **/
+	function get_relative_path( $path ) {
+		return str_replace( ABSPATH, '/', $path );
 	}
 	
 	/**
@@ -193,17 +207,47 @@ class PDStyles {
 	 **/
 	function load_view ($view) {
 		
-		// ->load_model($name); $date = $this->model[$name]->fetch_data(); $this->view($name, $data);
-		// $this->load_view("content", new ModelName());
-		
-		// model = data being available for my use. If get_options is my model, then being inside 
-		// this class might be enough, because I have access to all my options and data!!!
-		
 		$file = dirname ( __FILE__ ) . '/lib/views/'.$view;
 		
 		if ( ! @include ( $file ) ) {
 			_e ( sprintf ( '<div id="message" class="updated fade"><p>The file <strong>%s</strong> is missing.  Please reinstall the plugin.</p></div>' , $file ), 'pd-styles' );
 		}
+	}
+	
+	/**
+	 * Pass ?scaffold&file=file.css requests to CSS Scaffold
+	 * 
+	 * @since 0.1
+	 * @return void
+	 **/
+	function parse_request( $wp ) {
+	    // only process requests with "?scaffold"
+	    if (isset( $_GET['scaffold'] ) ) {
+		
+			// Would be nice to pull settings from plugin options instead
+			$config['load_paths'] = array(
+				get_stylesheet_directory(),
+				$this->plugin_dir_path(),
+			);
+
+			$scaffold_include = $this->plugin_dir_path() . 'scaffold/parse.php';
+			if ( ! @include( $scaffold_include ) ) {
+				exit( 'Could not find ' . $scaffold_include );
+			}
+
+			exit;
+	    }
+	}
+	
+	/**
+	 * Whitelist the scaffold query var for parse_request()
+	 * 
+	 * @since 0.1
+	 * @return void
+	 **/
+	function query_vars($vars) {
+	    $vars[] = 'scaffold';
+	    return $vars;
 	}
 	
 } // END PDStyles class

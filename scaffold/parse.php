@@ -7,7 +7,7 @@
 /**
  * The location of the Scaffold system folder
  */
-$system = './';
+$system = dirname(__FILE__);
 
 /**
  * Production Mode
@@ -19,7 +19,7 @@ $system = './';
  *		1. One of the files in the request has changed
  *		2. The cache lifetime has expired (set below)
  */
-$config['production'] = true;
+$config['production'] = false;
 
 /**
  * Cache Lifetime
@@ -39,7 +39,9 @@ $config['max_age'] = false;
  * Paths for Scaffold to search for files. It will use these paths to try and find
  * @import and url() paths (and others).
  */
-$config['load_paths'] = array();
+if ( empty( $config['load_paths'] ) ) {
+	$config['load_paths'] = array();
+}
 
 /**
  * PHP gzip compression
@@ -88,18 +90,22 @@ $config['extensions'] = array(
 	'Functions',
 	'HSL',
 	'ImageReplace',
-	'Minify',
+	// 'Minify',
 	'Properties',
 	'Random',
 	'Import',
 	'Mixins',
 	'NestedSelectors',
-	'Variables',
-	# Process-heavy Extensions
 	'XMLVariables',
+	'Variables',
+	'XMLVariables',
+	
+	
+	
+	# Process-heavy Extensions
 	//'Sass',
 	//'CSSTidy',
-	//'YUICompressor'
+	//'YUI'
 );
 
 /**
@@ -108,6 +114,9 @@ $config['extensions'] = array(
  * These are then available within the extension with $this->config.
  */
 //$config['AbsoluteUrls']['require_files'] = false;
+$config['XMLVariables']['files'] = array(
+   // '/Users/pdclark/Sites/pdstyles/wp-content/plugins/pd-styles/example/vars.xml',
+);
 
 // =========================================
 // = Load Scaffold =

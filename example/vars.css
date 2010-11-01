@@ -18,7 +18,14 @@
 @variables color {
 	base: #e2e2e1;
 	base.type: color;
-	base.something: 5;
+	base.nicename: Favorite Color;
+	something: #000;
+	something.type: color;
+	
+	header: #0000ff;
+	header.type: color;
+	header.nicename: Howdy!;
+
 	highlight: #fe8d12;
 	page: #fff;
 }

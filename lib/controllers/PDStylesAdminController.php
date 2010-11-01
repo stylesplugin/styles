@@ -36,6 +36,22 @@ class PDStylesAdminController extends PDStyles {
 	var $options_page_hookname;
 	
 	/**
+	 * The file we're loading CSS from
+	 * 
+	 * @since 0.1
+	 * @var string
+	 **/
+	var $css_file;
+	
+	/**
+	 * Path to CSS in a form appropriate for use as an array key
+	 * 
+	 * @since 0.1
+	 * @var string
+	 **/
+	var $css_permalink;
+	
+	/**
 	 * Variables loaded from CSS @variables declarations
 	 * 
 	 * @since 0.1
@@ -67,6 +83,9 @@ class PDStylesAdminController extends PDStyles {
 		// Full path and plugin basename of the main plugin file
 		$this->plugin_file = dirname ( dirname ( dirname ( __FILE__ ) ) ) . '/pd-styles.php';
 		$this->plugin_basename = plugin_basename ( $this->plugin_file );
+		
+		$this->css_file = $this->plugin_dir_path() . 'example/vars.css';
+		$this->css_permalink = $this->get_css_permalink( $this->css_file );
         
 		// ajax hooks so that we can build/output shadowbox.js
 		// add_action ( 'wp_ajax_shadowboxjs' , array ( &$this , 'build_shadowbox' ) );
@@ -86,7 +105,7 @@ class PDStylesAdminController extends PDStyles {
 		
 		// Load CSScaffold
 		$this->scaffold_init();
-		$this->css_variables_load( $this->plugin_dir_path() . '/example/vars.css' );
+		$this->css_variables_load( $this->css_file );
 	}
 	
 	/**
@@ -107,6 +126,13 @@ class PDStylesAdminController extends PDStyles {
 	 */
 	function admin_js () {
 		wp_enqueue_script ( 'jquery' );
+		
+		wp_register_script('pds-colorpicker', $this->plugin_url().'/lib/js/colorpicker/js/colorpicker.js',array('jquery'), $this->version, true);
+		
+		wp_enqueue_script('pds-admin-main', $this->plugin_url().'/lib/js/admin-main.js',array('jquery', 'pds-colorpicker'), $this->version, true);
+
+		
+		
 		// wp_enqueue_script ( 'shadowbox-js-helper' , $this->plugin_url () . '/js/shadowbox-admin-helper.js' , array ( 'jquery' ) , $this->version , true );
 		
 		/*
@@ -126,7 +152,10 @@ class PDStylesAdminController extends PDStyles {
 	 * @since 0.1
 	 */
 	function admin_css () {
-		wp_enqueue_style ( 'pd-styles-admin-css' , apply_filters ( 'pd-styles-admin-css' , $this->plugin_url () . '/lib/css/admin.css' ) , false , $this->version , 'screen' );
+		
+		wp_register_style('pds-colorpicker', $this->plugin_url().'/lib/js/colorpicker/css/colorpicker.css',array( ), $this->version);
+		
+		wp_enqueue_style ( 'pd-styles-admin-css' , apply_filters ( 'pd-styles-admin-css' , '/?scaffold&file=lib/css/admin.css' ) , array('pds-colorpicker') , $this->version , 'screen' );
 	}
 	
 	/**
@@ -296,6 +325,7 @@ class PDStylesAdminController extends PDStyles {
 		$defaults = array (
 			'version'           => $this->db_version ,
 			'language'          => $this->set_lang () ,
+			'css_variables'		=> array(),
 			/*'library'           => 'base' ,
 			'smartLoad'         => 'false' ,
 			'autoimg'           => 'true' ,
@@ -630,6 +660,27 @@ class PDStylesAdminController extends PDStyles {
 	}
 	
 	/**
+	 * Convert CSS path into a form appropriate for use as a database key
+	 * 
+	 * @since 0.1
+	 * @return void
+	 **/
+	function get_css_permalink( $path ) {
+		$blacklist = array(
+			'[',
+			']',
+			'"',
+			"'",
+			'>',
+			'<'
+		);
+		
+		str_replace($blacklist, '-', $this->get_relative_path( $path ) );
+		
+		return $path;
+	}
+	
+	/**
 	 * Load variables from CSS into array
 	 * 
 	 * @since 0.1
@@ -682,7 +733,9 @@ class PDStylesAdminController extends PDStyles {
 		foreach ( $tmp as $group => &$variables ) {
 			foreach ( $variables as $key => &$value ) {		
 				$value['default'] = $this->css_variables[ $group ][ $key ];
-				$value['id'] = "$group.$key";
+				$value['id'] = "css_variables[$this->css_permalink][$group][$key]";
+				
+				$value['nicename'] = ( empty($value['nicename']) ) ? "$group.$key" : $value['nicename'];
 				
 				$this->css_variables[ $group ][ $key ] = $value;
 			}
@@ -710,6 +763,5 @@ class PDStylesAdminController extends PDStyles {
 	
 
 } // END class PDStylesAdminController extends PDStyles
-
 
 ?>
