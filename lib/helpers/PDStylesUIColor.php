@@ -39,15 +39,19 @@ class PDStylesUIColor {
 		);
 		$args = wp_parse_args( $args, $defaults );
 		
+		$args['default'] = trim( $args['default'], '# ');
+		$args['value']   = trim( $args['value'], '# ');
+		
 		$this->id = $args['id'];
 		$this->nicename = $args['nicename'];
 		$this->default = $args['default'];
+		$this->value = ( empty( $args['value'] ) ) ? $args['default'] : $args['value'];
 	}
 	
 	function output() {
 		?>
 		<div class="pds_color">
-			<input class="pds_color_input" type="text" name="<?php echo $this->id; ?>" id="<?php echo $this->id; ?>" value="<?php echo trim($this->default, '# '); ?>" size="8" maxlength="8" />
+			<input class="pds_color_input" type="text" name="<?php echo $this->id; ?>" id="<?php echo $this->id; ?>" value="<?php echo $this->value; ?>" size="8" maxlength="8" />
 			<label for="<?php echo $this->id; ?>">
 				<?php echo $this->nicename ?>
 			</label>

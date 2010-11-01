@@ -325,7 +325,7 @@ class PDStylesAdminController extends PDStyles {
 		$defaults = array (
 			'version'           => $this->db_version ,
 			'language'          => $this->set_lang () ,
-			'css_variables'		=> array(),
+			'css_values'		=> array(),
 			/*'library'           => 'base' ,
 			'smartLoad'         => 'false' ,
 			'autoimg'           => 'true' ,
@@ -481,21 +481,48 @@ class PDStylesAdminController extends PDStyles {
 	function update ( $options ) {
 		// Make sure there are no empty values, seems users like to clear out options before saving
 		foreach ( $this->defaults () as $key => $value ) {
-			if ( ( ! isset ( $options[$key] ) || empty ( $options[$key] ) ) && $key != 'delete' && $key != 'default' /*&& $key != 'players'*/ ) {
+			if ( 
+				( ! isset ( $options[$key] ) || empty ( $options[$key] ) ) 
+				&& $key != 'delete' 
+				&& $key != 'default'
+			) {
 				$options[$key] = $value;
 			}
 		}
-		if ( isset ( $options['delete'] ) && $options['delete'] == 'true' ) { // Check if we are supposed to remove options
+		
+		// Validate CSS vars
+		foreach( $options['css_values'] as $file => &$groups ) {
+			foreach ( $groups as $group => &$variables ) {
+				foreach ( $variables as $key => &$value ) {
+					
+					switch( get_class( $this->css_variables[$group][$key] ) ) {
+						case 'PDStylesUIColor':
+							$value = '#'.trim( $value, '# ');
+							// $this->css_variables[$group][$key] = $value;
+							break;
+						
+					}
+	
+				}
+			}
+		}
+		
+		// Check if we are supposed to remove options
+		if ( isset ( $options['delete'] ) && $options['delete'] == 'true' ) { 
 			delete_option ( 'pd-styles' );
 		} else if ( isset ( $options['default'] ) && $options['default'] == 'true' ) { // Check if we are supposed to reset to defaults
 			$this->options = $this->defaults ();
 			// $this->build_shadowbox ( true ); // Attempt to build and cache shadowbox.js
 			return $this->options;
 		} else {
-			/*if ( ! isset ( $options['autoflv'] ) || $options['enableFlv'] == 'false' ) {
-				$options['autoflv'] = 'false';
-			}*/
-			unset ( $options['delete'] , $options['default'] );
+			// Save options
+			unset ( 
+				$options['delete'], 
+				$options['default'],
+				$options['_wpnonce'],
+				$options['_wp_http_referer'],
+				$options['action']
+			);
 			$this->options = $options;
 			// $this->build_shadowbox ( true ); // Attempt to build and cache shadowbox.js
 			return $this->options;
@@ -592,7 +619,7 @@ class PDStylesAdminController extends PDStyles {
 	 */
 	function add_page () {
 		if ( current_user_can ( 'manage_options' ) ) {
-			$this->options_page_hookname = add_theme_page ( __( 'PD Styles' , 'pd-styles' ) , __( 'PD Styles' , 'pd-styles' ) , 'manage_options' , 'pd-styles' , array ( &$this , 'admin_page' ) );
+			$this->options_page_hookname = add_theme_page ( __( 'Styles' , 'pd-styles' ) , __( 'Styles' , 'pd-styles' ) , 'manage_options' , 'pd-styles' , array ( &$this , 'admin_page' ) );
 			add_action ( "admin_print_scripts-{$this->options_page_hookname}" , array ( &$this , 'admin_js' ) );
 			add_action ( "admin_print_styles-{$this->options_page_hookname}" , array ( &$this , 'admin_css' ) );
 			add_filter ( "plugin_action_links_{$this->plugin_basename}" , array ( &$this , 'filter_plugin_actions' ) );
@@ -715,6 +742,7 @@ class PDStylesAdminController extends PDStyles {
 	 **/
 	function css_variables_to_md_array() {
 		$tmp = array();
+		$css_values = $this->get_option('css_values');
 		
 		// Gather vars with dot notation, place into .args array
 		foreach ( $this->css_variables as $group => $variables ) {
@@ -732,10 +760,13 @@ class PDStylesAdminController extends PDStyles {
 		// Replace default value with array, containing dot arguements and original value as key 'default'
 		foreach ( $tmp as $group => &$variables ) {
 			foreach ( $variables as $key => &$value ) {		
+				// Set arguements for object init
 				$value['default'] = $this->css_variables[ $group ][ $key ];
-				$value['id'] = "css_variables[$this->css_permalink][$group][$key]";
-				
+				$value['id'] = "css_values[$this->css_permalink][$group][$key]";
 				$value['nicename'] = ( empty($value['nicename']) ) ? "$group.$key" : $value['nicename'];
+				
+				// Get user value from DB
+				$value['value'] = $css_values[$this->css_permalink][$group][$key];
 				
 				$this->css_variables[ $group ][ $key ] = $value;
 			}
