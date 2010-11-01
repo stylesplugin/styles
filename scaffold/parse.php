@@ -98,7 +98,7 @@ $config['extensions'] = array(
 	'NestedSelectors',
 	'XMLVariables',
 	'Variables',
-	'XMLVariables',
+	'PDStyles',
 	
 	
 	

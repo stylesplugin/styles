@@ -69,6 +69,7 @@ class Scaffold_Extension_XMLVariables extends Scaffold_Extension
 	{
 		if(!is_file($file)) return false;
 		$this->variables = $this->to_array(simplexml_load_file($file));
+		FB::log($this->variables, '$this->variables');
 		return true;
 	}
 	

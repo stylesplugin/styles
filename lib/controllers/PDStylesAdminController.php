@@ -36,22 +36,6 @@ class PDStylesAdminController extends PDStyles {
 	var $options_page_hookname;
 	
 	/**
-	 * The file we're loading CSS from
-	 * 
-	 * @since 0.1
-	 * @var string
-	 **/
-	var $css_file;
-	
-	/**
-	 * Path to CSS in a form appropriate for use as an array key
-	 * 
-	 * @since 0.1
-	 * @var string
-	 **/
-	var $css_permalink;
-	
-	/**
 	 * Variables loaded from CSS @variables declarations
 	 * 
 	 * @since 0.1
@@ -86,7 +70,7 @@ class PDStylesAdminController extends PDStyles {
 		
 		$this->css_file = $this->plugin_dir_path() . 'example/vars.css';
 		$this->css_permalink = $this->get_css_permalink( $this->css_file );
-        
+		
 		// ajax hooks so that we can build/output shadowbox.js
 		// add_action ( 'wp_ajax_shadowboxjs' , array ( &$this , 'build_shadowbox' ) );
 		// add_action ( 'wp_ajax_nopriv_shadowboxjs' , array ( &$this , 'build_shadowbox' ) );
@@ -156,6 +140,7 @@ class PDStylesAdminController extends PDStyles {
 		wp_register_style('pds-colorpicker', $this->plugin_url().'/lib/js/colorpicker/css/colorpicker.css',array( ), $this->version);
 		
 		wp_enqueue_style ( 'pd-styles-admin-css' , apply_filters ( 'pd-styles-admin-css' , '/?scaffold&file=lib/css/admin.css' ) , array('pds-colorpicker') , $this->version , 'screen' );
+		wp_enqueue_style ( 'pd-styles-admin-css-test' , '/?scaffold&file=example/vars.css' , array() , $this->version , 'screen' );
 	}
 	
 	/**
@@ -684,27 +669,6 @@ class PDStylesAdminController extends PDStyles {
 			PDStyles::deactivate_and_die ( $environment );
 		}
 		
-	}
-	
-	/**
-	 * Convert CSS path into a form appropriate for use as a database key
-	 * 
-	 * @since 0.1
-	 * @return void
-	 **/
-	function get_css_permalink( $path ) {
-		$blacklist = array(
-			'[',
-			']',
-			'"',
-			"'",
-			'>',
-			'<'
-		);
-		
-		str_replace($blacklist, '-', $this->get_relative_path( $path ) );
-		
-		return $path;
 	}
 	
 	/**

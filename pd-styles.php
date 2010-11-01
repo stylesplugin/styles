@@ -104,6 +104,22 @@ class PDStyles {
 	var $options;
 	
 	/**
+	 * The file we're loading CSS from
+	 * 
+	 * @since 0.1
+	 * @var string
+	 **/
+	var $css_file;
+	
+	/**
+	 * Path to CSS in a form appropriate for use as an array key
+	 * 
+	 * @since 0.1
+	 * @var string
+	 **/
+	var $css_permalink;
+	
+	/**
 	 * Setup shared functionality between admin and front-end
 	 *
 	 * @author Matt Martz <matt@sivel.net>
@@ -163,7 +179,29 @@ class PDStyles {
 	 * @return string
 	 **/
 	function get_relative_path( $path ) {
-		return str_replace( ABSPATH, '/', $path );
+		$path = str_replace( ABSPATH, '/', $path );
+		return $path;
+	}
+	
+	/**
+	 * Convert CSS path into a form appropriate for use as a database key
+	 * 
+	 * @since 0.1
+	 * @return void
+	 **/
+	function get_css_permalink( $path ) {
+		$blacklist = array(
+			'[',
+			']',
+			'"',
+			"'",
+			'>',
+			'<'
+		);
+		
+		$path = str_replace($blacklist, '-', $this->get_relative_path( $path ) );
+		
+		return $path;
 	}
 	
 	/**
