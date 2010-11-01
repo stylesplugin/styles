@@ -32,15 +32,20 @@
 		## ---------------------------
 		##	Testing
 		## --------------------------{
-			FB::log('log something');
-			
-			?>
-				<pre><?php print_r( $this->css_variables ); ?></pre>
-			<?php
+		foreach ( $this->css_variables as $group => $variables ) {
+			foreach ( $variables as $key => $ui ) {
+				if ( is_object($ui) ) {
+					
+					$ui->output();
+					
+				}
+			}
+		}
+		
+		
+		
 			
 		##}end Testing
 	?>	
-
-	<?php FB::log($this, '$this'); ?>
 
 </div>

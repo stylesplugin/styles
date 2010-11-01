@@ -648,34 +648,65 @@ class PDStylesAdminController extends PDStyles {
 		$ext = $this->scaffold->extensions['Variables'];
 
 		// Pull out the variables into an array 
-		/* !!TODO: Make this a recursive array_merge !! */
-		$this->css_variables = array_merge( (array) $this->css_variables, $ext->extract($source) );
+		$this->css_variables = $ext->extract($source);
 		
-		//	$this->css_variables_to_md_array();
+		// Convert dot notation to .args array
+		$this->css_variables_to_md_array();
+		
+		$this->array_to_ui_objects();
 	}
 	
-	//	/**
-	//	 * Convert dot notation in CSS variables to PHP multi-dimensional array
-	//	 * 
-	//	 * @since 0.1
-	//	 * @return void
-	//	 **/
-	//	function css_variables_to_md_array() {
-	//		$tmp = array();
-	//		
-	//		foreach ( $this->css_variables as $group => $variables ) {
-	//			foreach ( $variables as $key => $value ) {
-	//				if ( strpos( $key, '.' ) !== false ) {
-	//					$parts = explode( '.', $key );
-	//					
-	//					$tmp[ $group ][ $parts[0] ][ $parts[1] ] = $value;
-	//				}
-	//			}
-	//		}
-	//		echo '<pre>';
-	//		print_r($tmp);
-	//		echo '</pre>';
-	//	}
+	/**
+	 * Convert dot notation in CSS variables to PHP multi-dimensional array
+	 * 
+	 * @since 0.1
+	 * @return void
+	 **/
+	function css_variables_to_md_array() {
+		$tmp = array();
+		
+		// Gather vars with dot notation, place into .args array
+		foreach ( $this->css_variables as $group => $variables ) {
+			foreach ( $variables as $key => $value ) {
+				if ( strpos( $key, '.' ) !== false ) {
+					$parts = explode( '.', $key );
+					
+					$tmp[ $group ][ $parts[0] ][ $parts[1] ] = $value;
+					
+					unset( $this->css_variables[$group][$key] );
+				}
+			}
+		}
+		
+		// Replace default value with array, containing dot arguements and original value as key 'default'
+		foreach ( $tmp as $group => &$variables ) {
+			foreach ( $variables as $key => &$value ) {		
+				$value['default'] = $this->css_variables[ $group ][ $key ];
+				$value['id'] = "$group.$key";
+				
+				$this->css_variables[ $group ][ $key ] = $value;
+			}
+		}
+		
+		unset($tmp);
+	}
+	
+	function array_to_ui_objects() {
+		foreach ( $this->css_variables as $group => $variables ) {
+			foreach ( $variables as $key => $args ) {
+				if ( is_array($args) ) {
+
+					switch ( $args['type'] ) {
+						case 'color':
+							$this->css_variables[ $group ][ $key ] = new PDStylesUIColor($args);
+							break;
+						
+					}
+					
+				}
+			}
+		}
+	}
 	
 
 } // END class PDStylesAdminController extends PDStyles
