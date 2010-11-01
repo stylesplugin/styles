@@ -44,6 +44,14 @@ class PDStylesAdminController extends PDStyles {
 	var $css_variables;
 	
 	/**
+	 * Container for CSS Scaffold object
+	 * 
+	 * @since 0.1
+	 * @var string
+	 **/
+	var $scaffold;
+	
+	/**
 	 * Setup backend functionality in WordPress
 	 *
 	 * @return none
@@ -591,8 +599,7 @@ class PDStylesAdminController extends PDStyles {
 	 * @return void
 	 **/
 	function scaffold_init () {
-		global $PDStylesScaffold;
-		if ( $PDStylesScaffold ) {
+		if ( $this->scaffold ) {
 			return;
 		}
 
@@ -614,7 +621,7 @@ class PDStylesAdminController extends PDStyles {
 
 			// Create Scaffold instance
 			$container 	= new Scaffold_Container( $system, $config );
-			$PDStylesScaffold 	= $container->build();
+			$this->scaffold 	= $container->build();
 			
 		} else {
 			PDStyles::deactivate_and_die ( $environment );
@@ -629,8 +636,7 @@ class PDStylesAdminController extends PDStyles {
 	 * @return void
 	 **/
 	function css_variables_load( $file ) {
-		global $PDStylesScaffold;
-		if ( ! $PDStylesScaffold ) {
+		if ( ! $this->scaffold ) {
 			$this->scaffold_init();
 		}
 
@@ -639,7 +645,7 @@ class PDStylesAdminController extends PDStyles {
 
 		// Rather than parsing the whole thing through Scaffold, we just want the
 		// variables that are inside that source. So to save some time, we just get them manually.
-		$ext = $PDStylesScaffold->extensions['Variables'];
+		$ext = $this->scaffold->extensions['Variables'];
 
 		// Pull out the variables into an array 
 		/* !!TODO: Make this a recursive array_merge !! */
