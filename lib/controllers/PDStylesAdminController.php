@@ -727,7 +727,7 @@ class PDStylesAdminController extends PDStyles {
 				// Set arguements for object init
 				$value['default'] = $this->css_variables[ $group ][ $key ];
 				$value['id'] = "css_values[$this->css_permalink][$group][$key]";
-				$value['nicename'] = ( empty($value['nicename']) ) ? "$group.$key" : $value['nicename'];
+				$value['label'] = ( empty($value['label']) ) ? "$group.$key" : $value['label'];
 				
 				// Get user value from DB
 				$value['value'] = $css_values[$this->css_permalink][$group][$key];
@@ -753,6 +753,24 @@ class PDStylesAdminController extends PDStyles {
 					
 				}
 			}
+		}
+
+		// Cleanup 		
+		foreach ( $this->css_variables as $group => $variables ) {
+
+			// Remove anything that wasn't an object
+			foreach ( $variables as $key => $args ) {
+				if ( !is_object( $this->css_variables[ $group ][ $key ] ) && $key !== 'label') {
+					unset($this->css_variables[ $group ][ $key ]);
+				}
+			}
+			// Remove empty groups
+			foreach ( $this->css_variables as $group => $variables ) {
+				if (empty($variables)) {
+					unset($this->css_variables[$group]);
+				}
+			}
+
 		}
 	}
 	

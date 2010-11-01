@@ -1,10 +1,11 @@
 @variables c {
-	body_color: #e2e2e1;
+	label: Colors;
+	body_color: #999;
 	body_color.type: color;
-	body_color.nicename: Text Color;
-	bodybg: #000;
+	body_color.label: Text;
+	bodybg: #e2e2e1;
 	bodybg.type: color;
-	bodybg.nicename: Background Color;
+	bodybg.label: Background;
 }
 
 body

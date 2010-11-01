@@ -71,7 +71,7 @@ I planned on starting with Color, since it's fairly simple.
 
 ## Organization ##
 
-Ideally, the UI elements will self-organize into sections. Either based on @variables groups, or based on each variable having an optional .group setting. Groups and variables should have a .nicename set for display.
+Ideally, the UI elements will self-organize into sections. Either based on @variables groups, or based on each variable having an optional .group setting. Groups and variables should have a .label set for display.
 
 A backend admin is easiest at this point, but it doesn't seem like too much of a stretch to start with that, then auto-generate a front-end version later, similar to the [Headway Themes Visual Editor](http://headwaythemes.com/features/visual-editor/). I have a copy of this theme if you want it. It's GPL.
 

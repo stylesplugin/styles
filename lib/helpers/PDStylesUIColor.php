@@ -23,7 +23,7 @@ class PDStylesUIColor {
 	 * @since 0.1
 	 * @var string
 	 **/
-	var $nicename;
+	var $label;
 	
 	/**
 	 * Default value of the form element
@@ -43,7 +43,7 @@ class PDStylesUIColor {
 		$args['value']   = trim( $args['value'], '# ');
 		
 		$this->id = $args['id'];
-		$this->nicename = $args['nicename'];
+		$this->label = $args['label'];
 		$this->default = $args['default'];
 		$this->value = ( empty( $args['value'] ) ) ? $args['default'] : $args['value'];
 	}
@@ -53,7 +53,7 @@ class PDStylesUIColor {
 		<div class="pds_color">
 			<input class="pds_color_input" type="text" name="<?php echo $this->id; ?>" id="<?php echo $this->id; ?>" value="<?php echo $this->value; ?>" size="8" maxlength="8" />
 			<label for="<?php echo $this->id; ?>">
-				<?php echo $this->nicename ?>
+				<?php echo $this->label ?>
 			</label>
 		</div>
 		<?php
