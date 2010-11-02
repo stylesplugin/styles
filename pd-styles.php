@@ -62,7 +62,7 @@ Copyright 2010  Paul Clark  (email : support (at) pdclark.com)
 // When sharing code
 if ( !class_exists('FirePHP') ) {
 	ob_start();
-	include_once ('inc/FirePHPCore/fb.php');
+	include_once ('lib/FirePHPCore/fb.php');
 }
 
 /**
