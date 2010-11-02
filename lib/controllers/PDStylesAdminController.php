@@ -315,15 +315,15 @@ class PDStylesAdminController extends PDStyles {
 			'scaffold'			=> array(
 				// See scaffold/parse.php for full scaffold config documentation
 				'config'		=> array(
-					'production'			=> true,
+					'production'			=> false,
 					'max_age'				=> false,
 					'output_compression'	=> false,
 					'set_etag'				=> true,
 					'enable_string'			=> false,
 					'enable_url'			=> false,
 					'load_paths'			=> array(
-						get_stylesheet_directory(),
-						$this->plugin_dir_path(),
+						untrailingslashit( get_stylesheet_directory() ),
+						untrailingslashit( $this->plugin_dir_path() ),
 					),
 					'extensions'			=> array(
 						'AbsoluteUrls',
