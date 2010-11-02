@@ -18,6 +18,14 @@ class PDStyles_Extension_Color extends Scaffold_Extension_Observer {
 	var $id;
 	
 	/**
+	 * Variable key in array
+	 * 
+	 * @since 0.1
+	 * @var string
+	 **/
+	var $key;
+	
+	/**
 	 * Nice text name for display in element label
 	 * 
 	 * @since 0.1
@@ -43,16 +51,18 @@ class PDStyles_Extension_Color extends Scaffold_Extension_Observer {
 		$args['value']   = trim( $args['value'], '# ');
 		
 		$this->id = $args['id'];
+		$this->key = $args['key'];
 		$this->label = $args['label'];
 		$this->default = $args['default'];
 		$this->value = ( empty( $args['value'] ) ) ? $args['default'] : $args['value'];
 	}
 	
-	function output() {
+	function output( $permalink ) {
+		$id = "{$permalink}[$this->key]";
 		?>
 		<div class="pds_color">
-			<input class="pds_color_input" type="text" name="<?php echo $this->id; ?>" id="<?php echo $this->id; ?>" value="<?php echo $this->value; ?>" size="8" maxlength="8" />
-			<label for="<?php echo $this->id; ?>">
+			<input class="pds_color_input" type="text" name="<?php echo $id ?>" id="<?php echo $id ?>" value="<?php echo $this->value; ?>" size="8" maxlength="8" />
+			<label for="<?php echo $id; ?>">
 				<?php echo $this->label ?>
 			</label>
 		</div>

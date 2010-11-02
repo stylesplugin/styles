@@ -41,7 +41,7 @@ class PDStyles_Extension_Group extends Scaffold_Extension_Observer {
 	 **/
 	var $variables;
 	
-	function __construct( $args = array() ) {
+	function __construct( $args = array(), $permalink = null ) {
 		if ( empty($args) ) return;
 
 		$this->key = $args['key'];
@@ -49,17 +49,25 @@ class PDStyles_Extension_Group extends Scaffold_Extension_Observer {
 		
 		unset( $args['label'], $args['key'] );
 		
-		$this->create_objects( $args );
+		$this->create_objects( $args, $permalink );
 	}
 	
-	function create_objects( $variables ) {
+	function create_objects( $variables, $permalink ) {
 		global $PDStylesAdminController;
-
+		
+		// Load Values from DB
+		$css_values = $PDStylesAdminController->get_option('css_values');
+		foreach ( (array) $css_values[ $permalink ][ $this->key ] as $key => $value ) {
+			$variables[ $key ][ 'value' ] = $value;
+		}
+		
+		// Instantiate Objects
 		foreach ( $variables as $key => $args ) {
 			if ( is_array($args) ) {
 				foreach ( $PDStylesAdminController->extensions as $ext ){
 					
 					if ( $ext->is_type( $args ) ) {
+						$args['key'] = $key;
 						$ext_class = get_class($ext);
 						$this->variables[ $key ] = new $ext_class( $args );
 					}
@@ -68,21 +76,21 @@ class PDStyles_Extension_Group extends Scaffold_Extension_Observer {
 			}
 		}
 
-		// Remove anything that wasn't an object
+		// Remove anything that wasn't recognised as an object
 		foreach ( (array) $this->variables as $key => $object ) {
 			if ( !is_object( $object ) ) {
 				unset( $this->variables[ $key ] );
 			}
 		}
-		
+
 	}
 	
-	function output() {
+	function output( $permalink ) {
 
 		echo '<h2>'.$this->label.'</h2>';
 		
 		foreach ( $this->variables as $variable ) {
-			$variable->output();
+			$variable->output( "{$permalink}[$this->key]");
 		}
 		
 	}

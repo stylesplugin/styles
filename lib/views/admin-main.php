@@ -13,7 +13,7 @@
 if ( $_POST['action'] == 'update-options' && check_admin_referer('pd-styles-update-options') ) {
 	// Uses $this->update() sanitation callback
 	update_option('pd-styles', $_POST );
-	
+
 	// Scaffold objects have already been built by this point
 	// Avoid displaying stale data
 	header('Location: '.$_SERVER['REQUEST_URI']);
@@ -41,11 +41,9 @@ if ( $_POST['action'] == 'update-options' && check_admin_referer('pd-styles-upda
 	<form method="post" id="pdm_form" action="<?php echo $_SERVER['REQUEST_URI'] ?>" enctype="multipart/form-data" name="post">
 		<?php wp_nonce_field( 'pd-styles-update-options' ); ?>
 
-		<?php
+		<?php 
 			FB::log($this, '$this');
-			
-			$this->extensions['Scaffold']->output();
-			
+			$this->extensions['Scaffold']->output(); 
 		?>
 		
 		<input type="hidden" name="action" value="update-options" />

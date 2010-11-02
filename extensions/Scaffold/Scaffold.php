@@ -52,7 +52,7 @@ class PDStyles_Extension_Scaffold extends Scaffold_Extension_Observer {
 		
 		foreach( $this->variables as $key => &$group ) {
 			
-			$group = new PDStyles_Extension_Group( $group );
+			$group = new PDStyles_Extension_Group( $group, $this->permalink );
 			
 			// Remove empty groups
 			if ( empty( $group->variables ) ) {
@@ -155,7 +155,7 @@ class PDStyles_Extension_Scaffold extends Scaffold_Extension_Observer {
 	
 	function output() {
 		foreach ($this->variables as $variable) {
-			$variable->output();
+			$variable->output( "css_values[$this->permalink]" );
 		}
 	}
 	

@@ -530,10 +530,9 @@ class PDStylesAdminController extends PDStyles {
 			foreach ( $groups as $group => &$variables ) {
 				foreach ( $variables as $key => &$value ) {
 					
-					switch( get_class( $this->css_variables[$group][$key] ) ) {
-						case 'PDStylesUIColor':
+					switch( get_class( $this->extensions['Scaffold']->variables[$group]->variables[$key] ) ) {
+						case 'PDStyles_Extension_Color':
 							$value = '#'.trim( $value, '# ');
-							// $this->css_variables[$group][$key] = $value;
 							break;
 						
 					}
