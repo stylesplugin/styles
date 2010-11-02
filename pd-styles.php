@@ -127,8 +127,6 @@ class PDStyles {
 	 * @return none
 	 **/
 	function __construct () {
-		$this->options = get_option( 'pd-styles' );
-		
 		// ajax hooks so that we can access WordPress within Scaffold
 		add_action('parse_request', array( &$this, 'parse_request') );
 		add_filter('query_vars', array( &$this, 'query_vars') );
@@ -261,7 +259,9 @@ class PDStyles {
 	function parse_request( $wp ) {
 	    // only process requests with "?scaffold"
 	    if (isset( $_GET['scaffold'] ) ) {
-		
+			
+			$this->options = get_option( 'pd-styles' );
+			
 			// Would be nice to pull settings from plugin options instead
 			$config['load_paths'] = array(
 				get_stylesheet_directory(),
