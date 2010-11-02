@@ -62,7 +62,7 @@ Copyright 2010  Paul Clark  (email : support (at) pdclark.com)
 // When sharing code
 if ( !class_exists('FirePHP') ) {
 	ob_start();
-	include_once ('lib/FirePHPCore/fb.php');
+	include_once 'lib/FirePHPCore/fb.php';
 }
 
 /**
@@ -73,7 +73,11 @@ if ( !class_exists('FirePHP') ) {
  * @package pd-styles
  * @author pdclark
  **/
-class PDStyles {
+
+include_once 'lib/Extension/Observable.php';
+include_once 'lib/Extension/Observer.php';
+
+class PDStyles extends Scaffold_Extension_Observable {
 	
 	/**
 	 * Plugin Version

@@ -47,9 +47,17 @@ class PDStylesAdminController extends PDStyles {
 	 * Container for CSS Scaffold object
 	 * 
 	 * @since 0.1
-	 * @var string
+	 * @var object
 	 **/
 	var $scaffold;
+	
+	/**
+	 * Hold extension objects
+	 * 
+	 * @since 0.1
+	 * @var object
+	 **/
+	var $extensions;
 	
 	/**
 	 * Setup backend functionality in WordPress
@@ -64,18 +72,7 @@ class PDStylesAdminController extends PDStyles {
 		if ( version_compare ( $this->get_option ( 'version' ) , $this->dbversion , '!=' ) && ! empty ( $this->options ) ) {
 			$this->check_upgrade();
 		}
-        
-		// Full path and plugin basename of the main plugin file
-		$this->plugin_file = dirname ( dirname ( dirname ( __FILE__ ) ) ) . '/pd-styles.php';
-		$this->plugin_basename = plugin_basename ( $this->plugin_file );
 		
-		$this->css_file = $this->plugin_dir_path() . 'example/vars.css';
-		$this->css_permalink = $this->get_css_permalink( $this->css_file );
-		
-		// ajax hooks so that we can build/output shadowbox.js
-		// add_action ( 'wp_ajax_shadowboxjs' , array( &$this , 'build_shadowbox' ) );
-		// add_action ( 'wp_ajax_nopriv_shadowboxjs' , array( &$this , 'build_shadowbox' ) );
-        
 		// Load localizations if available
 		// load_plugin_textdomain ( 'shadowbox-js' , false , 'shadowbox-js/localization' );
         
@@ -87,10 +84,70 @@ class PDStylesAdminController extends PDStyles {
         
 		// Activate the options page
 		add_action ( 'admin_menu' , array( &$this , 'add_page' ) ) ;
+        
+		// Full path and plugin basename of the main plugin file
+		$this->plugin_file = dirname ( dirname ( dirname ( __FILE__ ) ) ) . '/pd-styles.php';
+		$this->plugin_basename = plugin_basename ( $this->plugin_file );
+		
+		
+		// Move below items to a page-specific constructor
+		
+		$this->css_file = $this->plugin_dir_path() . 'example/vars.css';
+		$this->css_permalink = $this->get_css_permalink( $this->css_file );
+		
+		// Load Extensions
+		$this->load_extensions( $this->plugin_dir_path() . 'lib/extensions' );
 		
 		// Load CSScaffold
 		$this->scaffold_init();
 		$this->css_variables_load( $this->css_file );
+		
+		
+		
+	}
+	
+	/**
+	 * Loads the extension files
+	 * @author your name
+	 * @param $param
+	 * @return return type
+	 */
+	public function load_extensions($path /*,$scaffold*/)
+	{	
+		# Scaffold_Helper object
+		// $helper = $this->getHelper();
+		
+		# The glob path
+		$path = realpath($path) . DIRECTORY_SEPARATOR . '*';
+	
+		# Load each of the extensions
+		foreach(glob($path) as $ext)
+		{			
+			$ext .= DIRECTORY_SEPARATOR;
+		
+			$config 	= array();
+			$name 		= basename($ext);
+			$class 		= 'PDStyles_Extension_' . $name;
+			$file 		= $ext.$name.'.php';
+			
+			# This extension isn't enabled
+			//if(!in_array($name, $this->options['extensions']))
+			//	continue;
+			
+			# Get the config for the extension if available
+			//if(isset($this->options[$name]))
+			//	$config = $this->options[$name];
+			
+			# Load the controller
+			if(file_exists($file))
+			{
+				require_once realpath($ext.$name.'.php');
+				$object = new $class($config);
+				// $object->attach_helper($helper);
+				$this->attach($name,$object);
+			}
+		}
+		// return $scaffold;
 	}
 	
 	/**
@@ -736,17 +793,17 @@ class PDStylesAdminController extends PDStyles {
 	}
 	
 	function array_to_ui_objects() {
+		
 		foreach ( $this->css_variables as $group => $variables ) {
 			foreach ( $variables as $key => $args ) {
 				if ( is_array($args) ) {
-
-					switch ( $args['type'] ) {
-						case 'color':
-							$this->css_variables[ $group ][ $key ] = new PDStylesUIColor($args);
-							break;
+					foreach ( $this->extensions as $ext ){
+						if ( $ext->is_type( $args ) ) {
+							$ext_class = get_class($ext);
+							$this->css_variables[ $group ][ $key ] = new $ext_class( $args );
+						}
 						
 					}
-					
 				}
 			}
 		}

@@ -7,7 +7,7 @@
  * @package pd-styles
  * @author pdclark
  **/
-class PDStylesUIColor {
+class PDStyles_Extension_Color extends Scaffold_Extension_Observer {
 	
 	/**
 	 * Form element ID and Name
@@ -57,6 +57,24 @@ class PDStylesUIColor {
 			</label>
 		</div>
 		<?php
+	}
+	
+	/**
+	 * Detect if input CSS var looks like the type this object handles
+	 * 
+	 * @since 0.1
+	 * @return bool
+	 **/
+	function is_type( $args ) {
+		if ( $args['type'] == 'color' ) return true;
+		
+		$pattern = '/^#?([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?$/';
+		
+		if ( preg_match( $pattern, trim( $args['default'] ) ) !== 0 ) {
+			return true;
+		}
+		
+		return false;
 	}
 	
 

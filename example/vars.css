@@ -1,10 +1,8 @@
 @variables c {
 	label: Colors;
 	body_color: #999;
-	body_color.type: color;
 	body_color.label: Text;
 	bodybg: #e2e2e1;
-	bodybg.type: color;
 	bodybg.label: Background;
 }
 
@@ -31,3 +29,4 @@ var.blockElements
 	color:color.base;
 	margin:var.reset;
 }
+
