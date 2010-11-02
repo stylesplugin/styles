@@ -62,7 +62,7 @@ Copyright 2010  Paul Clark  (email : support (at) pdclark.com)
 // When sharing code
 if ( !class_exists('FirePHP') ) {
 	ob_start();
-	include_once ('inc/FirePHPCore/fb.php');
+	include_once ('lib/FirePHPCore/fb.php');
 }
 
 /**
@@ -127,8 +127,6 @@ class PDStyles {
 	 * @return none
 	 **/
 	function __construct () {
-		$this->options = get_option( 'pd-styles' );
-		
 		// ajax hooks so that we can access WordPress within Scaffold
 		add_action('parse_request', array( &$this, 'parse_request') );
 		add_filter('query_vars', array( &$this, 'query_vars') );
@@ -261,14 +259,15 @@ class PDStyles {
 	function parse_request( $wp ) {
 	    // only process requests with "?scaffold"
 	    if (isset( $_GET['scaffold'] ) ) {
-		
+			
+			$this->options = get_option( 'pd-styles' );
+			
 			// Would be nice to pull settings from plugin options instead
-			$config['load_paths'] = array(
-				get_stylesheet_directory(),
-				$this->plugin_dir_path(),
-			);
+			$config = $this->scaffold_config_defaults();
+			
+			$system = $this->plugin_dir_path() . 'scaffold'; // No trailing slash
 
-			$scaffold_include = $this->plugin_dir_path() . 'scaffold/parse.php';
+			$scaffold_include = $system.'/index.php';
 			if ( ! @include( $scaffold_include ) ) {
 				exit( 'Could not find ' . $scaffold_include );
 			}
@@ -286,6 +285,63 @@ class PDStyles {
 	function query_vars($vars) {
 	    $vars[] = 'scaffold';
 	    return $vars;
+	}
+	
+	/**
+	 * Default scaffold config values
+	 * 
+	 * @since 0.1
+	 * @return array
+	 **/
+	function scaffold_config_defaults() {
+		// See scaffold/parse.php for full documentation
+		
+		$config = array(
+			'production'			=> true,
+			'max_age'				=> false,
+			'output_compression'	=> false,
+			'set_etag'				=> true,
+			'enable_string'			=> false,
+			'enable_url'			=> false,
+			'load_paths'			=> array(
+				get_stylesheet_directory(),
+				$this->plugin_dir_path(),
+			),
+			'extensions'			=> array(
+				'AbsoluteUrls',
+				'Embed',
+				'Functions',
+				//'HSL',
+				'ImageReplace',
+				// 'Minify',
+				'Properties',
+				'Random',
+				'Import',
+				'Mixins',
+				'NestedSelectors',
+				//'XMLVariables',
+				'Variables',
+				'PDStyles',
+
+				# Process-heavy Extensions
+				//'Sass',
+				//'CSSTidy',
+				//'YUI'
+			),
+		);
+		
+		if ( $config['production'] === true ) {
+			$config['extensions'][] = 'Minify';
+		}
+		
+		/**
+		 * Extensions have their own configuration by using the format:
+		 * 		$config['Extension']['key'] = value;
+		 * These are then available within the extension with $this->config.
+		 */
+		
+		
+		return $config;
 	}
 	
 } // END PDStyles class
