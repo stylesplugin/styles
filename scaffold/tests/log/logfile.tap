@@ -1,6 +1,0 @@
-TAP version 13
-ok 1 - Scaffold_Extension_AbsoluteUrlsTest::test_up_directory
-ok 2 - Scaffold_Extension_AbsoluteUrlsTest::test_remove_up_directories
-ok 3 - Scaffold_Extension_AbsoluteUrlsTest::test_resolve_path
-ok 4 - Scaffold_Extension_AbsoluteUrlsTest::test_post_format
-1..4

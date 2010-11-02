@@ -1,6 +1,0 @@
-#id
-{
-	content: 'I was imported';
-}
-
-@import url('another.css');

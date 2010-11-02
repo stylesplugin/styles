@@ -1,6 +1,0 @@
-Scaffold_Extension_AbsoluteUrls
- [x] test up directory
- [x] test remove up directories
- [x] test resolve path
- [x] test post format
-
