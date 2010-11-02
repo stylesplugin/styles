@@ -262,8 +262,7 @@ class PDStyles {
 			
 			$this->options = get_option( 'pd-styles' );
 			
-			// Would be nice to pull settings from plugin options instead
-			$config = $this->scaffold_config_defaults();
+			$config = $this->get_scaffold_config();
 			
 			$system = $this->plugin_dir_path() . 'scaffold'; // No trailing slash
 
@@ -293,53 +292,16 @@ class PDStyles {
 	 * @since 0.1
 	 * @return array
 	 **/
-	function scaffold_config_defaults() {
-		// See scaffold/parse.php for full documentation
+	function get_scaffold_config() {
 		
-		$config = array(
-			'production'			=> true,
-			'max_age'				=> false,
-			'output_compression'	=> false,
-			'set_etag'				=> true,
-			'enable_string'			=> false,
-			'enable_url'			=> false,
-			'load_paths'			=> array(
-				get_stylesheet_directory(),
-				$this->plugin_dir_path(),
-			),
-			'extensions'			=> array(
-				'AbsoluteUrls',
-				'Embed',
-				'Functions',
-				//'HSL',
-				'ImageReplace',
-				// 'Minify',
-				'Properties',
-				'Random',
-				'Import',
-				'Mixins',
-				'NestedSelectors',
-				//'XMLVariables',
-				'Variables',
-				'PDStyles',
-
-				# Process-heavy Extensions
-				//'Sass',
-				//'CSSTidy',
-				//'YUI'
-			),
-		);
+		// See scaffold/parse.php for full scaffold config documentation
+		$s = $this->get_option('scaffold');
+		$config =& $s['config'];
 		
+		// Minify CSS when in production
 		if ( $config['production'] === true ) {
 			$config['extensions'][] = 'Minify';
 		}
-		
-		/**
-		 * Extensions have their own configuration by using the format:
-		 * 		$config['Extension']['key'] = value;
-		 * These are then available within the extension with $this->config.
-		 */
-		
 		
 		return $config;
 	}

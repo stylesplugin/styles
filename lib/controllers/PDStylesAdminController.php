@@ -312,48 +312,43 @@ class PDStylesAdminController extends PDStyles {
 			'version'           => $this->db_version ,
 			'language'          => $this->set_lang() ,
 			'css_values'		=> array(),
-			/*'library'           => 'base' ,
-			'smartLoad'         => 'false' ,
-			'autoimg'           => 'true' ,
-			'automov'           => 'true' ,
-			'autotube'          => 'true' ,
-			'autoaud'           => 'true' ,
-			'autoflv'           => 'false' ,
-			'enableFlv'         => 'false' ,
-			'genericVideoWidth' => 640 ,
-			'genericVideoHeight'=> 385 ,
-			'autoDimensions'    => 'false' ,
-			'animateFade'       => 'true' ,
-			'animate'           => 'true' ,
-			'animSequence'      => 'sync' ,
-			'autoplayMovies'    => 'true' ,
-			'continuous'        => 'false' ,
-			'counterLimit'      => 10 ,
-			'counterType'       => 'default' ,
-			'displayCounter'    => 'true' ,
-			'displayNav'        => 'true' ,
-			'enableKeys'        => 'true' ,
-			'fadeDuration'      => 0.35 ,
-			'flashBgColor'      => '#000000' ,
-			'flashParams'       => '{bgcolor:"#000000", allowFullScreen:true}' ,
-			'flashVars'         => '{}' ,
-			'flashVersion'      => '9.0.0' ,
-			'handleOversize'    => 'resize' ,
-			'handleUnsupported' => 'link' ,
-			'initialHeight'     => 160 ,
-			'initialWidth'      => 320 ,
-			'modal'             => 'false' ,
-			'overlayColor'      => '#000' ,
-			'overlayOpacity'    => 0.8 ,
-			// 'players'           => $this->players() ,
-			'resizeDuration'    => 0.35 ,
-			'showMovieControls' => 'true' ,
-			'showOverlay'       => 'true' ,
-			'skipSetup'         => 'false' ,
-			'slideshowDelay'    => 0 ,
-			'useSizzle'         => 'false' ,
-			'viewportPadding'   => 20
-			*/
+			'scaffold'			=> array(
+				// See scaffold/parse.php for full scaffold config documentation
+				'config'		=> array(
+					'production'			=> true,
+					'max_age'				=> false,
+					'output_compression'	=> false,
+					'set_etag'				=> true,
+					'enable_string'			=> false,
+					'enable_url'			=> false,
+					'load_paths'			=> array(
+						get_stylesheet_directory(),
+						$this->plugin_dir_path(),
+					),
+					'extensions'			=> array(
+						'AbsoluteUrls',
+						'Embed',
+						'Functions',
+						//'HSL',
+						'ImageReplace',
+						// 'Minify',
+						'Properties',
+						'Random',
+						'Import',
+						'Mixins',
+						'NestedSelectors',
+						//'XMLVariables',
+						'Variables',
+						'PDStyles',
+                	
+						# Process-heavy Extensions
+						//'Sass',
+						//'CSSTidy',
+						//'YUI'
+					),
+				), // end config
+			), // end scaffold
+			
 		);
 		return $defaults;
 	}
@@ -650,7 +645,7 @@ class PDStylesAdminController extends PDStyles {
 		$config = array(
 			'extensions' => array(
 				'Variables',
-				'XMLVariables'
+				// 'XMLVariables'
 			)
 		);
 
