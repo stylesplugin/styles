@@ -1,0 +1,3 @@
+[submodule "scaffold"]
+	path = scaffold
+	url = git@github.com:pdclark/Scaffold.git
