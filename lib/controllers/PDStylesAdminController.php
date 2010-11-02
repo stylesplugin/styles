@@ -36,30 +36,6 @@ class PDStylesAdminController extends PDStyles {
 	var $options_page_hookname;
 	
 	/**
-	 * Variables loaded from CSS @variables declarations
-	 * 
-	 * @since 0.1
-	 * @var array
-	 **/
-	var $css_variables;
-	
-	/**
-	 * Container for CSS Scaffold object
-	 * 
-	 * @since 0.1
-	 * @var object
-	 **/
-	var $scaffold;
-	
-	/**
-	 * Hold extension objects
-	 * 
-	 * @since 0.1
-	 * @var object
-	 **/
-	var $extensions;
-	
-	/**
 	 * Setup backend functionality in WordPress
 	 *
 	 * @return none

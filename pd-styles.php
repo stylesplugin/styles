@@ -108,22 +108,6 @@ class PDStyles extends Scaffold_Extension_Observable {
 	var $options;
 	
 	/**
-	 * The file we're loading CSS from
-	 * 
-	 * @since 0.1
-	 * @var string
-	 **/
-	var $css_file;
-	
-	/**
-	 * Path to CSS in a form appropriate for use as an array key
-	 * 
-	 * @since 0.1
-	 * @var string
-	 **/
-	var $css_permalink;
-	
-	/**
 	 * Setup shared functionality between admin and front-end
 	 *
 	 * @author Matt Martz <matt@sivel.net>
