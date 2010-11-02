@@ -98,12 +98,14 @@ $config['extensions'] = array(
 	'NestedSelectors',
 	'XMLVariables',
 	'Variables',
+	'PDStyles',
+	
 	
 	
 	# Process-heavy Extensions
 	//'Sass',
 	//'CSSTidy',
-	//'YUICompressor'
+	//'YUI'
 );
 
 /**

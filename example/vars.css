@@ -1,33 +1,24 @@
-@variables 'vars.xml';
-
-
-@variables grid
-{
-	column-width:40px;
-	gutter-width:20px;
-	column-count:12;
-	baseline:18px;
-	width: fail;
-	width2: ok;
-}
-.test {
-	width: grid.width;
-	line-height: grid.baseline;
-}
-
-@variables color {
-  base: #e2e2e1;
-  highlight: #fe8d12;
-  page: #fff;
+@variables c {
+	label: Colors;
+	body_color: #999;
+	body_color.type: color;
+	body_color.label: Text;
+	bodybg: #e2e2e1;
+	bodybg.type: color;
+	bodybg.label: Background;
 }
 
 body
 {
-	line-height:grid.baseline;
-	background:color.page;
-	color:color.base;
-	width: grid.column-width;
+	color: c.body_color;
+	background-color: c.bodybg;
 } 
+.pd-styles {
+	label {
+		color: c.body_color;
+	}
+	
+}
 
 @variables {
   reset:0;

@@ -23,34 +23,38 @@ class PDStylesUIColor {
 	 * @since 0.1
 	 * @var string
 	 **/
-	var $nice_name;
+	var $label;
 	
 	/**
-	 * Value of the form element
+	 * Default value of the form element
 	 * 
 	 * @since 0.1
 	 * @var string
 	 **/
-	var $value;
+	var $default;
 	
 	function __construct( $args = array() ) {
 		$defaults = array(
-			'min'			=>	0,
-			'max'			=>	50,
-			'id'			=>	rand(1,1000),
-			'nice_name'		=>	'Untitled Slider',
+			// 'default'		=> '',
 		);
-		
 		$args = wp_parse_args( $args, $defaults );
+		
+		$args['default'] = trim( $args['default'], '# ');
+		$args['value']   = trim( $args['value'], '# ');
+		
+		$this->id = $args['id'];
+		$this->label = $args['label'];
+		$this->default = $args['default'];
+		$this->value = ( empty( $args['value'] ) ) ? $args['default'] : $args['value'];
 	}
 	
 	function output() {
 		?>
 		<div class="pds_color">
-			<label for="<?php echo $this->id; ?>">
-				<?php echo $this->nice_name ?>:
-			</label>
 			<input class="pds_color_input" type="text" name="<?php echo $this->id; ?>" id="<?php echo $this->id; ?>" value="<?php echo $this->value; ?>" size="8" maxlength="8" />
+			<label for="<?php echo $this->id; ?>">
+				<?php echo $this->label ?>
+			</label>
 		</div>
 		<?php
 	}

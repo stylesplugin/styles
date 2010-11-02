@@ -44,6 +44,14 @@ class PDStylesAdminController extends PDStyles {
 	var $css_variables;
 	
 	/**
+	 * Container for CSS Scaffold object
+	 * 
+	 * @since 0.1
+	 * @var string
+	 **/
+	var $scaffold;
+	
+	/**
 	 * Setup backend functionality in WordPress
 	 *
 	 * @return none
@@ -59,7 +67,10 @@ class PDStylesAdminController extends PDStyles {
 		// Full path and plugin basename of the main plugin file
 		$this->plugin_file = dirname ( dirname ( dirname ( __FILE__ ) ) ) . '/pd-styles.php';
 		$this->plugin_basename = plugin_basename ( $this->plugin_file );
-        
+		
+		$this->css_file = $this->plugin_dir_path() . 'example/vars.css';
+		$this->css_permalink = $this->get_css_permalink( $this->css_file );
+		
 		// ajax hooks so that we can build/output shadowbox.js
 		// add_action ( 'wp_ajax_shadowboxjs' , array ( &$this , 'build_shadowbox' ) );
 		// add_action ( 'wp_ajax_nopriv_shadowboxjs' , array ( &$this , 'build_shadowbox' ) );
@@ -78,7 +89,7 @@ class PDStylesAdminController extends PDStyles {
 		
 		// Load CSScaffold
 		$this->scaffold_init();
-		$this->css_variables_load( $this->plugin_dir_path() . '/example/vars.css' );
+		$this->css_variables_load( $this->css_file );
 	}
 	
 	/**
@@ -99,6 +110,13 @@ class PDStylesAdminController extends PDStyles {
 	 */
 	function admin_js () {
 		wp_enqueue_script ( 'jquery' );
+		
+		wp_register_script('pds-colorpicker', $this->plugin_url().'/lib/js/colorpicker/js/colorpicker.js',array('jquery'), $this->version, true);
+		
+		wp_enqueue_script('pds-admin-main', $this->plugin_url().'/lib/js/admin-main.js',array('jquery', 'pds-colorpicker'), $this->version, true);
+
+		
+		
 		// wp_enqueue_script ( 'shadowbox-js-helper' , $this->plugin_url () . '/js/shadowbox-admin-helper.js' , array ( 'jquery' ) , $this->version , true );
 		
 		/*
@@ -118,7 +136,11 @@ class PDStylesAdminController extends PDStyles {
 	 * @since 0.1
 	 */
 	function admin_css () {
-		wp_enqueue_style ( 'pd-styles-admin-css' , apply_filters ( 'pd-styles-admin-css' , $this->plugin_url () . '/lib/css/admin.css' ) , false , $this->version , 'screen' );
+		
+		wp_register_style('pds-colorpicker', $this->plugin_url().'/lib/js/colorpicker/css/colorpicker.css',array( ), $this->version);
+		
+		wp_enqueue_style ( 'pd-styles-admin-css' , apply_filters ( 'pd-styles-admin-css' , '/?scaffold&file=lib/css/admin.css' ) , array('pds-colorpicker') , $this->version , 'screen' );
+		wp_enqueue_style ( 'pd-styles-admin-css-test' , '/?scaffold&file=example/vars.css' , array() , $this->version , 'screen' );
 	}
 	
 	/**
@@ -288,6 +310,7 @@ class PDStylesAdminController extends PDStyles {
 		$defaults = array (
 			'version'           => $this->db_version ,
 			'language'          => $this->set_lang () ,
+			'css_values'		=> array(),
 			/*'library'           => 'base' ,
 			'smartLoad'         => 'false' ,
 			'autoimg'           => 'true' ,
@@ -443,21 +466,48 @@ class PDStylesAdminController extends PDStyles {
 	function update ( $options ) {
 		// Make sure there are no empty values, seems users like to clear out options before saving
 		foreach ( $this->defaults () as $key => $value ) {
-			if ( ( ! isset ( $options[$key] ) || empty ( $options[$key] ) ) && $key != 'delete' && $key != 'default' /*&& $key != 'players'*/ ) {
+			if ( 
+				( ! isset ( $options[$key] ) || empty ( $options[$key] ) ) 
+				&& $key != 'delete' 
+				&& $key != 'default'
+			) {
 				$options[$key] = $value;
 			}
 		}
-		if ( isset ( $options['delete'] ) && $options['delete'] == 'true' ) { // Check if we are supposed to remove options
+		
+		// Validate CSS vars
+		foreach( $options['css_values'] as $file => &$groups ) {
+			foreach ( $groups as $group => &$variables ) {
+				foreach ( $variables as $key => &$value ) {
+					
+					switch( get_class( $this->css_variables[$group][$key] ) ) {
+						case 'PDStylesUIColor':
+							$value = '#'.trim( $value, '# ');
+							// $this->css_variables[$group][$key] = $value;
+							break;
+						
+					}
+	
+				}
+			}
+		}
+		
+		// Check if we are supposed to remove options
+		if ( isset ( $options['delete'] ) && $options['delete'] == 'true' ) { 
 			delete_option ( 'pd-styles' );
 		} else if ( isset ( $options['default'] ) && $options['default'] == 'true' ) { // Check if we are supposed to reset to defaults
 			$this->options = $this->defaults ();
 			// $this->build_shadowbox ( true ); // Attempt to build and cache shadowbox.js
 			return $this->options;
 		} else {
-			/*if ( ! isset ( $options['autoflv'] ) || $options['enableFlv'] == 'false' ) {
-				$options['autoflv'] = 'false';
-			}*/
-			unset ( $options['delete'] , $options['default'] );
+			// Save options
+			unset ( 
+				$options['delete'], 
+				$options['default'],
+				$options['_wpnonce'],
+				$options['_wp_http_referer'],
+				$options['action']
+			);
 			$this->options = $options;
 			// $this->build_shadowbox ( true ); // Attempt to build and cache shadowbox.js
 			return $this->options;
@@ -554,7 +604,7 @@ class PDStylesAdminController extends PDStyles {
 	 */
 	function add_page () {
 		if ( current_user_can ( 'manage_options' ) ) {
-			$this->options_page_hookname = add_theme_page ( __( 'PD Styles' , 'pd-styles' ) , __( 'PD Styles' , 'pd-styles' ) , 'manage_options' , 'pd-styles' , array ( &$this , 'admin_page' ) );
+			$this->options_page_hookname = add_theme_page ( __( 'Styles' , 'pd-styles' ) , __( 'Styles' , 'pd-styles' ) , 'manage_options' , 'pd-styles' , array ( &$this , 'admin_page' ) );
 			add_action ( "admin_print_scripts-{$this->options_page_hookname}" , array ( &$this , 'admin_js' ) );
 			add_action ( "admin_print_styles-{$this->options_page_hookname}" , array ( &$this , 'admin_css' ) );
 			add_filter ( "plugin_action_links_{$this->plugin_basename}" , array ( &$this , 'filter_plugin_actions' ) );
@@ -591,8 +641,7 @@ class PDStylesAdminController extends PDStyles {
 	 * @return void
 	 **/
 	function scaffold_init () {
-		global $PDStylesScaffold;
-		if ( $PDStylesScaffold ) {
+		if ( $this->scaffold ) {
 			return;
 		}
 
@@ -614,7 +663,7 @@ class PDStylesAdminController extends PDStyles {
 
 			// Create Scaffold instance
 			$container 	= new Scaffold_Container( $system, $config );
-			$PDStylesScaffold 	= $container->build();
+			$this->scaffold 	= $container->build();
 			
 		} else {
 			PDStyles::deactivate_and_die ( $environment );
@@ -629,8 +678,7 @@ class PDStylesAdminController extends PDStyles {
 	 * @return void
 	 **/
 	function css_variables_load( $file ) {
-		global $PDStylesScaffold;
-		if ( ! $PDStylesScaffold ) {
+		if ( ! $this->scaffold ) {
 			$this->scaffold_init();
 		}
 
@@ -639,40 +687,94 @@ class PDStylesAdminController extends PDStyles {
 
 		// Rather than parsing the whole thing through Scaffold, we just want the
 		// variables that are inside that source. So to save some time, we just get them manually.
-		$ext = $PDStylesScaffold->extensions['Variables'];
+		$ext = $this->scaffold->extensions['Variables'];
 
 		// Pull out the variables into an array 
-		/* !!TODO: Make this a recursive array_merge !! */
-		$this->css_variables = array_merge( (array) $this->css_variables, $ext->extract($source) );
+		$this->css_variables = $ext->extract($source);
 		
-		//	$this->css_variables_to_md_array();
+		// Convert dot notation to .args array
+		$this->css_variables_to_md_array();
+		
+		$this->array_to_ui_objects();
 	}
 	
-	//	/**
-	//	 * Convert dot notation in CSS variables to PHP multi-dimensional array
-	//	 * 
-	//	 * @since 0.1
-	//	 * @return void
-	//	 **/
-	//	function css_variables_to_md_array() {
-	//		$tmp = array();
-	//		
-	//		foreach ( $this->css_variables as $group => $variables ) {
-	//			foreach ( $variables as $key => $value ) {
-	//				if ( strpos( $key, '.' ) !== false ) {
-	//					$parts = explode( '.', $key );
-	//					
-	//					$tmp[ $group ][ $parts[0] ][ $parts[1] ] = $value;
-	//				}
-	//			}
-	//		}
-	//		echo '<pre>';
-	//		print_r($tmp);
-	//		echo '</pre>';
-	//	}
+	/**
+	 * Convert dot notation in CSS variables to PHP multi-dimensional array
+	 * 
+	 * @since 0.1
+	 * @return void
+	 **/
+	function css_variables_to_md_array() {
+		$tmp = array();
+		$css_values = $this->get_option('css_values');
+		
+		// Gather vars with dot notation, place into .args array
+		foreach ( $this->css_variables as $group => $variables ) {
+			foreach ( $variables as $key => $value ) {
+				if ( strpos( $key, '.' ) !== false ) {
+					$parts = explode( '.', $key );
+					
+					$tmp[ $group ][ $parts[0] ][ $parts[1] ] = $value;
+					
+					unset( $this->css_variables[$group][$key] );
+				}
+			}
+		}
+		
+		// Replace default value with array, containing dot arguements and original value as key 'default'
+		foreach ( $tmp as $group => &$variables ) {
+			foreach ( $variables as $key => &$value ) {		
+				// Set arguements for object init
+				$value['default'] = $this->css_variables[ $group ][ $key ];
+				$value['id'] = "css_values[$this->css_permalink][$group][$key]";
+				$value['label'] = ( empty($value['label']) ) ? "$group.$key" : $value['label'];
+				
+				// Get user value from DB
+				$value['value'] = $css_values[$this->css_permalink][$group][$key];
+				
+				$this->css_variables[ $group ][ $key ] = $value;
+			}
+		}
+		
+		unset($tmp);
+	}
+	
+	function array_to_ui_objects() {
+		foreach ( $this->css_variables as $group => $variables ) {
+			foreach ( $variables as $key => $args ) {
+				if ( is_array($args) ) {
+
+					switch ( $args['type'] ) {
+						case 'color':
+							$this->css_variables[ $group ][ $key ] = new PDStylesUIColor($args);
+							break;
+						
+					}
+					
+				}
+			}
+		}
+
+		// Cleanup 		
+		foreach ( $this->css_variables as $group => $variables ) {
+
+			// Remove anything that wasn't an object
+			foreach ( $variables as $key => $args ) {
+				if ( !is_object( $this->css_variables[ $group ][ $key ] ) && $key !== 'label') {
+					unset($this->css_variables[ $group ][ $key ]);
+				}
+			}
+			// Remove empty groups
+			foreach ( $this->css_variables as $group => $variables ) {
+				if (empty($variables)) {
+					unset($this->css_variables[$group]);
+				}
+			}
+
+		}
+	}
 	
 
 } // END class PDStylesAdminController extends PDStyles
-
 
 ?>
