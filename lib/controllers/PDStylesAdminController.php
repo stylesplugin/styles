@@ -89,8 +89,15 @@ class PDStylesAdminController extends PDStyles {
 		$this->plugin_file = dirname ( dirname ( dirname ( __FILE__ ) ) ) . '/pd-styles.php';
 		$this->plugin_basename = plugin_basename ( $this->plugin_file );
 		
-		
-		// Move below items to a page-specific constructor
+	}
+	
+	/**
+	 * Load CSS variables, extensions, and scaffold objects
+	 * 
+	 * @since 0.1
+	 * @return void
+	 **/
+	function build() {
 		
 		$this->css_file = $this->plugin_dir_path() . 'example/vars.css';
 		$this->css_permalink = $this->get_css_permalink( $this->css_file );
@@ -101,9 +108,7 @@ class PDStylesAdminController extends PDStyles {
 		// Load CSScaffold
 		$this->scaffold_init();
 		$this->css_variables_load( $this->css_file );
-		
-		
-		
+	
 	}
 	
 	/**
@@ -661,6 +666,8 @@ class PDStylesAdminController extends PDStyles {
 			add_action ( "admin_print_scripts-{$this->options_page_hookname}" , array( &$this , 'admin_js' ) );
 			add_action ( "admin_print_styles-{$this->options_page_hookname}" , array( &$this , 'admin_css' ) );
 			add_filter ( "plugin_action_links_{$this->plugin_basename}" , array( &$this , 'filter_plugin_actions' ) );
+
+			add_action ( "load-{$this->options_page_hookname}" , array( &$this , 'build' ) );
 		}
 	}
 	
