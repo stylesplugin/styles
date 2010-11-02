@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Color User Interface Type
+ * Attaches a color picker to variables with a hex color format
  * 
  * @since 0.1
  * @package pd-styles

@@ -201,7 +201,7 @@ class PDStyles extends Scaffold_Extension_Observable {
 			'<'
 		);
 		
-		$path = str_replace($blacklist, '-', $this->get_relative_path( $path ) );
+		$path = str_replace($blacklist, '-', self::get_relative_path( $path ) );
 		
 		return $path;
 	}

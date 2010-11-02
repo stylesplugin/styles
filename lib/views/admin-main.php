@@ -42,21 +42,10 @@ if ( $_POST['action'] == 'update-options' && check_admin_referer('pd-styles-upda
 		<?php wp_nonce_field( 'pd-styles-update-options' ); ?>
 
 		<?php
-		
-			foreach ( $this->css_variables as $group => $variables ) {
-				$label = ( !empty( $variables['label'] )) ? $variables['label'] : $group;
-	
-				echo '<h2>'.$label.'</h2>';
-				
-				foreach ( $variables as $key => $ui ) {
-					if ( is_object($ui) ) {
-					
-						$ui->output();
-					
-					}
-				}
-			}
-
+			FB::log($this, '$this');
+			
+			$this->extensions['Scaffold']->output();
+			
 		?>
 		
 		<input type="hidden" name="action" value="update-options" />
