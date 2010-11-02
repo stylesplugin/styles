@@ -96,7 +96,7 @@ class PDStylesAdminController extends PDStyles {
 		$this->css_permalink = $this->get_css_permalink( $this->css_file );
 		
 		// Load Extensions
-		$this->load_extensions( $this->plugin_dir_path() . 'lib/extensions' );
+		$this->load_extensions( $this->plugin_dir_path() . 'extensions' );
 		
 		// Load CSScaffold
 		$this->scaffold_init();
@@ -112,7 +112,7 @@ class PDStylesAdminController extends PDStyles {
 	 * @param $param
 	 * @return return type
 	 */
-	public function load_extensions($path /*,$scaffold*/)
+	public function load_extensions( $path /*,$scaffold*/)
 	{	
 		# Scaffold_Helper object
 		// $helper = $this->getHelper();
