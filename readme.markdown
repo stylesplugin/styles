@@ -20,6 +20,29 @@
 
 Useful stuff, like HTML and JS for color pickers and sliders can be found in the old proof-of-concept version of this plugin: [pd-styles-v0.zip](http://pdclark.com/pd-styles-v0.zip)
 
+## Proposed File Structure Changes ##
+Thinking we may want to change the structure up a bit, here's what I'm headed for:
+
+    lib/
+      controllers/
+        adminController.php 	                        Main Admin code
+        elementsController.php                          So typically you'd have a controller per model/view, but the controller's primary function is to interface between the database and the view, based on the layout given in the model. However, since we're storing this thing as one fatty serialized array, it wouldn't make sense to me to separate these controllers. I reserve the right to deny I ever said this later though.
+
+		I think it makes sense to have a single class that the models adopt behavior from. But I'm not one to argue -- I'm not even sure if calling the color/gradient/images "models" is correct when the real model is handled by WP.
+      models/
+        colorModel.php
+        gradientModel.php
+        imageModel.php
+        ..etc
+      helpers/					        Helpers that have functions that we can't classify and/or affect every/multiple type of model.
+        elementsHelper.php
+      views/
+        adminView.php 					Main Admin view
+        colorView.php                                   \
+        gradientView.php                                 }-- Each of these should contain smaller UI elements
+        imageView.php                                    /    that we render as we please.
+
+
 ## Plans ##
 
 Build UI elements in WordPress based on @variable declarations in CSS. Compile CSS based on default @variable values and input from UI elements.
@@ -68,10 +91,12 @@ I planned on starting with Color, since it's fairly simple.
 * Mask: Combination of Color and Image.
   * Using PHPThumb, a grayscale mask can be composited with any color. 
   * e.g., try changing the URL parameters for [this image](http://marksautoservice.ca/wp-content/themes/thesis/custom/scaffold/plugins/Mask/libraries/phpthumb/phpThumb.php?new=6F0E0F&w=1260&h=107&f=jpg&bg=000000&q=100&fltr[]=mask|/wp-content/themes/thesis/custom/child-themes/marksautoservice.ca/img/bevel-mask.jpg)
+  * Should we include css3's support for image masks here?
+	  * If we could think of a syntax to serve the mask syntax to webkit/other supporting browsers, but the flat masked images to legacy, then sure. If we're generating the masked image though, it might actually be more efficient to give that final image even to new browsers? Saves a single HTTP connection anyway. 
 
 ## Organization ##
 
-Ideally, the UI elements will self-organize into sections. Either based on @variables groups, or based on each variable having an optional .group setting. Groups and variables should have a .label set for display.
+Ideally, the UI elements will self-organize into sections. Either based on @variables groups, or based on each variable having an optional .group setting. Groups and variables should have a .nicename set for display.
 
 A backend admin is easiest at this point, but it doesn't seem like too much of a stretch to start with that, then auto-generate a front-end version later, similar to the [Headway Themes Visual Editor](http://headwaythemes.com/features/visual-editor/). I have a copy of this theme if you want it. It's GPL.
 
