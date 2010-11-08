@@ -62,7 +62,7 @@ Copyright 2010  Paul Clark  (email : support (at) pdclark.com)
 // When sharing code
 if ( !class_exists('FirePHP') ) {
 	ob_start();
-	include_once ('lib/FirePHPCore/fb.php');
+	include_once 'lib/FirePHPCore/fb.php';
 }
 
 /**
@@ -73,7 +73,11 @@ if ( !class_exists('FirePHP') ) {
  * @package pd-styles
  * @author pdclark
  **/
-class PDStyles {
+
+include_once 'lib/Extension/Observable.php';
+include_once 'lib/Extension/Observer.php';
+
+class PDStyles extends Scaffold_Extension_Observable {
 	
 	/**
 	 * Plugin Version
@@ -102,22 +106,6 @@ class PDStyles {
 	 * @var string
 	 **/
 	var $options;
-	
-	/**
-	 * The file we're loading CSS from
-	 * 
-	 * @since 0.1
-	 * @var string
-	 **/
-	var $css_file;
-	
-	/**
-	 * Path to CSS in a form appropriate for use as an array key
-	 * 
-	 * @since 0.1
-	 * @var string
-	 **/
-	var $css_permalink;
 	
 	/**
 	 * Setup shared functionality between admin and front-end
@@ -197,7 +185,7 @@ class PDStyles {
 			'<'
 		);
 		
-		$path = str_replace($blacklist, '-', $this->get_relative_path( $path ) );
+		$path = str_replace($blacklist, '-', self::get_relative_path( $path ) );
 		
 		return $path;
 	}

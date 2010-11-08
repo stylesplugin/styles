@@ -1,22 +1,31 @@
 @variables c {
 	label: Colors;
 	body_color: #999;
-	body_color.type: color;
 	body_color.label: Text;
 	bodybg: #e2e2e1;
-	bodybg.type: color;
 	bodybg.label: Background;
+	something: image;
+}
+
+
+@variables something {
+	mycolor: #ffff00;
+	
 }
 
 body
 {
 	color: c.body_color;
-	background-color: c.bodybg;
+	background: c.bodybg;
 } 
 .pd-styles {
 	label {
 		color: c.body_color;
-	}
+	}	
+}
+
+#header-logo {
+	image-replace: url(c.something);
 	
 }
 
@@ -31,3 +40,4 @@ var.blockElements
 	color:color.base;
 	margin:var.reset;
 }
+
