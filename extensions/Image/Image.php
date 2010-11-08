@@ -59,26 +59,20 @@ class PDStyles_Extension_Image extends Scaffold_Extension_Observer {
 	
 	function output( $permalink ) {
 		$name = "{$permalink}[$this->key]";
-		$id = 'pds_'.md5($name);
-		
-		$row = array(
-			'id' => 'touchbootimg',
-			'label' => 'Boot image',
-			'desc' => '320x460px png, jpg, gif file',
-			'content' => '<input type="text" value="'.$options['touchbootimg'].'" name="touchbootimg" id="touchbootimg" class="text"/><input type="button" class="button" value="'.__('Select Image').'" onclick="show_image_uploader(\'touchbootimg\');"/>'
-		);
-		
+		$id = 'pds_'.md5($name);	
 		?>
-		<div class="pds_image">
-			<input class="pds_image_input" type="text" name="<?php echo $name ?>" id="<?php echo $id ?>" value="<?php echo $this->value; ?>" size="8" maxlength="8" />
-			<input type="button" class="button" value="<?php _e('Select Image') ?>" onclick="show_image_uploader('<?php echo $id ?>');"/>
+		
+		<tr class="pds_image"><th valign="top" scrope="row">
 			<label for="<?php echo $id; ?>">
 				<?php echo $this->label ?>
 			</label>
+		</th><td valign="top">	
+			<input class="pds_image_input" type="text" name="<?php echo $name ?>" id="<?php echo $id ?>" value="<?php echo $this->value; ?>" size="8" maxlength="8" />
+			<input type="button" class="button" value="<?php _e('Select Image') ?>" onclick="show_image_uploader('<?php echo $id ?>');"/>
 			<?php if (!empty($this->description )) : ?>
 				<br/><small><?php echo $this->description ?></small>
 			<?php endif; ?>
-		</div>
+		</td></tr>
 		<?php		
 	}
 	

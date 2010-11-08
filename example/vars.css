@@ -13,20 +13,18 @@
 	
 }
 
-body
-{
+#pds_testbox {
 	color: c.body_color;
 	background: c.bodybg;
-} 
-.pd-styles {
-	label {
-		color: c.body_color;
-	}	
-}
-
-#header-logo {
-	image-replace: url(c.something);
-	
+	padding: 20px;
+	.img {
+		image-replace: url(c.something);
+		float:left;
+		margin: 0 20px 0 0;
+	}
+	.clear {
+		clear:both;
+	}
 }
 
 @variables {
@@ -37,7 +35,6 @@ body
  
 var.blockElements
 {
-	color:color.base;
 	margin:var.reset;
 }
 

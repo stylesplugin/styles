@@ -92,11 +92,13 @@ class PDStyles_Extension_Group extends Scaffold_Extension_Observer {
 			<div class="handlediv" title="Click to toggle"><br /></div>
 			<h3 class="hndle"><span><?php echo $this->label; ?></span></h3>
 			<div class="inside">
+				<table class="form-table">
 				<?php 
 				foreach ( $this->variables as $variable ) {
 					$variable->output( "{$permalink}[$this->key]");
 				}
 				?>
+				</table>
 			</div>
 		</div>
 		<?php
