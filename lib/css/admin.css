@@ -21,6 +21,10 @@
 		}
 	}
 	
+	.left-column {
+		width: 100%;
+	}
+	
 	.pds_color {
 		clear:both;
 		input {
@@ -33,4 +37,28 @@
 		}
 	}
 	
+	/* Yoast */
+	small {
+		font-weight:normal;
+		color:#777;	
+	}
+	.inside { 
+		ul {
+			margin-left: 20px;
+			li {
+				list-style: square;
+				line-height:16px;
+				&.rss {
+					list-style-image: url(/wp-includes/images/rss.png);
+				}
+				&.email {
+					list-style-image: url(http://cdn.yoast.com/email_sub.png);
+				}
+			}
+		}
+		.text {
+			width: 250px;
+		}
+	}
+	/* END Yoast */
 }

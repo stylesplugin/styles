@@ -140,14 +140,16 @@ class PDStylesAdminController extends PDStyles {
 	 * @since 0.1
 	 */
 	function admin_js() {
-		wp_enqueue_script ( 'jquery' );
 		
 		wp_register_script('pds-colorpicker', $this->plugin_url().'/lib/js/colorpicker/js/colorpicker.js',array('jquery'), $this->version, true);
 		
+		wp_enqueue_script('postbox');
+		wp_enqueue_script('dashboard');
+		wp_enqueue_script('thickbox');
+		wp_enqueue_script('media-upload');
+		
 		wp_enqueue_script('pds-admin-main', $this->plugin_url().'/lib/js/admin-main.js',array('jquery', 'pds-colorpicker'), $this->version, true);
 
-		
-		
 		// wp_enqueue_script ( 'shadowbox-js-helper' , $this->plugin_url() . '/js/shadowbox-admin-helper.js' , array( 'jquery' ) , $this->version , true );
 		
 		/*
@@ -167,6 +169,11 @@ class PDStylesAdminController extends PDStyles {
 	 * @since 0.1
 	 */
 	function admin_css() {
+		
+		wp_enqueue_style('dashboard');
+		wp_enqueue_style('thickbox');
+		wp_enqueue_style('global');
+		wp_enqueue_style('wp-admin');
 		
 		wp_register_style('pds-colorpicker', $this->plugin_url().'/lib/js/colorpicker/css/colorpicker.css',array( ), $this->version);
 		
@@ -658,6 +665,17 @@ class PDStylesAdminController extends PDStyles {
 	 * @since 0.1
 	 */
 	function admin_page() {
+		
+		// Update options if something was submitted
+		if ( $_POST['action'] == 'update-options' && check_admin_referer('pd-styles-update-options') ) {
+			// Uses $this->update() sanitation callback
+			update_option('pd-styles', $_POST );
+
+			// Scaffold objects have already been built by this point
+			// Avoid displaying stale data
+			header('Location: '.$_SERVER['REQUEST_URI']);
+		}
+		
 		$this->load_view('admin-main.php');
 	}
 
