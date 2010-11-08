@@ -86,8 +86,9 @@ class PDStyles_Extension_Group extends Scaffold_Extension_Observer {
 	}
 	
 	function output( $permalink ) {
+		$id = 'pds_'.md5($permalink).$this->key;
 		?>
-		<div id="<?php echo $permalink; ?>" class="postbox">
+		<div id="<?php echo $id; ?>" class="postbox">
 			<div class="handlediv" title="Click to toggle"><br /></div>
 			<h3 class="hndle"><span><?php echo $this->label; ?></span></h3>
 			<div class="inside">

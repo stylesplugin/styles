@@ -38,6 +38,11 @@
 		}
 	}
 	
+	.pds_image_input {
+		width: 60%;
+	
+	}
+	
 	/* Yoast */
 	small {
 		font-weight:normal;

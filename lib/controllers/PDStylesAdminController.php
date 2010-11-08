@@ -145,13 +145,9 @@ class PDStylesAdminController extends PDStyles {
 		
 		wp_enqueue_script('postbox');
 		wp_enqueue_script('dashboard');
-		wp_enqueue_script('thickbox');
-		wp_enqueue_script('media-upload');
 		
-		wp_enqueue_script('pds-admin-main', $this->plugin_url().'/lib/js/admin-main.js',array('jquery', 'pds-colorpicker'), $this->version, true);
+		wp_enqueue_script('pds-admin-main', $this->plugin_url().'/lib/js/admin-main.js', array('jquery', 'pds-colorpicker', 'thickbox', 'media-upload' ), $this->version, true);
 
-		// wp_enqueue_script ( 'shadowbox-js-helper' , $this->plugin_url() . '/js/shadowbox-admin-helper.js' , array( 'jquery' ) , $this->version , true );
-		
 		/*
 		// See http://www.prelovac.com/vladimir/best-practice-for-adding-javascript-code-to-wordpress-plugin
 		wp_localize_script ( 'shadowbox-js-helper' , 'shadowboxJsHelperL10n' , array(
@@ -516,6 +512,9 @@ class PDStylesAdminController extends PDStyles {
 					switch( get_class( $this->extensions['Scaffold']->variables[$group]->variables[$key] ) ) {
 						case 'PDStyles_Extension_Color':
 							$value = '#'.trim( $value, '# ');
+							break;
+						case 'PDStyles_Extension_Image':
+							$value = str_replace( site_url(), '', $value);
 							break;
 						
 					}

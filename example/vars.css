@@ -4,7 +4,7 @@
 	body_color.label: Text;
 	bodybg: #e2e2e1;
 	bodybg.label: Background;
-	mycolor: #ffffff;
+	something: image;
 }
 
 
@@ -16,12 +16,16 @@
 body
 {
 	color: c.body_color;
-	background-color: c.bodybg;
+	background: c.bodybg;
 } 
 .pd-styles {
 	label {
 		color: c.body_color;
-	}
+	}	
+}
+
+#header-logo {
+	image-replace: url(c.something);
 	
 }
 
