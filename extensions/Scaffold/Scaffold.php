@@ -140,17 +140,42 @@ class PDStyles_Extension_Scaffold extends Scaffold_Extension_Observer {
 		}
 		
 		// Replace default value with array, containing dot arguements and original value as key 'default'
-		foreach ( $tmp as $group => &$variables ) {
+		foreach ( $this->variables as $group => &$variables ) {
 			
 			$this->variables[ $group ]['key'] = $group;
 			
-			foreach ( $variables as $key => &$value ) {		
-				$value['default'] = $this->variables[ $group ][ $key ];
-				$this->variables[ $group ][ $key ] = $value;
+			foreach ( $variables as $key => &$value ) {
+				if ( $this->is_protected_key( $key ) ) { continue; }
+				
+				$tmp_args = &$tmp[ $group ][ $key ];
+				if ( is_array( $tmp_args ) ) {
+					
+					$tmp_args['default'] = $value;
+					$value = $tmp_args;
+					
+				}else {
+					// No dot args, set bar minimum arguements for detection & display
+					$value = array(
+						'label'		=>	$key,
+						'default'	=>	$value,
+						'key'		=>	$group,
+					);
+				}
+		
 			}
 		}
 		
 		unset($tmp);
+	}
+	
+	function is_protected_key( $key ) {
+		$protected = array(
+			'key',
+			'label',
+		);
+		
+		return in_array( strtolower($key), $protected );
+		
 	}
 	
 	function output() {

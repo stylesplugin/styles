@@ -4,6 +4,13 @@
 	body_color.label: Text;
 	bodybg: #e2e2e1;
 	bodybg.label: Background;
+	mycolor: #ffffff;
+}
+
+
+@variables something {
+	mycolor: #ffff00;
+	
 }
 
 body
