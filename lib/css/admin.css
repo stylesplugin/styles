@@ -33,10 +33,18 @@
 		}
 	}
 	
-	.pds_image_input {
-		width: 60%;
-	
+	.pds_image {
+		.current {
+			margin-bottom: 5px;
+			img {
+				height: 80px;
+			}
+		}
+		.pds_image_input {
+			width: 60%;
+		}
 	}
+	
 	
 	/* Yoast */
 	small {
