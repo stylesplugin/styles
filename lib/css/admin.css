@@ -27,6 +27,7 @@
 	
 	.pds_color {
 		clear:both;
+		margin-bottom: 5px;
 		input {
 			width: 50px;
 			font-size: 9px;
