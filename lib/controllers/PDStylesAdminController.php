@@ -52,7 +52,7 @@ class PDStylesAdminController extends PDStyles {
 	function __construct() {
 		parent::__construct();
 		$this->options = get_option( 'pd-styles' );
-
+		
 		if ( version_compare ( $this->get_option ( 'version' ) , $this->dbversion , '!=' ) && ! empty ( $this->options ) ) {
 			$this->check_upgrade();
 		}
@@ -83,56 +83,13 @@ class PDStylesAdminController extends PDStyles {
 	 **/
 	function build() {
 		
-		$this->load_extensions( $this->plugin_dir_path() . 'extensions' );
-		
 		$this->variables = new PDStyles_Extension_Variable( array(
 			'file' => '',
 		) );
+		
+		// Merge values from database into variable objects
+		$this->variables->set( array( $this->variables->permalink => $this->options['variables']->get() ) );
 
-	}
-	
-	/**
-	 * Loads the extension files
-	 * @author your name
-	 * @param $param
-	 * @return return type
-	 */
-	public function load_extensions( $path /*,$scaffold*/)
-	{	
-		# Scaffold_Helper object
-		// $helper = $this->getHelper();
-		
-		# The glob path
-		$path = realpath($path) . DIRECTORY_SEPARATOR . '*';
-	
-		# Load each of the extensions
-		foreach(glob($path) as $ext)
-		{			
-			$ext .= DIRECTORY_SEPARATOR;
-		
-			$config 	= array();
-			$name 		= basename($ext);
-			$class 		= 'PDStyles_Extension_' . $name;
-			$file 		= $ext.$name.'.php';
-			
-			# This extension isn't enabled
-			//if(!in_array($name, $this->options['extensions']))
-			//	continue;
-			
-			# Get the config for the extension if available
-			//if(isset($this->options[$name]))
-			//	$config = $this->options[$name];
-			
-			# Load the controller
-			if(file_exists($file))
-			{
-				require_once realpath($ext.$name.'.php');
-				$object = new $class($config);
-				// $object->attach_helper($helper);
-				$this->attach($name,$object);
-			}
-		}
-		// return $scaffold;
 	}
 	
 	/**
@@ -356,7 +313,6 @@ class PDStylesAdminController extends PDStyles {
 		$defaults = array(
 			'version'           => $this->db_version ,
 			'language'          => $this->set_lang() ,
-			'css_values'		=> array(),
 			'scaffold'			=> array(
 				// See scaffold/parse.php for full scaffold config documentation
 				'config'		=> array(
@@ -454,7 +410,7 @@ class PDStylesAdminController extends PDStyles {
 	 * @return none
 	 * @since 0.1
 	 */
-	function upgrade ( $ver ) {
+	function upgrade( $ver ) {
 		/*
 		if ( $ver == '3.0.0.0' ) { // Upgrades for versions below 3.0.0.0
 			$newopts = array(
@@ -504,7 +460,7 @@ class PDStylesAdminController extends PDStyles {
 	 * @since 0.1
 	 * @return none
 	 */
-	function update ( $options ) {
+	function update( $options ) {
 		// Make sure there are no empty values, seems users like to clear out options before saving
 		foreach ( $this->defaults() as $key => $value ) {
 			if ( 
@@ -515,25 +471,9 @@ class PDStylesAdminController extends PDStyles {
 				$options[$key] = $value;
 			}
 		}
-		
-		// Validate CSS vars
-		foreach( $options['css_values'] as $file => &$groups ) {
-			foreach ( $groups as $group => &$variables ) {
-				foreach ( $variables as $key => &$value ) {
-					
-					switch( get_class( $this->variables->variables[$group]->variables[$key] ) ) {
-						case 'PDStyles_Extension_Color':
-							$value = '#'.trim( $value, '# ');
-							break;
-						case 'PDStyles_Extension_Image':
-							$value = str_replace( site_url(), '', $value);
-							break;
-						
-					}
-	
-				}
-			}
-		}
+		// Merge variables form input into variable objects
+		$this->variables->set( $options['variables'] );
+		$options['variables'] = $this->variables;
 		
 		// Check if we are supposed to remove options
 		if ( isset ( $options['delete'] ) && $options['delete'] == 'true' ) { 
@@ -551,8 +491,8 @@ class PDStylesAdminController extends PDStyles {
 				$options['_wp_http_referer'],
 				$options['action']
 			);
+
 			$this->options = $options;
-			// $this->build_shadowbox ( true ); // Attempt to build and cache shadowbox.js
 			return $this->options;
 		}
 	}
@@ -682,9 +622,6 @@ class PDStylesAdminController extends PDStyles {
 			// Uses $this->update() sanitation callback
 			update_option('pd-styles', $_POST );
 
-			// Scaffold objects have already been built by this point
-			// Avoid displaying stale data
-			header('Location: '.$_SERVER['REQUEST_URI']);
 		}
 		
 		$this->load_view('admin-main.php');

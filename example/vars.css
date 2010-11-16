@@ -1,44 +1,44 @@
-@variables body{
-	label: Body;
-	background: #fff;
-}
-
-body {
-	background-color: body.background;
-	
-}
-
-
 @variables header {
 	label: Header;
-	Logo: image;
+	Logo: image-replace;
 }
 
 .site-title a {
-	image-replace: url(header.Logo);
+	header.Logo
 }
 
 @variables sc {
 	label: Style C;
-	bg: #F2F2F2;
-	border: #E3E3E3;;
+	bg: bgc;
+	border_color: border-color;
+	background-image: background-image;
 }
 
 .logged-in {
 	.style-c {
-		background-color: sc.bg;
-		border-color: sc.border;
+		sc.bg
+		border-width:10px;
+		border-style: solid;
+		sc.border_color
+		sc.background-image
+		background-repeat: no-repeat;
+		background-position: center right;
 	}
 }
 
 
 
 #pds_testbox {
-	background-color: sc.bg;
-	border-width: 10px solid sc.border;
+	sc.bg
+	border-width:10px;
+	border-style: solid;
+	sc.border_color
 	padding: 20px;
+	sc.background-image
+	background-repeat: no-repeat;
+	background-position: center right;
 	.img {
-		image-replace: url(header.Logo);
+		header.Logo
 		float:left;
 		margin: 0 20px 0 0;
 	}

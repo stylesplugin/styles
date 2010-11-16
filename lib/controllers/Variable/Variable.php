@@ -124,7 +124,6 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 	 **/
 	function variables_cleanup() {
 		$tmp = array();
-		// $css_values = $this->get_option('css_values');
 		
 		// Gather vars with dot notation, place into .args array
 		foreach ( $this->variables as $group => $variables ) {
@@ -150,21 +149,20 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 				$tmp_args = &$tmp[ $group ][ $key ];
 				if ( is_array( $tmp_args ) ) {
 					
-					$tmp_args['default'] = $value;
+					$tmp_args['type'] = $value;
 					$value = $tmp_args;
 					
 				}else {
 					// No dot args, set bar minimum arguements for detection & display
 					$value = array(
 						'label'		=>	$key,
-						'default'	=>	$value,
+						'type'		=>	$value,
 						'key'		=>	$group,
 					);
 				}
 		
 			}
 		}
-		
 		unset($tmp);
 	}
 	
@@ -180,9 +178,46 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 	
 	function output() {
 		foreach ($this->variables as $variable) {
-			$variable->output( "css_values[$this->permalink]" );
+			$variable->output( "variables[$this->permalink]" );
 		}
 	}
+	
+	/**
+	 * Update values of all children
+	 * 
+	 * @since 0.1
+	 * @return void
+	 **/
+	function set( $values ) {
+		if ( empty( $values ) ) {
+			return;
+		}
+		if ( !array_key_exists( $this->permalink, (array) $values )) {
+			FB::error('$this->permalink not found in $values.');
+			FB::log($this->permalink, '$this->permalink');
+			FB::log($values, '$values');
+			return;
+		}
+		
+		foreach ($this->variables as $variable) {
+			$variable->set( $values[$this->permalink] );
+		}
+	}
+	
+	/**
+	 * Recursively get all child values for CSS
+	 * 
+	 * @since 0.1
+	 * @return void
+	 **/
+	function get( $context = null ) {
+		$values = array();
+		foreach ($this->variables as $variable) {
+			$values[ $variable->key ] = $variable->get( $context );
+		}
+		return $values;
+	}
+	
 	
 	/**
 	 * Detect if input CSS var looks like the type this object handles

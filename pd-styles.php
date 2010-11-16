@@ -65,6 +65,11 @@ if ( !class_exists('FirePHP') ) {
 	include_once 'lib/FirePHPCore/fb.php';
 }
 
+@include dirname ( __FILE__ ) . '/lib/Extension/Observable.php';
+@include dirname ( __FILE__ ) . '/lib/Extension/Observer.php';
+@include dirname ( __FILE__ ) . '/lib/controllers/Variable/Variable.php';
+@include dirname ( __FILE__ ) . '/lib/controllers/Group/Group.php';
+
 /**
  * PD Styles class for common actions between admin and frontend.
  *
@@ -73,9 +78,6 @@ if ( !class_exists('FirePHP') ) {
  * @package pd-styles
  * @author pdclark
  **/
-
-include_once 'lib/Extension/Observable.php';
-include_once 'lib/Extension/Observer.php';
 
 class PDStyles extends Scaffold_Extension_Observable {
 	
@@ -114,10 +116,12 @@ class PDStyles extends Scaffold_Extension_Observable {
 	 * @since 0.1
 	 * @return none
 	 **/
-	function __construct () {
+	function __construct() {
 		// ajax hooks so that we can access WordPress within Scaffold
 		add_action('parse_request', array( &$this, 'parse_request') );
 		add_filter('query_vars', array( &$this, 'query_vars') );
+		
+		$this->load_extensions( $this->plugin_dir_path() . 'extensions' );
 	}
 	
 	/**
@@ -143,7 +147,7 @@ class PDStyles extends Scaffold_Extension_Observable {
 	 * @return string
 	 * @since 0.1
 	 */
-	function plugin_url () {
+	function plugin_url() {
 		$plugin_url = plugins_url ( plugin_basename ( dirname ( __FILE__ ) ) );
 		return $plugin_url;
 	}
@@ -200,7 +204,7 @@ class PDStyles extends Scaffold_Extension_Observable {
 	 * @since 0.1
 	 * @return string
 	 */
-	function md5 () {
+	function md5() {
 		return md5 ( serialize ( $this->options ) . $this->version );
 	}
 	
@@ -213,7 +217,7 @@ class PDStyles extends Scaffold_Extension_Observable {
 	 * @since 0.1
 	 * @return none
 	 */
-	function deactivate_and_die ( $file ) {
+	function deactivate_and_die( $file ) {
 		load_plugin_textdomain ( 'pd-styles' , false , 'pd-styles/localization' );
 		$message = sprintf ( __( "PD Styles has been automatically deactivated because the file <strong>%s</strong> is missing. Please reinstall the plugin and reactivate." ) , $file );
 		if ( ! function_exists ( 'deactivate_plugins' ) ) {
@@ -229,7 +233,7 @@ class PDStyles extends Scaffold_Extension_Observable {
 	 * @since 0.1
 	 * @return void
 	 **/
-	function load_view ($view) {
+	function load_view($view) {
 		
 		$file = dirname ( __FILE__ ) . '/lib/views/'.$view;
 		
@@ -248,8 +252,10 @@ class PDStyles extends Scaffold_Extension_Observable {
 	    // only process requests with "?scaffold"
 	    if (isset( $_GET['scaffold'] ) ) {
 			
-			$this->options = get_option( 'pd-styles' );
+			$this->load_extensions( $this->plugin_dir_path() . 'extensions' );
 			
+			$this->options = get_option( 'pd-styles' );
+
 			$config = $this->get_scaffold_config();
 			
 			$system = $this->plugin_dir_path() . 'scaffold'; // No trailing slash
@@ -294,6 +300,49 @@ class PDStyles extends Scaffold_Extension_Observable {
 		return $config;
 	}
 	
+	/**
+	 * Loads the extension files
+	 * @author your name
+	 * @param $param
+	 * @return return type
+	 */
+	public function load_extensions( $path /*,$scaffold*/) {	
+		# Scaffold_Helper object
+		// $helper = $this->getHelper();
+		
+		# The glob path
+		$path = realpath($path) . DIRECTORY_SEPARATOR . '*';
+	
+		# Load each of the extensions
+		foreach(glob($path) as $ext)
+		{			
+			$ext .= DIRECTORY_SEPARATOR;
+		
+			$config 	= array();
+			$name 		= basename($ext);
+			$class 		= 'PDStyles_Extension_' . $name;
+			$file 		= $ext.$name.'.php';
+			
+			# This extension isn't enabled
+			//if(!in_array($name, $this->options['extensions']))
+			//	continue;
+			
+			# Get the config for the extension if available
+			//if(isset($this->options[$name]))
+			//	$config = $this->options[$name];
+			
+			# Load the controller
+			if(file_exists($file))
+			{
+				require_once realpath($ext.$name.'.php');
+				$object = new $class($config);
+				// $object->attach_helper($helper);
+				$this->attach($name,$object);
+			}
+		}
+		// return $scaffold;
+	}
+	
 } // END PDStyles class
 
 /**
@@ -305,10 +354,7 @@ if ( is_admin () ) {
 	
 	// include admin class
 
-	if ( @include ( dirname ( __FILE__ ) . '/lib/controllers/PDStylesAdminController.php' ) ) {
-	
-		@include ( dirname ( __FILE__ ) . '/lib/controllers/Variable/Variable.php' );
-		@include ( dirname ( __FILE__ ) . '/lib/controllers/Group/Group.php' );
+	if ( @include dirname ( __FILE__ ) . '/lib/controllers/PDStylesAdminController.php' ) {
 		
 		$PDStylesAdminController = new PDStylesAdminController ();
 
@@ -319,7 +365,7 @@ if ( is_admin () ) {
 	
 	// include subadmin class
 	
-	if ( @include ( dirname ( __FILE__ ) . '/lib/controllers/PDStylesFrontendController.php' ) ) {
+	if ( @include dirname ( __FILE__ ) . '/lib/controllers/PDStylesFrontendController.php' ) {
 		$PDStylesFrontendController = new PDStylesFrontendController ();
 	} else {
 		PDStyles::deactivate_and_die ( dirname ( __FILE__ ) . '/inc/front-end.php' );
