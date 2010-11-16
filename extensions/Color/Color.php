@@ -60,12 +60,13 @@ class PDStyles_Extension_Color extends Scaffold_Extension_Observer {
 	function output( $permalink ) {
 		$id = "{$permalink}[$this->key]";
 		?>
-		<div class="pds_color">
-			<input class="pds_color_input" type="text" name="<?php echo $id ?>" id="<?php echo $id ?>" value="<?php echo $this->value; ?>" size="8" maxlength="8" />
+		<tr class="pds_color"><th valign="top" scrope="row">
 			<label for="<?php echo $id; ?>">
 				<?php echo $this->label ?>
 			</label>
-		</div>
+		</th><td valign="top">
+			<input class="pds_color_input" type="text" name="<?php echo $id ?>" id="<?php echo $id ?>" value="<?php echo $this->value; ?>" size="8" maxlength="8" />
+		</td></tr>
 		<?php
 	}
 	

@@ -26,22 +26,25 @@
 	}
 	
 	.pds_color {
-		clear:both;
-		margin-bottom: 5px;
 		input {
 			width: 50px;
 			font-size: 9px;
 			text-transform:uppercase;
 		}
-		label {
-			padding-left: 5px;
+	}
+	
+	.pds_image {
+		.current {
+			margin-bottom: 5px;
+			img {
+				height: 80px;
+			}
+		}
+		.pds_image_input {
+			width: 60%;
 		}
 	}
 	
-	.pds_image_input {
-		width: 60%;
-	
-	}
 	
 	/* Yoast */
 	small {
