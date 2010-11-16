@@ -1,24 +1,44 @@
-@variables c {
-	label: Colors;
-	body_color: #999;
-	body_color.label: Text;
-	bodybg: #e2e2e1;
-	bodybg.label: Background;
-	something: image;
+@variables body{
+	label: Body;
+	background: #fff;
 }
 
-
-@variables something {
-	mycolor: #ffff00;
+body {
+	background-color: body.background;
 	
 }
 
+
+@variables header {
+	label: Header;
+	Logo: image;
+}
+
+.site-title a {
+	image-replace: url(header.Logo);
+}
+
+@variables sc {
+	label: Style C;
+	bg: #F2F2F2;
+	border: #E3E3E3;;
+}
+
+.logged-in {
+	.style-c {
+		background-color: sc.bg;
+		border-color: sc.border;
+	}
+}
+
+
+
 #pds_testbox {
-	color: c.body_color;
-	background: c.bodybg;
+	background-color: sc.bg;
+	border-width: 10px solid sc.border;
 	padding: 20px;
 	.img {
-		image-replace: url(c.something);
+		image-replace: url(header.Logo);
 		float:left;
 		margin: 0 20px 0 0;
 	}

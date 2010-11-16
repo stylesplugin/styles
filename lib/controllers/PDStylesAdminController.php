@@ -36,6 +36,14 @@ class PDStylesAdminController extends PDStyles {
 	var $options_page_hookname;
 	
 	/**
+	 * Container for CSS variable objects & scaffold
+	 * 
+	 * @since 0.1
+	 * @var string
+	 **/
+	var $variables;
+	
+	/**
 	 * Setup backend functionality in WordPress
 	 *
 	 * @return none
@@ -76,6 +84,10 @@ class PDStylesAdminController extends PDStyles {
 	function build() {
 		
 		$this->load_extensions( $this->plugin_dir_path() . 'extensions' );
+		
+		$this->variables = new PDStyles_Extension_Variable( array(
+			'file' => '',
+		) );
 
 	}
 	
@@ -509,7 +521,7 @@ class PDStylesAdminController extends PDStyles {
 			foreach ( $groups as $group => &$variables ) {
 				foreach ( $variables as $key => &$value ) {
 					
-					switch( get_class( $this->extensions['Scaffold']->variables[$group]->variables[$key] ) ) {
+					switch( get_class( $this->variables->variables[$group]->variables[$key] ) ) {
 						case 'PDStyles_Extension_Color':
 							$value = '#'.trim( $value, '# ');
 							break;

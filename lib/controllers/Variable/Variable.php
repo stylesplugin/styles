@@ -7,15 +7,7 @@
  * @package pd-styles
  * @author pdclark
  **/
-class PDStyles_Extension_Scaffold extends Scaffold_Extension_Observer {
-	
-	/**
-	 * Container for the scaffold object
-	 * 
-	 * @since 0.1
-	 * @var string
-	 **/
-	var $scaffold;
+class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 	
 	/**
 	 * Loaded CSS file path
@@ -40,6 +32,14 @@ class PDStyles_Extension_Scaffold extends Scaffold_Extension_Observer {
 	 * @var string
 	 **/
 	var $variables;
+	
+	/**
+	 * Container for the scaffold object
+	 * 
+	 * @since 0.1
+	 * @var string
+	 **/
+	var $scaffold;
 	
 	function __construct( $args = array() ) {
 		

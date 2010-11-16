@@ -307,7 +307,9 @@ if ( is_admin () ) {
 
 	if ( @include ( dirname ( __FILE__ ) . '/lib/controllers/PDStylesAdminController.php' ) ) {
 	
-		@include ( dirname ( __FILE__ ) . '/lib/helpers/PDStylesUIColor.php' );
+		@include ( dirname ( __FILE__ ) . '/lib/controllers/Variable/Variable.php' );
+		@include ( dirname ( __FILE__ ) . '/lib/controllers/Group/Group.php' );
+		
 		$PDStylesAdminController = new PDStylesAdminController ();
 
 	} else {

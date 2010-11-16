@@ -32,7 +32,7 @@
 
 					<?php 
 						FB::log($this, '$this');
-						$this->extensions['Scaffold']->output(); 
+						$this->variables->output(); 
 					?>
 		
 					<input type="hidden" name="action" value="update-options" />
