@@ -101,7 +101,7 @@ class PDStylesAdminController extends PDStyles {
 		$this->plugin_basename = plugin_basename ( $this->plugin_file );
 		
 		// AJAX
-		add_action('wp_ajax_pdstyles_preview', array( &$this, 'preview') );
+		add_action('wp_ajax_pdstyles-update-options', array( &$this, 'update_ajax') );
 		
 	}
 	
@@ -537,15 +537,31 @@ class PDStylesAdminController extends PDStyles {
 	}
 	
 	/**
+	 * Handle updating options via AJAX
+	 * 
+	 * @since 0.1
+	 * @return void
+	 **/
+	function update_ajax() {
+		if ( isset( $_POST['preview'] )) {
+			
+			update_option('pd-styles-preview', $_POST );
+			die('howdy');
+			
+		}else {
+			die('Not preview');
+		}
+	}
+	
+	/**
 	 * Update CSS variables used for preview CSS
 	 * 
 	 * @since 0.1
 	 * @return void
 	 **/
 	function update_preview( $options ) {
-		
 		$this->build();
-		
+
 		// Merge variables form input into variable objects
 		$this->variables[ $this->permalink ]->set( $options['variables'] );
 		$options['variables'][ $this->permalink ] = $this->variables[ $this->permalink ];
@@ -553,19 +569,9 @@ class PDStylesAdminController extends PDStyles {
 		// Strip Scaffold from object saved to DB
 		unset( $options['variables'][ $this->permalink ]->scaffold );
 		
+		FB::log($options['variables'], '$options[variable');
+		
 		return $options['variables'];
-	}
-	
-	/**
-	 * Respond to AJAX preview requests
-	 * 
-	 * @since 0.1
-	 * @return string
-	 **/
-	function preview() {
-
-		update_option('pd-styles-preview', $_POST );
-		die('howdy');
 	}
 
 	/**
@@ -606,7 +612,7 @@ class PDStylesAdminController extends PDStyles {
 	 */
 	function admin_page() {
 		// Update options if something was submitted
-		if ( $_POST['action'] == 'update-options' && check_admin_referer('pd-styles-update-options') ) {
+		if ( $_POST['action'] == 'pdstyles-update-options' && check_admin_referer('pd-styles-update-options') ) {
 			// Uses $this->update() sanitation callback
 			update_option('pd-styles', $_POST );
 		}

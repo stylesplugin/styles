@@ -31,7 +31,7 @@
 
 					<?php $this->variables['/wp-content/plugins/pd-styles/example/vars.css']->output(); ?>
 		
-					<input type="hidden" name="action" value="update-options" />
+					<input type="hidden" name="action" class="action" value="pdstyles-update-options" />
 						
 					
 					<p class="submit">
