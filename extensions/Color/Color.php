@@ -41,20 +41,117 @@ class PDStyles_Extension_Color extends Scaffold_Extension_Observer {
 	 **/
 	var $default;
 	
+	/**
+	 * Value loaded from database
+	 * 
+	 * @since 0.1
+	 * @var string
+	 **/
+	private $value;
+	
+	/**
+	 * Variable type specified in CSS
+	 * 
+	 * @since 0.1
+	 * @var string
+	 **/
+	private $type;
+	
+	/**
+	 * Variable values to match this object to
+	 * @since 0.1
+	 * @var array
+	 */
+	private $keywords = array (
+		'background-color',
+		'bgc',
+		'color',
+		'c',
+		'border-color',
+		'bordc',
+	);
+	
 	function __construct( $args = array() ) {
 		$defaults = array(
 			// 'default'		=> '',
 		);
 		$args = wp_parse_args( $args, $defaults );
 		
-		$args['default'] = trim( $args['default'], '# ');
-		$args['value']   = trim( $args['value'], '# ');
-		
 		$this->id = $args['id'];
 		$this->key = $args['key'];
 		$this->label = $args['label'];
-		$this->default = $args['default'];
-		$this->value = ( empty( $args['value'] ) ) ? $args['default'] : $args['value'];
+		$this->type = $args['type'];
+	}
+	
+	/**
+	 * Get variable with correct formatting
+	 * 
+	 * @since 0.1
+	 * @return string
+	 **/
+	function get( $variable, $context ) {
+		$value = $this->$variable;
+
+		switch( $context ) {
+			case 'form':
+			
+				return trim( $value, '# ');
+			
+				break;
+			
+			case 'css':
+				
+				if (empty($value)) return '';
+				
+				switch( $this->type ) {
+					case 'bgc':
+					case 'background-color':
+						$output = "background-color:{$this->value};";
+						break;
+						
+					case 'c':
+					case 'color':
+						$output = "color:{$this->value};";
+						break;
+					
+					case 'border-color':
+					case 'bordc':
+						$output = "border-color:{$this->value};";
+						break;
+					
+				}
+			
+				return $output;
+				
+				break;
+			
+			default:
+				return $value;
+				break;
+		}
+	}
+	
+	/**
+	 * Set variable with correct formatting
+	 * 
+	 * @since 0.1
+	 * @return string
+	 **/
+	function set( $variable, $value, $context = 'default' ) {
+
+		switch( $context ) {
+			
+			default:
+				$value = trim( $value, '# ');
+				
+				if ( !empty( $value ) ) {
+					$this->value = '#'.$value;
+				}else {
+					$this->value = '';
+				}
+				
+				break;
+		}
 	}
 	
 	function output( $permalink ) {
@@ -65,7 +162,7 @@ class PDStyles_Extension_Color extends Scaffold_Extension_Observer {
 				<?php echo $this->label ?>
 			</label>
 		</th><td valign="top">
-			<input class="pds_color_input" type="text" name="<?php echo $id ?>" id="<?php echo $id ?>" value="<?php echo $this->value; ?>" size="8" maxlength="8" />
+			<input class="pds_color_input" type="text" name="<?php echo $id ?>" id="<?php echo $id ?>" value="<?php echo $this->get('value', 'form'); ?>" size="8" maxlength="8" />
 		</td></tr>
 		<?php
 	}
@@ -77,14 +174,7 @@ class PDStyles_Extension_Color extends Scaffold_Extension_Observer {
 	 * @return bool
 	 **/
 	function is_type( $args ) {
-		if ( $args['type'] == 'color' ) return true;
-		
-		$pattern = '/^#?([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?$/';
-		
-		if ( preg_match( $pattern, trim( $args['default'] ) ) !== 0 ) {
-			return true;
-		}
-		
+		if ( in_array( $args['type'], $this->keywords ) ) return true;
 		return false;
 	}
 	

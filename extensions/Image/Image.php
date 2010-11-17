@@ -34,12 +34,31 @@ class PDStyles_Extension_Image extends Scaffold_Extension_Observer {
 	var $label;
 	
 	/**
-	 * Default value of the form element
+	 * Value loaded from database
 	 * 
 	 * @since 0.1
 	 * @var string
 	 **/
-	var $default;
+	private $value;
+	
+	/**
+	 * Variable type specified in CSS
+	 * 
+	 * @since 0.1
+	 * @var string
+	 **/
+	private $type;
+	
+	/**
+	 * Variable values to match this object to
+	 * @since 0.1
+	 * @var array
+	 */
+	private $keywords = array (
+		'image',
+		'image-replace',
+		'background-image',
+	);
 	
 	function __construct( $args = array() ) {
 		$defaults = array(
@@ -47,14 +66,10 @@ class PDStyles_Extension_Image extends Scaffold_Extension_Observer {
 		);
 		$args = wp_parse_args( $args, $defaults );
 		
-		$args['default'] = trim( $args['default'], '# ');
-		$args['value']   = trim( $args['value'], '# ');
-		
 		$this->id = $args['id'];
 		$this->key = $args['key'];
 		$this->label = $args['label'];
-		$this->default = $args['default'];
-		$this->value = ( empty( $args['value'] ) ) ? $args['default'] : $args['value'];
+		$this->type = $args['type'];
 	}
 	
 	function output( $permalink ) {
@@ -70,14 +85,14 @@ class PDStyles_Extension_Image extends Scaffold_Extension_Observer {
 		</th><td valign="top">	
 			
 			<?php if (!empty( $this->value )) : ?>
-				<a class="current thickbox" href="<?php echo $this->value ?>">
-					<img style="height:80px; border:1px solid #aaa;" src="<?php echo $this->value ?>" alt="" />
+				<a class="current thickbox" href="<?php echo $this->get('value', 'form') ?>">
+					<img style="height:80px; border:1px solid #aaa;" src="<?php echo $this->get('value', 'form') ?>" alt="" />
 				</a>
-				<a class="current thickbox" href="<?php echo $this->value ?>">View full size</a>
+				<a class="current thickbox" href="<?php echo $this->get('value', 'form') ?>">View full size</a>
 				<br/>
 			<?php endif; ?>
 			
-			<input class="pds_image_input" type="text" name="<?php echo $name ?>" id="<?php echo $id ?>" value="<?php echo $this->value; ?>" size="8" maxlength="8" />
+			<input class="pds_image_input" type="text" name="<?php echo $name ?>" id="<?php echo $id ?>" value="<?php echo $this->get('value', 'form'); ?>" size="8" maxlength="8" />
 			<input type="button" class="button" value="<?php _e('Select Image') ?>" onclick="show_image_uploader('<?php echo $id ?>');"/>
 
 			<?php if (!empty( $this->description )) : ?>
@@ -89,21 +104,65 @@ class PDStyles_Extension_Image extends Scaffold_Extension_Observer {
 	}
 	
 	/**
+	 * Get variable with correct formatting
+	 * 
+	 * @since 0.1
+	 * @return string
+	 **/
+	function get( $variable, $context = null ) {
+		$value = $this->$variable;
+
+		switch( $context ) {
+			
+			case 'css':
+				
+				if (empty($value)) return '';
+				
+				switch( $this->type ) {
+					case 'image-replace':
+					case 'image':
+						$output = "image-replace: url({$this->value});";
+						break;
+					case 'background-image':
+						$output = "background-image: url({$this->value});";
+						break;
+				}
+			
+				return $output;
+				
+				break;
+			
+			default:
+				return $value;
+				break;
+		}
+	}
+	
+	/**
+	 * Set variable with correct formatting
+	 * 
+	 * @since 0.1
+	 * @return string
+	 **/
+	function set( $variable, $value, $context = null ) {
+
+		switch( $context ) {
+			
+			default:
+				$value = str_replace( site_url(), '', $value);
+				$this->value = $value;
+				break;
+		}
+	}
+	
+	/**
 	 * Detect if input CSS var looks like the type this object handles
 	 * 
 	 * @since 0.1
 	 * @return bool
 	 **/
 	function is_type( $args ) {
-		if ( $args['type'] == 'image' ) return true;
-		if ( $args['default'] == 'image' ) return true;
-		
-		//	$pattern = '/^#?([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?$/';
-		//	
-		//	if ( preg_match( $pattern, trim( $args['default'] ) ) !== 0 ) {
-		//		return true;
-		//	}
-		
+		if ( in_array( $args['type'], $this->keywords ) ) return true;
 		return false;
 	}
 	

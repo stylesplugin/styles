@@ -56,10 +56,10 @@ class PDStyles_Extension_Group extends Scaffold_Extension_Observer {
 		global $PDStylesAdminController;
 		
 		// Load Values from DB
-		$css_values = $PDStylesAdminController->get_option('css_values');
-		foreach ( (array) $css_values[ $permalink ][ $this->key ] as $key => $value ) {
-			$variables[ $key ][ 'value' ] = $value;
-		}
+		//$css_values = $PDStylesAdminController->get_option('css_values');
+		//foreach ( (array) $css_values[ $permalink ][ $this->key ] as $key => $value ) {
+		//	$variables[ $key ][ 'value' ] = $value;
+		//}
 		
 		// Instantiate Objects
 		foreach ( $variables as $key => $args ) {
@@ -102,6 +102,37 @@ class PDStyles_Extension_Group extends Scaffold_Extension_Observer {
 			</div>
 		</div>
 		<?php
+	}
+	
+	/**
+	 * Update values of all children
+	 * 
+	 * @since 0.1
+	 * @return void
+	 **/
+	function set( $values ) {
+		if ( !array_key_exists( $this->key, $values )) {
+			FB::error($this->key, 'Key not found');
+			return;
+		}
+
+		foreach ($this->variables as $variable) {
+			$variable->set( 'value', $values[ $this->key ][ $variable->key ] );
+		}
+	}
+	
+	/**
+	 * Recursively get all child values for CSS
+	 * 
+	 * @since 0.1
+	 * @return void
+	 **/
+	function get( $context = null ) {
+		$values = array();
+		foreach ($this->variables as $variable) {
+			$values[ $variable->key ] = $variable->get('value', $context);
+		}
+		return $values;
 	}
 	
 	/**

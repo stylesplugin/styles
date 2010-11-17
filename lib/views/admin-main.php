@@ -31,8 +31,8 @@
 					<?php wp_nonce_field( 'pd-styles-update-options' ); ?>
 
 					<?php 
-						FB::log($this, '$this');
-						$this->extensions['Scaffold']->output(); 
+						FB::log($this->variables, '$this->variables');
+						$this->variables->output(); 
 					?>
 		
 					<input type="hidden" name="action" value="update-options" />
