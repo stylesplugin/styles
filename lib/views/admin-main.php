@@ -9,7 +9,6 @@
  * @since 0.1
  */
 ?>
-
 <div class="wrap pd-styles">
 	<h2><?php _e( 'Styles' , 'pd-styles' ); ?></h2>
 	
@@ -30,10 +29,7 @@
 				<form method="post" id="pdm_form" action="<?php echo $_SERVER['REQUEST_URI'] ?>" enctype="multipart/form-data" name="post">
 					<?php wp_nonce_field( 'pd-styles-update-options' ); ?>
 
-					<?php 
-						FB::log($this->variables, '$this->variables');
-						$this->variables->output(); 
-					?>
+					<?php $this->variables['/wp-content/plugins/pd-styles/example/vars.css']->output(); ?>
 		
 					<input type="hidden" name="action" value="update-options" />
 

@@ -55,12 +55,6 @@ class PDStyles_Extension_Group extends Scaffold_Extension_Observer {
 	function create_objects( $variables, $permalink ) {
 		global $PDStylesAdminController;
 		
-		// Load Values from DB
-		//$css_values = $PDStylesAdminController->get_option('css_values');
-		//foreach ( (array) $css_values[ $permalink ][ $this->key ] as $key => $value ) {
-		//	$variables[ $key ][ 'value' ] = $value;
-		//}
-		
 		// Instantiate Objects
 		foreach ( $variables as $key => $args ) {
 			if ( is_array($args) ) {

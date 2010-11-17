@@ -41,7 +41,24 @@ class PDStylesAdminController extends PDStyles {
 	 * @since 0.1
 	 * @var string
 	 **/
-	var $variables;
+	var $variables = array();
+	
+	/**
+	 * Path to CSS file being manipulated
+	 * 
+	 * @since 0.1
+	 * @var string
+	 **/
+	var $file;
+	
+	/**
+	 * Friendly formatting of path to $this->file from WP basedir
+	 * Allows for CSS links to not break between dev & production environments.
+	 * 
+	 * @since 0.1
+	 * @var string
+	 **/
+	var $permalink;
 	
 	/**
 	 * Setup backend functionality in WordPress
@@ -49,8 +66,17 @@ class PDStylesAdminController extends PDStyles {
 	 * @return none
 	 * @since 0.1
 	 */
-	function __construct() {
+	function __construct( $args = array() ) {
 		parent::__construct();
+		
+		$defaults = array(
+			'file'	=> PDStyles::plugin_dir_path() . 'example/vars.css',
+		);
+		$args = wp_parse_args( $args, $defaults );
+		
+		$this->file = $args['file'];
+		$this->permalink = $this->get_css_permalink( $this->file );
+		
 		$this->options = get_option( 'pd-styles' );
 		
 		if ( version_compare ( $this->get_option ( 'version' ) , $this->dbversion , '!=' ) && ! empty ( $this->options ) ) {
@@ -82,14 +108,17 @@ class PDStylesAdminController extends PDStyles {
 	 * @return void
 	 **/
 	function build() {
-		
-		$this->variables = new PDStyles_Extension_Variable( array(
-			'file' => '',
+
+		$this->variables[ $this->permalink ] = new PDStyles_Extension_Variable( array(
+			'file' => $this->file,
+			'permalink' => $this->permalink,
 		) );
 		
 		// Merge values from database into variable objects
-		$this->variables->set( array( $this->variables->permalink => $this->options['variables']->get() ) );
-
+		if ( is_object( $this->options['variables'][ $this->permalink ] ) ) {
+			$this->variables[ $this->permalink ]->set( array( $this->permalink => $this->options['variables'][ $this->permalink ]->get() ) );
+		}
+		
 	}
 	
 	/**
@@ -367,7 +396,6 @@ class PDStylesAdminController extends PDStyles {
 		} else {
 			$this->check_upgrade();
 		}
-		// $this->build_shadowbox ( true ); // Attempt to build and cache shadowbox.js
 	}
 	
 	/**
@@ -471,16 +499,16 @@ class PDStylesAdminController extends PDStyles {
 				$options[$key] = $value;
 			}
 		}
+		
 		// Merge variables form input into variable objects
-		$this->variables->set( $options['variables'] );
-		$options['variables'] = $this->variables;
+		$this->variables[ $this->permalink ]->set( $options['variables'] );
+		$options['variables'][ $this->permalink ] = $this->variables[ $this->permalink ];
 		
 		// Check if we are supposed to remove options
 		if ( isset ( $options['delete'] ) && $options['delete'] == 'true' ) { 
 			delete_option ( 'pd-styles' );
 		} else if ( isset ( $options['default'] ) && $options['default'] == 'true' ) { // Check if we are supposed to reset to defaults
 			$this->options = $this->defaults();
-			// $this->build_shadowbox ( true ); // Attempt to build and cache shadowbox.js
 			return $this->options;
 		} else {
 			// Save options
@@ -491,9 +519,15 @@ class PDStylesAdminController extends PDStyles {
 				$options['_wp_http_referer'],
 				$options['action']
 			);
-
-			$this->options = $options;
-			return $this->options;
+			
+			// Update current object for further processing
+			$this->options = $options; 
+			
+			// Strip Scaffold from object saved to DB
+			unset( $options['variables'][ $this->permalink ]->scaffold );
+			
+			// Write to DB
+			return $options; 
 		}
 	}
 	
@@ -616,14 +650,12 @@ class PDStylesAdminController extends PDStyles {
 	 * @since 0.1
 	 */
 	function admin_page() {
-		
 		// Update options if something was submitted
 		if ( $_POST['action'] == 'update-options' && check_admin_referer('pd-styles-update-options') ) {
 			// Uses $this->update() sanitation callback
 			update_option('pd-styles', $_POST );
-
 		}
-		
+
 		$this->load_view('admin-main.php');
 	}
 
