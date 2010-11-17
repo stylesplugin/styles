@@ -29,14 +29,14 @@
 				<form method="post" id="pdm_form" action="<?php echo $_SERVER['REQUEST_URI'] ?>" enctype="multipart/form-data" name="post">
 					<?php wp_nonce_field( 'pd-styles-update-options' ); ?>
 
-					<?php $this->variables['/wp-content/plugins/pd-styles/example/vars.css']->output(); ?>
+					<?php $this->variables[ $this->permalink ]->output(); ?>
 		
 					<input type="hidden" name="action" class="action" value="pdstyles-update-options" />
 						
 					
 					<p class="submit">
-						<input type="submit" class="button-primary" value="<?php _e('Update'); ?>" />
 						<input id="pds_preview" type="button" class="button" value="<?php _e('Preview'); ?>" />
+						<input type="submit" class="button-primary" value="<?php _e('Save'); ?>" />
 						
 						<img class="waiting" src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" alt="" /> 
 						<span class="response"> </span>

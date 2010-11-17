@@ -546,7 +546,16 @@ class PDStylesAdminController extends PDStyles {
 		if ( isset( $_POST['preview'] )) {
 			
 			update_option('pd-styles-preview', $_POST );
-			die('howdy');
+			
+			$response = array(
+				'message' => 'Preview updated',
+				'href' => '/?scaffold&preview&time='.microtime(true).'&file='.$this->file,
+				'id' => 'pdstyles-preview-'.md5($this->file),
+			);
+			
+			echo json_encode( $response );
+			
+			exit;
 			
 		}else {
 			die('Not preview');
@@ -568,8 +577,6 @@ class PDStylesAdminController extends PDStyles {
 		
 		// Strip Scaffold from object saved to DB
 		unset( $options['variables'][ $this->permalink ]->scaffold );
-		
-		FB::log($options['variables'], '$options[variable');
 		
 		return $options['variables'];
 	}
