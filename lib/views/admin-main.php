@@ -32,9 +32,14 @@
 					<?php $this->variables['/wp-content/plugins/pd-styles/example/vars.css']->output(); ?>
 		
 					<input type="hidden" name="action" value="update-options" />
-
+						
+					
 					<p class="submit">
 						<input type="submit" class="button-primary" value="<?php _e('Update'); ?>" />
+						<input id="pds_preview" type="button" class="button" value="<?php _e('Preview'); ?>" />
+						
+						<img class="waiting" src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" alt="" /> 
+						<span class="response"> </span>
 					</p>
 
 				</form>

@@ -21,6 +21,10 @@
 		}
 	}
 	
+	img.waiting {
+		display:none;
+	}
+	
 	.left-column {
 		width: 100%;
 	}

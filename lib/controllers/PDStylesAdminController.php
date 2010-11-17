@@ -74,6 +74,7 @@ class PDStylesAdminController extends PDStyles {
 		);
 		$args = wp_parse_args( $args, $defaults );
 		
+		// Setup CSS path
 		$this->file = $args['file'];
 		$this->permalink = $this->get_css_permalink( $this->file );
 		
@@ -98,6 +99,9 @@ class PDStylesAdminController extends PDStyles {
 		// Full path and plugin basename of the main plugin file
 		$this->plugin_file = dirname ( dirname ( dirname ( __FILE__ ) ) ) . '/pd-styles.php';
 		$this->plugin_basename = plugin_basename ( $this->plugin_file );
+		
+		// AJAX
+		add_action('wp_ajax_pdstyles_preview', array( &$this, 'preview') );
 		
 	}
 	
@@ -129,6 +133,7 @@ class PDStylesAdminController extends PDStyles {
 	 */
 	function register_settings() {
 		register_setting ( 'pd-styles' , 'pd-styles' , array( &$this , 'update' ) );
+		register_setting ( 'pd-styles' , 'pd-styles-preview' , array( &$this , 'update_preview' ) );
 	}
 	
 	/**
@@ -531,88 +536,38 @@ class PDStylesAdminController extends PDStyles {
 		}
 	}
 	
-	// !!! This could be swapped out for build_contstants_xml
-	// !!! Note the optional AJAX output for possible JS or CSS use
 	/**
-	 * Build the JS output for shadowbox.js
-	 *
-	 * Shadowbox.js is now built in a very specific order,
-	 * so to dynamically load what we want, we need to build
-	 * the JavaScript dynamically, this causes issues with
-	 * determining the path to shadowbox.js also, so we have to
-	 * do some hacks further down too.
-	 *
-	 * @since 3.0.3
-	 * @param $tofile Boolean write output to file instead of echoing
-	 * @return none
-	 */
-	/*
-	function build_shadowbox ( $tofile = false ) {
-		// If the user is filtering the url for shadowbox.js just bail out here
-		if ( has_filter ( 'shadowbox-js' ) )
-			return;
-
-		$plugin_url = $this->plugin_url();
-		$plugin_dir = WP_PLUGIN_DIR . '/' . dirname ( $this->plugin_basename );
-
-		// Ouput correct content-type, and caching headers
-		if ( ! $tofile )
-			cache_javascript_headers();
-
-		$output = '';
-
-		// Start build
-		foreach ( array( 'intro' , 'core' , 'util' ) as $include ) {
-			// Replace S.path with the correct path, so we don't have to rely on autodetection which is broken with this method
-			if ( $include == 'core' )
-				$output .= str_replace ( 'S.path=null;' , "S.path='$plugin_url/shadowbox/';" , file_get_contents ( "$plugin_dir/shadowbox/$include.js" ) );
-			else
-				$output .= file_get_contents ( "$plugin_dir/shadowbox/$include.js" );
-		}
-
-		$library = $this->get_option ( 'library' );
-		$output .= file_get_contents ( "$plugin_dir/shadowbox/adapters/$library.js" );
-
-		foreach ( array( 'load' , 'plugins' , 'cache' ) as $include )
-			$output .= file_get_contents ( "$plugin_dir/shadowbox/$include.js" );
-
-		if ( $this->get_option ( 'useSizzle' ) == 'true' && $this->get_option ( 'library' ) != 'jquery' )
-			$output .= file_get_contents ( "$plugin_dir/shadowbox/find.js" );
-
-		$players = $this->get_option ( 'players' );
-		if ( in_array( 'flv' , $players ) || in_array( 'swf' , $players ) )
-			$output .= file_get_contents ( "$plugin_dir/shadowbox/flash.js" );
-
-		$language = $this->get_option ( 'language' );
-		$output .= file_get_contents ( "$plugin_dir/shadowbox/languages/$language.js" );
-
-		foreach ( $players as $player )
-			$output .= file_get_contents ( "$plugin_dir/shadowbox/players/$player.js" );
-
-		foreach ( array( 'skin' , 'outro' ) as $include )
-			$output .= file_get_contents ( "$plugin_dir/shadowbox/$include.js" );
-
-		// if we are supposed to write to a file then do so
-		if ( $tofile ) {
-				$upload_dir = wp_upload_dir();
-				$shadowbox_dir = "{$upload_dir['basedir']}/shadowbox-js/";
-				$shadowbox_file = $shadowbox_dir . $this->md5() . '.js';
-
-				if ( ! is_dir ( $shadowbox_dir ) && is_writable ( $upload_dir['basedir'] ) )
-					wp_mkdir_p ( $shadowbox_dir );
-
-				if ( ! file_exists ( $shadowbox_file ) && is_dir ( $shadowbox_dir ) && is_writable ( $shadowbox_dir ) ) {
-					$fh = fopen ( $shadowbox_file, 'w+' );
-					fwrite ( $fh , $output );
-					fclose ( $fh );
-				}
-		} else { // otherwise just echo (backup call to admin-ajax.php for on the fly building)
-			echo $output;
-			die();
-		}
+	 * Update CSS variables used for preview CSS
+	 * 
+	 * @since 0.1
+	 * @return void
+	 **/
+	function update_preview( $options ) {
+		
+		$this->build();
+		
+		// Merge variables form input into variable objects
+		$this->variables[ $this->permalink ]->set( $options['variables'] );
+		$options['variables'][ $this->permalink ] = $this->variables[ $this->permalink ];
+		
+		// Strip Scaffold from object saved to DB
+		unset( $options['variables'][ $this->permalink ]->scaffold );
+		
+		return $options['variables'];
 	}
-	*/
 	
+	/**
+	 * Respond to AJAX preview requests
+	 * 
+	 * @since 0.1
+	 * @return string
+	 **/
+	function preview() {
+
+		update_option('pd-styles-preview', $_POST );
+		die('howdy');
+	}
+
 	/**
 	 * Add the options page
 	 *
