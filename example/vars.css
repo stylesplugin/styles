@@ -1,21 +1,31 @@
 @variables header {
 	label: Header;
 	Logo: image-replace;
+	bg: bgc;
+	bg.label: Background color;
+}
+
+html, body {
+	background-color: #fff;
 }
 
 .site-title a {
 	header.Logo
+	
 }
 
 @variables sc {
-	label: Style C;
+	label: Style A;
 	bg: bgc;
+	bg.label: Background color;
 	border_color: border-color;
+	border_color.label: Border color;
 	background-image: background-image;
+	background-image.label: Background image;
 }
 
 .logged-in {
-	.style-c {
+	.style-a {
 		sc.bg
 		border-width:10px;
 		border-style: solid;
@@ -23,6 +33,8 @@
 		sc.background-image
 		background-repeat: no-repeat;
 		background-position: center right;
+		padding: 10px;
+		-moz-border-radius: 10px;
 	}
 }
 

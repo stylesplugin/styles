@@ -102,7 +102,7 @@ class PDStylesAdminController extends PDStyles {
 		
 		// AJAX
 		add_action('wp_ajax_pdstyles-update-options', array( &$this, 'update_ajax') );
-		
+		add_action('wp_ajax_pdstyles-frontend-load', array( &$this, 'ajax_frontend_load') );
 	}
 	
 	/**
@@ -560,6 +560,19 @@ class PDStylesAdminController extends PDStyles {
 		}else {
 			die('Not preview');
 		}
+	}
+	
+	/**
+	 * Serve frontend view via AJAX
+	 * 
+	 * @since 0.1
+	 * @return void
+	 **/
+	function ajax_frontend_load() {
+		$this->build();
+		
+		$this->load_view('frontend-main.php');
+		exit;
 	}
 	
 	/**
