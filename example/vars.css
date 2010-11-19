@@ -1,12 +1,10 @@
 @variables header {
 	label: Header;
 	Logo: image-replace;
-	bg: bgc;
-	bg.label: Background color;
 }
 
 html, body {
-	background-color: #fff;
+	background-color: #fff !important;
 }
 
 .site-title a {

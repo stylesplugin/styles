@@ -494,6 +494,8 @@ class PDStylesAdminController extends PDStyles {
 	 * @return none
 	 */
 	function update( $options ) {
+		if ( !is_object($this->variables) ) $this->build();
+		
 		// Make sure there are no empty values, seems users like to clear out options before saving
 		foreach ( $this->defaults() as $key => $value ) {
 			if ( 
@@ -543,23 +545,34 @@ class PDStylesAdminController extends PDStyles {
 	 * @return void
 	 **/
 	function update_ajax() {
+		
+		$response = array();
+		
 		if ( isset( $_POST['preview'] )) {
 			
-			update_option('pd-styles-preview', $_POST );
-			
-			$response = array(
-				'message' => 'Preview updated',
-				'href' => '/?scaffold&preview&time='.microtime(true).'&file='.$this->file,
-				'id' => 'pdstyles-preview-'.md5($this->file),
-			);
-			
-			echo json_encode( $response );
-			
-			exit;
+			if ( update_option('pd-styles-preview', $_POST ) ) {
+				$response['message'] = 'Preview updated';
+			}else {
+				$response['message'] = 'Preview unchanged';
+			}
 			
 		}else {
-			die('Not preview');
+			
+			if ( update_option('pd-styles', $_POST ) ) {
+				$response['message'] = 'Stylesheet saved';
+			}else {
+				$response['message'] = 'Stylesheet unchanged';
+			}
+			
 		}
+		
+		$response['href'] = '/?scaffold&preview&time='.microtime(true).'&file='.$this->file;
+		$response['id'] = 'pdstyles-preview-'.md5($this->file);
+		
+		echo json_encode( $response );
+
+		exit;
+		
 	}
 	
 	/**

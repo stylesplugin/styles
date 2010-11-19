@@ -24,9 +24,13 @@
 		
 	}
 	
+	.hidden {
+		display:none;
+	}
+	
 	.postbox-container {
 		width: 400px;
-		height:400px;
+		height:425px;
 		overflow:auto;
 		padding: 20px;
 	}

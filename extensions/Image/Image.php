@@ -84,14 +84,10 @@ class PDStyles_Extension_Image extends Scaffold_Extension_Observer {
 			
 		</th><td valign="top">	
 			
-			<?php if (!empty( $this->value )) : ?>
-				<a class="current thickbox" href="<?php echo $this->get('value', 'form') ?>">
-					<img style="height:80px; border:1px solid #aaa;" src="<?php echo $this->get('value', 'form') ?>" alt="" />
-				</a>
-				<a class="current thickbox" href="<?php echo $this->get('value', 'form') ?>">View full size</a>
-				<br/>
-			<?php endif; ?>
-			
+			<a class="current thickbox <?php if (empty( $this->value )) echo 'hidden '?>image_thumb" href="<?php echo $this->get('value', 'form') ?>">
+				<img style="height:80px;" src="<?php echo $this->get('value', 'form') ?>" alt="" /><br/>
+			</a>
+
 			<input class="pds_image_input" type="text" name="<?php echo $name ?>" id="<?php echo $id ?>" value="<?php echo $this->get('value', 'form'); ?>" size="8" maxlength="8" />
 			<input type="button" class="button" value="<?php _e('Select Image') ?>" onclick="show_image_uploader('<?php echo $id ?>');"/>
 

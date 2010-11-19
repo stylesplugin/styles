@@ -96,10 +96,10 @@ try{convertEntities(thickboxL10n);}catch(e){};
 					
 					<p class="submit">
 						<input id="pds_preview" type="button" class="button" value="<?php _e('Preview'); ?>" />
-						<input type="submit" class="button-primary" value="<?php _e('Save'); ?>" />
+						<input id="pds_save" type="submit" class="button-primary" value="<?php _e('Save'); ?>" />
 						
-						<img class="waiting" src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" alt="" /> 
-						<span class="response"> </span>
+						<img id="pds_waiting" class="waiting" src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" alt="" /> 
+						<span id="pds_response" class="response"> </span>
 					</p>
 
 				</form>
@@ -118,12 +118,45 @@ try{convertEntities(thickboxL10n);}catch(e){};
 	setTimeout( function() {
 		jQuery( '#pds_frontend' ).css('display', 'block')
 	}, 500);
+	
+	jQuery('#pds_save').click( pds_save );
+	
+	function pds_save() {
+		var $ = jQuery;
+
+		$('#pds_waiting').show();
+		$('#pds_response').html('');
+
+		// Get form info
+		var data = $('#pds_frontend form:first').serialize();
+		
+		// + '&preview=1'
+		
+		$.post(ajaxurl, data, function( response ) {
+
+			$( response.id ).remove();
+			$('head').append('<link id="'+response.id+'" rel="stylesheet" href="'+response.href+'" type="text/css" />');
+
+			$('#pds_response').html( response.message );
+			$('#pds_waiting').hide();
+
+			setTimeout( function() {
+				response_wrapper.fadeOut(500, function() {
+					$(this).text('').show();
+				});
+			}, 2000 );
+
+
+		}, 'json');
+
+		return false;
+	}
 			
 
 	function update_image_thumbnail( ) {
 		var $ = jQuery;
 		
-		$(this).parent().find('a').attr('href', $(this).val() );
+		$(this).parent().find('a').attr('href', $(this).val() ).removeClass('hidden');
 		$(this).parent().find('img').attr('src', $(this).val() );
 		
 	}
