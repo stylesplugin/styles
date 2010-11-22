@@ -296,6 +296,11 @@ class PDStyles extends Scaffold_Extension_Observable {
 		$s = $this->get_option('scaffold');
 		$config =& $s['config'];
 		
+		$config['load_paths'] = array(
+			untrailingslashit( get_stylesheet_directory() ),
+			untrailingslashit( $this->plugin_dir_path() ),
+		);
+		
 		// Minify CSS when in production
 		if ( $config['production'] === true ) {
 			$config['extensions'][] = 'Minify';
