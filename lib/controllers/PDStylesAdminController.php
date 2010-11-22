@@ -144,8 +144,6 @@ class PDStylesAdminController extends PDStyles {
 	 */
 	function admin_js() {
 		
-		wp_register_script('pds-colorpicker', $this->plugin_url().'/lib/js/colorpicker/js/colorpicker.js',array('jquery'), $this->version, true);
-		
 		wp_enqueue_script('postbox');
 		wp_enqueue_script('dashboard');
 		

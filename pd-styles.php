@@ -120,8 +120,24 @@ class PDStyles extends Scaffold_Extension_Observable {
 		// ajax hooks so that we can access WordPress within Scaffold
 		add_action('parse_request', array( &$this, 'parse_request') );
 		add_filter('query_vars', array( &$this, 'query_vars') );
+
+		$this->register_scripts();
 		
 		$this->load_extensions( $this->plugin_dir_path() . 'extensions' );
+
+	}
+	
+	/**
+	 * Register scripts for use in front or back end
+	 * 
+	 * @since 0.1
+	 * @return void
+	 **/
+	function register_scripts() {
+		wp_register_script('pds-colorpicker', $this->plugin_url().'/lib/js/colorpicker/js/colorpicker.js',array('jquery'), $this->version, true);
+		
+		// Not normally registered in frontend
+		wp_register_script('pds-media-upload', admin_url('js/media-upload.js'), array( 'thickbox' ));
 	}
 	
 	/**
