@@ -70,7 +70,7 @@ class PDStylesAdminController extends PDStyles {
 		parent::__construct();
 		
 		$defaults = array(
-			'file'	=> PDStyles::plugin_dir_path() . 'example/vars.css',
+			'file'	=> apply_filters( 'pdstyles_default_file', PDStyles::plugin_dir_path() . 'example/vars.css' ),
 		);
 		$args = wp_parse_args( $args, $defaults );
 		

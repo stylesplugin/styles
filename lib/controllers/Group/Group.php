@@ -54,7 +54,7 @@ class PDStyles_Extension_Group extends Scaffold_Extension_Observer {
 	
 	function create_objects( $variables, $permalink ) {
 		global $PDStylesAdminController;
-		
+		FB::log($PDStylesAdminController, '$PDStylesAdminController');
 		// Instantiate Objects
 		foreach ( $variables as $key => $args ) {
 			if ( is_array($args) ) {

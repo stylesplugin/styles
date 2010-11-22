@@ -348,32 +348,36 @@ class PDStyles extends Scaffold_Extension_Observable {
 	}
 	
 } // END PDStyles class
-
 /**
  * Instantiate the PDStylesFrontend or $PDStylesAdminController Class
  *
  * Deactivate and die if files can not be included
  */
-if ( is_admin () ) {
+function PDStylesInit() {
 	
-	// include admin class
+	if ( is_admin () ) {
+	
+		// include admin class
 
-	if ( @include dirname ( __FILE__ ) . '/lib/controllers/PDStylesAdminController.php' ) {
+		if ( @include dirname ( __FILE__ ) . '/lib/controllers/PDStylesAdminController.php' ) {
+			global $PDStylesAdminController;
+			$PDStylesAdminController = new PDStylesAdminController ();
+
+		} else {
+			PDStyles::deactivate_and_die ( dirname ( __FILE__ ) . '/inc/admin.php' );
+		}
+	} else {
 		
-		$PDStylesAdminController = new PDStylesAdminController ();
-
-	} else {
-		PDStyles::deactivate_and_die ( dirname ( __FILE__ ) . '/inc/admin.php' );
-	}
-} else {
+		// include subadmin class
 	
-	// include subadmin class
-	
-	if ( @include dirname ( __FILE__ ) . '/lib/controllers/PDStylesFrontendController.php' ) {
-		$PDStylesFrontendController = new PDStylesFrontendController ();
-	} else {
-		PDStyles::deactivate_and_die ( dirname ( __FILE__ ) . '/inc/front-end.php' );
+		if ( @include dirname ( __FILE__ ) . '/lib/controllers/PDStylesFrontendController.php' ) {
+			global $PDStylesFrontendController;
+			$PDStylesFrontendController = new PDStylesFrontendController ();
+		} else {
+			PDStyles::deactivate_and_die ( dirname ( __FILE__ ) . '/inc/front-end.php' );
+		}
 	}
-} 
+}
+add_action('init', 'PDStylesInit');
 
 ?>

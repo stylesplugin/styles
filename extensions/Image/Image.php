@@ -88,7 +88,7 @@ class PDStyles_Extension_Image extends Scaffold_Extension_Observer {
 				<img style="height:80px;" src="<?php echo $this->get('value', 'form') ?>" alt="" /><br/>
 			</a>
 
-			<input class="pds_image_input" type="text" name="<?php echo $name ?>" id="<?php echo $id ?>" value="<?php echo $this->get('value', 'form'); ?>" size="8" maxlength="8" />
+			<input class="pds_image_input" type="text" name="<?php echo $name ?>" id="<?php echo $id ?>" value="<?php echo $this->get('value', 'form'); ?>" size="8" />
 			<input type="button" class="button" value="<?php _e('Select Image') ?>" onclick="show_image_uploader('<?php echo $id ?>');"/>
 
 			<?php if (!empty( $this->description )) : ?>
@@ -145,7 +145,13 @@ class PDStyles_Extension_Image extends Scaffold_Extension_Observer {
 		switch( $context ) {
 			
 			default:
+				$uploads = wp_upload_dir();
+				
+				// Get real uploads path, including multisite blogs.dir
+				$value = str_replace( $uploads['baseurl'].'/', '/'.UPLOADS, $value);
+				// Convert URL to path
 				$value = str_replace( site_url(), '', $value);
+				
 				$this->value = $value;
 				break;
 		}

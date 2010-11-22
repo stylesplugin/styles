@@ -6,7 +6,7 @@ var userSettings = {
 		'uid': '1',
 		'time':'1290137514'
 	},
-	ajaxurl = 'http://pdstyles/wp-admin/admin-ajax.php',
+	ajaxurl = '/wp-admin/admin-ajax.php',
 	pagenow = 'appearance_page_pd-styles',
 	typenow = '',
 	adminpage = 'appearance_page_pd-styles',
@@ -15,15 +15,15 @@ var userSettings = {
 	isRtl = 0;
 //]]>
 </script>
-<link rel='stylesheet' href='http://pdstyles/wp-admin/load-styles.php?c=1&amp;dir=ltr&amp;load=global,wp-admin,dashboard&amp;ver=466b2454247efc0a3125372b6b862725' type='text/css' media='all' />
-<link rel='stylesheet' id='colors-css'  href='http://pdstyles/wp-admin/css/colors-fresh.css?ver=20100610' type='text/css' media='all' />
+<link rel='stylesheet' href='/wp-admin/load-styles.php?c=1&amp;dir=ltr&amp;load=global,wp-admin,dashboard&amp;ver=466b2454247efc0a3125372b6b862725' type='text/css' media='all' />
+<link rel='stylesheet' id='colors-css'  href='/wp-admin/css/colors-fresh.css?ver=20100610' type='text/css' media='all' />
 <!--[if lte IE 7]>
-<link rel='stylesheet' id='ie-css'  href='http://pdstyles/wp-admin/css/ie.css?ver=20100610' type='text/css' media='all' />
+<link rel='stylesheet' id='ie-css'  href='/wp-admin/css/ie.css?ver=20100610' type='text/css' media='all' />
 <![endif]-->
-<link rel='stylesheet' id='thickbox-css'  href='http://pdstyles/wp-includes/js/thickbox/thickbox.css?ver=20090514' type='text/css' media='all' />
-<link rel='stylesheet' id='pds-colorpicker-css'  href='http://pdstyles/wp-content/plugins/pd-styles/lib/js/colorpicker/css/colorpicker.css?ver=0.1' type='text/css' media='all' />
-<link rel='stylesheet' id='pd-styles-admin-css-css'  href='http://pdstyles/?scaffold&#038;file=lib%2Fcss%2Fadmin.css&#038;ver=0.1' type='text/css' media='screen' />
-<!-- <link rel='stylesheet' id='pd-styles-admin-css-test-css'  href='http://pdstyles/?scaffold&#038;file=example%2Fvars.css&#038;ver=0.1' type='text/css' media='screen' /> -->
+<link rel='stylesheet' id='thickbox-css'  href='/wp-includes/js/thickbox/thickbox.css?ver=20090514' type='text/css' media='all' />
+<link rel='stylesheet' id='pds-colorpicker-css'  href='/wp-content/plugins/pdstyles/lib/js/colorpicker/css/colorpicker.css?ver=0.1' type='text/css' media='all' />
+<link rel='stylesheet' id='pd-styles-admin-css-css'  href='/?scaffold&#038;file=lib%2Fcss%2Fadmin.css&#038;ver=0.1' type='text/css' media='screen' />
+<!-- <link rel='stylesheet' id='pd-styles-admin-css-test-css'  href='/?scaffold&#038;file=example%2Fvars.css&#038;ver=0.1' type='text/css' media='screen' /> -->
 <script type='text/javascript'>
 /* <![CDATA[ */
 var quicktagsL10n = {
@@ -69,9 +69,9 @@ try{convertEntities(thickboxL10n);}catch(e){};
 /* ]]> */
 </script>
 
-<script type='text/javascript' src='http://pdstyles/wp-admin/load-scripts.php?c=1&amp;load=hoverIntent,common,jquery-color,jquery-ui-core,jquery-ui-sortable,postbox,wp-ajax-response,wp-lists,jquery-ui-resizable,jquery-ui-draggable,admin-comments,dashboard,thickbox,media-upload&amp;ver=037ef1718671a442fbb12a5cf0a08e83'></script>
-<script type='text/javascript' src='http://pdstyles/wp-content/plugins/pd-styles/lib/js/colorpicker/js/colorpicker.js?ver=0.1'></script>
-<script type='text/javascript' src='http://pdstyles/wp-content/plugins/pd-styles/lib/js/admin-main.js?ver=0.1'></script>
+<script type='text/javascript' src='/wp-admin/load-scripts.php?c=1&amp;load=hoverIntent,common,jquery-color,jquery-ui-core,jquery-ui-sortable,postbox,wp-ajax-response,wp-lists,jquery-ui-resizable,jquery-ui-draggable,admin-comments,dashboard,thickbox,media-upload&amp;ver=037ef1718671a442fbb12a5cf0a08e83'></script>
+<script type='text/javascript' src='/wp-content/plugins/pdstyles/lib/js/colorpicker/js/colorpicker.js?ver=0.1'></script>
+<script type='text/javascript' src='/wp-content/plugins/pdstyles/lib/js/admin-main.js?ver=0.1'></script>
 
 <script type="text/javascript">if(typeof wpOnload=='function')wpOnload();</script>
 
