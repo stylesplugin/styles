@@ -258,6 +258,10 @@ class PDStyles extends Scaffold_Extension_Observable {
 
 			$config = $this->get_scaffold_config();
 			
+			if ( isset( $_GET['preview'] ) ) {
+				$config['PDStyles']['preview'] = true;
+			}
+			
 			$system = $this->plugin_dir_path() . 'scaffold'; // No trailing slash
 
 			$scaffold_include = $system.'/index.php';

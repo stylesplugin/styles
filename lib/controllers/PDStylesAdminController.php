@@ -41,7 +41,24 @@ class PDStylesAdminController extends PDStyles {
 	 * @since 0.1
 	 * @var string
 	 **/
-	var $variables;
+	var $variables = array();
+	
+	/**
+	 * Path to CSS file being manipulated
+	 * 
+	 * @since 0.1
+	 * @var string
+	 **/
+	var $file;
+	
+	/**
+	 * Friendly formatting of path to $this->file from WP basedir
+	 * Allows for CSS links to not break between dev & production environments.
+	 * 
+	 * @since 0.1
+	 * @var string
+	 **/
+	var $permalink;
 	
 	/**
 	 * Setup backend functionality in WordPress
@@ -49,8 +66,18 @@ class PDStylesAdminController extends PDStyles {
 	 * @return none
 	 * @since 0.1
 	 */
-	function __construct() {
+	function __construct( $args = array() ) {
 		parent::__construct();
+		
+		$defaults = array(
+			'file'	=> PDStyles::plugin_dir_path() . 'example/vars.css',
+		);
+		$args = wp_parse_args( $args, $defaults );
+		
+		// Setup CSS path
+		$this->file = $args['file'];
+		$this->permalink = $this->get_css_permalink( $this->file );
+		
 		$this->options = get_option( 'pd-styles' );
 		
 		if ( version_compare ( $this->get_option ( 'version' ) , $this->dbversion , '!=' ) && ! empty ( $this->options ) ) {
@@ -73,6 +100,9 @@ class PDStylesAdminController extends PDStyles {
 		$this->plugin_file = dirname ( dirname ( dirname ( __FILE__ ) ) ) . '/pd-styles.php';
 		$this->plugin_basename = plugin_basename ( $this->plugin_file );
 		
+		// AJAX
+		add_action('wp_ajax_pdstyles-update-options', array( &$this, 'update_ajax') );
+		add_action('wp_ajax_pdstyles-frontend-load', array( &$this, 'ajax_frontend_load') );
 	}
 	
 	/**
@@ -82,14 +112,17 @@ class PDStylesAdminController extends PDStyles {
 	 * @return void
 	 **/
 	function build() {
-		
-		$this->variables = new PDStyles_Extension_Variable( array(
-			'file' => '',
+
+		$this->variables[ $this->permalink ] = new PDStyles_Extension_Variable( array(
+			'file' => $this->file,
+			'permalink' => $this->permalink,
 		) );
 		
 		// Merge values from database into variable objects
-		$this->variables->set( array( $this->variables->permalink => $this->options['variables']->get() ) );
-
+		if ( is_object( $this->options['variables'][ $this->permalink ] ) ) {
+			$this->variables[ $this->permalink ]->set( array( $this->permalink => $this->options['variables'][ $this->permalink ]->get() ) );
+		}
+		
 	}
 	
 	/**
@@ -100,6 +133,7 @@ class PDStylesAdminController extends PDStyles {
 	 */
 	function register_settings() {
 		register_setting ( 'pd-styles' , 'pd-styles' , array( &$this , 'update' ) );
+		register_setting ( 'pd-styles' , 'pd-styles-preview' , array( &$this , 'update_preview' ) );
 	}
 	
 	/**
@@ -367,7 +401,6 @@ class PDStylesAdminController extends PDStyles {
 		} else {
 			$this->check_upgrade();
 		}
-		// $this->build_shadowbox ( true ); // Attempt to build and cache shadowbox.js
 	}
 	
 	/**
@@ -461,6 +494,8 @@ class PDStylesAdminController extends PDStyles {
 	 * @return none
 	 */
 	function update( $options ) {
+		if ( !is_object($this->variables) ) $this->build();
+		
 		// Make sure there are no empty values, seems users like to clear out options before saving
 		foreach ( $this->defaults() as $key => $value ) {
 			if ( 
@@ -471,16 +506,16 @@ class PDStylesAdminController extends PDStyles {
 				$options[$key] = $value;
 			}
 		}
+		
 		// Merge variables form input into variable objects
-		$this->variables->set( $options['variables'] );
-		$options['variables'] = $this->variables;
+		$this->variables[ $this->permalink ]->set( $options['variables'] );
+		$options['variables'][ $this->permalink ] = $this->variables[ $this->permalink ];
 		
 		// Check if we are supposed to remove options
 		if ( isset ( $options['delete'] ) && $options['delete'] == 'true' ) { 
 			delete_option ( 'pd-styles' );
 		} else if ( isset ( $options['default'] ) && $options['default'] == 'true' ) { // Check if we are supposed to reset to defaults
 			$this->options = $this->defaults();
-			// $this->build_shadowbox ( true ); // Attempt to build and cache shadowbox.js
 			return $this->options;
 		} else {
 			// Save options
@@ -491,94 +526,87 @@ class PDStylesAdminController extends PDStyles {
 				$options['_wp_http_referer'],
 				$options['action']
 			);
-
-			$this->options = $options;
-			return $this->options;
+			
+			// Update current object for further processing
+			$this->options = $options; 
+			
+			// Strip Scaffold from object saved to DB
+			unset( $options['variables'][ $this->permalink ]->scaffold );
+			
+			// Write to DB
+			return $options; 
 		}
 	}
 	
-	// !!! This could be swapped out for build_contstants_xml
-	// !!! Note the optional AJAX output for possible JS or CSS use
 	/**
-	 * Build the JS output for shadowbox.js
-	 *
-	 * Shadowbox.js is now built in a very specific order,
-	 * so to dynamically load what we want, we need to build
-	 * the JavaScript dynamically, this causes issues with
-	 * determining the path to shadowbox.js also, so we have to
-	 * do some hacks further down too.
-	 *
-	 * @since 3.0.3
-	 * @param $tofile Boolean write output to file instead of echoing
-	 * @return none
-	 */
-	/*
-	function build_shadowbox ( $tofile = false ) {
-		// If the user is filtering the url for shadowbox.js just bail out here
-		if ( has_filter ( 'shadowbox-js' ) )
-			return;
-
-		$plugin_url = $this->plugin_url();
-		$plugin_dir = WP_PLUGIN_DIR . '/' . dirname ( $this->plugin_basename );
-
-		// Ouput correct content-type, and caching headers
-		if ( ! $tofile )
-			cache_javascript_headers();
-
-		$output = '';
-
-		// Start build
-		foreach ( array( 'intro' , 'core' , 'util' ) as $include ) {
-			// Replace S.path with the correct path, so we don't have to rely on autodetection which is broken with this method
-			if ( $include == 'core' )
-				$output .= str_replace ( 'S.path=null;' , "S.path='$plugin_url/shadowbox/';" , file_get_contents ( "$plugin_dir/shadowbox/$include.js" ) );
-			else
-				$output .= file_get_contents ( "$plugin_dir/shadowbox/$include.js" );
+	 * Handle updating options via AJAX
+	 * 
+	 * @since 0.1
+	 * @return void
+	 **/
+	function update_ajax() {
+		
+		$response = array();
+		
+		if ( isset( $_POST['preview'] )) {
+			
+			if ( update_option('pd-styles-preview', $_POST ) ) {
+				$response['message'] = 'Preview updated';
+			}else {
+				$response['message'] = 'Preview unchanged';
+			}
+			
+		}else {
+			
+			if ( update_option('pd-styles', $_POST ) ) {
+				$response['message'] = 'Stylesheet saved';
+			}else {
+				$response['message'] = 'Stylesheet unchanged';
+			}
+			
 		}
+		
+		$response['href'] = '/?scaffold&preview&time='.microtime(true).'&file='.$this->file;
+		$response['id'] = 'pdstyles-preview-'.md5($this->file);
+		
+		echo json_encode( $response );
 
-		$library = $this->get_option ( 'library' );
-		$output .= file_get_contents ( "$plugin_dir/shadowbox/adapters/$library.js" );
-
-		foreach ( array( 'load' , 'plugins' , 'cache' ) as $include )
-			$output .= file_get_contents ( "$plugin_dir/shadowbox/$include.js" );
-
-		if ( $this->get_option ( 'useSizzle' ) == 'true' && $this->get_option ( 'library' ) != 'jquery' )
-			$output .= file_get_contents ( "$plugin_dir/shadowbox/find.js" );
-
-		$players = $this->get_option ( 'players' );
-		if ( in_array( 'flv' , $players ) || in_array( 'swf' , $players ) )
-			$output .= file_get_contents ( "$plugin_dir/shadowbox/flash.js" );
-
-		$language = $this->get_option ( 'language' );
-		$output .= file_get_contents ( "$plugin_dir/shadowbox/languages/$language.js" );
-
-		foreach ( $players as $player )
-			$output .= file_get_contents ( "$plugin_dir/shadowbox/players/$player.js" );
-
-		foreach ( array( 'skin' , 'outro' ) as $include )
-			$output .= file_get_contents ( "$plugin_dir/shadowbox/$include.js" );
-
-		// if we are supposed to write to a file then do so
-		if ( $tofile ) {
-				$upload_dir = wp_upload_dir();
-				$shadowbox_dir = "{$upload_dir['basedir']}/shadowbox-js/";
-				$shadowbox_file = $shadowbox_dir . $this->md5() . '.js';
-
-				if ( ! is_dir ( $shadowbox_dir ) && is_writable ( $upload_dir['basedir'] ) )
-					wp_mkdir_p ( $shadowbox_dir );
-
-				if ( ! file_exists ( $shadowbox_file ) && is_dir ( $shadowbox_dir ) && is_writable ( $shadowbox_dir ) ) {
-					$fh = fopen ( $shadowbox_file, 'w+' );
-					fwrite ( $fh , $output );
-					fclose ( $fh );
-				}
-		} else { // otherwise just echo (backup call to admin-ajax.php for on the fly building)
-			echo $output;
-			die();
-		}
+		exit;
+		
 	}
-	*/
 	
+	/**
+	 * Serve frontend view via AJAX
+	 * 
+	 * @since 0.1
+	 * @return void
+	 **/
+	function ajax_frontend_load() {
+		$this->build();
+		
+		$this->load_view('frontend-main.php');
+		exit;
+	}
+	
+	/**
+	 * Update CSS variables used for preview CSS
+	 * 
+	 * @since 0.1
+	 * @return void
+	 **/
+	function update_preview( $options ) {
+		$this->build();
+
+		// Merge variables form input into variable objects
+		$this->variables[ $this->permalink ]->set( $options['variables'] );
+		$options['variables'][ $this->permalink ] = $this->variables[ $this->permalink ];
+		
+		// Strip Scaffold from object saved to DB
+		unset( $options['variables'][ $this->permalink ]->scaffold );
+		
+		return $options['variables'];
+	}
+
 	/**
 	 * Add the options page
 	 *
@@ -616,14 +644,12 @@ class PDStylesAdminController extends PDStyles {
 	 * @since 0.1
 	 */
 	function admin_page() {
-		
 		// Update options if something was submitted
-		if ( $_POST['action'] == 'update-options' && check_admin_referer('pd-styles-update-options') ) {
+		if ( $_POST['action'] == 'pdstyles-update-options' && check_admin_referer('pd-styles-update-options') ) {
 			// Uses $this->update() sanitation callback
 			update_option('pd-styles', $_POST );
-
 		}
-		
+
 		$this->load_view('admin-main.php');
 	}
 

@@ -42,9 +42,13 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 	var $scaffold;
 	
 	function __construct( $args = array() ) {
+		if ( empty( $args['file'] ) ) {
+			FB::error('No file specified in '.__FILE__);
+			return false;
+		}
 		
-		$this->file = PDStyles::plugin_dir_path() . 'example/vars.css';
-		$this->permalink = PDStyles::get_css_permalink( $this->file );
+		$this->file = $args['file'];
+		$this->permalink = $args['permalink'];
 
 		$this->scaffold_init();
 		
@@ -59,6 +63,8 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 				unset( $this->variables[$key] );
 			}
 		}
+		
+		return true;
 	}
 	
 	/**
