@@ -12,7 +12,7 @@ html, body {
 	
 }
 
-@variables sc {
+@variables sa {
 	label: Style A;
 	bg: bgc;
 	bg.label: Background color;
@@ -21,14 +21,13 @@ html, body {
 	background-image: background-image;
 	background-image.label: Background image;
 }
-
-.logged-in {
+#main {
 	.style-a {
-		sc.bg
+		sa.bg
 		border-width:10px;
 		border-style: solid;
-		sc.border_color
-		sc.background-image
+		sa.border_color
+		sa.background-image
 		background-repeat: no-repeat;
 		background-position: center right;
 		padding: 10px;
@@ -39,12 +38,12 @@ html, body {
 
 
 #pds_testbox {
-	sc.bg
+	sa.bg
 	border-width:10px;
 	border-style: solid;
-	sc.border_color
+	sa.border_color
 	padding: 20px;
-	sc.background-image
+	sa.background-image
 	background-repeat: no-repeat;
 	background-position: center right;
 	.img {
