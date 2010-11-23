@@ -28,7 +28,7 @@ class PDStyles_Extension_Color extends PDStyles_Extension_Observer {
 	 * @since 0.1
 	 * @return string
 	 **/
-	function get( $variable, $context ) {
+	function get( $variable, $context = null ) {
 		$value = $this->$variable;
 
 		switch( $context ) {

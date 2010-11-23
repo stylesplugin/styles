@@ -7,96 +7,16 @@
  * @package pd-styles
  * @author pdclark
  **/
-class PDStyles_Extension_Image extends Scaffold_Extension_Observer {
+class PDStyles_Extension_Image extends PDStyles_Extension_Observer {
 	
-	/**
-	 * Form element ID and Name
-	 * 
-	 * @since 0.1
-	 * @var string
-	 **/
-	var $id;
-	
-	/**
-	 * Variable key in array
-	 * 
-	 * @since 0.1
-	 * @var string
-	 **/
-	var $key;
-	
-	/**
-	 * Nice text name for display in element label
-	 * 
-	 * @since 0.1
-	 * @var string
-	 **/
-	var $label;
-	
-	/**
-	 * Value loaded from database
-	 * 
-	 * @since 0.1
-	 * @var string
-	 **/
-	private $value;
-	
-	/**
-	 * Variable type specified in CSS
-	 * 
-	 * @since 0.1
-	 * @var string
-	 **/
-	private $type;
-	
-	/**
-	 * Variable values to match this object to
-	 * @since 0.1
-	 * @var array
-	 */
-	private $keywords = array (
-		'image',
-		'image-replace',
-		'background-image',
-	);
-	
-	function __construct( $args = array() ) {
-		$defaults = array(
-			// 'default'		=> '',
+	function __construct( $args = array(), Scaffold_Extension_Observable $observable = null ) {
+		parent::__construct( $args, $observable );
+		
+		$this->keywords = array(
+			'image',
+			'image-replace',
+			'background-image',
 		);
-		$args = wp_parse_args( $args, $defaults );
-		
-		$this->id = $args['id'];
-		$this->key = $args['key'];
-		$this->label = $args['label'];
-		$this->type = $args['type'];
-	}
-	
-	function output( $permalink ) {
-		$name = "{$permalink}[$this->key]";
-		$id = 'pds_'.md5($name);	
-		?>
-		
-		<tr class="pds_image"><th valign="top" scrope="row">
-			<label for="<?php echo $id; ?>">
-				<?php echo $this->label ?>
-			</label>
-			
-		</th><td valign="top">	
-			
-			<a class="current thickbox <?php if (empty( $this->value )) echo 'hidden '?>image_thumb" href="<?php echo $this->get('value', 'form') ?>">
-				<img style="height:80px;" src="<?php echo $this->get('value', 'form') ?>" alt="" /><br/>
-			</a>
-
-			<input class="pds_image_input" type="text" name="<?php echo $name ?>" id="<?php echo $id ?>" value="<?php echo $this->get('value', 'form'); ?>" size="8" />
-			<input type="button" class="button" value="<?php _e('Select Image') ?>" onclick="show_image_uploader('<?php echo $id ?>');"/>
-
-			<?php if (!empty( $this->description )) : ?>
-				<br/><small><?php echo $this->description ?></small>
-			<?php endif; ?>
-			
-		</td></tr>
-		<?php		
 	}
 	
 	/**
@@ -148,7 +68,9 @@ class PDStyles_Extension_Image extends Scaffold_Extension_Observer {
 				$uploads = wp_upload_dir();
 				
 				// Get real uploads path, including multisite blogs.dir
-				$value = str_replace( $uploads['baseurl'].'/', '/'.UPLOADS, $value);
+				if( defined('UPLOADS') ) {
+					$value = str_replace( $uploads['baseurl'].'/', '/'.UPLOADS, $value);
+				}
 				// Convert URL to path
 				$value = str_replace( site_url(), '', $value);
 				
@@ -157,16 +79,31 @@ class PDStyles_Extension_Image extends Scaffold_Extension_Observer {
 		}
 	}
 	
-	/**
-	 * Detect if input CSS var looks like the type this object handles
-	 * 
-	 * @since 0.1
-	 * @return bool
-	 **/
-	function is_type( $args ) {
-		if ( in_array( $args['type'], $this->keywords ) ) return true;
-		return false;
+	function output( $permalink ) {
+		$name = "{$permalink}[$this->key]";
+		$id = 'pds_'.md5($name);	
+		?>
+		
+		<tr class="pds_image"><th valign="top" scrope="row">
+			<label for="<?php echo $id; ?>">
+				<?php echo $this->label ?>
+			</label>
+			
+		</th><td valign="top">	
+			
+			<a class="current thickbox <?php if (empty( $this->value )) echo 'hidden '?>image_thumb" href="<?php echo $this->get('value', 'form') ?>">
+				<img style="height:80px;" src="<?php echo $this->get('value', 'form') ?>" alt="" /><br/>
+			</a>
+
+			<input class="pds_image_input" type="text" name="<?php echo $name ?>" id="<?php echo $id ?>" value="<?php echo $this->get('value', 'form'); ?>" size="8" />
+			<input type="button" class="button" value="<?php _e('Select Image') ?>" onclick="show_image_uploader('<?php echo $id ?>');"/>
+
+			<?php if (!empty( $this->description )) : ?>
+				<br/><small><?php echo $this->description ?></small>
+			<?php endif; ?>
+			
+		</td></tr>
+		<?php		
 	}
 	
-
 } // END class 
