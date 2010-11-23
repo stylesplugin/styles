@@ -124,11 +124,11 @@ abstract class PDStyles_Extension_Observer extends Scaffold_Extension_Observer
 	 * @since 0.1
 	 * @return string
 	 **/
-	function value( $context = null ) {
+	function value( $context = null, $key = null ) {
 		
 		$method = $context.'_value';
 		if ( method_exists( $this, $method ) ) {
-			return $this->$method();
+			return $this->$method( $key );
 		}else {
 			return $this->values;
 		}

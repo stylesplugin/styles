@@ -201,8 +201,8 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 		}
 		if ( !array_key_exists( $this->permalink, (array) $values )) {
 			FB::error('$this->permalink not found in $values.');
-			FB::log($this->permalink, '$this->permalink');
-			FB::log($values, '$values');
+			FB::error($this->permalink, '$this->permalink');
+			FB::error($values, '$values');
 			return;
 		}
 		

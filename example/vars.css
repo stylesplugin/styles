@@ -20,6 +20,7 @@ html, body {
 	border_color.label: Border color;
 	background-image: background-image;
 	background-image.label: Background image;
+	font: font;
 }
 #main {
 	.style-a {
@@ -32,6 +33,9 @@ html, body {
 		background-position: center right;
 		padding: 10px;
 		-moz-border-radius: 10px;
+		h2 {
+			sa.font
+		}
 	}
 }
 

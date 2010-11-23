@@ -560,7 +560,7 @@ class PDStylesAdminController extends PDStyles {
 	function update_ajax() {
 		
 		$response = array();
-		FB::log($_POST, '$_POST');
+
 		if ( isset( $_POST['preview'] )) {
 			
 			if ( update_option('pd-styles-preview', $_POST ) ) {
