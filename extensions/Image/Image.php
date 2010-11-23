@@ -20,36 +20,37 @@ class PDStyles_Extension_Image extends PDStyles_Extension_Observer {
 	}
 	
 	/**
-	 * Get value with correct formatting
+	 * Return value for output in form element
 	 * 
 	 * @since 0.1
 	 * @return string
 	 **/
-	function value( $context = null ) {
-		switch( $context ) {
-			
-			case 'css':
-				
-				if (empty($this->value)) return '';
-				
-				switch( $this->type ) {
-					case 'image-replace':
-					case 'image':
-						$output = "image-replace: url({$this->value});";
-						break;
-					case 'background-image':
-						$output = "background-image: url({$this->value});";
-						break;
-				}
-			
-				return $output;
-				
+	function form_value() {
+		return $this->value;
+	}
+	
+	/**
+	 * Return value for output in CSS
+	 * 
+	 * @since 0.1
+	 * @return string
+	 **/
+	function css_value() {
+		
+		if (empty($this->value)) return '';
+		
+		switch( $this->type ) {
+			case 'image-replace':
+			case 'image':
+				$output = "image-replace: url({$this->value});";
 				break;
-			
-			default:
-				return $this->value;
+			case 'background-image':
+				$output = "background-image: url({$this->value});";
 				break;
 		}
+	
+		return $output;
+		
 	}
 	
 	/**
@@ -60,21 +61,17 @@ class PDStyles_Extension_Image extends PDStyles_Extension_Observer {
 	 **/
 	function set( $variable, $value, $context = null ) {
 
-		switch( $context ) {
-			
-			default:
-				$uploads = wp_upload_dir();
-				
-				// Get real uploads path, including multisite blogs.dir
-				if( defined('UPLOADS') ) {
-					$value = str_replace( $uploads['baseurl'].'/', '/'.UPLOADS, $value);
-				}
-				// Convert URL to path
-				$value = str_replace( site_url(), '', $value);
-				
-				$this->value = $value;
-				break;
+		$uploads = wp_upload_dir();
+		
+		// Get real uploads path, including multisite blogs.dir
+		if( defined('UPLOADS') ) {
+			$value = str_replace( $uploads['baseurl'].'/', '/'.UPLOADS, $value);
 		}
+		// Convert URL to path
+		$value = str_replace( site_url(), '', $value);
+		
+		$this->value = $value;
+		
 	}
 	
 	function output() {	

@@ -118,9 +118,26 @@ abstract class PDStyles_Extension_Observer extends Scaffold_Extension_Observer
 		return false;
 	}
 	
-	abstract function value( $context = null );
+	/**
+	 * Get value with correct formatting
+	 * 
+	 * @since 0.1
+	 * @return string
+	 **/
+	function value( $context = null ) {
+		
+		$method = $context.'_value';
+		if ( method_exists( $this, $method ) ) {
+			return $this->$method();
+		}else {
+			return $this->value;
+		}
+	}
+	
 	abstract function set( $variable, $value, $context = 'default' );
 	abstract function output();
+	abstract function form_value();
+	abstract function css_value();
 	
 	
 }

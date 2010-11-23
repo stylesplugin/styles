@@ -23,49 +23,45 @@ class PDStyles_Extension_Color extends PDStyles_Extension_Observer {
 	}
 	
 	/**
-	 * Get value with correct formatting
+	 * Return value for output in form element
 	 * 
 	 * @since 0.1
 	 * @return string
 	 **/
-	function value( $context = null ) {
-		switch( $context ) {
-			case 'form':
-			
-				return trim( $this->value, '# ');
-			
+	function form_value() {
+		return trim( $this->value, '# ');
+	}
+	
+	/**
+	 * Return value for output in CSS
+	 * 
+	 * @since 0.1
+	 * @return string
+	 **/
+	function css_value() {
+		
+		if (empty($this->value)) return '';
+		
+		switch( $this->type ) {
+			case 'bgc':
+			case 'background-color':
+				$output = "background-color:{$this->value};";
+				break;
+				
+			case 'c':
+			case 'color':
+				$output = "color:{$this->value};";
 				break;
 			
-			case 'css':
-				
-				if (empty($this->value)) return '';
-				
-				switch( $this->type ) {
-					case 'bgc':
-					case 'background-color':
-						$output = "background-color:{$this->value};";
-						break;
-						
-					case 'c':
-					case 'color':
-						$output = "color:{$this->value};";
-						break;
-					
-					case 'border-color':
-					case 'bordc':
-						$output = "border-color:{$this->value};";
-						break;
-					
-				}
-			
-				return $output;
-				
+			case 'border-color':
+			case 'bordc':
+				$output = "border-color:{$this->value};";
 				break;
 			
-			default:
-				return $this->value;
-				break;
 		}
+	
+		return $output;
+		
 	}
 	
 	/**
@@ -76,18 +72,12 @@ class PDStyles_Extension_Color extends PDStyles_Extension_Observer {
 	 **/
 	function set( $variable, $value, $context = 'default' ) {
 
-		switch( $context ) {
-			
-			default:
-				$value = trim( $value, '# ');
-				
-				if ( !empty( $value ) ) {
-					$this->value = '#'.$value;
-				}else {
-					$this->value = '';
-				}
-				
-				break;
+		$value = trim( $value, '# ');
+		
+		if ( !empty( $value ) ) {
+			$this->value = '#'.$value;
+		}else {
+			$this->value = '';
 		}
 	}
 	
