@@ -20,19 +20,17 @@ class PDStyles_Extension_Image extends PDStyles_Extension_Observer {
 	}
 	
 	/**
-	 * Get variable with correct formatting
+	 * Get value with correct formatting
 	 * 
 	 * @since 0.1
 	 * @return string
 	 **/
-	function get( $variable, $context = null ) {
-		$value = $this->$variable;
-
+	function value( $context = null ) {
 		switch( $context ) {
 			
 			case 'css':
 				
-				if (empty($value)) return '';
+				if (empty($this->value)) return '';
 				
 				switch( $this->type ) {
 					case 'image-replace':
@@ -49,7 +47,7 @@ class PDStyles_Extension_Image extends PDStyles_Extension_Observer {
 				break;
 			
 			default:
-				return $value;
+				return $this->value;
 				break;
 		}
 	}
@@ -89,11 +87,11 @@ class PDStyles_Extension_Image extends PDStyles_Extension_Observer {
 			
 		</th><td valign="top">	
 			
-			<a class="current thickbox <?php if (empty( $this->value )) echo 'hidden '?>image_thumb" href="<?php echo $this->get('value', 'form') ?>">
-				<img style="height:80px;" src="<?php echo $this->get('value', 'form') ?>" alt="" /><br/>
+			<a class="current thickbox <?php if (empty( $this->value )) echo 'hidden '?>image_thumb" href="<?php echo $this->value('form') ?>">
+				<img style="height:80px;" src="<?php echo $this->value('form') ?>" alt="" /><br/>
 			</a>
 
-			<input class="pds_image_input" type="text" name="<?php echo $this->form_name ?>" id="<?php echo $this->form_id ?>" value="<?php echo $this->get('value', 'form'); ?>" size="8" />
+			<input class="pds_image_input" type="text" name="<?php echo $this->form_name ?>" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form'); ?>" size="8" />
 			<input type="button" class="button" value="<?php _e('Select Image') ?>" onclick="show_image_uploader('<?php echo $this->form_id ?>');"/>
 
 			<?php if (!empty( $this->description )) : ?>

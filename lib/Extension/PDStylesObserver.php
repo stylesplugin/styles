@@ -118,7 +118,7 @@ abstract class PDStyles_Extension_Observer extends Scaffold_Extension_Observer
 		return false;
 	}
 	
-	abstract function get( $variable, $context = null );
+	abstract function value( $context = null );
 	abstract function set( $variable, $value, $context = 'default' );
 	abstract function output();
 	

@@ -23,24 +23,22 @@ class PDStyles_Extension_Color extends PDStyles_Extension_Observer {
 	}
 	
 	/**
-	 * Get variable with correct formatting
+	 * Get value with correct formatting
 	 * 
 	 * @since 0.1
 	 * @return string
 	 **/
-	function get( $variable, $context = null ) {
-		$value = $this->$variable;
-
+	function value( $context = null ) {
 		switch( $context ) {
 			case 'form':
 			
-				return trim( $value, '# ');
+				return trim( $this->value, '# ');
 			
 				break;
 			
 			case 'css':
 				
-				if (empty($value)) return '';
+				if (empty($this->value)) return '';
 				
 				switch( $this->type ) {
 					case 'bgc':
@@ -65,7 +63,7 @@ class PDStyles_Extension_Color extends PDStyles_Extension_Observer {
 				break;
 			
 			default:
-				return $value;
+				return $this->value;
 				break;
 		}
 	}
@@ -100,7 +98,7 @@ class PDStyles_Extension_Color extends PDStyles_Extension_Observer {
 				<?php echo $this->label ?>
 			</label>
 		</th><td valign="top">
-			<input class="pds_color_input" type="text" name="<?php echo $this->form_name ?>" id="<?php echo $this->form_id ?>" value="<?php echo $this->get('value', 'form'); ?>" size="8" maxlength="8" />
+			<input class="pds_color_input" type="text" name="<?php echo $this->form_name ?>" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form'); ?>" size="8" maxlength="8" />
 		</td></tr>
 		<?php
 	}

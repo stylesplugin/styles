@@ -127,7 +127,7 @@ class PDStyles_Extension_Group extends Scaffold_Extension_Observer {
 	function get( $context = null ) {
 		$values = array();
 		foreach ($this->variables as $variable) {
-			$values[ $variable->key ] = $variable->get('value', $context);
+			$values[ $variable->key ] = $variable->value($context);
 		}
 		return $values;
 	}
