@@ -56,7 +56,8 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 		
 		foreach( $this->variables as $key => &$group ) {
 			
-			$group = new PDStyles_Extension_Group( $group, $this->permalink );
+			$group['form_name'] = "variables[$this->permalink]";
+			$group = new PDStyles_Extension_Group( $group );
 			
 			// Remove empty groups
 			if ( empty( $group->variables ) ) {
@@ -184,7 +185,7 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 	
 	function output() {
 		foreach ($this->variables as $variable) {
-			$variable->output( "variables[$this->permalink]" );
+			$variable->output( );
 		}
 	}
 	
@@ -200,8 +201,8 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 		}
 		if ( !array_key_exists( $this->permalink, (array) $values )) {
 			FB::error('$this->permalink not found in $values.');
-			FB::log($this->permalink, '$this->permalink');
-			FB::log($values, '$values');
+			FB::error($this->permalink, '$this->permalink');
+			FB::error($values, '$values');
 			return;
 		}
 		

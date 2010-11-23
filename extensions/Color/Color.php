@@ -7,128 +7,61 @@
  * @package pd-styles
  * @author pdclark
  **/
-class PDStyles_Extension_Color extends Scaffold_Extension_Observer {
+class PDStyles_Extension_Color extends PDStyles_Extension_Observer {
 	
-	/**
-	 * Form element ID and Name
-	 * 
-	 * @since 0.1
-	 * @var string
-	 **/
-	var $id;
-	
-	/**
-	 * Variable key in array
-	 * 
-	 * @since 0.1
-	 * @var string
-	 **/
-	var $key;
-	
-	/**
-	 * Nice text name for display in element label
-	 * 
-	 * @since 0.1
-	 * @var string
-	 **/
-	var $label;
-	
-	/**
-	 * Default value of the form element
-	 * 
-	 * @since 0.1
-	 * @var string
-	 **/
-	var $default;
-	
-	/**
-	 * Value loaded from database
-	 * 
-	 * @since 0.1
-	 * @var string
-	 **/
-	private $value;
-	
-	/**
-	 * Variable type specified in CSS
-	 * 
-	 * @since 0.1
-	 * @var string
-	 **/
-	private $type;
-	
-	/**
-	 * Variable values to match this object to
-	 * @since 0.1
-	 * @var array
-	 */
-	private $keywords = array (
-		'background-color',
-		'bgc',
-		'color',
-		'c',
-		'border-color',
-		'bordc',
-	);
-	
-	function __construct( $args = array() ) {
-		$defaults = array(
-			// 'default'		=> '',
-		);
-		$args = wp_parse_args( $args, $defaults );
+	function __construct( $args = array(), Scaffold_Extension_Observable $observable = null ) {
+		parent::__construct( $args, $observable );
 		
-		$this->id = $args['id'];
-		$this->key = $args['key'];
-		$this->label = $args['label'];
-		$this->type = $args['type'];
+		$this->keywords = array(
+			'background-color',
+			'bgc',
+			'color',
+			'c',
+			'border-color',
+			'bordc',
+		);
 	}
 	
 	/**
-	 * Get variable with correct formatting
+	 * Return value for output in form element
 	 * 
 	 * @since 0.1
 	 * @return string
 	 **/
-	function get( $variable, $context ) {
-		$value = $this->$variable;
-
-		switch( $context ) {
-			case 'form':
-			
-				return trim( $value, '# ');
-			
+	function form_value() {
+		return trim( $this->values['color'], '# ');
+	}
+	
+	/**
+	 * Return value for output in CSS
+	 * 
+	 * @since 0.1
+	 * @return string
+	 **/
+	function css_value() {
+		
+		if (empty($this->values['color'])) return '';
+		
+		switch( $this->type ) {
+			case 'bgc':
+			case 'background-color':
+				$output = "background-color:{$this->values['color']};";
+				break;
+				
+			case 'c':
+			case 'color':
+				$output = "color:{$this->values['color']};";
 				break;
 			
-			case 'css':
-				
-				if (empty($value)) return '';
-				
-				switch( $this->type ) {
-					case 'bgc':
-					case 'background-color':
-						$output = "background-color:{$this->value};";
-						break;
-						
-					case 'c':
-					case 'color':
-						$output = "color:{$this->value};";
-						break;
-					
-					case 'border-color':
-					case 'bordc':
-						$output = "border-color:{$this->value};";
-						break;
-					
-				}
-			
-				return $output;
-				
+			case 'border-color':
+			case 'bordc':
+				$output = "border-color:{$this->values['color']};";
 				break;
 			
-			default:
-				return $value;
-				break;
 		}
+	
+		return $output;
+		
 	}
 	
 	/**
@@ -137,46 +70,27 @@ class PDStyles_Extension_Color extends Scaffold_Extension_Observer {
 	 * @since 0.1
 	 * @return string
 	 **/
-	function set( $variable, $value, $context = 'default' ) {
+	function set( $variable, $values, $context = 'default' ) {
+		$value = trim( $values['color'], '# ');
 
-		switch( $context ) {
-			
-			default:
-				$value = trim( $value, '# ');
-				
-				if ( !empty( $value ) ) {
-					$this->value = '#'.$value;
-				}else {
-					$this->value = '';
-				}
-				
-				break;
+		if ( !empty( $value ) ) {
+			$this->values['color'] = '#'.$value;
+		}else {
+			$this->values['color'] = '';
 		}
 	}
 	
-	function output( $permalink ) {
-		$id = "{$permalink}[$this->key]";
+	function output() {
 		?>
 		<tr class="pds_color"><th valign="top" scrope="row">
-			<label for="<?php echo $id; ?>">
+			<label for="<?php echo $this->form_id; ?>">
 				<?php echo $this->label ?>
 			</label>
 		</th><td valign="top">
-			<input class="pds_color_input" type="text" name="<?php echo $id ?>" id="<?php echo $id ?>" value="<?php echo $this->get('value', 'form'); ?>" size="8" maxlength="8" />
+			<input class="pds_color_input" type="text" name="<?php echo $this->form_name ?>[color]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form'); ?>" size="8" maxlength="8" />
 		</td></tr>
 		<?php
 	}
 	
-	/**
-	 * Detect if input CSS var looks like the type this object handles
-	 * 
-	 * @since 0.1
-	 * @return bool
-	 **/
-	function is_type( $args ) {
-		if ( in_array( $args['type'], $this->keywords ) ) return true;
-		return false;
-	}
 	
-
 } // END class 
