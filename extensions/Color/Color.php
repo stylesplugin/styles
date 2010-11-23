@@ -7,80 +7,19 @@
  * @package pd-styles
  * @author pdclark
  **/
-class PDStyles_Extension_Color extends Scaffold_Extension_Observer {
+class PDStyles_Extension_Color extends PDStyles_Extension_Observer {
 	
-	/**
-	 * Form element ID and Name
-	 * 
-	 * @since 0.1
-	 * @var string
-	 **/
-	var $id;
-	
-	/**
-	 * Variable key in array
-	 * 
-	 * @since 0.1
-	 * @var string
-	 **/
-	var $key;
-	
-	/**
-	 * Nice text name for display in element label
-	 * 
-	 * @since 0.1
-	 * @var string
-	 **/
-	var $label;
-	
-	/**
-	 * Default value of the form element
-	 * 
-	 * @since 0.1
-	 * @var string
-	 **/
-	var $default;
-	
-	/**
-	 * Value loaded from database
-	 * 
-	 * @since 0.1
-	 * @var string
-	 **/
-	private $value;
-	
-	/**
-	 * Variable type specified in CSS
-	 * 
-	 * @since 0.1
-	 * @var string
-	 **/
-	private $type;
-	
-	/**
-	 * Variable values to match this object to
-	 * @since 0.1
-	 * @var array
-	 */
-	private $keywords = array (
-		'background-color',
-		'bgc',
-		'color',
-		'c',
-		'border-color',
-		'bordc',
-	);
-	
-	function __construct( $args = array() ) {
-		$defaults = array(
-			// 'default'		=> '',
-		);
-		$args = wp_parse_args( $args, $defaults );
+	function __construct( $args = array(), Scaffold_Extension_Observable $observable = null ) {
+		parent::__construct( $args, $observable );
 		
-		$this->id = $args['id'];
-		$this->key = $args['key'];
-		$this->label = $args['label'];
-		$this->type = $args['type'];
+		$this->keywords = array(
+			'background-color',
+			'bgc',
+			'color',
+			'c',
+			'border-color',
+			'bordc',
+		);
 	}
 	
 	/**
@@ -167,16 +106,5 @@ class PDStyles_Extension_Color extends Scaffold_Extension_Observer {
 		<?php
 	}
 	
-	/**
-	 * Detect if input CSS var looks like the type this object handles
-	 * 
-	 * @since 0.1
-	 * @return bool
-	 **/
-	function is_type( $args ) {
-		if ( in_array( $args['type'], $this->keywords ) ) return true;
-		return false;
-	}
 	
-
 } // END class 

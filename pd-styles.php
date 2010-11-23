@@ -67,6 +67,7 @@ if ( !class_exists('FirePHP') ) {
 
 @include dirname ( __FILE__ ) . '/lib/Extension/Observable.php';
 @include dirname ( __FILE__ ) . '/lib/Extension/Observer.php';
+@include dirname ( __FILE__ ) . '/lib/Extension/PDStylesObserver.php';
 @include dirname ( __FILE__ ) . '/lib/controllers/Variable/Variable.php';
 @include dirname ( __FILE__ ) . '/lib/controllers/Group/Group.php';
 
