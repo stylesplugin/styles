@@ -49,6 +49,33 @@
 		}
 	}
 	
+	.value-toggle {
+		background: transparent url(../../extensions/Font/font-sprites.png) no-repeat 6px 6px;
+		width: 9px;
+		height: 12px;
+		padding: 6px;
+		text-indent: -9999px;
+		overflow:hidden;
+		display:inline-block;
+		-moz-border-radius: 3px;
+		-khtml-border-radius: 3px;
+		-webkit-border-radius: 3px;
+		border-radius: 3px;
+		position:relative;
+		top:9px;
+	}
+	
+	.font-weight {
+		width: 9px;
+		height: 12px;
+	}
+	.font-weight-bold, .font-style-italic {
+		background-color: #C1E7FF;
+	}
+	.font-style {
+		background-position: -13px 6px;
+	}
+	
 	
 	/* Yoast */
 	small {
