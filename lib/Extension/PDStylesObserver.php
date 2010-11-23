@@ -54,12 +54,12 @@ abstract class PDStyles_Extension_Observer extends Scaffold_Extension_Observer
 	var $default;
 	
 	/**
-	 * Value loaded from database
+	 * Array of values loaded from database
 	 * 
 	 * @since 0.1
-	 * @var string
+	 * @var array
 	 **/
-	var $value;
+	var $values;
 	
 	/**
 	 * Variable type specified in CSS
@@ -130,7 +130,7 @@ abstract class PDStyles_Extension_Observer extends Scaffold_Extension_Observer
 		if ( method_exists( $this, $method ) ) {
 			return $this->$method();
 		}else {
-			return $this->value;
+			return $this->values;
 		}
 	}
 	

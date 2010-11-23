@@ -26,7 +26,7 @@ class PDStyles_Extension_Image extends PDStyles_Extension_Observer {
 	 * @return string
 	 **/
 	function form_value() {
-		return $this->value;
+		return $this->values['url'];
 	}
 	
 	/**
@@ -37,15 +37,15 @@ class PDStyles_Extension_Image extends PDStyles_Extension_Observer {
 	 **/
 	function css_value() {
 		
-		if (empty($this->value)) return '';
+		if (empty($this->values)) return '';
 		
 		switch( $this->type ) {
 			case 'image-replace':
 			case 'image':
-				$output = "image-replace: url({$this->value});";
+				$output = "image-replace: url({$this->values['url']});";
 				break;
 			case 'background-image':
-				$output = "background-image: url({$this->value});";
+				$output = "background-image: url({$this->values['url']});";
 				break;
 		}
 	
@@ -59,22 +59,24 @@ class PDStyles_Extension_Image extends PDStyles_Extension_Observer {
 	 * @since 0.1
 	 * @return string
 	 **/
-	function set( $variable, $value, $context = null ) {
+	function set( $variable, $values, $context = null ) {
 
 		$uploads = wp_upload_dir();
 		
 		// Get real uploads path, including multisite blogs.dir
 		if( defined('UPLOADS') ) {
-			$value = str_replace( $uploads['baseurl'].'/', '/'.UPLOADS, $value);
+			$values['url'] = str_replace( $uploads['baseurl'].'/', '/'.UPLOADS, $values['url']);
 		}
 		// Convert URL to path
-		$value = str_replace( site_url(), '', $value);
+		$values['url'] = str_replace( site_url(), '', $values['url']);
 		
-		$this->value = $value;
+		$this->values['url'] = $values['url'];
 		
 	}
 	
 	function output() {	
+		$value = $this->value('form');
+		$hidden = empty( $value ) ? 'hidden ' : '';
 		?>
 		
 		<tr class="pds_image"><th valign="top" scrope="row">
@@ -84,11 +86,11 @@ class PDStyles_Extension_Image extends PDStyles_Extension_Observer {
 			
 		</th><td valign="top">	
 			
-			<a class="current thickbox <?php if (empty( $this->value )) echo 'hidden '?>image_thumb" href="<?php echo $this->value('form') ?>">
+			<a class="current thickbox <?php echo $hidden ?>image_thumb" href="<?php echo $this->value('form') ?>">
 				<img style="height:80px;" src="<?php echo $this->value('form') ?>" alt="" /><br/>
 			</a>
 
-			<input class="pds_image_input" type="text" name="<?php echo $this->form_name ?>" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form'); ?>" size="8" />
+			<input class="pds_image_input" type="text" name="<?php echo $this->form_name ?>[url]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form'); ?>" size="8" />
 			<input type="button" class="button" value="<?php _e('Select Image') ?>" onclick="show_image_uploader('<?php echo $this->form_id ?>');"/>
 
 			<?php if (!empty( $this->description )) : ?>

@@ -29,7 +29,7 @@ class PDStyles_Extension_Color extends PDStyles_Extension_Observer {
 	 * @return string
 	 **/
 	function form_value() {
-		return trim( $this->value, '# ');
+		return trim( $this->values['color'], '# ');
 	}
 	
 	/**
@@ -40,22 +40,22 @@ class PDStyles_Extension_Color extends PDStyles_Extension_Observer {
 	 **/
 	function css_value() {
 		
-		if (empty($this->value)) return '';
+		if (empty($this->values['color'])) return '';
 		
 		switch( $this->type ) {
 			case 'bgc':
 			case 'background-color':
-				$output = "background-color:{$this->value};";
+				$output = "background-color:{$this->values['color']};";
 				break;
 				
 			case 'c':
 			case 'color':
-				$output = "color:{$this->value};";
+				$output = "color:{$this->values['color']};";
 				break;
 			
 			case 'border-color':
 			case 'bordc':
-				$output = "border-color:{$this->value};";
+				$output = "border-color:{$this->values['color']};";
 				break;
 			
 		}
@@ -70,14 +70,13 @@ class PDStyles_Extension_Color extends PDStyles_Extension_Observer {
 	 * @since 0.1
 	 * @return string
 	 **/
-	function set( $variable, $value, $context = 'default' ) {
+	function set( $variable, $values, $context = 'default' ) {
+		$value = trim( $values['color'], '# ');
 
-		$value = trim( $value, '# ');
-		
 		if ( !empty( $value ) ) {
-			$this->value = '#'.$value;
+			$this->values['color'] = '#'.$value;
 		}else {
-			$this->value = '';
+			$this->values['color'] = '';
 		}
 	}
 	
@@ -88,7 +87,7 @@ class PDStyles_Extension_Color extends PDStyles_Extension_Observer {
 				<?php echo $this->label ?>
 			</label>
 		</th><td valign="top">
-			<input class="pds_color_input" type="text" name="<?php echo $this->form_name ?>" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form'); ?>" size="8" maxlength="8" />
+			<input class="pds_color_input" type="text" name="<?php echo $this->form_name ?>[color]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form'); ?>" size="8" maxlength="8" />
 		</td></tr>
 		<?php
 	}
