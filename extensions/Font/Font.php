@@ -63,7 +63,7 @@ class PDStyles_Extension_Font extends PDStyles_Extension_Observer {
 			return;
 		}
 		
-		$this->values['font_size'] = preg_replace('/[^0-9]/', '', $input['font_size'] ); // Numbers only
+		$this->values['font_size'] = preg_replace('/[^0-9\.]/', '', $input['font_size'] ); // Numbers only
 
 		$families = $this->families();
 		if ( array_key_exists( $input['font_family'], $families ) ) {
