@@ -93,15 +93,14 @@ class PDStyles_Extension_Color extends PDStyles_Extension_Observer {
 		}
 	}
 	
-	function output( $permalink ) {
-		$id = "{$permalink}[$this->key]";
+	function output() {
 		?>
 		<tr class="pds_color"><th valign="top" scrope="row">
-			<label for="<?php echo $id; ?>">
+			<label for="<?php echo $this->form_id; ?>">
 				<?php echo $this->label ?>
 			</label>
 		</th><td valign="top">
-			<input class="pds_color_input" type="text" name="<?php echo $id ?>" id="<?php echo $id ?>" value="<?php echo $this->get('value', 'form'); ?>" size="8" maxlength="8" />
+			<input class="pds_color_input" type="text" name="<?php echo $this->form_name ?>" id="<?php echo $this->form_id ?>" value="<?php echo $this->get('value', 'form'); ?>" size="8" maxlength="8" />
 		</td></tr>
 		<?php
 	}

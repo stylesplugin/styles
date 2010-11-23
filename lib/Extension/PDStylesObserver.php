@@ -14,12 +14,20 @@
 abstract class PDStyles_Extension_Observer extends Scaffold_Extension_Observer
 {
 	/**
-	 * Form element ID and Name
+	 * Form element ID
 	 * 
 	 * @since 0.1
 	 * @var string
 	 **/
-	var $id;
+	var $form_id;
+	
+	/**
+	 * Form element name for DB insert
+	 * 
+	 * @since 0.1
+	 * @var string
+	 **/
+	var $form_name;
 	
 	/**
 	 * Variable key in array
@@ -85,11 +93,13 @@ abstract class PDStyles_Extension_Observer extends Scaffold_Extension_Observer
 			// 'default'		=> '',
 		);
 		$args = wp_parse_args( $args, $defaults );
-
-		$this->id = $args['id'];
+		
 		$this->key = $args['key'];
 		$this->label = $args['label'];
 		$this->type = $args['type'];
+		
+		$this->form_name = "{$args['form_name']}[$this->key]";
+		$this->form_id = 'pds_'.md5( $this->form_name );
 	}
 	
 	/**
@@ -110,7 +120,7 @@ abstract class PDStyles_Extension_Observer extends Scaffold_Extension_Observer
 	
 	abstract function get( $variable, $context = null );
 	abstract function set( $variable, $value, $context = 'default' );
-	abstract function output( $permalink );
+	abstract function output();
 	
 	
 }

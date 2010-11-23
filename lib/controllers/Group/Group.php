@@ -41,18 +41,19 @@ class PDStyles_Extension_Group extends Scaffold_Extension_Observer {
 	 **/
 	var $variables;
 	
-	function __construct( $args = array(), $permalink = null ) {
+	function __construct( $args = array() ) {
 		if ( empty($args) ) return;
 
 		$this->key = $args['key'];
 		$this->label = ( empty( $args['label'] ) ) ? $args['key'] : $args['label'];
+		$this->form_name = "{$args['form_name']}[$this->key]";
 		
 		unset( $args['label'], $args['key'] );
 		
-		$this->create_objects( $args, $permalink );
+		$this->create_objects( $args );
 	}
 	
-	function create_objects( $variables, $permalink ) {
+	function create_objects( $variables ) {
 		global $PDStylesAdminController;
 
 		// Instantiate Objects
@@ -63,6 +64,8 @@ class PDStyles_Extension_Group extends Scaffold_Extension_Observer {
 					if ( $ext->is_type( $args ) ) {
 						$args['key'] = $key;
 						$ext_class = get_class($ext);
+						
+						$args['form_name'] = $this->form_name;
 						$this->variables[ $key ] = new $ext_class( $args );
 					}
 					
@@ -79,8 +82,8 @@ class PDStyles_Extension_Group extends Scaffold_Extension_Observer {
 
 	}
 	
-	function output( $permalink ) {
-		$id = 'pds_'.md5($permalink).$this->key;
+	function output( ) {
+		$id = 'pds_'.md5($this->form_name).$this->key;
 		?>
 		<div id="<?php echo $id; ?>" class="postbox">
 			<div class="handlediv" title="Click to toggle"><br /></div>
@@ -89,7 +92,7 @@ class PDStyles_Extension_Group extends Scaffold_Extension_Observer {
 				<table class="form-table">
 				<?php 
 				foreach ( $this->variables as $variable ) {
-					$variable->output( "{$permalink}[$this->key]");
+					$variable->output();
 				}
 				?>
 				</table>

@@ -79,13 +79,11 @@ class PDStyles_Extension_Image extends PDStyles_Extension_Observer {
 		}
 	}
 	
-	function output( $permalink ) {
-		$name = "{$permalink}[$this->key]";
-		$id = 'pds_'.md5($name);	
+	function output() {	
 		?>
 		
 		<tr class="pds_image"><th valign="top" scrope="row">
-			<label for="<?php echo $id; ?>">
+			<label for="<?php echo $this->form_id; ?>">
 				<?php echo $this->label ?>
 			</label>
 			
@@ -95,8 +93,8 @@ class PDStyles_Extension_Image extends PDStyles_Extension_Observer {
 				<img style="height:80px;" src="<?php echo $this->get('value', 'form') ?>" alt="" /><br/>
 			</a>
 
-			<input class="pds_image_input" type="text" name="<?php echo $name ?>" id="<?php echo $id ?>" value="<?php echo $this->get('value', 'form'); ?>" size="8" />
-			<input type="button" class="button" value="<?php _e('Select Image') ?>" onclick="show_image_uploader('<?php echo $id ?>');"/>
+			<input class="pds_image_input" type="text" name="<?php echo $this->form_name ?>" id="<?php echo $this->form_id ?>" value="<?php echo $this->get('value', 'form'); ?>" size="8" />
+			<input type="button" class="button" value="<?php _e('Select Image') ?>" onclick="show_image_uploader('<?php echo $this->form_id ?>');"/>
 
 			<?php if (!empty( $this->description )) : ?>
 				<br/><small><?php echo $this->description ?></small>
