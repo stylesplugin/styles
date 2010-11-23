@@ -117,7 +117,7 @@ class PDStylesAdminController extends PDStyles {
 			'file' => $this->file,
 			'permalink' => $this->permalink,
 		) );
-		
+
 		// Merge values from database into variable objects
 		if ( is_object( $this->options['variables'][ $this->permalink ] ) ) {
 			$this->variables[ $this->permalink ]->set( array( $this->permalink => $this->options['variables'][ $this->permalink ]->get() ) );
@@ -500,7 +500,7 @@ class PDStylesAdminController extends PDStyles {
 				$options[$key] = $value;
 			}
 		}
-		
+
 		// Merge variables form input into variable objects
 		$this->variables[ $this->permalink ]->set( $options['variables'] );
 		$options['variables'][ $this->permalink ] = $this->variables[ $this->permalink ];
@@ -533,6 +533,25 @@ class PDStylesAdminController extends PDStyles {
 	}
 	
 	/**
+	 * Update CSS variables used for preview CSS
+	 * 
+	 * @since 0.1
+	 * @return void
+	 **/
+	function update_preview( $options ) {
+		$this->build();
+
+		// Merge variables form input into variable objects
+		$this->variables[ $this->permalink ]->set( $options['variables'] );
+		$options['variables'][ $this->permalink ] = $this->variables[ $this->permalink ];
+		
+		// Strip Scaffold from object saved to DB
+		unset( $options['variables'][ $this->permalink ]->scaffold );
+		
+		return $options['variables'];
+	}
+	
+	/**
 	 * Handle updating options via AJAX
 	 * 
 	 * @since 0.1
@@ -541,7 +560,7 @@ class PDStylesAdminController extends PDStyles {
 	function update_ajax() {
 		
 		$response = array();
-		
+		FB::log($_POST, '$_POST');
 		if ( isset( $_POST['preview'] )) {
 			
 			if ( update_option('pd-styles-preview', $_POST ) ) {
@@ -580,25 +599,6 @@ class PDStylesAdminController extends PDStyles {
 		
 		$this->load_view('frontend-main.php');
 		exit;
-	}
-	
-	/**
-	 * Update CSS variables used for preview CSS
-	 * 
-	 * @since 0.1
-	 * @return void
-	 **/
-	function update_preview( $options ) {
-		$this->build();
-
-		// Merge variables form input into variable objects
-		$this->variables[ $this->permalink ]->set( $options['variables'] );
-		$options['variables'][ $this->permalink ] = $this->variables[ $this->permalink ];
-		
-		// Strip Scaffold from object saved to DB
-		unset( $options['variables'][ $this->permalink ]->scaffold );
-		
-		return $options['variables'];
 	}
 
 	/**
