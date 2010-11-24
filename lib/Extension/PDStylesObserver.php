@@ -1,15 +1,14 @@
 <?php
 
 /**
- * Scaffold_Observer
+ * PDStyles_Extension_Observer
  *
  * Observer class to implement the observer method
  * 
- * @package 		Scaffold
- * @author 			Anthony Short <anthonyshort@me.com>
- * @copyright 		2009-2010 Anthony Short. All rights reserved.
+ * @package 		pdstyles
+ * @author 			Paul Clark <pdclark@pdclark.com>
+ * @copyright 		2009-2010 Paul Clark. All rights reserved.
  * @license 		http://opensource.org/licenses/bsd-license.php  New BSD License
- * @link 			https://github.com/anthonyshort/csscaffold/master
  */
 abstract class PDStyles_Extension_Observer extends Scaffold_Extension_Observer
 {
