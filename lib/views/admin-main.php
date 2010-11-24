@@ -35,7 +35,7 @@
 						
 					
 					<p class="submit">
-						<input id="pds_preview" type="button" class="button" value="<?php _e('Preview'); ?>" />
+						<?php /*<input id="pds_preview" type="button" class="button" value="<?php _e('Preview'); ?>" /> */ ?>
 						<input type="submit" class="button-primary" value="<?php _e('Save'); ?>" />
 						
 						<img class="waiting" src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" alt="" /> 
@@ -43,14 +43,6 @@
 					</p>
 
 				</form>
-				
-				<div id="pds_testbox">
-					<p>
-						<div class="img"></div>
-						Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-						<div class="clear"></div>
-					</p>
-				</div>
 				
 			</div>
 		</div>
