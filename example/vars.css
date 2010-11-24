@@ -16,7 +16,8 @@ html, body {
 	bg: background-color( label=Background );
 	border_color: border-color( label=Border );
 	background-image: background-image( label=Background );
-	h2_font: font( label=Heading, default=x );
+	h2_font: font( label=Heading );
+	content_font: font( label=Content );
 }
 #main {
 	.style-a {
@@ -31,6 +32,9 @@ html, body {
 		-moz-border-radius: 10px;
 		h2 {
 			sa.h2_font
+		}
+		.cfct-mod-content p {
+			sa.content_font
 		}
 	}
 }

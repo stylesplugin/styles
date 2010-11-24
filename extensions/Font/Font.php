@@ -43,6 +43,14 @@ class PDStyles_Extension_Font extends PDStyles_Extension_Observer {
 		'none',
 	);
 	
+	var $line_heights = array(
+		'1',
+		'1.25',
+		'1.5',
+		'1.75',
+		'2',
+	);
+	
 	function __construct( $args = array(), Scaffold_Extension_Observable $observable = null ) {
 		parent::__construct( $args, $observable );
 		
@@ -68,6 +76,7 @@ class PDStyles_Extension_Font extends PDStyles_Extension_Observer {
 		if (!empty($font_weight)) 		$output .= "font-weight:{$font_weight};";
 		if (!empty($font_style)) 		$output .= "font-style:{$font_style};";
 		if (!empty($text_transform))	$output .= "text-transform:{$text_transform};";
+		if (!empty($line_height))	$output .= "line-height:{$line_height};";
 
 		return $output;
 
@@ -102,6 +111,10 @@ class PDStyles_Extension_Font extends PDStyles_Extension_Observer {
 		if ( in_array( $input['text_transform'], $this->transforms ) ) {
 			$this->values['text_transform'] = $input['text_transform'];
 		}
+		
+		if ( in_array( $input['line_height'], $this->line_heights ) ) {
+			$this->values['line_height'] = $input['line_height'];
+		}
 	}
 	
 	function output() {
@@ -129,6 +142,9 @@ class PDStyles_Extension_Font extends PDStyles_Extension_Observer {
 			
 			<a href="#" title="Case" class="value-toggle text-transform text-transform-<?php echo $this->value('form', 'text_transform'); ?>" data-type="text-transform" data-options='<?php echo json_encode( $this->transforms ) ?>' >Case</a>
 			<input name="<?php echo $this->form_name ?>[text_transform]" class="pds_font_input" type="hidden" id="<?php echo $this->form_id ?>_text_transform" value="<?php echo $this->value('form', 'text_transform'); ?>" />
+			
+			<a href="#" title="Leading" class="value-toggle line-height line-height-<?php echo str_replace('.', '', $this->value('form', 'line_height') ); ?>" data-type="line-height" data-options='<?php echo json_encode( $this->line_heights ) ?>' >Leading</a>
+			<input name="<?php echo $this->form_name ?>[line_height]" class="pds_font_input" type="hidden" id="<?php echo $this->form_id ?>_line_height" value="<?php echo $this->value('form', 'line_height'); ?>" />
 			
 		</td></tr>
 		<?php
