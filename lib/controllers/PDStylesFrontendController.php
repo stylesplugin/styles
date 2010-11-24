@@ -37,10 +37,9 @@ class PDStylesFrontendController extends PDStyles {
 		}
 		//hoverIntent,common,jquery-color,postbox,wp-ajax-response,wp-lists,admin-comments,dashboard
 
-		wp_enqueue_script('pds-frontend', $this->plugin_url().'/lib/js/frontend-main.js', array('jqcookie', 'jquery', 'jquery-ui-core', 'jquery-ui-sortable', 'jquery-ui-resizable', 'jquery-ui-draggable', 'thickbox', 'pds-media-upload', 'pds-colorpicker' ), $this->version, true);
+		wp_enqueue_script('pds-frontend', $this->plugin_url().'/lib/js/frontend-main.js', array('jqcookie', 'jquery', ), $this->version, true);
 		
 		wp_localize_script ( 'pds-frontend' , 'pds_frontend' , array(
-			'test'	 => __( 'Testing' , 'pd-styles' ) ,
 			'ajaxurl'	 => admin_url('admin-ajax.php') ,
 		) );
 	}
