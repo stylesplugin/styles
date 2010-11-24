@@ -72,16 +72,6 @@ class PDStyles_Extension_Font extends PDStyles_Extension_Observer {
 		return $output;
 
 	}
-	
-	/**
-	 * Return value for output in form element
-	 * 
-	 * @since 0.1
-	 * @return string
-	 **/
-	function form_value($key = null) {
-		return $this->values[$key];
-	}
 
 	/**
 	 * Set variables with correct formatting

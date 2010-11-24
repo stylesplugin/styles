@@ -67,8 +67,8 @@ class PDStyles_Extension_Color extends PDStyles_Extension_Observer {
 	 * @since 0.1
 	 * @return string
 	 **/
-	function form_value() {
-		return trim( $this->values['color'], '# ');
+	function form_value( $key ) {
+		return trim( $this->values[ $key ], '# ');
 	}
 	
 	/**
@@ -94,7 +94,7 @@ class PDStyles_Extension_Color extends PDStyles_Extension_Observer {
 				<?php echo $this->label ?>
 			</label>
 		</th><td valign="top">
-			<input class="pds_color_input" type="text" name="<?php echo $this->form_name ?>[color]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form'); ?>" size="8" maxlength="8" />
+			<input class="pds_color_input" type="text" name="<?php echo $this->form_name ?>[color]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'color'); ?>" size="8" maxlength="8" />
 		</td></tr>
 		<?php
 	}

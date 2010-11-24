@@ -119,9 +119,18 @@ abstract class PDStyles_Extension_Observer extends Scaffold_Extension_Observer
 		}
 	}
 	
+	/**
+	 * Return value for output in form element
+	 * 
+	 * @since 0.1
+	 * @return string
+	 **/
+	function form_value($key = null) {
+		return $this->values[$key];
+	}
+	
 	abstract function set( $variable, $value, $context = 'default' );
 	abstract function output();
-	abstract function form_value();
 	
 	
 }
