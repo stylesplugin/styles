@@ -52,6 +52,28 @@ class PDStyles_Extension_Font extends PDStyles_Extension_Observer {
 	}
 	
 	/**
+	 * Output in CSS for method css_*
+	 * 
+	 * @since 0.1.3
+	 * @return string
+	 **/
+	function css_font() {
+		extract($this->values);
+		
+		$output = '';
+		$font_family = $this->families[$font_family];
+
+		if (!empty($font_size)) 		$output .= "font-size:{$font_size}px;";
+		if (!empty($font_family)) 		$output .= "font-family:{$font_family};";
+		if (!empty($font_weight)) 		$output .= "font-weight:{$font_weight};";
+		if (!empty($font_style)) 		$output .= "font-style:{$font_style};";
+		if (!empty($text_transform))	$output .= "text-transform:{$text_transform};";
+
+		return $output;
+
+	}
+	
+	/**
 	 * Return value for output in form element
 	 * 
 	 * @since 0.1
@@ -60,32 +82,7 @@ class PDStyles_Extension_Font extends PDStyles_Extension_Observer {
 	function form_value($key = null) {
 		return $this->values[$key];
 	}
-	
-	/**
-	 * Return value for output in CSS
-	 * 
-	 * @since 0.1
-	 * @return string
-	 **/
-	function css_value() {
-		
-		$output = '';
-		extract($this->values);
-		
-		switch( $this->type ) {
-			case 'font':
-				if (!empty($font_size)) 		$output .= "font-size:{$font_size}px;";
-				if (!empty($font_family)) 		$output .= "font-family:{$font_family};";
-				if (!empty($font_weight)) 		$output .= "font-weight:{$font_weight};";
-				if (!empty($font_style)) 		$output .= "font-style:{$font_style};";
-				if (!empty($text_transform))	$output .= "text-transform:{$text_transform};";
-				break;
-		}
-	
-		return $output;
-		
-	}
-	
+
 	/**
 	 * Set variables with correct formatting
 	 * 
@@ -99,12 +96,9 @@ class PDStyles_Extension_Font extends PDStyles_Extension_Observer {
 		}
 		
 		$this->values['font_size'] = preg_replace('/[^0-9\.]/', '', $input['font_size'] ); // Numbers only
-
+		
 		if ( array_key_exists( $input['font_family'], $this->families ) ) {
-			$this->values['font_family'] = $this->families[ $input['font_family'] ];
-		}
-		if ( in_array( $input['font_weight'], $this->weights ) ) {
-			$this->values['font_weight'] = $input['font_weight'];
+			$this->values['font_family'] = $input['font_family'];
 		}
 		
 		if ( in_array( $input['font_style'], $this->styles ) ) {
@@ -129,7 +123,7 @@ class PDStyles_Extension_Font extends PDStyles_Extension_Observer {
 			<select name="<?php echo $this->form_name ?>[font_family]" class="pds_font_select">
 				<option value="delete">Font Family</option>
 				<?php foreach ($this->families as $name => $value ) : if (empty($value)) continue; ?>
-				<option value='<?php echo $name ?>' <?php if ( $value == $font_family ) echo 'selected'; ?> ><?php echo $name ?></option>
+				<option value='<?php echo $name ?>' <?php if ( $name == $font_family ) echo 'selected'; ?> ><?php echo $name ?></option>
 				<?php endforeach; ?>
 			</select>
 			

@@ -60,15 +60,16 @@ class PDStyles_Extension_Group extends Scaffold_Extension_Observer {
 		foreach ( $variables as $key => $args ) {
 			if ( is_array($args) ) {
 				foreach ( $PDStylesAdminController->extensions as $ext ){
-					
-					if ( $ext->is_type( $args ) ) {
-						$args['key'] = $key;
+				
+					if ( method_exists( $ext, $args['method'] ) ) {
 						$ext_class = get_class($ext);
-						
+					
+						$args['key'] = $key;
 						$args['form_name'] = $this->form_name;
+					
 						$this->variables[ $key ] = new $ext_class( $args );
 					}
-					
+				
 				}
 			}
 		}
@@ -131,17 +132,5 @@ class PDStyles_Extension_Group extends Scaffold_Extension_Observer {
 		}
 		return $values;
 	}
-	
-	/**
-	 * Detect if input CSS var looks like the type this object handles
-	 * 
-	 * @since 0.1
-	 * @return bool
-	 **/
-	function is_type( $args ) {
-		// Never match child elements to Group
-		return false;
-	}
-	
 
 } // END class 

@@ -1,6 +1,6 @@
 @variables header {
 	label: Header;
-	Logo: image-replace;
+	Logo: image-replace( label=The Logo );
 }
 
 html, body {
@@ -9,19 +9,14 @@ html, body {
 
 .site-title a {
 	header.Logo
-	
 }
 
 @variables sa {
 	label: Style A;
-	bg: bgc;
-	bg.label: Background color;
-	border_color: border-color;
-	border_color.label: Border color;
-	background-image: background-image;
-	background-image.label: Background image;
-	h2_font: font;
-	h2_font.label: Heading font;
+	bg: background-color( label=Background color );
+	border_color: border-color( label=Border color );
+	background-image: background-image( label=Background image );
+	h2_font: font( label=Heading font );
 }
 #main {
 	.style-a {

@@ -11,12 +11,6 @@ class PDStyles_Extension_Image extends PDStyles_Extension_Observer {
 	
 	function __construct( $args = array(), Scaffold_Extension_Observable $observable = null ) {
 		parent::__construct( $args, $observable );
-		
-		$this->keywords = array(
-			'image',
-			'image-replace',
-			'background-image',
-		);
 	}
 	
 	/**
@@ -30,27 +24,31 @@ class PDStyles_Extension_Image extends PDStyles_Extension_Observer {
 	}
 	
 	/**
-	 * Return value for output in CSS
+	 * Output in CSS for method css_*
 	 * 
-	 * @since 0.1
+	 * @since 0.1.3
 	 * @return string
 	 **/
-	function css_value() {
+	function css_image_replace() {
+		extract($this->values);
 		
-		if (empty($this->values)) return '';
-		
-		switch( $this->type ) {
-			case 'image-replace':
-			case 'image':
-				$output = "image-replace: url({$this->values['url']});";
-				break;
-			case 'background-image':
-				$output = "background-image: url({$this->values['url']});";
-				break;
-		}
+		if ( empty( $url ) ) return '';
+		return "image-replace: url($url);";
+
+	}
 	
-		return $output;
+	/**
+	 * Output in CSS for method css_*
+	 * 
+	 * @since 0.1.3
+	 * @return string
+	 **/
+	function css_background_image() {
+		extract($this->values);
 		
+		if ( empty( $url ) ) return '';
+		return "background-image: url($url);";
+
 	}
 	
 	/**
