@@ -35,27 +35,6 @@ html, body {
 	}
 }
 
-
-
-#pds_testbox {
-	sa.bg
-	border-width:10px;
-	border-style: solid;
-	sa.border_color
-	padding: 20px;
-	sa.background-image
-	background-repeat: no-repeat;
-	background-position: center right;
-	.img {
-		header.Logo
-		float:left;
-		margin: 0 20px 0 0;
-	}
-	.clear {
-		clear:both;
-	}
-}
-
 @variables {
   reset:0;
   blockElements: body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td;

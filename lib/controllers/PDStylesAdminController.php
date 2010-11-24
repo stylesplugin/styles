@@ -147,7 +147,7 @@ class PDStylesAdminController extends PDStyles {
 		wp_enqueue_script('postbox');
 		wp_enqueue_script('dashboard');
 		
-		wp_enqueue_script('pds-admin-main', $this->plugin_url().'/lib/js/admin-main.js', array('jquery', 'pds-colorpicker', 'thickbox', 'media-upload' ), $this->version, true);
+		wp_enqueue_script('pds-admin-main', $this->plugin_url().'/lib/js/admin-main.js', array('jqcookie', 'jquery', 'pds-colorpicker', 'thickbox', 'media-upload' ), $this->version, true);
 
 		/*
 		// See http://www.prelovac.com/vladimir/best-practice-for-adding-javascript-code-to-wordpress-plugin
