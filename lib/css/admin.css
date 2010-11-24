@@ -65,16 +65,38 @@
 		top:9px;
 	}
 	
+	@variables font {
+		hover_bg: #C1E7FF;
+		
+	}
+	
 	.font-weight {
 		width: 9px;
 		height: 12px;
 	}
-	.font-weight-bold, .font-style-italic {
-		background-color: #C1E7FF;
-	}
+	
 	.font-style {
 		background-position: -13px 6px;
 	}
+	
+	.font-weight-bold, 
+	.font-style-italic {
+		background-color: font.hover_bg;
+	}
+	
+	.text-transform {
+		background-position: -57px 6px;
+		&:hover {
+			background-color: font.hover_bg;
+		}
+		&-uppercase {
+			background-position: -77px 6px;
+		}
+		&-lowercase {
+			background-position: -96px 6px;
+		}
+	}
+	
 	
 	
 	/* Yoast */

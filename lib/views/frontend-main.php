@@ -5,7 +5,7 @@
 <![endif]-->
 <link rel='stylesheet' id='thickbox-css'  href='/wp-includes/js/thickbox/thickbox.css?ver=20090514' type='text/css' media='all' />
 <link rel='stylesheet' id='pds-colorpicker-css'  href='/wp-content/plugins/pdstyles/lib/js/colorpicker/css/colorpicker.css?ver=0.1' type='text/css' media='all' />
-<link rel='stylesheet' id='pd-styles-admin-css-css'  href='/?scaffold&#038;file=lib%2Fcss%2Fadmin.css&#038;ver=0.1' type='text/css' media='screen' />
+<link rel='stylesheet' id='pd-styles-admin-css-css'  href='/?scaffold&file=lib/css/admin.css&ver=0.1' type='text/css' media='screen' />
 
 <div id="pds_frontend" class="wrap pd-styles" style="display:none;">
 	<div class="handle"></div>
