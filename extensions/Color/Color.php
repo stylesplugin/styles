@@ -23,45 +23,52 @@ class PDStyles_Extension_Color extends PDStyles_Extension_Observer {
 	}
 	
 	/**
+	 * Output in CSS for method css_*
+	 * 
+	 * @since 0.1.3
+	 * @return string
+	 **/
+	function css_color() {
+		extract($this->values);
+
+		if ( empty( $color ) ) return '';
+		return "color:$color;";
+	}
+	
+	/**
+	 * Output in CSS for method css_*
+	 * 
+	 * @since 0.1.3
+	 * @return string
+	 **/
+	function css_background_color() {
+		extract($this->values);
+		
+		if ( empty( $color ) ) return '';
+		return "background-color:$color;";
+	}
+	
+	/**
+	 * Output in CSS for method css_*
+	 * 
+	 * @since 0.1.3
+	 * @return string
+	 **/
+	function css_border_color() {
+		extract($this->values);
+		
+		if ( empty( $color ) ) return '';
+		return "border-color:$color;";
+	}
+	
+	/**
 	 * Return value for output in form element
 	 * 
 	 * @since 0.1
 	 * @return string
 	 **/
-	function form_value() {
-		return trim( $this->values['color'], '# ');
-	}
-	
-	/**
-	 * Return value for output in CSS
-	 * 
-	 * @since 0.1
-	 * @return string
-	 **/
-	function css_value() {
-		
-		if (empty($this->values['color'])) return '';
-		
-		switch( $this->type ) {
-			case 'bgc':
-			case 'background-color':
-				$output = "background-color:{$this->values['color']};";
-				break;
-				
-			case 'c':
-			case 'color':
-				$output = "color:{$this->values['color']};";
-				break;
-			
-			case 'border-color':
-			case 'bordc':
-				$output = "border-color:{$this->values['color']};";
-				break;
-			
-		}
-	
-		return $output;
-		
+	function form_value( $key ) {
+		return trim( $this->values[ $key ], '# ');
 	}
 	
 	/**
@@ -87,7 +94,7 @@ class PDStyles_Extension_Color extends PDStyles_Extension_Observer {
 				<?php echo $this->label ?>
 			</label>
 		</th><td valign="top">
-			<input class="pds_color_input" type="text" name="<?php echo $this->form_name ?>[color]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form'); ?>" size="8" maxlength="8" />
+			<input class="pds_color_input" type="text" name="<?php echo $this->form_name ?>[color]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'color'); ?>" size="8" maxlength="8" />
 		</td></tr>
 		<?php
 	}

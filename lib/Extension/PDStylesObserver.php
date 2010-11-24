@@ -46,14 +46,6 @@ abstract class PDStyles_Extension_Observer extends Scaffold_Extension_Observer
 	var $label;
 	
 	/**
-	 * Default value of the form element
-	 * 
-	 * @since 0.1
-	 * @var string
-	 **/
-	var $default;
-	
-	/**
 	 * Array of values loaded from database
 	 * 
 	 * @since 0.1
@@ -62,19 +54,19 @@ abstract class PDStyles_Extension_Observer extends Scaffold_Extension_Observer
 	var $values;
 	
 	/**
-	 * Variable type specified in CSS
-	 * 
-	 * @since 0.1
-	 * @var string
-	 **/
-	var $type;
-	
-	/**
 	 * Variable values to match this object to
 	 * @since 0.1
 	 * @var array
 	 */
 	var $keywords = array();
+	
+	/**
+	 * Arguments passed from CSS
+	 * 
+	 * @since 0.1
+	 * @var array
+	 **/
+	var $args = array();
 
 	/**
 	 * Attaches the observer to the observable class
@@ -96,26 +88,14 @@ abstract class PDStyles_Extension_Observer extends Scaffold_Extension_Observer
 		
 		$this->key = $args['key'];
 		$this->label = $args['label'];
-		$this->type = $args['type'];
+		$this->method = $args['method'];
 		
 		$this->form_name = "{$args['form_name']}[$this->key]";
 		$this->form_id = 'pds_'.md5( $this->form_name );
-	}
-	
-	/**
-	 * Detect if input CSS var looks like the type this object handles
-	 * 
-	 * @since 0.1
-	 * @return bool
-	 **/
-	function is_type( $args ) {
-		if ( in_array( $args['type'], $this->keywords ) ) return true;
 		
-		if (empty($this->keywords)) {
-			FB::error('$this->keywords is empty in '.__CLASS__.'. Please set on __construct.');
-		}
+		unset( $args['method'], $args['key'], $args['label'], $args['form_name'] );
 		
-		return false;
+		$this->args = $args;
 	}
 	
 	/**
@@ -126,6 +106,11 @@ abstract class PDStyles_Extension_Observer extends Scaffold_Extension_Observer
 	 **/
 	function value( $context = null, $key = null ) {
 		
+		$css_method = $this->method;
+		if ($context == 'css' && method_exists( $this, $css_method ) ) {
+			return $this->$css_method();
+		}
+		
 		$method = $context.'_value';
 		if ( method_exists( $this, $method ) ) {
 			return $this->$method( $key );
@@ -134,10 +119,18 @@ abstract class PDStyles_Extension_Observer extends Scaffold_Extension_Observer
 		}
 	}
 	
+	/**
+	 * Return value for output in form element
+	 * 
+	 * @since 0.1
+	 * @return string
+	 **/
+	function form_value($key = null) {
+		return $this->values[$key];
+	}
+	
 	abstract function set( $variable, $value, $context = 'default' );
 	abstract function output();
-	abstract function form_value();
-	abstract function css_value();
 	
 	
 }

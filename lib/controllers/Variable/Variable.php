@@ -119,12 +119,11 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 
 		// Pull out the variables into an array 
 		$this->variables = $ext->extract($source);
-		
 		$this->variables_cleanup();
 	}
 	
 	/**
-	 * Convert dot notation in CSS variables to PHP multi-dimensional array
+	 * Detect functions/arguments. Convert to Array.
 	 * 
 	 * @since 0.1
 	 * @return void
@@ -132,41 +131,50 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 	function variables_cleanup() {
 		$tmp = array();
 		
-		// Gather vars with dot notation, place into .args array
-		foreach ( $this->variables as $group => $variables ) {
-			foreach ( $variables as $key => $value ) {
-				if ( strpos( $key, '.' ) !== false ) {
-					$parts = explode( '.', $key );
-					
-					$tmp[ $group ][ $parts[0] ][ $parts[1] ] = $value;
-					
-					unset( $this->variables[$group][$key] );
-				}
-			}
-		}
-		
-		// Replace default value with array, containing dot arguements and original value as key 'default'
 		foreach ( $this->variables as $group => &$variables ) {
 			
+			// Tell children what the parent key is, for building form names
 			$this->variables[ $group ]['key'] = $group;
 			
 			foreach ( $variables as $key => &$value ) {
 				if ( $this->is_protected_key( $key ) ) { continue; }
 				
-				$tmp_args = &$tmp[ $group ][ $key ];
-				if ( is_array( $tmp_args ) ) {
-					
-					$tmp_args['type'] = $value;
-					$value = $tmp_args;
-					
-				}else {
-					// No dot args, set bar minimum arguements for detection & display
-					$value = array(
-						'label'		=>	$key,
-						'type'		=>	$value,
-						'key'		=>	$group,
-					);
+				$found = preg_match('/
+						(^[^\(\\s]*)\\s*\(  # 1 function_name (
+						[\'"\\s]?           # maybe quote or space
+						([^\'\"\)]*)        # 2 = arguements
+						[\'"\\s]?           # maybe end quote or space
+						(?:\\s*\\))?        # maybe )
+					/xs',
+					$value,
+					$match
+				);
+
+				if (!$found) {
+					continue; 
 				}
+				
+				$args = array(
+					'method' => 'css_'.str_replace( '-', '_', $match[1] ),
+					'key' => $group,
+					'label' => $key,
+				);
+				
+				$tmp_args = $match[2];
+
+				// Extract Arguements into key=>value array
+				$tmp_args = explode(',', $tmp_args);			
+				foreach( $tmp_args as $tmp_val ) {
+
+					$tmp_val = explode('=', $tmp_val);
+
+					$arg_key = trim( $tmp_val[0] );
+					$arg_val = trim( $tmp_val[1] );
+
+					$args[ $arg_key ] = $arg_val;
+				}
+				
+				$value = $args;
 		
 			}
 		}
@@ -223,19 +231,6 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 			$values[ $variable->key ] = $variable->get( $context );
 		}
 		return $values;
-	}
-	
-	
-	/**
-	 * Detect if input CSS var looks like the type this object handles
-	 * 
-	 * @since 0.1
-	 * @return bool
-	 **/
-	function is_type( $args ) {
-		// Never match child elements
-		return false;
-	}
-	
+	}	
 
 } // END class 

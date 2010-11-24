@@ -1,4 +1,6 @@
 lib/cache/
 !lib/cache/constants.xml
 scaffold/logs/
-.git
+.gitexample/receiver.html
+example/sender.html
+example/receiver.html
