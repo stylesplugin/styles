@@ -18,6 +18,7 @@ html, body {
 	background-image: background-image( label=Background );
 	h2_font: font( label=Heading );
 	content_font: font( label=Content );
+	gradient_bg: background-gradient( label=Background Gradient );
 }
 #main {
 	.style-a {
@@ -28,13 +29,20 @@ html, body {
 		sa.background-image
 		background-repeat: no-repeat;
 		background-position: center right;
-		padding: 10px;
+		padding: 0px;
 		-moz-border-radius: 10px;
+		
 		h2 {
 			sa.h2_font
+			sa.gradient_bg
+			margin: 0;
+			padding: 0 10px 5px;
 		}
-		.cfct-mod-content p {
-			sa.content_font
+		.cfct-mod-content {
+			padding: 10px;
+			p {
+				sa.content_font
+			}
 		}
 	}
 }
