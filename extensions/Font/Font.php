@@ -91,6 +91,10 @@ class PDStyles_Extension_Font extends PDStyles_Extension_Observer {
 			$this->values['font_family'] = $input['font_family'];
 		}
 		
+		if ( in_array( $input['font_weight'], $this->weights ) ) {
+			$this->values['font_weight'] = $input['font_weight'];
+		}
+		
 		if ( in_array( $input['font_style'], $this->styles ) ) {
 			$this->values['font_style'] = $input['font_style'];
 		}

@@ -13,10 +13,10 @@ html, body {
 
 @variables sa {
 	label: Style A;
-	bg: background-color( label=Background color );
-	border_color: border-color( label=Border color );
-	background-image: background-image( label=Background image );
-	h2_font: font( label=Heading font );
+	bg: background-color( label=Background );
+	border_color: border-color( label=Border );
+	background-image: background-image( label=Background );
+	h2_font: font( label=Heading, default=x );
 }
 #main {
 	.style-a {
@@ -32,27 +32,6 @@ html, body {
 		h2 {
 			sa.h2_font
 		}
-	}
-}
-
-
-
-#pds_testbox {
-	sa.bg
-	border-width:10px;
-	border-style: solid;
-	sa.border_color
-	padding: 20px;
-	sa.background-image
-	background-repeat: no-repeat;
-	background-position: center right;
-	.img {
-		header.Logo
-		float:left;
-		margin: 0 20px 0 0;
-	}
-	.clear {
-		clear:both;
 	}
 }
 
