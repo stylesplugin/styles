@@ -330,6 +330,9 @@ class PDStyles extends Scaffold_Extension_Observable {
 			$config['extensions'][] = 'Minify';
 		}
 		
+		$config['extensions'][] = 'Gradient';
+		unset($config['extensions']['AbsoluteUrls']);
+		
 		return $config;
 	}
 	

@@ -579,7 +579,8 @@ class PDStylesAdminController extends PDStyles {
 			
 		}
 		
-		$response['href'] = '/?scaffold&preview&time='.microtime(true).'&file='.$this->file;
+		$file = str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->file);
+		$response['href'] = '/?scaffold&preview&time='.microtime(true).'&file='.$file;
 		$response['id'] = 'pdstyles-preview-'.md5($this->file);
 		
 		echo json_encode( $response );

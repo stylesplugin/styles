@@ -162,7 +162,7 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 				
 				$tmp_args = $match[2];
 
-				// Extract Arguements into key=>value array
+				// Extract Arguments into key=>value array
 				$tmp_args = explode(',', $tmp_args);			
 				foreach( $tmp_args as $tmp_val ) {
 
