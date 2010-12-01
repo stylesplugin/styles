@@ -317,8 +317,36 @@ class PDStyles extends Scaffold_Extension_Observable {
 	function get_scaffold_config() {
 		
 		// See scaffold/parse.php for full scaffold config documentation
-		$s = $this->get_option('scaffold');
-		$config =& $s['config'];
+		$config		= array(
+			'production'			=> false,
+			'max_age'				=> false,
+			'output_compression'	=> false,
+			'set_etag'				=> true,
+			'enable_string'			=> false,
+			'enable_url'			=> false,
+			'extensions'			=> array(
+				// 'AbsoluteUrls',
+				'Embed',
+				'Functions',
+				//'HSL',
+				'ImageReplace',
+				// 'Minify',
+				'Properties',
+				'Random',
+				'Import',
+				'Mixins',
+				'NestedSelectors',
+				//'XMLVariables',
+				'Variables',
+				'PDStyles',
+				'Gradient',
+        	
+				# Process-heavy Extensions
+				//'Sass',
+				//'CSSTidy',
+				//'YUI'
+			),
+		);
 		
 		$config['load_paths'] = array(
 			untrailingslashit( get_stylesheet_directory() ),

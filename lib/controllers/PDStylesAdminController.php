@@ -345,39 +345,6 @@ class PDStylesAdminController extends PDStyles {
 		$defaults = array(
 			'version'           => $this->db_version ,
 			'language'          => $this->set_lang() ,
-			'scaffold'			=> array(
-				// See scaffold/parse.php for full scaffold config documentation
-				'config'		=> array(
-					'production'			=> false,
-					'max_age'				=> false,
-					'output_compression'	=> false,
-					'set_etag'				=> true,
-					'enable_string'			=> false,
-					'enable_url'			=> false,
-					'extensions'			=> array(
-						'AbsoluteUrls',
-						'Embed',
-						'Functions',
-						//'HSL',
-						'ImageReplace',
-						// 'Minify',
-						'Properties',
-						'Random',
-						'Import',
-						'Mixins',
-						'NestedSelectors',
-						//'XMLVariables',
-						'Variables',
-						'PDStyles',
-                	
-						# Process-heavy Extensions
-						//'Sass',
-						//'CSSTidy',
-						//'YUI'
-					),
-				), // end config
-			), // end scaffold
-			
 		);
 		return $defaults;
 	}
@@ -579,7 +546,8 @@ class PDStylesAdminController extends PDStyles {
 			
 		}
 		
-		$response['href'] = '/?scaffold&preview&time='.microtime(true).'&file='.$this->file;
+		$file = str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->file);
+		$response['href'] = '/?scaffold&preview&time='.microtime(true).'&file='.$file;
 		$response['id'] = 'pdstyles-preview-'.md5($this->file);
 		
 		echo json_encode( $response );

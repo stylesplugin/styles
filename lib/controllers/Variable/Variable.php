@@ -79,6 +79,7 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 		$config = array(
 			'extensions' => array(
 				'Variables',
+				'Import',
 				// 'XMLVariables'
 			)
 		);
@@ -115,10 +116,16 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 
 		// Rather than parsing the whole thing through Scaffold, we just want the
 		// variables that are inside that source. So to save some time, we just get them manually.
-		$ext = $this->scaffold->extensions['Variables'];
+		
+		// Parse imports
+		$import = $this->scaffold->extensions['Import'];
+		$import->replace_rules($source, $this->scaffold);
+		
+		// Parse variables
+		$variables = $this->scaffold->extensions['Variables'];
 
 		// Pull out the variables into an array 
-		$this->variables = $ext->extract($source);
+		$this->variables = $variables->extract($source);
 		$this->variables_cleanup();
 	}
 	
@@ -162,7 +169,7 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 				
 				$tmp_args = $match[2];
 
-				// Extract Arguements into key=>value array
+				// Extract Arguments into key=>value array
 				$tmp_args = explode(',', $tmp_args);			
 				foreach( $tmp_args as $tmp_val ) {
 

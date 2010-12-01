@@ -97,6 +97,25 @@
 		}
 	}
 	
+	.line-height {
+		background-position: -114px 6px;
+		&:hover {
+			background-color: font.hover_bg;
+		}
+		&-125 {
+			background-position: -134px 6px;
+		}
+		&-15 {
+			background-position: -154px 6px;
+		}
+		&-175 {
+			background-position: -174px 6px;
+		}
+		&-2 {
+			background-position: -194px 6px;
+		}
+	}
+	
 	
 	
 	/* Yoast */
