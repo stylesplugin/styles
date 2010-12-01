@@ -57,7 +57,7 @@ class PDStyles_Extension_Color extends PDStyles_Extension_Observer {
 	function css_border_color() {
 		extract($this->values);
 		
-		if ( empty( $color ) ) return '';
+		if ( empty( $color ) ) return 'border-color:transparent;';
 		return "border-color:$color;";
 	}
 	
