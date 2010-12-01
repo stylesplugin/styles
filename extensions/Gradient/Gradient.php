@@ -24,7 +24,7 @@ class PDStyles_Extension_Gradient extends PDStyles_Extension_Observer {
 		
 		$direction = empty($direction) ? 'vertical' : $direction;
 		$size = empty($size) ? '25' : $size;
-		
+		FB::log($this->values, '$this->values');
 		if ( empty( $from ) || empty( $to ) ) return '';
 		return "background-gradient: $direction,$size,from($from),to($to);";
 	}
@@ -61,8 +61,8 @@ class PDStyles_Extension_Gradient extends PDStyles_Extension_Observer {
 			return;
 		}
 		
-		$this->values['from'] 		= '#'.$input['from'];
-		$this->values['to'] 		= '#'.$input['to'];
+		$this->values['from'] 		= ( empty($this->values['from']) ) ? '' : '#'.trim( $input['from'], '# ');
+		$this->values['to'] 		= ( empty($this->values['to']) ) ? '' : '#'.trim( $input['to'], '# ');
 		$this->values['direction'] 	= $input['direction'];
 		$this->values['size'] 		= $input['size'];
 		
