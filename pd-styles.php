@@ -3,7 +3,7 @@
 Plugin Name: PD Styles
 Plugin URI: http://pdclark.com
 Description: Rewrite.
-Version: 0.0.2
+Version: 0.1.2
 Author: Paul Clark
 Author URI: http://pdclark.com
 Author URI: http://pdclark.com
@@ -65,11 +65,14 @@ if ( !class_exists('FirePHP') ) {
 	include  dirname ( __FILE__ ) . '/lib/extensions/FirePHPCore/fb.php';
 }
 
+
 include dirname ( __FILE__ ) . '/lib/extensions/Observable.php';
 include dirname ( __FILE__ ) . '/lib/extensions/Observer.php';
 include dirname ( __FILE__ ) . '/lib/extensions/PDStylesObserver.php';
+include dirname ( __FILE__ ) . '/lib/extensions/File/File.php';
 include dirname ( __FILE__ ) . '/lib/extensions/Variable/Variable.php';
 include dirname ( __FILE__ ) . '/lib/extensions/Group/Group.php';
+
 
 /**
  * PD Styles class for common actions between admin and frontend.
@@ -111,6 +114,31 @@ class PDStyles extends Scaffold_Extension_Observable {
 	var $options;
 	
 	/**
+	 * Objet containing references to scaffold files
+	 * 
+	 * @since 0.1.3
+	 * @var PDStyles_Extension_File
+	 **/
+	var $files;
+	
+	/**
+	 * Path to CSS file being manipulated
+	 * 
+	 * @since 0.1
+	 * @var string
+	 **/
+	var $file;
+	
+	/**
+	 * Friendly formatting of path to $this->file from WP basedir
+	 * Allows for CSS links to not break between dev & production environments.
+	 * 
+	 * @since 0.1
+	 * @var string
+	 **/
+	var $permalink;
+	
+	/**
 	 * Setup shared functionality between admin and front-end
 	 *
 	 * @author Matt Martz <matt@sivel.net>
@@ -121,9 +149,12 @@ class PDStyles extends Scaffold_Extension_Observable {
 		// ajax hooks so that we can access WordPress within Scaffold
 		add_action('parse_request', array( &$this, 'parse_request') );
 		add_filter('query_vars', array( &$this, 'query_vars') );
+		
+		// search for and process enqueued SCSS files
+		add_action( 'wp_print_styles', array( &$this , 'build' ), 9999);
+		add_action( 'admin_print_styles', array( &$this , 'build' ), 0);
 
 		$this->register_scripts();
-		
 		$this->load_extensions( $this->plugin_dir_path() . 'extensions' );
 
 	}
@@ -198,27 +229,6 @@ class PDStyles extends Scaffold_Extension_Observable {
 	}
 	
 	/**
-	 * Convert CSS path into a form appropriate for use as a database key
-	 * 
-	 * @since 0.1
-	 * @return void
-	 **/
-	function get_css_permalink( $path ) {
-		$blacklist = array(
-			'[',
-			']',
-			'"',
-			"'",
-			'>',
-			'<'
-		);
-		
-		$path = str_replace($blacklist, '-', self::get_relative_path( $path ) );
-		
-		return $path;
-	}
-	
-	/**
 	 * Return an md5 based off of the current options of the plugin and the
 	 * current version of the plugin.
 	 *
@@ -275,9 +285,16 @@ class PDStyles extends Scaffold_Extension_Observable {
 	function parse_request( $wp ) {
 	    // only process requests with "?scaffold"
 	    if (isset( $_GET['scaffold'] ) ) {
-			
+
 			$this->load_extensions( $this->plugin_dir_path() . 'extensions' );
 			
+			$this->load_files();
+
+			// Get file path from SCSS active_id
+			if ( empty( $_GET['file'] ) && isset( $_GET['active_id'] ) ) {
+				$_GET['file'] = $this->files->queue[ $_GET['active_id'] ]->file;
+			}
+
 			$this->options = get_option( 'pd-styles' );
 
 			$config = $this->get_scaffold_config();
@@ -286,12 +303,60 @@ class PDStyles extends Scaffold_Extension_Observable {
 				$config['PDStyles']['preview'] = true;
 			}
 			
+			// From scaffold/index.php
+			/**
+			 * The location of this system folder
+			 */
 			$system = $this->plugin_dir_path() . 'scaffold'; // No trailing slash
+			
+			/**
+			 * The environment class helps us handle errors
+			 * and autoloading of classes. It's not required
+			 * to make Scaffold function, but makes it a bit
+			 * nicer to use.
+			 */
+			require_once $system.'/lib/Scaffold/Environment.php';
 
-			$scaffold_include = $system.'/index.php';
-			if ( ! @include( $scaffold_include ) ) {
-				exit( 'Could not find ' . $scaffold_include );
-			}
+			/**
+			 * Set timezone, just in case it isn't set. PHP 5.3+ 
+			 * throws a tantrum if you try and use time() without
+			 * this being set.
+			 */
+			date_default_timezone_set('GMT');
+
+			/**
+			 * Automatically load any Scaffold Classes
+			 */
+			Scaffold_Environment::auto_load();
+
+			/**
+			 * Let Scaffold handle errors
+			 */
+			Scaffold_Environment::handle_errors();
+
+			/** 
+			 * Set the view to use for errors and exceptions
+			 */
+			Scaffold_Environment::set_view(realpath($system.'/views/error.php'));
+
+			// =========================================
+			// = Start the scaffolding magic  =
+			// =========================================
+
+			// The container creates Scaffold objects
+			$Container = new Scaffold_Container($system,$config);
+
+			// This is where the magic happens
+			$Scaffold = $Container->build();
+
+			// Get the sources
+			$Source = $Scaffold->getSource(null,$config);
+
+			// Compiles the source object
+			$Source = $Scaffold->compile($Source);
+
+			// Use the result to render it to the browser. Hooray!
+			$Scaffold->render($Source);
 
 			exit;
 	    }
@@ -367,7 +432,7 @@ class PDStyles extends Scaffold_Extension_Observable {
 	 * @param $param
 	 * @return return type
 	 */
-	public function load_extensions( $path /*,$scaffold*/) {	
+	public function load_extensions( $path ) {	
 		# Scaffold_Helper object
 		// $helper = $this->getHelper();
 		
@@ -404,6 +469,37 @@ class PDStyles extends Scaffold_Extension_Observable {
 		// return $scaffold;
 	}
 	
+	/**
+	 * Initialize files object based on WordPress style queue
+	 * 
+	 * @since 0.1.3
+	 * @return void
+	 **/
+	function load_files() {
+		if ( is_a( $this->files, 'PDStyles_Extension_File' ) ) { return; }
+		
+		$this->files = new PDStyles_Extension_File();
+		
+		// Setup CSS path
+		$this->permalink = $this->files->active_id;
+		$this->file = $this->files->queue[ $this->permalink ]->file;
+		
+		// Merge values from database into variable objects
+		if ( is_object( $this->options['variables'][ $this->permalink ] ) ) {
+			$this->files->active_file->set( array( $this->permalink => $this->options['variables'][ $this->permalink ]->get() ) );
+		}
+	}
+	
+	/**
+	 * Load CSS variables, extensions, and scaffold objects
+	 * 
+	 * @since 0.1
+	 * @return void
+	 **/
+	function build() {
+		$this->load_files();
+	}
+	
 } // END PDStyles class
 /**
  * Instantiate the PDStylesFrontend or $PDStylesAdminController Class
@@ -436,5 +532,15 @@ function PDStylesInit() {
 	}
 }
 add_action('init', 'PDStylesInit');
+
+add_action('all', 'pd_action_filter');
+function pd_action_filter() {
+	if ( strpos(current_filter(), "style") ) { 
+		FB::log(current_filter());
+	}
+}
+
+
+
 
 ?>

@@ -94,8 +94,8 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 
 			// Create Scaffold instance
 			$container 	= new Scaffold_Container( $system, $config );
+
 			$this->scaffold 	= $container->build();
-			
 		} else {
 			PDStyles::deactivate_and_die ( $environment );
 		}
@@ -186,6 +186,16 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 			}
 		}
 		unset($tmp);
+	}
+	
+	/**
+	 * Remove object elements that don't need to be stored in database
+	 * 
+	 * @since 0.1.3
+	 * @return void
+	 **/
+	function db_cleanup() {
+		unset( $this->scaffold );
 	}
 	
 	function is_protected_key( $key ) {
