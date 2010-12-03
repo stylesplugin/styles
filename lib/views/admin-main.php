@@ -8,6 +8,7 @@
  * @subpackage admin-main
  * @since 0.1
  */
+
 ?>
 <div class="wrap pd-styles">
 	<h2><?php _e( 'Styles' , 'pd-styles' ); ?></h2>
@@ -28,8 +29,11 @@
 	
 				<form method="post" id="pdm_form" action="<?php echo $_SERVER['REQUEST_URI'] ?>" enctype="multipart/form-data" name="post">
 					<?php wp_nonce_field( 'pd-styles-update-options' ); ?>
-
-					<?php $this->variables[ $this->permalink ]->output(); ?>
+					<?php
+						FB::log($this->options, '$this->options');
+						
+						$this->files->active_file->output();
+					?>
 		
 					<input type="hidden" name="action" class="action" value="pdstyles-update-options" />
 						

@@ -43,6 +43,7 @@ class PDStyles_Extension_Position extends PDStyles_Extension_Observer {
 			){
 			
 			$output = "$position-$direction: $amount$unit;";
+
 		}
 		return $output;
 
@@ -55,7 +56,7 @@ class PDStyles_Extension_Position extends PDStyles_Extension_Observer {
 	 * @return string
 	 **/
 	function form_value() {
-		$value = ( empty($this->values['position']) ) ? 0 : empty($this->values['position']);
+		$value = ( empty($this->values['position']) ) ? 0 : $this->values['position'];
 		return $value;
 	}
 	
@@ -80,7 +81,7 @@ class PDStyles_Extension_Position extends PDStyles_Extension_Observer {
 		$min = $this->args['min'];
 		$max = $this->args['max'];
 		
-		if (empty($min) || empty($max)){
+		if ((empty($min)) || (empty($max))){
 			$min=5;
 			$max=55;
 		}
@@ -95,8 +96,7 @@ class PDStyles_Extension_Position extends PDStyles_Extension_Observer {
 			<input class="pds_position_input" type="text" data-min="<?php echo $min; ?>" data-max="<?php echo $max; ?>" name="<?php echo $this->form_name ?>[position]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form'); ?>" size="8" maxlength="8" /> <?php echo $this->args['unit']; ?>
 			<div style="width: 200px;"></div> <?php /* Container for jquery slider */ ?>
 		</td></tr>
-				
-		
+	
 		<?php
 	}
 	

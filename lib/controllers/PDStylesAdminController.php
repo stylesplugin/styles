@@ -36,31 +36,6 @@ class PDStylesAdminController extends PDStyles {
 	var $options_page_hookname;
 	
 	/**
-	 * Container for CSS variable objects & scaffold
-	 * 
-	 * @since 0.1
-	 * @var string
-	 **/
-	var $variables = array();
-	
-	/**
-	 * Path to CSS file being manipulated
-	 * 
-	 * @since 0.1
-	 * @var string
-	 **/
-	var $file;
-	
-	/**
-	 * Friendly formatting of path to $this->file from WP basedir
-	 * Allows for CSS links to not break between dev & production environments.
-	 * 
-	 * @since 0.1
-	 * @var string
-	 **/
-	var $permalink;
-	
-	/**
 	 * Setup backend functionality in WordPress
 	 *
 	 * @return none
@@ -70,13 +45,9 @@ class PDStylesAdminController extends PDStyles {
 		parent::__construct();
 		
 		$defaults = array(
-			'file'	=> apply_filters( 'pdstyles_default_file', PDStyles::plugin_dir_path() . 'example/vars.css' ),
+			'file'	=> apply_filters( 'pdstyles_default_file', $this->plugin_dir_path() . 'example/vars.scss' ),
 		);
 		$args = wp_parse_args( $args, $defaults );
-		
-		// Setup CSS path
-		$this->file = $args['file'];
-		$this->permalink = $this->get_css_permalink( $this->file );
 		
 		$this->options = get_option( 'pd-styles' );
 		
@@ -103,26 +74,6 @@ class PDStylesAdminController extends PDStyles {
 		// AJAX
 		add_action('wp_ajax_pdstyles-update-options', array( &$this, 'update_ajax') );
 		add_action('wp_ajax_pdstyles-frontend-load', array( &$this, 'ajax_frontend_load') );
-	}
-	
-	/**
-	 * Load CSS variables, extensions, and scaffold objects
-	 * 
-	 * @since 0.1
-	 * @return void
-	 **/
-	function build() {
-
-		$this->variables[ $this->permalink ] = new PDStyles_Extension_Variable( array(
-			'file' => $this->file,
-			'permalink' => $this->permalink,
-		) );
-
-		// Merge values from database into variable objects
-		if ( is_object( $this->options['variables'][ $this->permalink ] ) ) {
-			$this->variables[ $this->permalink ]->set( array( $this->permalink => $this->options['variables'][ $this->permalink ]->get() ) );
-		}
-		
 	}
 	
 	/**
@@ -178,7 +129,7 @@ class PDStylesAdminController extends PDStyles {
 		wp_enqueue_style('pds-slider');
 		
 		wp_enqueue_style ( 'pd-styles-admin-css' , apply_filters ( 'pd-styles-admin-css' , '/?scaffold&file=lib/css/admin.css' ) , array('pds-colorpicker') , $this->version , 'screen' );
-		wp_enqueue_style ( 'pd-styles-admin-css-test' , '/?scaffold&file=example/vars.css' , array() , $this->version , 'screen' );
+		// wp_enqueue_style ( 'pd-styles-admin-test' , $this->plugin_dir_path() . 'example/vars.scss' , array() , $this->version , 'screen' );
 	}
 	
 	/**
@@ -457,48 +408,49 @@ class PDStylesAdminController extends PDStyles {
 	 * @since 0.1
 	 * @return none
 	 */
-	function update( $options ) {
+	function update( $input ) {
 		if ( !is_object($this->variables) ) $this->build();
 		
 		// Make sure there are no empty values, seems users like to clear out options before saving
 		foreach ( $this->defaults() as $key => $value ) {
 			if ( 
-				( ! isset ( $options[$key] ) || empty ( $options[$key] ) ) 
+				( ! isset ( $input[$key] ) || empty ( $input[$key] ) ) 
 				&& $key != 'delete' 
 				&& $key != 'default'
 			) {
-				$options[$key] = $value;
+				$input[$key] = $value;
 			}
 		}
 
-		// Merge variables form input into variable objects
-		$this->variables[ $this->permalink ]->set( $options['variables'] );
-		$options['variables'][ $this->permalink ] = $this->variables[ $this->permalink ];
+		// Update vars in active file object
+		$this->files->active_file->set( $input['variables'] );
+		// Convert input array to object for storage
+		$input['variables'][ $this->permalink ] = $this->files->active_file;
 		
 		// Check if we are supposed to remove options
-		if ( isset ( $options['delete'] ) && $options['delete'] == 'true' ) { 
+		if ( isset ( $input['delete'] ) && $input['delete'] == 'true' ) { 
 			delete_option ( 'pd-styles' );
-		} else if ( isset ( $options['default'] ) && $options['default'] == 'true' ) { // Check if we are supposed to reset to defaults
+		} else if ( isset ( $input['default'] ) && $input['default'] == 'true' ) { // Check if we are supposed to reset to defaults
 			$this->options = $this->defaults();
 			return $this->options;
 		} else {
 			// Save options
 			unset ( 
-				$options['delete'], 
-				$options['default'],
-				$options['_wpnonce'],
-				$options['_wp_http_referer'],
-				$options['action']
+				$input['delete'], 
+				$input['default'],
+				$input['_wpnonce'],
+				$input['_wp_http_referer'],
+				$input['action']
 			);
 			
 			// Update current object for further processing
-			$this->options = $options; 
+			$this->options = $input; 
 			
 			// Strip Scaffold from object saved to DB
-			unset( $options['variables'][ $this->permalink ]->scaffold );
+			$input['variables'][ $this->permalink ]->db_cleanup();
 			
 			// Write to DB
-			return $options; 
+			return $input; 
 		}
 	}
 	
@@ -508,17 +460,18 @@ class PDStylesAdminController extends PDStyles {
 	 * @since 0.1
 	 * @return void
 	 **/
-	function update_preview( $options ) {
+	function update_preview( $input ) {
 		$this->build();
 
-		// Merge variables form input into variable objects
-		$this->variables[ $this->permalink ]->set( $options['variables'] );
-		$options['variables'][ $this->permalink ] = $this->variables[ $this->permalink ];
+		// Update vars in active file object
+		$this->files->active_file->set( $input['variables'] );
+		// Convert input array to object for storage
+		$input['variables'][ $this->permalink ] = $this->files->active_file;
 		
 		// Strip Scaffold from object saved to DB
-		unset( $options['variables'][ $this->permalink ]->scaffold );
+		$input['variables'][ $this->permalink ]->db_cleanup();
 		
-		return $options['variables'];
+		return $input['variables'];
 	}
 	
 	/**
@@ -548,10 +501,8 @@ class PDStylesAdminController extends PDStyles {
 			}
 			
 		}
-		
-		$file = str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->file);
-		$response['href'] = '/?scaffold&preview&time='.microtime(true).'&file='.$file;
-		$response['id'] = 'pdstyles-preview-'.md5($this->file);
+		$response['href'] = '/?scaffold&preview&time='.microtime(true).'&active_id='.$this->files->active_id;
+		$response['id'] = $this->files->active_id;
 		
 		echo json_encode( $response );
 
@@ -585,7 +536,6 @@ class PDStylesAdminController extends PDStyles {
 			add_action ( "admin_print_styles-{$this->options_page_hookname}" , array( &$this , 'admin_css' ) );
 			add_filter ( "plugin_action_links_{$this->plugin_basename}" , array( &$this , 'filter_plugin_actions' ) );
 
-			add_action ( "load-{$this->options_page_hookname}" , array( &$this , 'build' ) );
 		}
 	}
 	
