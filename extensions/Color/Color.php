@@ -94,8 +94,14 @@ class PDStyles_Extension_Color extends PDStyles_Extension_Observer {
 				<?php echo $this->label ?>
 			</label>
 		</th><td valign="top">
-			<input class="pds_color_input" type="text" name="<?php echo $this->form_name ?>[color]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'color'); ?>" size="8" maxlength="8" />
+			<?php $this->output_inner() ?>
 		</td></tr>
+		<?php
+	}
+	
+	function output_inner() {
+		?>
+		<input class="pds_color_input" type="text" name="<?php echo $this->form_name ?>[color]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'color'); ?>" size="8" maxlength="8" />
 		<?php
 	}
 	

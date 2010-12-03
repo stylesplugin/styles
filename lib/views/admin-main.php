@@ -30,9 +30,8 @@
 				<form method="post" id="pdm_form" action="<?php echo $_SERVER['REQUEST_URI'] ?>" enctype="multipart/form-data" name="post">
 					<?php wp_nonce_field( 'pd-styles-update-options' ); ?>
 					<?php
-						FB::log($this->options, '$this->options');
-						
 						$this->files->active_file->output();
+						FB::log($this->files->active_file, '$this->files->active_file');
 					?>
 		
 					<input type="hidden" name="action" class="action" value="pdstyles-update-options" />
@@ -40,7 +39,7 @@
 					
 					<p class="submit">
 						<?php /*<input id="pds_preview" type="button" class="button" value="<?php _e('Preview'); ?>" /> */ ?>
-						<input type="submit" class="button-primary" value="<?php _e('Save'); ?>" />
+						<input id="pds_submit" type="submit" class="button-primary" value="<?php _e('Save'); ?>" />
 						
 						<img class="waiting" src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" alt="" /> 
 						<span class="response"> </span>

@@ -135,7 +135,6 @@ class PDStyles_Extension_File {
 		}
 
 		foreach( $wp_styles->queue as $key ) {
-			FB::log($key, '$key');
 			$path = $wp_styles->registered[$key]->src;
 			if ( 'scss' !== pathinfo( $path , PATHINFO_EXTENSION ) ) { continue; }
 			
@@ -155,7 +154,6 @@ class PDStyles_Extension_File {
 			) );
 			
 			$wp_styles->registered[$key]->src = $url;
-			FB::log($wp_styles, '$wp_styles');
 		}
 	}
 

@@ -63,8 +63,6 @@ class PDStyles_Extension_Image extends PDStyles_Extension_Observer {
 	}
 	
 	function output() {	
-		$value = $this->value('form', 'url');
-		$hidden = empty( $value ) ? 'hidden ' : '';
 		?>
 		
 		<tr class="pds_image"><th valign="top" scrope="row">
@@ -74,19 +72,27 @@ class PDStyles_Extension_Image extends PDStyles_Extension_Observer {
 			
 		</th><td valign="top">	
 			
-			<a class="current thickbox <?php echo $hidden ?>image_thumb" href="<?php echo $this->value('form', 'url') ?>">
-				<img style="height:80px;" src="<?php echo $this->value('form', 'url') ?>" alt="" /><br/>
-			</a>
-
-			<input class="pds_image_input" type="text" name="<?php echo $this->form_name ?>[url]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'url'); ?>" size="8" />
-			<input type="button" class="button" value="<?php _e('Select Image') ?>" onclick="show_image_uploader('<?php echo $this->form_id ?>');"/>
-
-			<?php if (!empty( $this->description )) : ?>
-				<br/><small><?php echo $this->description ?></small>
-			<?php endif; ?>
+			<?php $this->output_inner(); ?>
 			
 		</td></tr>
 		<?php		
+	}
+	
+	function output_inner() {
+		$value = $this->value('form', 'url');
+		$hidden = empty( $value ) ? 'hidden ' : '';
+		?>
+		<a class="current thickbox <?php echo $hidden ?>image_thumb" href="<?php echo $this->value('form', 'url') ?>">
+			<img style="height:80px;" src="<?php echo $this->value('form', 'url') ?>" alt="" /><br/>
+		</a>
+
+		<input class="pds_image_input" type="text" name="<?php echo $this->form_name ?>[url]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'url'); ?>" size="8" />
+		<input type="button" class="button" value="<?php _e('Select Image') ?>" onclick="show_image_uploader('<?php echo $this->form_id ?>');"/>
+
+		<?php if (!empty( $this->description )) : ?>
+			<br/><small><?php echo $this->description ?></small>
+		<?php endif; ?>
+		<?php
 	}
 	
 } // END class 

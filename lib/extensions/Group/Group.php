@@ -61,7 +61,7 @@ class PDStyles_Extension_Group extends Scaffold_Extension_Observer {
 		foreach ( $variables as $key => $args ) {
 			if ( is_array($args) ) {
 				foreach ( $controller->extensions as $ext ){
-				
+
 					if ( method_exists( $ext, $args['method'] ) ) {
 						$ext_class = get_class($ext);
 					

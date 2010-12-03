@@ -438,7 +438,7 @@ class PDStyles extends Scaffold_Extension_Observable {
 		
 		# The glob path
 		$path = realpath($path) . DIRECTORY_SEPARATOR . '*';
-	
+
 		# Load each of the extensions
 		foreach(glob($path) as $ext)
 		{			
@@ -456,7 +456,7 @@ class PDStyles extends Scaffold_Extension_Observable {
 			# Get the config for the extension if available
 			//if(isset($this->options[$name]))
 			//	$config = $this->options[$name];
-			
+
 			# Load the controller
 			if(file_exists($file))
 			{
@@ -532,13 +532,6 @@ function PDStylesInit() {
 	}
 }
 add_action('init', 'PDStylesInit');
-
-add_action('all', 'pd_action_filter');
-function pd_action_filter() {
-	if ( strpos(current_filter(), "style") ) { 
-		FB::log(current_filter());
-	}
-}
 
 
 

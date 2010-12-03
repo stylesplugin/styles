@@ -74,12 +74,17 @@ class PDStyles_Extension_Gradient extends PDStyles_Extension_Observer {
 				<?php echo $this->label ?>
 			</label>
 		</th><td valign="top">
-			<input class="pds_color_input" type="text" name="<?php echo $this->form_name ?>[from]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'from'); ?>" size="8" maxlength="8" />
-			<input class="pds_color_input" type="text" name="<?php echo $this->form_name ?>[to]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'to'); ?>" size="8" maxlength="8" />
-			<input class="pds_text_input" type="text" name="<?php echo $this->form_name ?>[size]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'size'); ?>" size="8" maxlength="8" />px
+			<?php $this->output_inner() ?>
 		</td></tr>
 		<?php
 	}
 	
+	function output_inner() {
+		?>
+		<input class="pds_color_input" type="text" name="<?php echo $this->form_name ?>[from]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'from'); ?>" size="8" maxlength="8" />
+		<input class="pds_color_input" type="text" name="<?php echo $this->form_name ?>[to]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'to'); ?>" size="8" maxlength="8" />
+		<input class="pds_text_input" type="text" name="<?php echo $this->form_name ?>[size]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'size'); ?>" size="8" maxlength="8" />px
+		<?php
+	}
 	
 } // END class 
