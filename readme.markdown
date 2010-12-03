@@ -112,3 +112,4 @@ When organizing the new plugin, I was looking at:
 ## Git Stuff $$ 
 Branching from master using a handy little tool called git flow ( http://github.com/nvie/gitflow ) so I can start breaking things without polluting the master branch. I'd recommend using it as well if you haven't already though - it's quite the nice tool. 
 
+... Testing Basecamp hook

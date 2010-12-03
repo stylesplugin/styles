@@ -62,14 +62,14 @@ Copyright 2010  Paul Clark  (email : support (at) pdclark.com)
 // When sharing code
 if ( !class_exists('FirePHP') ) {
 	ob_start();
-	include_once 'lib/FirePHPCore/fb.php';
+	include  dirname ( __FILE__ ) . '/lib/extensions/FirePHPCore/fb.php';
 }
 
-@include dirname ( __FILE__ ) . '/lib/Extension/Observable.php';
-@include dirname ( __FILE__ ) . '/lib/Extension/Observer.php';
-@include dirname ( __FILE__ ) . '/lib/Extension/PDStylesObserver.php';
-@include dirname ( __FILE__ ) . '/lib/controllers/Variable/Variable.php';
-@include dirname ( __FILE__ ) . '/lib/controllers/Group/Group.php';
+include dirname ( __FILE__ ) . '/lib/extensions/Observable.php';
+include dirname ( __FILE__ ) . '/lib/extensions/Observer.php';
+include dirname ( __FILE__ ) . '/lib/extensions/PDStylesObserver.php';
+include dirname ( __FILE__ ) . '/lib/extensions/Variable/Variable.php';
+include dirname ( __FILE__ ) . '/lib/extensions/Group/Group.php';
 
 /**
  * PD Styles class for common actions between admin and frontend.
