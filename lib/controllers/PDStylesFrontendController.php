@@ -49,7 +49,7 @@ class PDStylesFrontendController extends PDStyles {
 			return;
 		}
 		
-		wp_enqueue_style('pds-frontend', '/?scaffold&file=lib/css/frontend.css');
+		// wp_enqueue_style('pds-frontend', '/?scaffold&file=lib/css/frontend.css');
 		
 	}
 	
