@@ -141,6 +141,8 @@ class PDStyles extends Scaffold_Extension_Observable {
 		
 		wp_register_script('pds-colorpicker', $this->plugin_url().'/lib/js/colorpicker/js/colorpicker.js',array('jquery'), $this->version, true);
 		
+		wp_register_script('pds-position-input-slider', $this->plugin_url().'/lib/js/jquery.ui.slider.js',array('jquery'), $this->version, true);
+		wp_enqueue_script('pds-position-input-slider');
 		wp_register_script('jqcookie', $this->plugin_url().'/lib/js/jquery.cookie.js',array(), $this->version, true);
 		
 		

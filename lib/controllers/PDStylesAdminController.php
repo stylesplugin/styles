@@ -174,6 +174,9 @@ class PDStylesAdminController extends PDStyles {
 		
 		wp_register_style('pds-colorpicker', $this->plugin_url().'/lib/js/colorpicker/css/colorpicker.css',array( ), $this->version);
 		
+		wp_register_style('pds-slider', $this->plugin_url().'/lib/css/ui-lightness/jquery-ui-1.8.6.custom.css',array( ), $this->version);
+		wp_enqueue_style('pds-slider');
+		
 		wp_enqueue_style ( 'pd-styles-admin-css' , apply_filters ( 'pd-styles-admin-css' , '/?scaffold&file=lib/css/admin.css' ) , array('pds-colorpicker') , $this->version , 'screen' );
 		wp_enqueue_style ( 'pd-styles-admin-css-test' , '/?scaffold&file=example/vars.css' , array() , $this->version , 'screen' );
 	}
