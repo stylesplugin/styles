@@ -93,7 +93,7 @@ class PDStyles extends Scaffold_Extension_Observable {
 	 * @since 0.1
 	 * @var int
 	 **/
-	var $version = '0.1.3';
+	var $version = '0.1.4';
 	
 	/**
 	 * Plugin DB version
