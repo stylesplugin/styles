@@ -48,7 +48,7 @@ class PDStyles_Extension_Background extends PDStyles_Extension_Observer {
 	 * @return string
 	 **/
 	function css_background() {
-		extract($this->values);
+		@extract($this->values);
 		
 		$out = '';
 		

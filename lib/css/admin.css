@@ -116,7 +116,11 @@
 		}
 	}
 	
-	
+	/* Slider */
+	.pds_slider_ui {
+		width: 200px;
+		display:none;
+	}
 	
 	/* Yoast */
 	small {
@@ -142,4 +146,8 @@
 		}
 	}
 	/* END Yoast */
+}
+
+.colorpicker {
+	z-index: 999;
 }

@@ -35,15 +35,6 @@
 					?>
 		
 					<input type="hidden" name="action" class="action" value="pdstyles-update-options" />
-						
-					
-					<p class="submit">
-						<?php /*<input id="pds_preview" type="button" class="button" value="<?php _e('Preview'); ?>" /> */ ?>
-						<input id="pds_submit" type="submit" class="button-primary" value="<?php _e('Save'); ?>" />
-						
-						<img class="waiting" src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" alt="" /> 
-						<span class="response"> </span>
-					</p>
 
 				</form>
 				

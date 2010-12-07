@@ -98,6 +98,13 @@ class PDStyles_Extension_Group extends Scaffold_Extension_Observer {
 				}
 				?>
 				</table>
+				
+				<p class="submit">
+					<input class="pds-submit button-primary" type="submit" value="<?php _e('Save'); ?>" />
+					
+					<img class="waiting" src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" alt="" /> 
+					<span class="response"> </span>
+				</p>
 			</div>
 		</div>
 		<?php

@@ -11,6 +11,8 @@ class PDStyles_Extension_Gradient extends PDStyles_Extension_Observer {
 	
 	function __construct( $args = array(), Scaffold_Extension_Observable $observable = null ) {
 		parent::__construct( $args, $observable );
+	
+		$this->args['size'] = (empty($this->args['size'])) ? 1 : $this->args['size']+1;
 	}
 	
 	/**
@@ -20,7 +22,7 @@ class PDStyles_Extension_Gradient extends PDStyles_Extension_Observer {
 	 * @return string
 	 **/
 	function css_background_gradient() {
-		extract($this->values);
+		@extract($this->values);
 		
 		$direction = empty($direction) ? 'vertical' : $direction;
 		$size = empty($size) ? '25' : $size;
@@ -40,6 +42,13 @@ class PDStyles_Extension_Gradient extends PDStyles_Extension_Observer {
 			case 'from':
 			case 'to':
 				return trim( $this->values[ $key ], '# ');
+				break;
+			case 'size':
+				if( empty( $this->values[ $key ] ) ) {
+					return '0';
+				}else {
+					return preg_replace( '/[^0-9]/', '', $this->values[ $key ] ); // numbers only
+				}
 				break;
 			default:
 				return $this->values[ $key ];
@@ -83,7 +92,7 @@ class PDStyles_Extension_Gradient extends PDStyles_Extension_Observer {
 		?>
 		<input class="pds_color_input" type="text" name="<?php echo $this->form_name ?>[from]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'from'); ?>" size="8" maxlength="8" />
 		<input class="pds_color_input" type="text" name="<?php echo $this->form_name ?>[to]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'to'); ?>" size="8" maxlength="8" />
-		<input class="pds_text_input" type="text" name="<?php echo $this->form_name ?>[size]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'size'); ?>" size="8" maxlength="8" />px
+		<div><input class="pds_text_input slider" type="text" name="<?php echo $this->form_name ?>[size]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'size'); ?>" size="4" maxlength="8" />px</div>
 		<?php
 	}
 	

@@ -29,7 +29,7 @@ class PDStyles_Extension_Color extends PDStyles_Extension_Observer {
 	 * @return string
 	 **/
 	function css_color() {
-		extract($this->values);
+		@extract($this->values);
 
 		if ( empty( $color ) ) return '';
 		return "color:$color;";
@@ -42,7 +42,7 @@ class PDStyles_Extension_Color extends PDStyles_Extension_Observer {
 	 * @return string
 	 **/
 	function css_background_color() {
-		extract($this->values);
+		@extract($this->values);
 		
 		if ( empty( $color ) ) return '';
 		return "background-color:$color;";
@@ -55,7 +55,7 @@ class PDStyles_Extension_Color extends PDStyles_Extension_Observer {
 	 * @return string
 	 **/
 	function css_border_color() {
-		extract($this->values);
+		@extract($this->values);
 		
 		if ( empty( $color ) ) return 'border-color:transparent;';
 		return "border-color:$color;";

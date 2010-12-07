@@ -20,7 +20,7 @@ class PDStyles_Extension_Image extends PDStyles_Extension_Observer {
 	 * @return string
 	 **/
 	function css_image_replace() {
-		extract($this->values);
+		@extract($this->values);
 		
 		if ( empty( $url ) ) return '';
 		return "image-replace: url($url);";
@@ -34,7 +34,7 @@ class PDStyles_Extension_Image extends PDStyles_Extension_Observer {
 	 * @return string
 	 **/
 	function css_background_image() {
-		extract($this->values);
+		@extract($this->values);
 		
 		if ( empty( $url ) ) return '';
 		return "background-image: url($url);";
