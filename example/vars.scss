@@ -1,10 +1,16 @@
 @variables header {
 	label: Header;
+	test: background( label=Background test );
 	Logo: image-replace( label=The Logo );
+	
 }
 
 html, body {
 	background-color: #fff !important;
+}
+
+#header {
+	header.test
 }
 
 .site-title a {
@@ -13,6 +19,7 @@ html, body {
 
 @variables sa {
 	label: Style A;
+	
 	bg: background-color( label=Background );
 	border_color: border-color( label=Border );
 	background-image: background-image( label=Background );

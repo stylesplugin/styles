@@ -66,7 +66,7 @@ class PDStyles_Extension_Font extends PDStyles_Extension_Observer {
 	 * @return string
 	 **/
 	function css_font() {
-		extract($this->values);
+		@extract($this->values);
 		
 		$output = '';
 		$font_family = $this->families[$font_family];
