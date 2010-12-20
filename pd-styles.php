@@ -166,9 +166,11 @@ class PDStyles extends Scaffold_Extension_Observable {
 	 * @return void
 	 **/
 	function register_scripts() {
-		wp_deregister_script('jquery');//deregister current jquery
-		wp_register_script('jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js', false, '1.4.4', true);
-		wp_enqueue_script('jquery');
+		if (!is_admin() || $_GET['page'] == 'pdstyles') {
+			wp_deregister_script('jquery');//deregister current jquery
+			wp_register_script('jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js', false, '1.4.4', true);
+			wp_enqueue_script('jquery');
+		}
 		
 		wp_register_script('pds-colorpicker', $this->plugin_url().'/lib/js/colorpicker/js/colorpicker.js',array('jquery'), $this->version, true);
 		
