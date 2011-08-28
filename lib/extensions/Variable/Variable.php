@@ -10,12 +10,20 @@
 class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 	
 	/**
-	 * Loaded CSS file path
+	 * Loaded SCSS file path
 	 * 
 	 * @since 0.1
 	 * @var string
 	 **/
 	var $file;
+	
+	/**
+	 * Where to save compiled CSS
+	 * 
+	 * @since 0.1
+	 * @var string
+	 **/
+	var $cache_file;
 	
 	/**
 	 * Path to CSS in a form appropriate for use as an array key
@@ -48,6 +56,7 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 		}
 		
 		$this->file = $args['file'];
+		$this->cache_file = $args['cache_file'];
 		$this->permalink = $args['permalink'];
 
 		$this->scaffold_init();
