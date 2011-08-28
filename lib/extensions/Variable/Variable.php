@@ -80,6 +80,7 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 			'extensions' => array(
 				'Variables',
 				'Import',
+				'CSS3',
 				// 'XMLVariables'
 			)
 		);
@@ -116,7 +117,7 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 
 		// Rather than parsing the whole thing through Scaffold, we just want the
 		// variables that are inside that source. So to save some time, we just get them manually.
-		
+
 		// Parse imports
 		$import = $this->scaffold->extensions['Import'];
 		$import->replace_rules($source, $this->scaffold);

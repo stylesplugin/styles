@@ -410,6 +410,7 @@ class PDStyles extends Scaffold_Extension_Observable {
 				'Variables',
 				'PDStyles',
 				'Gradient',
+				'CSS3',
         	
 				# Process-heavy Extensions
 				//'Sass',
