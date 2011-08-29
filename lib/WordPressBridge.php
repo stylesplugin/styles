@@ -24,10 +24,19 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	 **/
 	var $found = array();
 	
+	/**
+	 * URL to CSS3PIE behavior
+	 * 
+	 * @var string
+	 **/
+	var $PIE;
+	
 	function __construct() {
 		global $PDStylesFrontendController;
 		
 		$css_permalink = $PDStylesFrontendController->permalink;
+
+		$this->PIE = $PDStylesFrontendController->plugin_url().'/lib/js/PIE/PIE.php';
 		
 		if ( $this->config['preview'] ) {
 			
@@ -49,8 +58,10 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	 */
 	public function register_property($properties) {
 		global $system;
+		
 		$this->behaviorpath = $system . 'extensions/CSS3/behaviors/';
 		$properties->register('background-color',array($this,'background_color'));
+		$properties->register('background',array($this,'background'));
 		$properties->register('-wp-background-color',array($this,'wp_background_color'));
 		$properties->register('-wp-font',array($this,'wp_font'));
 		// $properties->register('border-radius',array($this,'border_radius'));
@@ -149,7 +160,43 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 			return "font: $value";
 		}
 
+	}
+	
+	public function linear_gradient($match) {
+		list($from, $to) = $match;
 		
+		return "background: -webkit-gradient(linear, 0 0, 0 100%, from($from) to($to)); /*old webkit*/
+	            background: -webkit-linear-gradient($from, $to); /*new webkit*/
+	            background: -moz-linear-gradient($from, $to); /*gecko*/
+	            background: -ms-linear-gradient($from, $to); /*IE10 preview*/
+	            background: -o-linear-gradient($from, $to); /*opera 11.10+*/
+	            background: linear-gradient($from, $to); /*CSS3 browsers*/
+	       -pie-background: linear-gradient($from, $to); /*PIE*/
+	            behavior: url($this->PIE);";
+	}
+	
+	public function is_linear_gradient($value) {
+		if ( false !== strpos($value, 'linear-gradient') ) {
+			// Find hex colors
+			$regexp = '/#([a-fA-F0-9]{3}){1,2}/';
+			preg_match_all($regexp,$value,$matches);
+
+			if ( 2 == count($matches[0]) ) {
+				return $matches[0];
+			}else {
+				return false;
+			}
+		}
+	}
+	
+	public function background($value, $scaffold, $meta) {
+		extract( $this->extract($value) );
+		
+		if ( ($match = $this->is_linear_gradient( $value ))  ) {
+			return $this->linear_gradient($match);
+		}
+
+		return $meta['property'];
 	}
 	
 	/**

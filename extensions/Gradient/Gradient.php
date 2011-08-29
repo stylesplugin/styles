@@ -16,22 +16,6 @@ class PDStyles_Extension_Gradient extends PDStyles_Extension_Observer {
 	}
 	
 	/**
-	 * Output in CSS for method css_*
-	 * 
-	 * @since 0.1.3
-	 * @return string
-	 **/
-	function css_background_gradient() {
-		@extract($this->values);
-		
-		$direction = empty($direction) ? 'vertical' : $direction;
-		$size = empty($size) ? '25' : $size;
-		
-		if ( empty( $from ) || empty( $to ) ) return '';
-		return "background-gradient: $direction,$size,from($from),to($to);";
-	}
-	
-	/**
 	 * Return value for output in form element
 	 * 
 	 * @since 0.1
