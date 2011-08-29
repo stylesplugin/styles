@@ -11,6 +11,7 @@
 
 ?>
 <div class="wrap pd-styles">
+	<?php screen_icon("themes"); ?>
 	<h2><?php _e( 'Styles' , 'pd-styles' ); ?></h2>
 	
 	<?php /* Warning messages... get out of this view */ ?>
@@ -23,25 +24,18 @@
 	<?php endif; ?>
 
 	
-	<div class="postbox-container left-column">
-		<div class="metabox-holder">	
-			<div class="meta-box-sortables">
+	<form method="post" id="pdm_form" action="<?php echo $_SERVER['REQUEST_URI'] ?>" enctype="multipart/form-data" name="post">
+		<?php wp_nonce_field( 'pd-styles-update-options' ); ?>
+		<?php
+			// Todo: Rewrite settings output using WP Settings API
+			// http://codex.wordpress.org/Settings_API
 	
-				<form method="post" id="pdm_form" action="<?php echo $_SERVER['REQUEST_URI'] ?>" enctype="multipart/form-data" name="post">
-					<?php wp_nonce_field( 'pd-styles-update-options' ); ?>
-					<?php
-						// Todo: Rewrite settings output using WP Settings API
-						// http://codex.wordpress.org/Settings_API
-					
-						$this->files->active_file->output();
-						// FB::log($this->files->active_file, '$this->files->active_file');
-					?>
-		
-					<input type="hidden" name="action" class="action" value="pdstyles-update-options" />
+			$this->files->active_file->output();
+			// FB::log($this->files->active_file, '$this->files->active_file');
+		?>
 
-				</form>
+		<input type="hidden" name="action" class="action" value="pdstyles-update-options" />
+
+	</form>
 				
-			</div>
-		</div>
-	</div>
 </div>

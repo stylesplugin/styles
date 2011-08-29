@@ -484,7 +484,8 @@ class PDStylesAdminController extends PDStyles {
 		global $blog_id;
 		
 		$response = array();
-
+		$class = 'updated';
+		
 		if ( isset( $_POST['preview'] )) {
 			
 			if ( update_option('pd-styles-preview', $_POST ) ) {
@@ -509,9 +510,14 @@ class PDStylesAdminController extends PDStyles {
 				$response['message'] .= 'Stylesheet rendered and cached to <code><abbr title="'.$cache_file.'">'.basename($cache_file).'</abbr></code>.<br/>';
 			}else {
 				$response['message'] = '<div><strong>Error:</strong> Could not write to file <code><abbr title="'.$cache_file.'">'.basename($cache_file).'</abbr></code>.<br/>Please save <a href="/?scaffold">the output</a> manually or make the file writable with: <code>chmod 666 '.$cache_file.'</code></div>';
+				$class = 'error';
 			}
 			
 		}
+		
+		$response['message'] = '<div class="'.$class.' settings-error" id="setting-error-settings_updated"> 
+		<p>'.$response['message'].'</p></div>';
+		
 		$response['href'] = '/?scaffold&preview&time='.microtime(true);
 		$response['id'] = $blog_id;
 		
