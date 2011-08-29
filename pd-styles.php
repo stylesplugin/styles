@@ -409,7 +409,7 @@ class PDStyles extends Scaffold_Extension_Observable {
 				'Functions',
 				//'HSL',
 				'ImageReplace',
-				'Minify',
+				// 'Minify',
 				'Properties',
 				'Random',
 				'Import',
@@ -419,7 +419,7 @@ class PDStyles extends Scaffold_Extension_Observable {
 				'Variables',
 				'PDStyles',
 				'Gradient',
-				'CSS3',
+				// 'CSS3',
         	
 				# Process-heavy Extensions
 				//'Sass',
@@ -495,8 +495,6 @@ class PDStyles extends Scaffold_Extension_Observable {
 		
 		$this->files = new PDStyles_Extension_File( apply_filters( 'bsm_scss_file', '/css/style.scss' ) );
 		
-		FB::log($this->files, '$this->files');
-
 		// Setup CSS path
 		$this->permalink = $this->files->active_id;
 		$this->file = $this->files->queue[ $this->permalink ]->file;
@@ -505,6 +503,10 @@ class PDStyles extends Scaffold_Extension_Observable {
 		if ( is_object( $this->options['variables'][ $this->permalink ] ) ) {
 			$this->files->active_file->set( array( $this->permalink => $this->options['variables'][ $this->permalink ]->get() ) );
 		}
+
+		// Hacky. Give Scaffold access to vars stored in WP database.
+		// Maybe load this via a scaffold extension?
+		$this->files->active_file->scaffold->variables = & $this->files->active_file->variables;
 	}
 	
 	/**

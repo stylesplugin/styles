@@ -22,6 +22,10 @@ class PDStyles_Extension_Color extends PDStyles_Extension_Observer {
 		);
 	}
 	
+	function wp_background_color() {
+		return $this->css_background_color();
+	}
+	
 	/**
 	 * Output in CSS for method css_*
 	 * 

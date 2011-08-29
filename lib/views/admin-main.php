@@ -31,7 +31,7 @@
 					<?php wp_nonce_field( 'pd-styles-update-options' ); ?>
 					<?php
 						$this->files->active_file->output();
-						FB::log($this->files->active_file, '$this->files->active_file');
+						// FB::log($this->files->active_file, '$this->files->active_file');
 					?>
 		
 					<input type="hidden" name="action" class="action" value="pdstyles-update-options" />

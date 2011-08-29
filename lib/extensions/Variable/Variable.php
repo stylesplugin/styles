@@ -66,6 +66,7 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 		foreach( $this->variables as $key => &$group ) {
 			
 			$group['form_name'] = "variables[$this->permalink]";
+			$group['key'] = $key;
 			$group = new PDStyles_Extension_Group( $group );
 			
 			// Remove empty groups
@@ -89,7 +90,9 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 			'extensions' => array(
 				'Variables',
 				'Import',
-				'CSS3',
+				'PDStyles',
+				'NestedSelectors',
+				'Properties',
 				// 'XMLVariables'
 			)
 		);
@@ -133,10 +136,16 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 		
 		// Parse variables
 		$variables = $this->scaffold->extensions['Variables'];
-
 		// Pull out the variables into an array 
-		$this->variables = $variables->extract($source);
-		$this->variables_cleanup();
+		// $this->variables = $variables->extract($source);
+		$this->variables = &$this->scaffold->extensions['PDStyles']->found;
+
+		$this->scaffold->compile($source);
+		
+		FB::log($this->variables, '$this->variables');
+		// $this->variables_cleanup();
+		FB::log($this->variables, '$this->variables');
+		FB::log($this->scaffold->extensions['PDStyles']->found, 'PDStyles->found');
 	}
 	
 	/**
@@ -220,7 +229,7 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 	
 	function output() {
 		foreach ($this->variables as $variable) {
-			$variable->output( );
+			$variable->output();
 		}
 	}
 	
