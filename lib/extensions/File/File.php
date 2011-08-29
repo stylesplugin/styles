@@ -18,6 +18,13 @@ class PDStyles_Extension_File {
 	var $active_file;
 	
 	/**
+	 * Depreciated, but used as key in variables storage array
+	 * 
+	 * @var string
+	 **/
+	var $active_id;
+	
+	/**
 	 * Include paths. Used for searching for files.
 	 * @var array
 	 */
@@ -26,6 +33,8 @@ class PDStyles_Extension_File {
 	function __construct( $file ) {
 		
 		global $blog_id;
+		
+		$this->active_id = $blog_id;
 
 		if ( !file_exists( get_stylesheet_directory().$file ) ) {
 			FB::error( 'File not found: '.get_stylesheet_directory().$file );
@@ -44,9 +53,13 @@ class PDStyles_Extension_File {
 			$this->active_file = new PDStyles_Extension_Variable( array(
 	 			'file' => get_stylesheet_directory().$file, // Absolute path
 				'cache_file' => get_stylesheet_directory().$cached_file,
-				'permalink' => $blog_id,
+				'permalink' => $this->active_id,
 			) );
 		}else {
+			
+			// If we're developing, force re-render on every CSS load
+			FB::log($_SERVER, '$_SERVER');
+			
 			// Enqueue cached output if we're in frontend
 			wp_enqueue_style('bsm-scaffold', get_stylesheet_directory_uri().$cached_file );
 		}

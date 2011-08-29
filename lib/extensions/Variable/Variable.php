@@ -238,6 +238,7 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 			FB::error('$this->permalink not found in $values.');
 			FB::error($this->permalink, '$this->permalink');
 			FB::error($values, '$values');
+			FB::error(debug_backtrace(), 'debug_backtrace()');
 			return;
 		}
 		

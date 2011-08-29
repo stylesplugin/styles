@@ -502,11 +502,13 @@ class PDStylesAdminController extends PDStyles {
 				$response['message'] .= 'Variables unchanged.<br/>';
 			}
 			
-			$cache_written = @file_put_contents( $this->files->active_file->cache_file, $this->render() );
+			$cache_file = $this->files->active_file->cache_file;
+			
+			$cache_written = @file_put_contents( $cache_file, $this->render() );
 			if ( false !== $cache_written ) {
-				$response['message'] .= 'Stylesheet rendered and cached to <code>'.$this->files->active_file->cache_file.'</code>.<br/>';
+				$response['message'] .= 'Stylesheet rendered and cached to <code><abbr title="'.$cache_file.'">'.basename($cache_file).'</abbr></code>.<br/>';
 			}else {
-				$response['message'] = '<div><strong>Error:</strong> Could not write to file <code>'.$this->files->active_file->cache_file.'</code>.<br/>Please save <a href="/?scaffold">the output</a> manually or make the file writable with: <code>chmod 666 '.$this->files->active_file->cache_file.'</code></div>';
+				$response['message'] = '<div><strong>Error:</strong> Could not write to file <code><abbr title="'.$cache_file.'">'.basename($cache_file).'</abbr></code>.<br/>Please save <a href="/?scaffold">the output</a> manually or make the file writable with: <code>chmod 666 '.$cache_file.'</code></div>';
 			}
 			
 		}
