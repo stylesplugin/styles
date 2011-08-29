@@ -521,7 +521,7 @@ class PDStyles extends Scaffold_Extension_Observable {
 	
 } // END PDStyles class
 /**
- * Instantiate the PDStylesFrontend or $PDStylesAdminController Class
+ * Instantiate the PDStylesFrontend or $PDStylesController Class
  *
  * Deactivate and die if files can not be included
  */
@@ -532,8 +532,8 @@ function PDStylesInit() {
 		// include admin class
 
 		if ( @include dirname ( __FILE__ ) . '/lib/controllers/PDStylesAdminController.php' ) {
-			global $PDStylesAdminController;
-			$PDStylesAdminController = new PDStylesAdminController ();
+			global $PDStylesController;
+			$PDStylesController = new PDStylesAdminController ();
 
 		} else {
 			PDStyles::deactivate_and_die ( dirname ( __FILE__ ) . '/inc/admin.php' );
@@ -543,8 +543,8 @@ function PDStylesInit() {
 		// include subadmin class
 	
 		if ( @include dirname ( __FILE__ ) . '/lib/controllers/PDStylesFrontendController.php' ) {
-			global $PDStylesFrontendController;
-			$PDStylesFrontendController = new PDStylesFrontendController ();
+			global $PDStylesController;
+			$PDStylesController = new PDStylesFrontendController ();
 		} else {
 			PDStyles::deactivate_and_die ( dirname ( __FILE__ ) . '/inc/front-end.php' );
 		}

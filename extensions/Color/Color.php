@@ -40,6 +40,7 @@ class PDStyles_Extension_Color extends PDStyles_Extension_Observer {
 	}
 	
 	function output() {
+		// Change color picker to http://www.digitalmagicpro.com/jPicker/
 		?>
 		<tr class="pds_color"><th valign="top" scrope="row">
 			<label for="<?php echo $this->form_id; ?>">

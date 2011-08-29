@@ -32,11 +32,11 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	var $PIE;
 	
 	function __construct() {
-		global $PDStylesFrontendController;
+		global $PDStylesController;
 		
-		$css_permalink = $PDStylesFrontendController->permalink;
+		$css_permalink = $PDStylesController->permalink;
 
-		$this->PIE = $PDStylesFrontendController->plugin_url().'/lib/js/PIE/PIE.php';
+		$this->PIE = $PDStylesController->plugin_url().'/lib/js/PIE/PIE.php';
 		
 		if ( $this->config['preview'] ) {
 			
@@ -45,8 +45,8 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 				$this->vals = $preview[ $css_permalink ]->get('css');
 			}
 
-		}else if( is_object( $PDStylesFrontendController->options['variables'][ $css_permalink ] ) ) {
-			$this->vals = $PDStylesFrontendController->options['variables'][ $css_permalink ]->get('css');
+		}else if( is_object( $PDStylesController->options['variables'][ $css_permalink ] ) ) {
+			$this->vals = $PDStylesController->options['variables'][ $css_permalink ]->get('css');
 		}
 	}
 	
@@ -60,8 +60,9 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 		global $system;
 		
 		$this->behaviorpath = $system . 'extensions/CSS3/behaviors/';
-		$properties->register('background-color',array($this,'background_color'));
 		$properties->register('background',array($this,'background'));
+		$properties->register('background-color',array($this,'background_color'));
+		$properties->register('-wp-background',array($this,'wp_background'));
 		$properties->register('-wp-background-color',array($this,'wp_background_color'));
 		$properties->register('-wp-font',array($this,'wp_font'));
 		// $properties->register('border-radius',array($this,'border_radius'));
@@ -103,6 +104,9 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	
 	
 	public function wp_background_color($value, $scaffold, $meta) {
+		
+		// Change color picker to http://www.digitalmagicpro.com/jPicker/
+		
 		extract( $this->extract($value) );
 		
 		$id = $this->create_id($meta);
@@ -162,8 +166,34 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 
 	}
 	
+	public function wp_background($value, $scaffold, $meta) {
+		extract( $this->extract($value) );
+		
+		$id = $this->create_id($meta);
+		$key = md5($id);
+		
+		// Populate found array for WP UI generation
+		$this->found[$group][$key] = array(
+			'value' => $value,
+			'group' => $group,
+			'label' => $label,
+			'id'    => $id,
+			'key'   => $key,
+			'class' => 'PDStyles_Extension_Gradient',
+		);
+		
+		// Extract values saved from WP form
+		@extract( $this->vals[$group][$key] );
+
+		if ( !empty($color) ) { $value = $color; }
+FB::log($this->vals[$group][$key], '$this->vals[$group][$key]');
+		return $this->background_color($value);
+	}
+	
 	public function linear_gradient($match) {
 		list($from, $to) = $match;
+		
+		 
 		
 		return "background: -webkit-gradient(linear, 0 0, 0 100%, from($from) to($to)); /*old webkit*/
 	            background: -webkit-linear-gradient($from, $to); /*new webkit*/
@@ -176,6 +206,9 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	}
 	
 	public function is_linear_gradient($value) {
+		
+		// Match linear-gradient(-45deg, red 0%, orange 15%, yellow 30%, green 45%, blue 60%, indigo 75%, violet 100%);
+		
 		if ( false !== strpos($value, 'linear-gradient') ) {
 			// Find hex colors
 			$regexp = '/#([a-fA-F0-9]{3}){1,2}/';
@@ -219,7 +252,7 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 			$hex_a = (strlen($hex_a) < 2?'0':'').$hex_a;
 			$ms_color = '#' . $hex_a . substr($hex_color,1);
 
-			$css = "background-color: $hex_color;"
+			$css = "background-color: transparent;" /*background-color: $hex_color; */
 				. "background-color: rgba($r, $g, $b, $a);"
 				. "filter: progid:DXImageTransform.Microsoft.gradient("
 					. "startColorStr='$ms_color',EndColorStr='$ms_color');";

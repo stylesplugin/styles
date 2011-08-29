@@ -54,8 +54,8 @@ class PDStyles_Extension_Group extends Scaffold_Extension_Observer {
 	}
 	
 	function create_objects( $variables ) {
-		global $PDStylesAdminController, $PDStylesFrontendController;
-		$controller = ( empty($PDStylesAdminController) ) ? $PDStylesFrontendController : $PDStylesAdminController;
+		global $PDStylesController;
+		$controller = & $PDStylesController;
 		
 		// Instantiate Objects
 		foreach ( $variables as $key => $args ) {
