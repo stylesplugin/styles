@@ -13,13 +13,6 @@ class PDStyles_Extension_Color extends PDStyles_Extension_Observer {
 		parent::__construct( $args, $observable );
 	}
 	
-	function css_value() {
-		@extract($this->values);
-		
-		if ( empty( $color ) ) return '';
-		return $color;
-	}
-	
 	/**
 	 * Return value for output in form element
 	 * 
