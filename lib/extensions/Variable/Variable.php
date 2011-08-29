@@ -90,7 +90,7 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 			'extensions' => array(
 				'Variables',
 				'Import',
-				'PDStyles',
+				'WordPressBridge',
 				'NestedSelectors',
 				'Properties',
 				// 'XMLVariables'
@@ -138,14 +138,14 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 		$variables = $this->scaffold->extensions['Variables'];
 		// Pull out the variables into an array 
 		// $this->variables = $variables->extract($source);
-		$this->variables = &$this->scaffold->extensions['PDStyles']->found;
+		$this->variables = &$this->scaffold->extensions['WordPressBridge']->found;
 
 		$this->scaffold->compile($source);
 		
-		FB::log($this->variables, '$this->variables');
+		// FB::log($this->variables, '$this->variables');
 		// $this->variables_cleanup();
-		FB::log($this->variables, '$this->variables');
-		FB::log($this->scaffold->extensions['PDStyles']->found, 'PDStyles->found');
+		// FB::log($this->variables, '$this->variables');
+		// FB::log($this->scaffold->extensions['WordPressBridge']->found, 'WordPressBridge->found');
 	}
 	
 	/**

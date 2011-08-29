@@ -53,13 +53,6 @@ abstract class PDStyles_Extension_Observer extends Scaffold_Extension_Observer
 	var $values;
 	
 	/**
-	 * Variable values to match this object to
-	 * @since 0.1
-	 * @var array
-	 */
-	var $keywords = array();
-	
-	/**
 	 * Arguments passed from CSS
 	 * 
 	 * @since 0.1
@@ -104,7 +97,7 @@ abstract class PDStyles_Extension_Observer extends Scaffold_Extension_Observer
 	 * @return string
 	 **/
 	function value( $context = null, $key = null ) {
-		
+
 		$css_method = $this->method;
 		if ($context == 'css' && method_exists( $this, $css_method ) ) {
 			return $this->$css_method();

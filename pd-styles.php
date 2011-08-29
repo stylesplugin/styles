@@ -417,7 +417,7 @@ class PDStyles extends Scaffold_Extension_Observable {
 				'NestedSelectors',
 				//'XMLVariables',
 				'Variables',
-				'PDStyles',
+				'WordPressBridge',
 				'Gradient',
 				// 'CSS3',
         	

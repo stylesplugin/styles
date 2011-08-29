@@ -11,58 +11,13 @@ class PDStyles_Extension_Color extends PDStyles_Extension_Observer {
 	
 	function __construct( $args = array(), Scaffold_Extension_Observable $observable = null ) {
 		parent::__construct( $args, $observable );
-		
-		$this->keywords = array(
-			'background-color',
-			'bgc',
-			'color',
-			'c',
-			'border-color',
-			'bordc',
-		);
 	}
 	
-	function wp_background_color() {
-		return $this->css_background_color();
-	}
-	
-	/**
-	 * Output in CSS for method css_*
-	 * 
-	 * @since 0.1.3
-	 * @return string
-	 **/
-	function css_color() {
-		@extract($this->values);
-
-		if ( empty( $color ) ) return '';
-		return "color:$color;";
-	}
-	
-	/**
-	 * Output in CSS for method css_*
-	 * 
-	 * @since 0.1.3
-	 * @return string
-	 **/
-	function css_background_color() {
+	function css_value() {
 		@extract($this->values);
 		
 		if ( empty( $color ) ) return '';
-		return "background-color:$color;";
-	}
-	
-	/**
-	 * Output in CSS for method css_*
-	 * 
-	 * @since 0.1.3
-	 * @return string
-	 **/
-	function css_border_color() {
-		@extract($this->values);
-		
-		if ( empty( $color ) ) return 'border-color:transparent;';
-		return "border-color:$color;";
+		return $color;
 	}
 	
 	/**
