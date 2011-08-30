@@ -88,6 +88,7 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 		// Scaffold Configuration
 		$config = array(
 			'extensions' => array(
+				'AbsoluteUrls',
 				'Variables',
 				'Import',
 				'WordPressBridge',
@@ -95,6 +96,10 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 				'Properties',
 				// 'XMLVariables'
 			)
+		);
+		$config['import_paths'] = array(
+			untrailingslashit( get_stylesheet_directory() ),
+			untrailingslashit( get_stylesheet_directory() ).'/css',
 		);
 
 		// Setup the env
@@ -106,9 +111,9 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 			Scaffold_Environment::auto_load(true);
 
 			// Create Scaffold instance
-			$container 	= new Scaffold_Container( $system, $config );
+			$Container = Scaffold_Container::getInstance($system,$config);
 
-			$this->scaffold 	= $container->build();
+			$this->scaffold 	= $Container->build();
 		} else {
 			PDStyles::deactivate_and_die ( $environment );
 		}

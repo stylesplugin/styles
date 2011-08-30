@@ -357,7 +357,7 @@ class PDStyles extends Scaffold_Extension_Observable {
 		// =========================================
 
 		// The container creates Scaffold objects
-		$Container = new Scaffold_Container($system,$config);
+		$Container = Scaffold_Container::getInstance($system,$config);
 
 		// This is where the magic happens
 		$Scaffold = $Container->build();
@@ -404,11 +404,11 @@ class PDStyles extends Scaffold_Extension_Observable {
 			'enable_string'			=> false,
 			'enable_url'			=> false,
 			'extensions'			=> array(
-				// 'AbsoluteUrls',
+				'AbsoluteUrls',
 				'Embed',
 				'Functions',
 				//'HSL',
-				'ImageReplace',
+				// 'ImageReplace',
 				// 'Minify',
 				'Properties',
 				'Random',
@@ -428,9 +428,10 @@ class PDStyles extends Scaffold_Extension_Observable {
 			),
 		);
 		
-		$config['load_paths'] = array(
+		$config['import_paths'] = array(
 			untrailingslashit( get_stylesheet_directory() ),
-			untrailingslashit( $this->plugin_dir_path() ),
+			untrailingslashit( get_stylesheet_directory() ).'/css',
+			// untrailingslashit( $this->plugin_dir_path() ),
 		);
 		
 		// Minify CSS when in production

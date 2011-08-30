@@ -2,13 +2,12 @@
 /**
  * Scaffold_Extension_WordPressBridge
  *
- * Preloads variables to use within the CSS from the WordPress PD Styles plugin.
+ * Preloads variables to use within the CSS from the WordPress Styles plugin.
  * 
  * @package 		Scaffold
- * @author 			Anthony Short <anthonyshort@me.com>
- * @copyright 		2009-2010 Anthony Short. All rights reserved.
+ * @author 			Paul Clark <pdclark (at) brainstormmedia.com>
+ * @copyright 		2011 Brainstorm Media. All rights reserved.
  * @license 		http://opensource.org/licenses/bsd-license.php  New BSD License
- * @link 			https://github.com/anthonyshort/csscaffold/master
  */
 class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 {	
@@ -80,28 +79,6 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	public function initialize($source,$scaffold) {
 		$this->source = $source;
 	}
-	
-	public function extract($value) {
-		$parts = explode('//', $value);
-		foreach($parts as &$part) {
-			$part = trim($part);
-		}
-		$text = explode('.', $parts[1]);
-		
-		return array(
-			'value' => $parts[0],
-			'group' => $text[0],
-			'label' => $text[1],
-		);
-	}
-	
-	public function create_id($meta) {
-		$selector = trim($meta['selector']);
-		$property = substr($meta['property'], 0, strpos($meta['property'], ':') ); // Returns property name (before colon)
-		
-		return $selector.'{'.$property.'}';
-	}
-	
 	
 	public function wp_background_color($value, $scaffold, $meta) {
 		
@@ -205,28 +182,16 @@ FB::log($this->vals[$group][$key], '$this->vals[$group][$key]');
 	            behavior: url($this->PIE);";
 	}
 	
-	public function is_linear_gradient($value) {
-		
-		// Match linear-gradient(-45deg, red 0%, orange 15%, yellow 30%, green 45%, blue 60%, indigo 75%, violet 100%);
-		
-		if ( false !== strpos($value, 'linear-gradient') ) {
-			// Find hex colors
-			$regexp = '/#([a-fA-F0-9]{3}){1,2}/';
-			preg_match_all($regexp,$value,$matches);
-
-			if ( 2 == count($matches[0]) ) {
-				return $matches[0];
-			}else {
-				return false;
-			}
-		}
-	}
+	
 	
 	public function background($value, $scaffold, $meta) {
 		extract( $this->extract($value) );
 		
-		if ( ($match = $this->is_linear_gradient( $value ))  ) {
+		if ( ($match = $this->find_linear_gradient( $value ))  ) {
 			return $this->linear_gradient($match);
+		}
+		if ( $this->is_image_replace( $value ) ) {
+			return $this->image_replace($value);
 		}
 
 		return $meta['property'];
@@ -260,8 +225,114 @@ FB::log($this->vals[$group][$key], '$this->vals[$group][$key]');
 		return $css;
 	}
 	
+	/**
+	 * Parses image-replace properties
+	 * @package 		Scaffold
+	 * @author 			Anthony Short <anthonyshort@me.com>
+	 * @copyright 		2009-2010 Anthony Short. All rights reserved.
+	 * @license 		http://opensource.org/licenses/bsd-license.php  New BSD License
+	 * @link 			https://github.com/anthonyshort/csscaffold/master
+	 * @access public
+	 * @param $url
+	 * @return string
+	 */
+	public function image_replace($value) {
+
+		if( ($url = $this->find_background_url($value) ) && ($file = $this->source->find($url)) ) { // Avoid crash when file not found
+
+			// Get the size of the image file
+			$size = GetImageSize($file);
+			$width = $size[0];
+			$height = $size[1];
+			
+			// Make sure theres a value so it doesn't break the css
+			if(!$width && !$height) {
+				$width = $height = 0;
+			}
+			
+			// Build the selector
+			$properties = 'background:url('.$url.') no-repeat 0 0;height:0;padding-top:'.$height.'px;width:'.$width.'px;display:block;text-indent:-9999px;overflow:hidden;';
+		
+			return $properties;
+		}else {
+			return "/* Error: could not find file: $value */";
+		}
+		
+		
+	}
 	
+	private function find_background_url($value) {
+		
+		$url = preg_match('/
+				(?:(?:replace-)?url\(\s*)?      	 # maybe (replace-)url( -- passive groups
+				[\'"]?               # maybe quote
+				([^\'\"\)]*)                # 1 = URI
+				[\'"]?               # maybe end quote
+				(?:\\s*\\))?         # maybe )
+			/xsi',
+			$value,
+			$match
+		);
+
+		if( $match[1] ) {
+			return $match[1];
+		}else {
+			return false;
+		}
+	}
 	
+	private function find_linear_gradient($value) {
+		
+		// Match linear-gradient(-45deg, red 0%, orange 15%, yellow 30%, green 45%, blue 60%, indigo 75%, violet 100%);
+		
+		if ( false !== strpos($value, 'linear-gradient') ) {
+			// Find hex colors
+			$regexp = '/#([a-fA-F0-9]{3}){1,2}/';
+			preg_match_all($regexp,$value,$matches);
+
+			if ( 2 == count($matches[0]) ) {
+				return $matches[0];
+			}else {
+				return false;
+			}
+		}
+	}
+	
+	private function is_image_replace($value) {
+		if ( false !== strpos($value, 'replace-url') ) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	private function extract($value) {
+		$parts = explode('//', $value);
+		foreach($parts as &$part) {
+			$part = trim($part);
+		}
+		$text = explode('.', $parts[1]);
+		
+		return array(
+			'value' => $parts[0],
+			'group' => $text[0],
+			'label' => $text[1],
+		);
+	}
+	
+	private function create_id($meta) {
+		$selector = trim($meta['selector']);
+		$property = substr($meta['property'], 0, strpos($meta['property'], ':') ); // Returns property name (before colon)
+		
+		return $selector.'{'.$property.'}';
+	}
+	
+	/**
+	 * From Scaffold_Extension_CSS3
+	 *
+	 * @package 		Scaffold
+	 * @author 			Ben Cates <ben.cates@gmail.com>
+	 */
 	private function html2rgb($color) {
 		if ($color[0] == '#')
 			$color = substr($color, 1);
@@ -284,7 +355,13 @@ FB::log($this->vals[$group][$key], '$this->vals[$group][$key]');
 
 		return array($r, $g, $b);
 	}
-
+	
+	/**
+	 * From Scaffold_Extension_CSS3
+	 *
+	 * @package 		Scaffold
+	 * @author 			Ben Cates <ben.cates@gmail.com>
+	 */
 	private function rgb2html($r, $g=-1, $b=-1) {
 		if (is_array($r) && sizeof($r) == 3)
 			list($r, $g, $b) = $r;
@@ -301,7 +378,13 @@ FB::log($this->vals[$group][$key], '$this->vals[$group][$key]');
 
 		return '#'.$color;
 	}
-
+	
+	/**
+	 * From Scaffold_Extension_CSS3
+	 *
+	 * @package 		Scaffold
+	 * @author 			Ben Cates <ben.cates@gmail.com>
+	 */
 	private function xy2rs($x, $y) {
 		$rotation = round( atan2(-$y,$x) * 180/pi() );
 		$strength = round( sqrt($x*$x) + sqrt($y*$y) );
