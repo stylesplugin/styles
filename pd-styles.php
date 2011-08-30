@@ -431,7 +431,12 @@ class PDStyles extends Scaffold_Extension_Observable {
 		$config['import_paths'] = array(
 			untrailingslashit( get_stylesheet_directory() ),
 			untrailingslashit( get_stylesheet_directory() ).'/css',
-			// untrailingslashit( $this->plugin_dir_path() ),
+			untrailingslashit( $this->plugin_dir_path() ),
+		);
+
+		$config['load_paths'] = array(
+			untrailingslashit( get_stylesheet_directory() ),
+			untrailingslashit( $this->plugin_dir_path() ),
 		);
 		
 		// Minify CSS when in production

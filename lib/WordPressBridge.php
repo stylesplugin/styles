@@ -148,12 +148,13 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 
 		$id = $this->create_id($meta);
 		$key = md5($id);
-		
+
 		if ( ($match = $this->find_linear_gradient( $value ))  ) {
 			$class = 'PDStyles_Extension_Gradient';
-		}
-		if ( ($match = $this->find_background_url( $value ) ) ) {
+		}else if ( ($match = $this->find_background_url( $value ) ) ) {
 			$class = 'PDStyles_Extension_Image';
+		}else {
+			return "/* Error: Could not detect image or gradient: $value */";
 		}
 		
 		// Populate found array for WP UI generation
@@ -168,31 +169,17 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 		
 		// Extract values saved from WP form
 		@extract( $this->vals[$group][$key] );
-
-		if ( $url && $match ) { 
+		
+		if ( $url ) { 
 			$value = str_replace($match, $url, $value);
-			$meta['property'] = "background: $value;";
+		}else if ( $from && $to ) {
+			$value = "linear-gradient( $from, $to )";
 		}
+		
+		$meta['property'] = "background: $value;";
 		
 		return $this->background($value, $scaffold, $meta);
 	}
-	
-	public function linear_gradient($match) {
-		list($from, $to) = $match;
-		
-		 
-		
-		return "background: -webkit-gradient(linear, 0 0, 0 100%, from($from) to($to)); /*old webkit*/
-	            background: -webkit-linear-gradient($from, $to); /*new webkit*/
-	            background: -moz-linear-gradient($from, $to); /*gecko*/
-	            background: -ms-linear-gradient($from, $to); /*IE10 preview*/
-	            background: -o-linear-gradient($from, $to); /*opera 11.10+*/
-	            background: linear-gradient($from, $to); /*CSS3 browsers*/
-	       -pie-background: linear-gradient($from, $to); /*PIE*/
-	            behavior: url($this->PIE);";
-	}
-	
-	
 	
 	public function background($value, $scaffold, $meta) {
 		extract( $this->extract($value) );
@@ -216,6 +203,20 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	 * @param $url
 	 * @return string
 	 */
+	
+	public function linear_gradient($match) {
+		list($from, $to) = $match;
+				
+		return "background: -webkit-gradient(linear, 0 0, 0 100%, from($from) to($to)); /*old webkit*/
+	            background: -webkit-linear-gradient($from, $to); /*new webkit*/
+	            background: -moz-linear-gradient($from, $to); /*gecko*/
+	            background: -ms-linear-gradient($from, $to); /*IE10 preview*/
+	            background: -o-linear-gradient($from, $to); /*opera 11.10+*/
+	            background: linear-gradient($from, $to); /*CSS3 browsers*/
+	       -pie-background: linear-gradient($from, $to); /*PIE*/
+	            behavior: url($this->PIE);";
+	}
+	
 	public function background_color($value) {
 		$regexp = '/rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*([\d\.]+)\s*\)/';
 		if (preg_match($regexp,$value,$match)) {
@@ -274,7 +275,7 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	private function find_background_url($value) {
 		
 		$url = preg_match('/
-				(?:(?:replace-)?url\(\s*)?      	 # maybe (replace-)url( -- passive groups
+				(?:(?:replace-)?url\(\s*)      	 # required url( -- passive groups
 				[\'"]?               # maybe quote
 				([^\'\"\)]*)                # 1 = URI
 				[\'"]?               # maybe end quote

@@ -58,7 +58,7 @@ class PDStyles_Extension_Image extends PDStyles_Extension_Observer {
 			<img style="height:80px;" src="<?php echo $this->value('form', 'url') ?>" alt="" /><br/>
 		</a>
 
-		<input class="pds_image_input" type="text" name="<?php echo $this->form_name ?>[url]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'url'); ?>" size="8" />
+		<input class="pds_image_input" type="text" name="<?php echo $this->form_name ?>[url]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'url'); ?>" size="32" />
 		<input type="button" class="button" value="<?php _e('Select Image') ?>" onclick="show_image_uploader('<?php echo $this->form_id ?>');"/>
 
 		<?php if (!empty( $this->description )) : ?>

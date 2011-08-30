@@ -101,6 +101,10 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 			untrailingslashit( get_stylesheet_directory() ),
 			untrailingslashit( get_stylesheet_directory() ).'/css',
 		);
+		
+		$config['load_paths'] = array(
+			untrailingslashit( dirname( dirname( dirname( dirname( __FILE__ )))) ),
+		);
 
 		// Setup the env
 		date_default_timezone_set('GMT');
