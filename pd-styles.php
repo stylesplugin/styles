@@ -168,14 +168,14 @@ class PDStyles extends Scaffold_Extension_Observable {
 	function register_scripts() {
 		if ( !is_admin() ) { return; }
 		if ( !is_admin() || $_GET['page'] == 'pdstyles' ) {
-			wp_deregister_script('jquery');//deregister current jquery
-			wp_register_script('jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js', false, '1.4.4', true);
+			// wp_deregister_script('jquery');//deregister current jquery
+			// wp_register_script('jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js', false, '1.4.4', true);
 			wp_enqueue_script('jquery');
 		}
 		
 		wp_register_script('pds-colorpicker', $this->plugin_url().'/lib/js/colorpicker/js/colorpicker.js',array('jquery'), $this->version, true);
 		
-		wp_register_script('pds-position-input-slider', $this->plugin_url().'/lib/js/jquery.ui.slider.js',array('jquery'), $this->version, true);
+		wp_register_script('pds-position-input-slider', $this->plugin_url().'/lib/js/jquery.ui.slider.js',array('jquery', 'jquery-ui-core'), $this->version, true);
 		wp_enqueue_script('pds-position-input-slider');
 		wp_register_script('jqcookie', $this->plugin_url().'/lib/js/jquery.cookie.js',array(), $this->version, true);
 		

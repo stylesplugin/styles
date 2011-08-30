@@ -74,9 +74,19 @@ class PDStyles_Extension_Gradient extends PDStyles_Extension_Observer {
 	
 	function output_inner() {
 		?>
-		<input class="pds_color_input" type="text" name="<?php echo $this->form_name ?>[from]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'from'); ?>" size="8" maxlength="8" />
-		<input class="pds_color_input" type="text" name="<?php echo $this->form_name ?>[to]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'to'); ?>" size="8" maxlength="8" />
-		<div><input class="pds_text_input slider" type="text" name="<?php echo $this->form_name ?>[size]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'size'); ?>" size="4" maxlength="8" />px</div>
+		<input class="pds_color_input grad_color" type="text" name="<?php echo $this->form_name ?>[from]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'from'); ?>" size="8" maxlength="8" />
+		<input class="pds_color_input grad_color" type="text" name="<?php echo $this->form_name ?>[to]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'to'); ?>" size="8" maxlength="8" />
+		<div>Stops: <input class="pds_text_input stops" type="text" name="<?php echo $this->form_name ?>[stops]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'stops'); ?>" size="32" /></div>
+		
+		<style>
+			.stop-markers { position:relative;width: 500px;margin-top:20px;height: 50px;}
+			.stop-markers .marker {position:absolute;top:0;left:0;width: 500px;height: 0px;border:none;}
+			.stop-markers .marker a {background-image:url();}
+		</style>
+		<div class="stop-markers">
+			<div class="marker"></div>
+			<div class="marker"></div>
+		</div>
 		<?php
 	}
 	
