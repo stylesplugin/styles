@@ -14,34 +14,6 @@ class PDStyles_Extension_Image extends PDStyles_Extension_Observer {
 	}
 	
 	/**
-	 * Output in CSS for method css_*
-	 * 
-	 * @since 0.1.3
-	 * @return string
-	 **/
-	function css_image_replace() {
-		@extract($this->values);
-		
-		if ( empty( $url ) ) return '';
-		return "image-replace: url($url);";
-
-	}
-	
-	/**
-	 * Output in CSS for method css_*
-	 * 
-	 * @since 0.1.3
-	 * @return string
-	 **/
-	function css_background_image() {
-		@extract($this->values);
-		
-		if ( empty( $url ) ) return '';
-		return "background-image: url($url);";
-
-	}
-	
-	/**
 	 * Set variable with correct formatting
 	 * 
 	 * @since 0.1

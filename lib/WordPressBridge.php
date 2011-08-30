@@ -145,9 +145,16 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	
 	public function wp_background($value, $scaffold, $meta) {
 		extract( $this->extract($value) );
-		
+
 		$id = $this->create_id($meta);
 		$key = md5($id);
+		
+		if ( ($match = $this->find_linear_gradient( $value ))  ) {
+			$class = 'PDStyles_Extension_Gradient';
+		}
+		if ( ($match = $this->find_background_url( $value ) ) ) {
+			$class = 'PDStyles_Extension_Image';
+		}
 		
 		// Populate found array for WP UI generation
 		$this->found[$group][$key] = array(
@@ -156,15 +163,18 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 			'label' => $label,
 			'id'    => $id,
 			'key'   => $key,
-			'class' => 'PDStyles_Extension_Gradient',
+			'class' => $class,
 		);
 		
 		// Extract values saved from WP form
 		@extract( $this->vals[$group][$key] );
 
-		if ( !empty($color) ) { $value = $color; }
-FB::log($this->vals[$group][$key], '$this->vals[$group][$key]');
-		return $this->background_color($value);
+		if ( $url && $match ) { 
+			$value = str_replace($match, $url, $value);
+			$meta['property'] = "background: $value;";
+		}
+		
+		return $this->background($value, $scaffold, $meta);
 	}
 	
 	public function linear_gradient($match) {
@@ -186,7 +196,7 @@ FB::log($this->vals[$group][$key], '$this->vals[$group][$key]');
 	
 	public function background($value, $scaffold, $meta) {
 		extract( $this->extract($value) );
-		
+
 		if ( ($match = $this->find_linear_gradient( $value ))  ) {
 			return $this->linear_gradient($match);
 		}
@@ -238,7 +248,7 @@ FB::log($this->vals[$group][$key], '$this->vals[$group][$key]');
 	 */
 	public function image_replace($value) {
 
-		if( ($url = $this->find_background_url($value) ) && ($file = $this->source->find($url)) ) { // Avoid crash when file not found
+		if( ($url = $this->find_background_url($value) ) && ($file = $this->source->find($url)) ) {
 
 			// Get the size of the image file
 			$size = GetImageSize($file);
