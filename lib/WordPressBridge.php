@@ -30,6 +30,9 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	 **/
 	var $PIE;
 	
+	var $meta_gliph = '~';
+	var $meta_separator = '.';
+	
 	function __construct( $config= array() ) {
 		parent::__construct($config);
 		
@@ -85,11 +88,10 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	public function wp_background_color($value, $scaffold, $meta) {
 		
 		// Change color picker to http://www.digitalmagicpro.com/jPicker/
-		
-		extract( $this->extract($value) );
-		
-		$id = $this->create_id($meta);
+		$id = $this->create_id($meta, $id);
 		$key = md5($id);
+		
+		extract( $this->extract($value, $id) );
 		
 		// Populate found array for WP UI generation
 		$this->found[$group][$key] = array(
@@ -110,10 +112,10 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	}
 	
 	public function wp_font($value, $scaffold, $meta) {
-		extract( $this->extract($value) );
-		
-		$id = $this->create_id($meta);
+		$id = $this->create_id($meta, $id);
 		$key = md5($id);
+		
+		extract( $this->extract($value, $id) );
 		
 		// Populate found array for WP UI generation
 		$this->found[$group][$key] = array(
@@ -146,10 +148,10 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	}
 	
 	public function wp_background($value, $scaffold, $meta) {
-		extract( $this->extract($value) );
-
-		$id = $this->create_id($meta);
+		$id = $this->create_id($meta, $id);
 		$key = md5($id);
+		
+		extract( $this->extract($value, $id) );
 
 		if ( ($match = $this->find_linear_gradient( $value ))  ) {
 			$class = 'PDStyles_Extension_Gradient';
@@ -159,9 +161,8 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 			return "/* Error: Could not detect image or gradient: $value */";
 		}
 		
-		if ( $stops = $this->find_linear_gradient($value) ) {
-			$value = $stops;
-		}
+		if ( $stops = $this->find_linear_gradient($value) ) { $value = $stops; }
+		if (   $url = $this->find_background_url($value)  ) { $value = $url;   }
 
 		// Populate found array for WP UI generation
 		$this->found[$group][$key] = array(
@@ -182,7 +183,12 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 			$value = "linear-gradient( $stops )";
 		}
 		
-		$meta['property'] = "background: $value;";
+		$prop = $meta['property'];
+		if ( false !== strpos( $prop, $this->meta_gliph ) ) {
+			$prop = substr($meta['property'], 0, strrpos($meta['property'], $this->meta_gliph));
+		}
+		
+		$meta['property'] = str_replace('-wp-background', 'background', $prop).';';
 		
 		return $this->background($value, $scaffold, $meta);
 	}
@@ -331,18 +337,36 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 		}
 	}
 	
-	private function extract($value) {
-		$parts = explode('//', $value);
-		foreach($parts as &$part) {
-			$part = trim($part);
+	private function extract($value, $id = '') {
+
+		if ( false !== strpos( $value, $this->meta_gliph ) ) {
+			$meta = substr($value, strrpos($value, $this->meta_gliph) + strlen($this->meta_gliph) );
+			$value = substr($value, 0, strrpos($value, $this->meta_gliph));
 		}
-		$text = explode('.', $parts[1]);
 		
-		return array(
-			'value' => $parts[0],
-			'group' => $text[0],
-			'label' => $text[1],
+		if ( false === strpos($meta, '.') ) {
+			$label = $meta;
+		}else if ( !empty($meta) ){
+			$meta = explode($this->meta_separator, $meta);
+			$group = $meta[0];
+			$label = $meta[1];
+		}
+		$group = trim( $group );
+
+		if ( empty( $group ) ) { $group = 'default'; }
+		if ( empty( $label ) ) { $label = $id; }
+		
+		$output = array(
+			'value' => $value,
+			'group' => $group,
+			'label' => $label,
 		);
+		
+		foreach($output as &$val) {
+			$val = trim($val);
+		}
+		
+		return $output;
 	}
 	
 	private function create_id($meta) {

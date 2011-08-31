@@ -89,7 +89,9 @@ class PDStyles_Extension_Group extends Scaffold_Extension_Observer {
 		$id = 'pds_'.md5($this->form_name).$this->key;
 		?>
 		<div id="<?php echo $id; ?>">
-			<h3><?php echo $this->label; ?></h3>
+			<?php if ( $this->label !== 'default') : ?>
+				<h3><?php echo $this->label; ?></h3>
+			<?php endif; ?>
 			<table class="form-table">
 			<?php 
 			foreach ( $this->variables as $variable ) {
