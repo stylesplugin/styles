@@ -105,6 +105,10 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 		$config['load_paths'] = array(
 			untrailingslashit( dirname( dirname( dirname( dirname( __FILE__ )))) ),
 		);
+		
+		if ( isset( $_GET['preview'] ) ) {
+			$config['WordPressBridge']['preview'] = true;
+		}
 
 		// Setup the env
 		date_default_timezone_set('GMT');

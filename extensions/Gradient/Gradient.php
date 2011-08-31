@@ -52,11 +52,12 @@ class PDStyles_Extension_Gradient extends PDStyles_Extension_Observer {
 			$this->values = array();
 			return;
 		}
-		
-		$this->values['from'] 		= ( empty($input['from']) ) ? '' : '#'.trim( $input['from'], '# ');
-		$this->values['to'] 		= ( empty($input['to']) ) ? '' : '#'.trim( $input['to'], '# ');
-		$this->values['direction'] 	= $input['direction'];
-		$this->values['size'] 		= $input['size'];
+
+		$this->values['stops'] = $input['stops'];
+		// $this->values['from'] 		= ( empty($input['from']) ) ? '' : '#'.trim( $input['from'], '# ');
+		// $this->values['to'] 		= ( empty($input['to']) ) ? '' : '#'.trim( $input['to'], '# ');
+		// $this->values['direction'] 	= $input['direction'];
+		// $this->values['size'] 		= $input['size'];
 		
 	}
 	
@@ -74,26 +75,28 @@ class PDStyles_Extension_Gradient extends PDStyles_Extension_Observer {
 	
 	function output_inner() {
 		?>
+		<style>
+			.gradpicker {width: 300px;position:relative;}
+			.stop-markers, .grad-preview, .stop-markers .ui-slider {width: 100%;}
+			.stop-markers { position:relative;;margin-top:5px;height: 80px;}
+			.stop-markers .ui-slider {position:absolute;top:0;left:0;height: 0px;border:none;background-image:url();}
+			.stop-markers .ui-slider a {background-image:url();}
+			.grad-preview {height: 30px;display:block;border: 1px solid black;}
+		</style>
+<?php /*
 		<div class="colors">
 			<input class="pds_color_input grad_color" type="text" name="<?php echo $this->form_name ?>[from]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'from'); ?>" size="8" maxlength="8" />
 			<input class="pds_color_input grad_color" type="text" name="<?php echo $this->form_name ?>[to]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'to'); ?>" size="8" maxlength="8" />
 		</div>
-		<div>Stops: <input class="pds_text_input stops" type="text" name="<?php echo $this->form_name ?>[stops]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'stops'); ?>" size="32" /></div>
+*/ ?>
+		<div class="gradpicker">
+			<div>Stops: <input class="pds_text_input stops" type="text" name="<?php echo $this->form_name ?>[stops]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'stops'); ?>" size="32" /></div>
 		
-		<style>
-			.stop-markers, .preview {width: 500px;}
-			.stop-markers { position:relative;;margin-top:5px;height: 80px;}
-			.stop-markers .marker {position:absolute;top:50px;left:0;width: 500px;height: 0px;border:none;}
-			.stop-markers .marker a {background-image:url();}
-			.preview {height: 45px;display:block;border: 1px solid black;}
-/*			.pds_gradient .colors {display:none;}*/
-		</style>
-		
-		
-		<div class="preview"></div>
-		<div class="stop-markers">
-			<div class="marker"></div>
-			<div class="marker"></div>
+			<div class="grad-preview"></div>
+			<div class="stop-markers">
+				<div class="marker"></div>
+				<div class="marker"></div>
+			</div>
 		</div>
 		<?php
 	}

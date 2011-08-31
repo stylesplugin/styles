@@ -35,7 +35,9 @@ class PDStylesFrontendController extends PDStyles {
 		if ( !current_user_can ( 'manage_options' ) ) {
 			return;
 		}
+		wp_register_script('jqcookie', $this->plugin_url().'/lib/js/jquery.cookie.js',array('jquery'), $this->version, true);
 		//hoverIntent,common,jquery-color,postbox,wp-ajax-response,wp-lists,admin-comments,dashboard
+		$test = $this->plugin_url().'/lib/js/frontend-main.js';
 
 		wp_enqueue_script('pds-frontend', $this->plugin_url().'/lib/js/frontend-main.js', array('jqcookie', 'jquery', ), $this->version, true);
 		

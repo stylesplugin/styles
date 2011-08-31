@@ -177,7 +177,7 @@ class PDStyles extends Scaffold_Extension_Observable {
 		
 		wp_register_script('pds-position-input-slider', $this->plugin_url().'/lib/js/jquery.ui.slider.js',array('jquery', 'jquery-ui-core'), $this->version, true);
 		wp_enqueue_script('pds-position-input-slider');
-		wp_register_script('jqcookie', $this->plugin_url().'/lib/js/jquery.cookie.js',array(), $this->version, true);
+		wp_register_script('jqcookie', $this->plugin_url().'/lib/js/jquery.cookie.js',array('jquery'), $this->version, true);
 		
 		
 		// Not normally registered in frontend
@@ -290,11 +290,7 @@ class PDStyles extends Scaffold_Extension_Observable {
 	function parse_request() {
 	    // only process requests with "?scaffold"
 	    if ( isset( $_GET['scaffold'] ) ) {
-			
-			if ( isset( $_GET['preview'] ) ) {
-				$config['PDStyles']['preview'] = true;
-			}
-			
+
 			$this->render();
 
 			exit;
@@ -358,6 +354,8 @@ class PDStyles extends Scaffold_Extension_Observable {
 
 		// The container creates Scaffold objects
 		$Container = Scaffold_Container::getInstance($system,$config);
+
+		
 
 		// This is where the magic happens
 		$Scaffold = $Container->build();
@@ -438,6 +436,10 @@ class PDStyles extends Scaffold_Extension_Observable {
 			untrailingslashit( get_stylesheet_directory() ),
 			untrailingslashit( $this->plugin_dir_path() ),
 		);
+		
+		if ( isset( $_GET['preview'] ) ) {
+			$config['WordPressBridge']['preview'] = true;
+		}
 		
 		// Minify CSS when in production
 		if ( $config['production'] === true ) {

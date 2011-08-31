@@ -495,10 +495,8 @@ class PDStylesAdminController extends PDStyles {
 			}
 			
 		}else {
-			
 			if ( update_option('pd-styles', $_POST ) ) {
-				
-				
+				$response['message'] .= 'Variables saved.<br/>';
 			}else {
 				$response['message'] .= 'Variables unchanged.<br/>';
 			}

@@ -30,13 +30,15 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	 **/
 	var $PIE;
 	
-	function __construct() {
+	function __construct( $config= array() ) {
+		parent::__construct($config);
+		
 		global $PDStylesController;
 		
 		$css_permalink = $PDStylesController->permalink;
 
 		$this->PIE = $PDStylesController->plugin_url().'/lib/js/PIE/PIE.php';
-		
+
 		if ( $this->config['preview'] ) {
 			
 			$preview = get_option('pd-styles-preview');
@@ -169,11 +171,11 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 		
 		// Extract values saved from WP form
 		@extract( $this->vals[$group][$key] );
-		
+
 		if ( $url ) { 
 			$value = str_replace($match, $url, $value);
-		}else if ( $from && $to ) {
-			$value = "linear-gradient( $from, $to )";
+		}else if ( $stops ) {
+			$value = "linear-gradient( $stops )";
 		}
 		
 		$meta['property'] = "background: $value;";
@@ -204,17 +206,16 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	 * @return string
 	 */
 	
-	public function linear_gradient($match) {
-		list($from, $to) = $match;
-				
-		return "background: -webkit-gradient(linear, 0 0, 0 100%, from($from) to($to)); /*old webkit*/
-	            background: -webkit-linear-gradient($from, $to); /*new webkit*/
-	            background: -moz-linear-gradient($from, $to); /*gecko*/
-	            background: -ms-linear-gradient($from, $to); /*IE10 preview*/
-	            background: -o-linear-gradient($from, $to); /*opera 11.10+*/
-	            background: linear-gradient($from, $to); /*CSS3 browsers*/
-	       -pie-background: linear-gradient($from, $to); /*PIE*/
-	            behavior: url($this->PIE);";
+	public function linear_gradient($stops) {
+		// background: -webkit-gradient(linear, 0 0, 0 100%, from($from) to($to)); /*old webkit*/
+		return "
+	            background: -webkit-linear-gradient($stops); /*new webkit*/
+	            background:    -moz-linear-gradient($stops); /*gecko*/
+	            background:     -ms-linear-gradient($stops); /*IE10 preview*/
+	            background:      -o-linear-gradient($stops); /*opera 11.10+*/
+	            background:         linear-gradient($stops); /*CSS3 browsers*/
+	       -pie-background:         linear-gradient($stops); /*PIE*/
+	              behavior: url($this->PIE);";
 	}
 	
 	public function background_color($value) {
@@ -297,15 +298,24 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 		// Match linear-gradient(-45deg, red 0%, orange 15%, yellow 30%, green 45%, blue 60%, indigo 75%, violet 100%);
 		
 		if ( false !== strpos($value, 'linear-gradient') ) {
-			// Find hex colors
-			$regexp = '/#([a-fA-F0-9]{3}){1,2}/';
-			preg_match_all($regexp,$value,$matches);
-
-			if ( 2 == count($matches[0]) ) {
-				return $matches[0];
-			}else {
-				return false;
-			}
+			preg_match( '/\(([^*]*)\)/', $value, $match );
+			$stops = $match[1];
+			return $stops;
+			
+			// $stops = explode(',', $value );
+			// return $stops;
+			
+			// // Find hex colors
+			// $regexp = '/#([a-fA-F0-9]{3}){1,2}/';
+			// preg_match_all($regexp,$value,$matches);
+            // 
+			// if ( 2 == count($matches[0]) ) {
+			// 	return $matches[0];
+			// }else {
+			// 	return false;
+			// }
+		}else {
+			return false;
 		}
 	}
 	
