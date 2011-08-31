@@ -159,6 +159,10 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 			return "/* Error: Could not detect image or gradient: $value */";
 		}
 		
+		if ( $stops = $this->find_linear_gradient($value) ) {
+			$value = $stops;
+		}
+
 		// Populate found array for WP UI generation
 		$this->found[$group][$key] = array(
 			'value' => $value,

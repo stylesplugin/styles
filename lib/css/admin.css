@@ -1,4 +1,11 @@
 .pd-styles {
+	.gradpicker {width: 300px;position:relative;}
+	.stop-markers, .grad-preview, .stop-markers .ui-slider {width: 100%;}
+	.stop-markers { position:relative;;margin-top:5px;height: 20px; background: #efefef;}
+	.stop-markers .ui-slider {position:absolute;top:0;left:0;height: 0px;border:none;background-image:url();}
+	.stop-markers .ui-slider a {background-image:url();}
+	.grad-preview {height: 30px;display:block;border: 1px solid black;}
+	
 	.notice {
 		background-color: #ffebe8;
 		border-color: #c00;

@@ -118,7 +118,13 @@ abstract class PDStyles_Extension_Observer extends Scaffold_Extension_Observer
 	 * @return string
 	 **/
 	function form_value($key = null) {
-		return $this->values[$key];
+		if ( ! empty( $this->values[ $key ] ) ) {
+			return $this->values[ $key ];
+		}else if ( is_array( $this->args['value'] ) && !empty( $this->args['value'][$key] )){
+			return $this->args['value'][$key];
+		}else {
+			return $this->args['value'];
+		}
 	}
 	
 	abstract function set( $variable, $value, $context = 'default' );

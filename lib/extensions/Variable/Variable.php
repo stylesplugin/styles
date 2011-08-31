@@ -64,7 +64,7 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 		$this->variables_load( $this->file );
 		
 		foreach( $this->variables as $key => &$group ) {
-			
+
 			$group['form_name'] = "variables[$this->permalink]";
 			$group['key'] = $key;
 			$group = new PDStyles_Extension_Group( $group );

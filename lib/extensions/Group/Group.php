@@ -59,6 +59,7 @@ class PDStyles_Extension_Group extends Scaffold_Extension_Observer {
 		
 		// Instantiate Objects
 		foreach ( $variables as $key => $args ) {
+
 			if ( is_array($args) ) {
 				foreach ( $controller->extensions as $ext ){
 
