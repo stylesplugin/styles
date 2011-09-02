@@ -118,13 +118,16 @@ abstract class PDStyles_Extension_Observer extends Scaffold_Extension_Observer
 	 * @return string
 	 **/
 	function form_value($key = null) {
-		if ( ! empty( $this->values[ $key ] ) ) {
-			return $this->values[ $key ];
-		}else if ( is_array( $this->args['value'] ) && !empty( $this->args['value'][$key] )){
-			return $this->args['value'][$key];
-		}else {
-			return $this->args['value'];
-		}
+		return $this->values[ $key ];
+		
+		// Reconsider to allow blank values -- perhaps only load CSS if object doesn't exist in DB
+		// if ( ! empty( $this->values[ $key ] ) ) {
+		// 	return $this->values[ $key ];
+		// }else if ( is_array( $this->args['value'] ) && !empty( $this->args['value'][$key] )){
+		// 	return $this->args['value'][$key];
+		// }else {
+		// 	return $this->args['value'];
+		// }
 	}
 	
 	abstract function set( $variable, $value, $context = 'default' );

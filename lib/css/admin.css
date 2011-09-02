@@ -158,3 +158,6 @@
 .colorpicker {
 	z-index: 999;
 }
+#media-upload  .media-item {
+	clear:both !important; 
+}

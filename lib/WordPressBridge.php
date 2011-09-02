@@ -161,12 +161,13 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 			return "/* Error: Could not detect image or gradient: $value */";
 		}
 		
-		if ( $stops = $this->find_linear_gradient($value) ) { $value = $stops; }
-		if (   $url = $this->find_background_url($value)  ) { $value = $url;   }
+		if ( $stops = $this->find_linear_gradient($value) ) { $form_value = $stops; 
+		}else if ( $furl = $this->find_background_url($value)  ) { $form_value = $furl;
+		}else { $form_value = $value; }
 
 		// Populate found array for WP UI generation
 		$this->found[$group][$key] = array(
-			'value' => $value,
+			'value' => $form_value,
 			'group' => $group,
 			'label' => $label,
 			'id'    => $id,
@@ -179,6 +180,7 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 
 		if ( $url ) { 
 			$value = str_replace($match, $url, $value);
+			
 		}else if ( $stops ) {
 			$value = "linear-gradient( $stops )";
 		}
@@ -189,7 +191,7 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 		}
 		
 		$meta['property'] = str_replace('-wp-background', 'background', $prop).';';
-		
+
 		return $this->background($value, $scaffold, $meta);
 	}
 	
@@ -202,7 +204,11 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 		if ( $this->is_image_replace( $value ) ) {
 			return $this->image_replace($value);
 		}
-
+		
+		if ( ( $url = $this->find_background_url($value) ) && ($original = $this->find_background_url($meta['property']) ) ) {
+			$meta['property'] = str_replace( $original, $url, $meta['property'] );
+		}
+		
 		return $meta['property'];
 	}
 	
