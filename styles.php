@@ -1,12 +1,11 @@
 <?php
 /*
-Plugin Name: PD Styles
-Plugin URI: http://pdclark.com
-Description: Rewrite.
-Version: 0.1.2
-Author: Paul Clark
-Author URI: http://pdclark.com
-Author URI: http://pdclark.com
+Plugin Name: Styles
+Plugin URI: http://brainstormmedia.com
+Description: Now with less code and more style.
+Version: 0.2.0
+Author: Brainstorm Media
+Author URI: http://brainstormmedia.com
 
 ------------------------------------------------------------------------
 Copyright 2010  Paul Clark  (email : support (at) pdclark.com)
