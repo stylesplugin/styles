@@ -54,15 +54,16 @@ class PDStyles_Extension_Group extends Scaffold_Extension_Observer {
 	}
 	
 	function create_objects( $variables ) {
-		global $PDStylesAdminController, $PDStylesFrontendController;
-		$controller = ( empty($PDStylesAdminController) ) ? $PDStylesFrontendController : $PDStylesAdminController;
+		global $PDStylesController;
+		$controller = & $PDStylesController;
 		
 		// Instantiate Objects
 		foreach ( $variables as $key => $args ) {
+
 			if ( is_array($args) ) {
 				foreach ( $controller->extensions as $ext ){
 
-					if ( method_exists( $ext, $args['method'] ) ) {
+					if ( is_a( $ext, $args['class'] ) ) {
 						$ext_class = get_class($ext);
 					
 						$args['key'] = $key;
@@ -87,25 +88,24 @@ class PDStyles_Extension_Group extends Scaffold_Extension_Observer {
 	function output( ) {
 		$id = 'pds_'.md5($this->form_name).$this->key;
 		?>
-		<div id="<?php echo $id; ?>" class="postbox">
-			<div class="handlediv" title="Click to toggle"><br /></div>
-			<h3 class="hndle"><span><?php echo $this->label; ?></span></h3>
-			<div class="inside">
-				<table class="form-table">
-				<?php 
-				foreach ( $this->variables as $variable ) {
-					$variable->output();
-				}
-				?>
-				</table>
+		<div id="<?php echo $id; ?>">
+			<?php if ( $this->label !== 'default') : ?>
+				<h3><?php echo $this->label; ?></h3>
+			<?php endif; ?>
+			<table class="form-table">
+			<?php 
+			foreach ( $this->variables as $variable ) {
+				$variable->output();
+			}
+			?>
+			</table>
+			
+			<p class="submit">
+				<input class="pds-submit button-primary" type="submit" value="<?php _e('Save Changes'); ?>" />
 				
-				<p class="submit">
-					<input class="pds-submit button-primary" type="submit" value="<?php _e('Save'); ?>" />
-					
-					<img class="waiting" src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" alt="" /> 
-					<span class="response"> </span>
-				</p>
-			</div>
+				<img class="waiting" src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" alt="" /> 
+				<span class="response"> </span>
+			</p>
 		</div>
 		<?php
 	}

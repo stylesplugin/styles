@@ -11,51 +11,7 @@ class PDStyles_Extension_Gradient extends PDStyles_Extension_Observer {
 	
 	function __construct( $args = array(), Scaffold_Extension_Observable $observable = null ) {
 		parent::__construct( $args, $observable );
-	
-		$this->args['size'] = (empty($this->args['size'])) ? 1 : $this->args['size']+1;
 	}
-	
-	/**
-	 * Output in CSS for method css_*
-	 * 
-	 * @since 0.1.3
-	 * @return string
-	 **/
-	function css_background_gradient() {
-		@extract($this->values);
-		
-		$direction = empty($direction) ? 'vertical' : $direction;
-		$size = empty($size) ? '25' : $size;
-		
-		if ( empty( $from ) || empty( $to ) ) return '';
-		return "background-gradient: $direction,$size,from($from),to($to);";
-	}
-	
-	/**
-	 * Return value for output in form element
-	 * 
-	 * @since 0.1
-	 * @return string
-	 **/
-	function form_value( $key ) {
-		switch ($key) {
-			case 'from':
-			case 'to':
-				return trim( $this->values[ $key ], '# ');
-				break;
-			case 'size':
-				if( empty( $this->values[ $key ] ) ) {
-					return '0';
-				}else {
-					return preg_replace( '/[^0-9]/', '', $this->values[ $key ] ); // numbers only
-				}
-				break;
-			default:
-				return $this->values[ $key ];
-				break;
-		}
-	}
-	
 	
 	/**
 	 * Set variables with correct formatting
@@ -68,11 +24,12 @@ class PDStyles_Extension_Gradient extends PDStyles_Extension_Observer {
 			$this->values = array();
 			return;
 		}
-		
-		$this->values['from'] 		= ( empty($input['from']) ) ? '' : '#'.trim( $input['from'], '# ');
-		$this->values['to'] 		= ( empty($input['to']) ) ? '' : '#'.trim( $input['to'], '# ');
-		$this->values['direction'] 	= $input['direction'];
-		$this->values['size'] 		= $input['size'];
+
+		$this->values['stops'] = $input['stops'];
+		// $this->values['from'] 		= ( empty($input['from']) ) ? '' : '#'.trim( $input['from'], '# ');
+		// $this->values['to'] 		= ( empty($input['to']) ) ? '' : '#'.trim( $input['to'], '# ');
+		// $this->values['direction'] 	= $input['direction'];
+		// $this->values['size'] 		= $input['size'];
 		
 	}
 	
@@ -83,16 +40,10 @@ class PDStyles_Extension_Gradient extends PDStyles_Extension_Observer {
 				<?php echo $this->label ?>
 			</label>
 		</th><td valign="top">
-			<?php $this->output_inner() ?>
+			<div class="gradpicker">
+				<label>Stops: <input class="pds_text_input stops" type="text" name="<?php echo $this->form_name ?>[stops]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'stops'); ?>" size="32" /></label>
+			</div>
 		</td></tr>
-		<?php
-	}
-	
-	function output_inner() {
-		?>
-		<input class="pds_color_input" type="text" name="<?php echo $this->form_name ?>[from]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'from'); ?>" size="8" maxlength="8" />
-		<input class="pds_color_input" type="text" name="<?php echo $this->form_name ?>[to]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'to'); ?>" size="8" maxlength="8" />
-		<div><input class="pds_text_input slider" type="text" name="<?php echo $this->form_name ?>[size]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'size'); ?>" size="4" maxlength="8" />px</div>
 		<?php
 	}
 	

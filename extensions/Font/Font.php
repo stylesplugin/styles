@@ -53,34 +53,8 @@ class PDStyles_Extension_Font extends PDStyles_Extension_Observer {
 	
 	function __construct( $args = array(), Scaffold_Extension_Observable $observable = null ) {
 		parent::__construct( $args, $observable );
-		
-		$this->keywords = array(
-			'font',
-		);
 	}
 	
-	/**
-	 * Output in CSS for method css_*
-	 * 
-	 * @since 0.1.3
-	 * @return string
-	 **/
-	function css_font() {
-		@extract($this->values);
-		
-		$output = '';
-		$font_family = $this->families[$font_family];
-
-		if (!empty($font_size)) 		$output .= "font-size:{$font_size}px;";
-		if (!empty($font_family)) 		$output .= "font-family:{$font_family};";
-		if (!empty($font_weight)) 		$output .= "font-weight:{$font_weight};";
-		if (!empty($font_style)) 		$output .= "font-style:{$font_style};";
-		if (!empty($text_transform))	$output .= "text-transform:{$text_transform};";
-		if (!empty($line_height))	$output .= "line-height:{$line_height};";
-
-		return $output;
-
-	}
 
 	/**
 	 * Set variables with correct formatting

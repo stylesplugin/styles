@@ -168,16 +168,16 @@ class PDStyles extends Scaffold_Extension_Observable {
 	function register_scripts() {
 		if ( !is_admin() ) { return; }
 		if ( !is_admin() || $_GET['page'] == 'pdstyles' ) {
-			wp_deregister_script('jquery');//deregister current jquery
-			wp_register_script('jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js', false, '1.4.4', true);
+			// wp_deregister_script('jquery');//deregister current jquery
+			// wp_register_script('jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js', false, '1.4.4', true);
 			wp_enqueue_script('jquery');
 		}
 		
 		wp_register_script('pds-colorpicker', $this->plugin_url().'/lib/js/colorpicker/js/colorpicker.js',array('jquery'), $this->version, true);
 		
-		wp_register_script('pds-position-input-slider', $this->plugin_url().'/lib/js/jquery.ui.slider.js',array('jquery'), $this->version, true);
+		wp_register_script('pds-position-input-slider', $this->plugin_url().'/lib/js/jquery.ui.slider.js',array('jquery', 'jquery-ui-core'), $this->version, true);
 		wp_enqueue_script('pds-position-input-slider');
-		wp_register_script('jqcookie', $this->plugin_url().'/lib/js/jquery.cookie.js',array(), $this->version, true);
+		wp_register_script('jqcookie', $this->plugin_url().'/lib/js/jquery.cookie.js',array('jquery'), $this->version, true);
 		
 		
 		// Not normally registered in frontend
@@ -287,84 +287,91 @@ class PDStyles extends Scaffold_Extension_Observable {
 	 * @since 0.1
 	 * @return void
 	 **/
-	function parse_request( $wp ) {
+	function parse_request() {
 	    // only process requests with "?scaffold"
-	    if (isset( $_GET['scaffold'] ) ) {
+	    if ( isset( $_GET['scaffold'] ) ) {
 
-			$this->load_extensions( $this->plugin_dir_path() . 'extensions' );
-			
-			$this->load_files();
-
-			// Get file path from SCSS active_id
-			if ( empty( $_GET['file'] ) && isset( $_GET['active_id'] ) ) {
-				$_GET['file'] = $this->files->queue[ $_GET['active_id'] ]->file;
-			}
-
-			$this->options = get_option( 'pd-styles' );
-
-			$config = $this->get_scaffold_config();
-			
-			if ( isset( $_GET['preview'] ) ) {
-				$config['PDStyles']['preview'] = true;
-			}
-			
-			// From scaffold/index.php
-			/**
-			 * The location of this system folder
-			 */
-			$system = $this->plugin_dir_path() . 'scaffold'; // No trailing slash
-			
-			/**
-			 * The environment class helps us handle errors
-			 * and autoloading of classes. It's not required
-			 * to make Scaffold function, but makes it a bit
-			 * nicer to use.
-			 */
-			require_once $system.'/lib/Scaffold/Environment.php';
-
-			/**
-			 * Set timezone, just in case it isn't set. PHP 5.3+ 
-			 * throws a tantrum if you try and use time() without
-			 * this being set.
-			 */
-			date_default_timezone_set('GMT');
-
-			/**
-			 * Automatically load any Scaffold Classes
-			 */
-			Scaffold_Environment::auto_load();
-
-			/**
-			 * Let Scaffold handle errors
-			 */
-			Scaffold_Environment::handle_errors();
-
-			/** 
-			 * Set the view to use for errors and exceptions
-			 */
-			Scaffold_Environment::set_view(realpath($system.'/views/error.php'));
-
-			// =========================================
-			// = Start the scaffolding magic  =
-			// =========================================
-
-			// The container creates Scaffold objects
-			$Container = new Scaffold_Container($system,$config);
-
-			// This is where the magic happens
-			$Scaffold = $Container->build();
-
-			// Get the sources
-			$Source = $Scaffold->getSource(null,$config);
-
-			// Compiles the source object
-			$Source = $Scaffold->compile($Source);
-
-			// Use the result to render it to the browser. Hooray!
-			$Scaffold->render($Source);
+			$this->render();
 
 			exit;
 	    }
+	}
+	
+	function render( $file = '' ) {
+		
+		$this->load_extensions( $this->plugin_dir_path() . 'extensions' );
+		$this->load_files();
+		
+		if ( empty($_GET['file']) ) {
+			$_GET['file'] = $file;
+		}
+		if ( empty($_GET['file']) ) {
+			$_GET['file'] = $this->files->active_file->file;
+		}
+		
+		$this->options = get_option( 'pd-styles' );
+		$config = $this->get_scaffold_config();
+		
+		// From scaffold/index.php
+		/**
+		 * The location of this system folder
+		 */
+		$system = $this->plugin_dir_path() . 'scaffold'; // No trailing slash
+		
+		/**
+		 * The environment class helps us handle errors
+		 * and autoloading of classes. It's not required
+		 * to make Scaffold function, but makes it a bit
+		 * nicer to use.
+		 */
+		require_once $system.'/lib/Scaffold/Environment.php';
+
+		/**
+		 * Set timezone, just in case it isn't set. PHP 5.3+ 
+		 * throws a tantrum if you try and use time() without
+		 * this being set.
+		 */
+		date_default_timezone_set('GMT');
+
+		/**
+		 * Automatically load any Scaffold Classes
+		 */
+		Scaffold_Environment::auto_load();
+
+		/**
+		 * Let Scaffold handle errors
+		 */
+		Scaffold_Environment::handle_errors();
+
+		/** 
+		 * Set the view to use for errors and exceptions
+		 */
+		Scaffold_Environment::set_view(realpath($system.'/views/error.php'));
+
+		// =========================================
+		// = Start the scaffolding magic  =
+		// =========================================
+
+		// The container creates Scaffold objects
+		$Container = Scaffold_Container::getInstance($system,$config);
+
+		
+
+		// This is where the magic happens
+		$Scaffold = $Container->build();
+
+		// Get the sources
+		$Source = $Scaffold->getSource(null,$config);
+
+		// Compiles the source object
+		$Source = $Scaffold->compile($Source);
+		
+		if ( isset( $_GET['scaffold'] ) ) {
+			// Use the result to render it to the browser. Hooray!
+			$Scaffold->render($Source);
+		}else {
+			return $Source->contents;
+		}
 	}
 	
 	/**
@@ -395,11 +402,11 @@ class PDStyles extends Scaffold_Extension_Observable {
 			'enable_string'			=> false,
 			'enable_url'			=> false,
 			'extensions'			=> array(
-				// 'AbsoluteUrls',
+				'AbsoluteUrls',
 				'Embed',
 				'Functions',
 				//'HSL',
-				'ImageReplace',
+				// 'ImageReplace',
 				// 'Minify',
 				'Properties',
 				'Random',
@@ -408,21 +415,31 @@ class PDStyles extends Scaffold_Extension_Observable {
 				'NestedSelectors',
 				//'XMLVariables',
 				'Variables',
-				'PDStyles',
+				'WordPressBridge',
 				'Gradient',
-				'CSS3',
+				// 'CSS3',
         	
 				# Process-heavy Extensions
 				//'Sass',
-				//'CSSTidy',
+				// 'CSSTidy',
 				//'YUI'
 			),
 		);
 		
+		$config['import_paths'] = array(
+			untrailingslashit( get_stylesheet_directory() ),
+			untrailingslashit( get_stylesheet_directory() ).'/css',
+			untrailingslashit( $this->plugin_dir_path() ),
+		);
+
 		$config['load_paths'] = array(
 			untrailingslashit( get_stylesheet_directory() ),
 			untrailingslashit( $this->plugin_dir_path() ),
 		);
+		
+		if ( isset( $_GET['preview'] ) ) {
+			$config['WordPressBridge']['preview'] = true;
+		}
 		
 		// Minify CSS when in production
 		if ( $config['production'] === true ) {
@@ -484,7 +501,7 @@ class PDStyles extends Scaffold_Extension_Observable {
 	function load_files() {
 		if ( is_a( $this->files, 'PDStyles_Extension_File' ) ) { return; }
 		
-		$this->files = new PDStyles_Extension_File();
+		$this->files = new PDStyles_Extension_File( apply_filters( 'bsm_scss_file', '/css/style.scss' ) );
 		
 		// Setup CSS path
 		$this->permalink = $this->files->active_id;
@@ -494,6 +511,10 @@ class PDStyles extends Scaffold_Extension_Observable {
 		if ( is_object( $this->options['variables'][ $this->permalink ] ) ) {
 			$this->files->active_file->set( array( $this->permalink => $this->options['variables'][ $this->permalink ]->get() ) );
 		}
+
+		// Hacky. Give Scaffold access to vars stored in WP database.
+		// Maybe load this via a scaffold extension?
+		$this->files->active_file->scaffold->variables = & $this->files->active_file->variables;
 	}
 	
 	/**
@@ -508,7 +529,7 @@ class PDStyles extends Scaffold_Extension_Observable {
 	
 } // END PDStyles class
 /**
- * Instantiate the PDStylesFrontend or $PDStylesAdminController Class
+ * Instantiate the PDStylesFrontend or $PDStylesController Class
  *
  * Deactivate and die if files can not be included
  */
@@ -519,8 +540,8 @@ function PDStylesInit() {
 		// include admin class
 
 		if ( @include dirname ( __FILE__ ) . '/lib/controllers/PDStylesAdminController.php' ) {
-			global $PDStylesAdminController;
-			$PDStylesAdminController = new PDStylesAdminController ();
+			global $PDStylesController;
+			$PDStylesController = new PDStylesAdminController ();
 
 		} else {
 			PDStyles::deactivate_and_die ( dirname ( __FILE__ ) . '/inc/admin.php' );
@@ -530,8 +551,8 @@ function PDStylesInit() {
 		// include subadmin class
 	
 		if ( @include dirname ( __FILE__ ) . '/lib/controllers/PDStylesFrontendController.php' ) {
-			global $PDStylesFrontendController;
-			$PDStylesFrontendController = new PDStylesFrontendController ();
+			global $PDStylesController;
+			$PDStylesController = new PDStylesFrontendController ();
 		} else {
 			PDStyles::deactivate_and_die ( dirname ( __FILE__ ) . '/inc/front-end.php' );
 		}

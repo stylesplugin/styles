@@ -10,12 +10,20 @@
 class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 	
 	/**
-	 * Loaded CSS file path
+	 * Loaded SCSS file path
 	 * 
 	 * @since 0.1
 	 * @var string
 	 **/
 	var $file;
+	
+	/**
+	 * Where to save compiled CSS
+	 * 
+	 * @since 0.1
+	 * @var string
+	 **/
+	var $cache_file;
 	
 	/**
 	 * Path to CSS in a form appropriate for use as an array key
@@ -48,6 +56,7 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 		}
 		
 		$this->file = $args['file'];
+		$this->cache_file = $args['cache_file'];
 		$this->permalink = $args['permalink'];
 
 		$this->scaffold_init();
@@ -55,8 +64,9 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 		$this->variables_load( $this->file );
 		
 		foreach( $this->variables as $key => &$group ) {
-			
+
 			$group['form_name'] = "variables[$this->permalink]";
+			$group['key'] = $key;
 			$group = new PDStyles_Extension_Group( $group );
 			
 			// Remove empty groups
@@ -78,12 +88,27 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 		// Scaffold Configuration
 		$config = array(
 			'extensions' => array(
+				'AbsoluteUrls',
 				'Variables',
 				'Import',
-				'CSS3',
+				'WordPressBridge',
+				'NestedSelectors',
+				'Properties',
 				// 'XMLVariables'
 			)
 		);
+		$config['import_paths'] = array(
+			untrailingslashit( get_stylesheet_directory() ),
+			untrailingslashit( get_stylesheet_directory() ).'/css',
+		);
+		
+		$config['load_paths'] = array(
+			untrailingslashit( dirname( dirname( dirname( dirname( __FILE__ )))) ),
+		);
+		
+		if ( isset( $_GET['preview'] ) ) {
+			$config['WordPressBridge']['preview'] = true;
+		}
 
 		// Setup the env
 		date_default_timezone_set('GMT');
@@ -94,9 +119,9 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 			Scaffold_Environment::auto_load(true);
 
 			// Create Scaffold instance
-			$container 	= new Scaffold_Container( $system, $config );
+			$Container = Scaffold_Container::getInstance($system,$config);
 
-			$this->scaffold 	= $container->build();
+			$this->scaffold 	= $Container->build();
 		} else {
 			PDStyles::deactivate_and_die ( $environment );
 		}
@@ -124,10 +149,16 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 		
 		// Parse variables
 		$variables = $this->scaffold->extensions['Variables'];
-
 		// Pull out the variables into an array 
-		$this->variables = $variables->extract($source);
-		$this->variables_cleanup();
+		// $this->variables = $variables->extract($source);
+		$this->variables = &$this->scaffold->extensions['WordPressBridge']->found;
+
+		$this->scaffold->compile($source);
+		
+		// FB::log($this->variables, '$this->variables');
+		// $this->variables_cleanup();
+		// FB::log($this->variables, '$this->variables');
+		// FB::log($this->scaffold->extensions['WordPressBridge']->found, 'WordPressBridge->found');
 	}
 	
 	/**
@@ -211,7 +242,7 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 	
 	function output() {
 		foreach ($this->variables as $variable) {
-			$variable->output( );
+			$variable->output();
 		}
 	}
 	
@@ -229,6 +260,7 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 			FB::error('$this->permalink not found in $values.');
 			FB::error($this->permalink, '$this->permalink');
 			FB::error($values, '$values');
+			FB::error(debug_backtrace(), 'debug_backtrace()');
 			return;
 		}
 		
