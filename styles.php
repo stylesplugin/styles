@@ -175,7 +175,7 @@ class StormStyles extends Scaffold_Extension_Observable {
 		$this->load_extensions( $this->plugin_dir_path() . 'gui' );
 		
 		// Full path and plugin basename of the main plugin file
-		$this->plugin_file = dirname ( dirname ( dirname ( __FILE__ ) ) ) . '/styles.php';
+		$this->plugin_file = __FILE__;
 		$this->plugin_basename = plugin_basename ( $this->plugin_file );
 
 	}
@@ -569,7 +569,7 @@ function StormStylesInit() {
 		if ( @include dirname ( __FILE__ ) . $file ) {
 			global $StormStylesController;
 			$StormStylesController = new StormStylesAdmin ();
-
+			
 		} else {
 			StormStyles::deactivate_and_die ( dirname ( __FILE__ ) . $file );
 		}
