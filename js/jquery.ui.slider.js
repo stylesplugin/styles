@@ -80,7 +80,6 @@ $.widget( "ui.slider", $.ui.mouse, {
 
 		for ( var i = existingHandles.length; i < handleCount; i += 1 ) {
 			handles.push( handle );
-			console.log(handle);
 		}
 
 		this.handles = existingHandles.add( $( handles.join( "" ) ).appendTo( self.element ) );

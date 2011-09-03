@@ -156,7 +156,9 @@ jQuery(function($) {
 		var $preview;
 		
 		var initComplete = false;
-
+		
+		var timeoutID;
+		
 		var stops = new Array();
 		
 		var colorPickerOpts = {
@@ -255,7 +257,13 @@ jQuery(function($) {
 		
 		var stopsArrayToInput = function() {
 			if ( stops.toString() != $element.find('input.stops').val() ) {
-				$element.find('input.stops').val(stops).change();
+				
+				clearTimeout(timeoutID);
+				
+				timeoutID = setTimeout( function(){
+					$element.find('input.stops').val(stops).change();
+				}, 500);
+				
 			}
 		}
 		
@@ -418,7 +426,7 @@ function pds_preview_change() {
 	if ( ! $(this).hasClass('storm-submit') ) {
 		data = data + '&preview=1';
 	}
-	
+
 	$.post(ajaxurl, data, function( response ) {
 		if ( response.message.indexOf('updated') != -1 ) {
 			$.cookie('pdstyles_preview_update', '1', {path: '/'});

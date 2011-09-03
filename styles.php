@@ -160,6 +160,9 @@ class StormStyles extends Scaffold_Extension_Observable {
 	 * @return none
 	 **/
 	function __construct() {
+		$this->register_scripts();
+		$this->load_extensions( $this->plugin_dir_path() . 'gui' );
+
 		// ajax hooks so that we can access WordPress within Scaffold
 		add_action('parse_request', array( &$this, 'parse_request') );
 		add_filter('query_vars', array( &$this, 'query_vars') );
@@ -167,13 +170,10 @@ class StormStyles extends Scaffold_Extension_Observable {
 		// search for and process enqueued SCSS files
 		add_action( 'wp_print_styles', array( &$this , 'build' ), 9999);
 		add_action( 'admin_print_styles', array( &$this , 'build' ), 0);
-		
+
 		// Frontend
 		add_action ( 'template_redirect' , array( &$this , 'frontend_js' ) );
 
-		$this->register_scripts();
-		$this->load_extensions( $this->plugin_dir_path() . 'gui' );
-		
 		// Full path and plugin basename of the main plugin file
 		$this->plugin_file = __FILE__;
 		$this->plugin_basename = plugin_basename ( $this->plugin_file );
@@ -185,14 +185,12 @@ class StormStyles extends Scaffold_Extension_Observable {
 	 * @return void
 	 **/
 	function register_scripts() {
-		if ( !is_admin() ) { return; }
 		
-		wp_register_script('storm-colorpicker', $this->plugin_url().'/js/colorpicker/js/colorpicker.js',array('jquery'), $this->version, true);
+		wp_register_script('storm-colorpicker' , $this->plugin_url().'/js/colorpicker/js/colorpicker.js',array('jquery'), $this->version, true);
+		wp_register_script('storm-jq-ui-slider', $this->plugin_url().'/js/jquery.ui.slider.min.js'          ,array('jquery', 'jquery-ui-core' ), $this->version, true);
+		wp_register_script('jqcookie'          , $this->plugin_url().'/js/jquery.cookie.js'             ,array('jquery'), $this->version, true);
+		wp_register_script('storm-admin-main'  , $this->plugin_url().'/js/admin-main.js'                ,array('jqcookie', 'storm-jq-ui-slider', 'storm-colorpicker', 'thickbox', 'media-upload' ), $this->version, true);
 		
-		wp_register_script('storm-position-input-slider', $this->plugin_url().'/js/jquery.ui.slider.js',array('jquery', 'jquery-ui-core'), $this->version, true);
-		wp_enqueue_script('storm-position-input-slider');
-		wp_register_script('jqcookie', $this->plugin_url().'/js/jquery.cookie.js',array('jquery'), $this->version, true);
-	
 	}
 	
 	/**
@@ -202,10 +200,11 @@ class StormStyles extends Scaffold_Extension_Observable {
 	 * @since 0.1
 	 */
 	function frontend_js() {
+		
 		if ( !current_user_can ( 'manage_options' ) ) {
 			return;
 		}
-		
+
 		// Live Preview
 		wp_enqueue_script('storm-frontend', $this->plugin_url().'/js/frontend-main.js', array('jqcookie', 'jquery', ), $this->version, true);
 		
@@ -339,7 +338,11 @@ class StormStyles extends Scaffold_Extension_Observable {
 			$_GET['file'] = $this->files->active_file->file;
 		}
 		
-		$this->options = get_option( 'StormStyles' );
+		if ( isset($_GET['preview']) ) {
+			$this->options = get_option( 'StormStyles-preview' );
+		}else {
+			$this->options = get_option( 'StormStyles' );
+		}
 		$config = $this->get_scaffold_config();
 		
 		// From scaffold/index.php

@@ -75,10 +75,7 @@ class StormStylesAdmin extends StormStyles {
 	 */
 	function admin_js() {
 		
-		wp_enqueue_script('postbox');
-		wp_enqueue_script('dashboard');
-		
-		wp_enqueue_script('storm-admin-main', $this->plugin_url().'/js/admin-main.js', array('jqcookie', 'jquery', 'storm-colorpicker', 'thickbox', 'media-upload' ), $this->version, true);
+		wp_enqueue_script('storm-admin-main');
 
 		/*
 		// See http://www.prelovac.com/vladimir/best-practice-for-adding-javascript-code-to-wordpress-plugin
@@ -426,9 +423,6 @@ class StormStylesAdmin extends StormStyles {
 			// Update current object for further processing
 			$this->options = $input; 
 			
-			// Strip Scaffold from object saved to DB
-			$input['variables'][ $this->permalink ]->db_cleanup();
-			
 			// Write to DB
 			return $input; 
 		}
@@ -448,9 +442,6 @@ class StormStylesAdmin extends StormStyles {
 		// Convert input array to object for storage
 		$input['variables'][ $this->permalink ] = $this->files->active_file;
 		
-		// Strip Scaffold from object saved to DB
-		$input['variables'][ $this->permalink ]->db_cleanup();
-		
 		return $input['variables'];
 	}
 	
@@ -461,63 +452,33 @@ class StormStylesAdmin extends StormStyles {
 	 * @return void
 	 **/
 	function update_ajax() {
-		global $blog_id;
 		
 		$response = array();
-		$class = 'updated';
-		
+
 		if ( isset( $_POST['preview'] )) {
 			
 			if ( update_option('StormStyles-preview', $_POST ) ) {
-				$response['message'] .= 'Preview variables updated.<br/>';
+				$response['message'] = 'Preview updated';
 			}else {
-				$response['message'] .= 'Preview variables unchanged.<br/>';
+				$response['message'] = 'Preview unchanged';
 			}
 			
 		}else {
+			
 			if ( update_option('StormStyles', $_POST ) ) {
-				$response['message'] .= 'Variables saved.<br/>';
+				$response['message'] = 'Stylesheet saved';
 			}else {
-				$response['message'] .= 'Variables unchanged.<br/>';
-			}
-			
-			$cache_file = $this->files->active_file->cache_file;
-			
-			$cache_written = @file_put_contents( $cache_file, $this->render() );
-			if ( false !== $cache_written ) {
-				$response['message'] .= 'Stylesheet rendered and cached to <code><abbr title="'.$cache_file.'">'.basename($cache_file).'</abbr></code>.<br/>';
-			}else {
-				$response['message'] = '<div><strong>Error:</strong> Could not write to file <code><abbr title="'.$cache_file.'">'.basename($cache_file).'</abbr></code>.<br/>Please save <a href="/?scaffold">the output</a> manually or make the file writable with: <code>chmod 666 '.$cache_file.'</code></div>';
-				$class = 'error';
+				$response['message'] = 'Stylesheet unchanged';
 			}
 			
 		}
-		
-		$response['message'] = '<div class="'.$class.' settings-error" id="setting-error-settings_updated"> 
-		<p>'.$response['message'].'</p></div>';
-		
 		$response['href'] = '/?scaffold&preview&time='.microtime(true);
-		$response['id'] = $blog_id;
-		
-		
+		$response['id'] = $this->files->active_id;
 		
 		echo json_encode( $response );
 
 		exit;
 		
-	}
-	
-	/**
-	 * Serve frontend view via AJAX
-	 * 
-	 * @since 0.1
-	 * @return void
-	 **/
-	function ajax_frontend_load() {
-		$this->build();
-		
-		$this->load_view('frontend-main.php');
-		exit;
 	}
 
 	/**
