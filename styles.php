@@ -61,16 +61,16 @@ Copyright 2010  Paul Clark  (email : support (at) pdclark.com)
 // When sharing code
 if ( !class_exists('FirePHP') ) {
 	ob_start();
-	include  dirname ( __FILE__ ) . '/lib/extensions/FirePHPCore/fb.php';
+	include  dirname ( __FILE__ ) . '/classes/FirePHPCore/fb.php';
 }
 
 
-include dirname ( __FILE__ ) . '/lib/extensions/Observable.php';
-include dirname ( __FILE__ ) . '/lib/extensions/Observer.php';
-include dirname ( __FILE__ ) . '/lib/extensions/PDStylesObserver.php';
-include dirname ( __FILE__ ) . '/lib/extensions/File/File.php';
-include dirname ( __FILE__ ) . '/lib/extensions/Variable/Variable.php';
-include dirname ( __FILE__ ) . '/lib/extensions/Group/Group.php';
+include dirname ( __FILE__ ) . '/classes/Observable.php';
+include dirname ( __FILE__ ) . '/classes/Observer.php';
+include dirname ( __FILE__ ) . '/classes/PDStylesObserver.php';
+include dirname ( __FILE__ ) . '/classes/File/File.php';
+include dirname ( __FILE__ ) . '/classes/Variable/Variable.php';
+include dirname ( __FILE__ ) . '/classes/Group/Group.php';
 
 
 /**
@@ -154,7 +154,7 @@ class PDStyles extends Scaffold_Extension_Observable {
 		add_action( 'admin_print_styles', array( &$this , 'build' ), 0);
 
 		$this->register_scripts();
-		$this->load_extensions( $this->plugin_dir_path() . 'extensions' );
+		$this->load_extensions( $this->plugin_dir_path() . 'gui' );
 
 	}
 	
@@ -172,11 +172,11 @@ class PDStyles extends Scaffold_Extension_Observable {
 			wp_enqueue_script('jquery');
 		}
 		
-		wp_register_script('pds-colorpicker', $this->plugin_url().'/lib/js/colorpicker/js/colorpicker.js',array('jquery'), $this->version, true);
+		wp_register_script('pds-colorpicker', $this->plugin_url().'/js/colorpicker/js/colorpicker.js',array('jquery'), $this->version, true);
 		
-		wp_register_script('pds-position-input-slider', $this->plugin_url().'/lib/js/jquery.ui.slider.js',array('jquery', 'jquery-ui-core'), $this->version, true);
+		wp_register_script('pds-position-input-slider', $this->plugin_url().'/js/jquery.ui.slider.js',array('jquery', 'jquery-ui-core'), $this->version, true);
 		wp_enqueue_script('pds-position-input-slider');
-		wp_register_script('jqcookie', $this->plugin_url().'/lib/js/jquery.cookie.js',array('jquery'), $this->version, true);
+		wp_register_script('jqcookie', $this->plugin_url().'/js/jquery.cookie.js',array('jquery'), $this->version, true);
 		
 		
 		// Not normally registered in frontend
@@ -273,7 +273,7 @@ class PDStyles extends Scaffold_Extension_Observable {
 	 **/
 	function load_view($view) {
 		
-		$file = dirname ( __FILE__ ) . '/lib/views/'.$view;
+		$file = dirname ( __FILE__ ) . '/views/'.$view;
 		
 		if ( ! @include ( $file ) ) {
 			_e ( sprintf ( '<div id="message" class="updated fade"><p>The file <strong>%s</strong> is missing.  Please reinstall the plugin.</p></div>' , $file ), 'pd-styles' );
@@ -538,7 +538,7 @@ function PDStylesInit() {
 	
 		// include admin class
 
-		if ( @include dirname ( __FILE__ ) . '/lib/controllers/PDStylesAdminController.php' ) {
+		if ( @include dirname ( __FILE__ ) . '/classes/PDStylesAdminController.php' ) {
 			global $PDStylesController;
 			$PDStylesController = new PDStylesAdminController ();
 
@@ -549,7 +549,7 @@ function PDStylesInit() {
 		
 		// include subadmin class
 	
-		if ( @include dirname ( __FILE__ ) . '/lib/controllers/PDStylesFrontendController.php' ) {
+		if ( @include dirname ( __FILE__ ) . '/classes/PDStylesFrontendController.php' ) {
 			global $PDStylesController;
 			$PDStylesController = new PDStylesFrontendController ();
 		} else {

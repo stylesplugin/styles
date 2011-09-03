@@ -40,7 +40,7 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 		
 		$css_permalink = $PDStylesController->permalink;
 
-		$this->PIE = $PDStylesController->plugin_url().'/lib/js/PIE/PIE.php';
+		$this->PIE = $PDStylesController->plugin_url().'/js/PIE/PIE.php';
 
 		if ( $this->config['preview'] ) {
 			

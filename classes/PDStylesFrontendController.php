@@ -35,11 +35,11 @@ class PDStylesFrontendController extends PDStyles {
 		if ( !current_user_can ( 'manage_options' ) ) {
 			return;
 		}
-		wp_register_script('jqcookie', $this->plugin_url().'/lib/js/jquery.cookie.js',array('jquery'), $this->version, true);
+		wp_register_script('jqcookie', $this->plugin_url().'/js/jquery.cookie.js',array('jquery'), $this->version, true);
 		//hoverIntent,common,jquery-color,postbox,wp-ajax-response,wp-lists,admin-comments,dashboard
-		$test = $this->plugin_url().'/lib/js/frontend-main.js';
+		$test = $this->plugin_url().'/js/frontend-main.js';
 
-		wp_enqueue_script('pds-frontend', $this->plugin_url().'/lib/js/frontend-main.js', array('jqcookie', 'jquery', ), $this->version, true);
+		wp_enqueue_script('pds-frontend', $this->plugin_url().'/js/frontend-main.js', array('jqcookie', 'jquery', ), $this->version, true);
 		
 		wp_localize_script ( 'pds-frontend' , 'pds_frontend' , array(
 			'ajaxurl'	 => admin_url('admin-ajax.php') ,
@@ -51,7 +51,7 @@ class PDStylesFrontendController extends PDStyles {
 			return;
 		}
 		
-		// wp_enqueue_style('pds-frontend', '/?scaffold&file=lib/css/frontend.css');
+		// wp_enqueue_style('pds-frontend', '/?scaffold&file=css/frontend.css');
 		
 	}
 	

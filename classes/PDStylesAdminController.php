@@ -98,7 +98,7 @@ class PDStylesAdminController extends PDStyles {
 		wp_enqueue_script('postbox');
 		wp_enqueue_script('dashboard');
 		
-		wp_enqueue_script('pds-admin-main', $this->plugin_url().'/lib/js/admin-main.js', array('jqcookie', 'jquery', 'pds-colorpicker', 'thickbox', 'media-upload' ), $this->version, true);
+		wp_enqueue_script('pds-admin-main', $this->plugin_url().'/js/admin-main.js', array('jqcookie', 'jquery', 'pds-colorpicker', 'thickbox', 'media-upload' ), $this->version, true);
 
 		/*
 		// See http://www.prelovac.com/vladimir/best-practice-for-adding-javascript-code-to-wordpress-plugin
@@ -123,12 +123,12 @@ class PDStylesAdminController extends PDStyles {
 		wp_enqueue_style('global');
 		wp_enqueue_style('wp-admin');
 		
-		wp_register_style('pds-colorpicker', $this->plugin_url().'/lib/js/colorpicker/css/colorpicker.css',array( ), $this->version);
+		wp_register_style('pds-colorpicker', $this->plugin_url().'/js/colorpicker/css/colorpicker.css',array( ), $this->version);
 		
-		wp_register_style('pds-slider', $this->plugin_url().'/lib/css/ui-lightness/jquery-ui-1.8.6.custom.css',array( ), $this->version);
+		wp_register_style('pds-slider', $this->plugin_url().'/css/ui-lightness/jquery-ui-1.8.6.custom.css',array( ), $this->version);
 		wp_enqueue_style('pds-slider');
 		
-		wp_enqueue_style ( 'pd-styles-admin-css' , apply_filters ( 'pd-styles-admin-css' , '/?scaffold&file=lib/css/admin.css' ) , array('pds-colorpicker') , $this->version , 'screen' );
+		wp_enqueue_style ( 'pd-styles-admin' , apply_filters ( 'pd-styles-admin-css' , '/?scaffold&file=css/admin.css' ) , array('pds-colorpicker') , $this->version , 'screen' );
 		// wp_enqueue_style ( 'pd-styles-admin-test' , $this->plugin_dir_path() . 'example/vars.scss' , array() , $this->version , 'screen' );
 	}
 	
