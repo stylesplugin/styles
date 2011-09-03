@@ -53,7 +53,6 @@ class StormStylesAdmin extends StormStyles {
         
 		// AJAX
 		add_action('wp_ajax_pdstyles-update-options', array( &$this, 'update_ajax') );
-		add_action('wp_ajax_pdstyles-frontend-load', array( &$this, 'ajax_frontend_load') );
 	}
 	
 	/**
@@ -444,9 +443,6 @@ class StormStylesAdmin extends StormStyles {
 			// Update current object for further processing
 			$this->options = $input; 
 			
-			// Strip Scaffold from object saved to DB
-			$input['variables'][ $this->permalink ]->db_cleanup();
-			
 			// Write to DB
 			return $input; 
 		}
@@ -465,9 +461,6 @@ class StormStylesAdmin extends StormStyles {
 		$this->files->active_file->set( $input['variables'] );
 		// Convert input array to object for storage
 		$input['variables'][ $this->permalink ] = $this->files->active_file;
-		
-		// Strip Scaffold from object saved to DB
-		$input['variables'][ $this->permalink ]->db_cleanup();
 		
 		return $input['variables'];
 	}
@@ -523,19 +516,6 @@ class StormStylesAdmin extends StormStyles {
 
 		exit;
 		
-	}
-	
-	/**
-	 * Serve frontend view via AJAX
-	 * 
-	 * @since 0.1
-	 * @return void
-	 **/
-	function ajax_frontend_load() {
-		$this->build();
-		
-		$this->load_view('frontend-main.php');
-		exit;
 	}
 
 	/**

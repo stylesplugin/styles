@@ -493,27 +493,22 @@ class StormStyles extends Scaffold_Extension_Observable {
 		$path = realpath($path) . DIRECTORY_SEPARATOR . '*';
 
 		# Load each of the extensions
-		foreach(glob($path) as $ext)
-		{			
-			$ext .= DIRECTORY_SEPARATOR;
-		
+		foreach(glob($path) as $ext) {
 			$config 	= array();
-			$name 		= basename($ext);
+			$name 		= basename( pathinfo( $ext, PATHINFO_FILENAME ) );
 			$class 		= 'StormStyles_Extension_' . $name;
-			$file 		= $ext.$name.'.php';
+			$file 		= $ext.DIRECTORY_SEPARATOR.$name.'.php';
+			$include = true;
 			
-			# This extension isn't enabled
-			//if(!in_array($name, $this->options['extensions']))
-			//	continue;
+			if ( 'php' == pathinfo($ext, PATHINFO_EXTENSION) ) {
+				include $ext;
+			}else if ( file_exists($file) && is_dir($ext)) {
+				require_once realpath( $file );
+			}else {
+				$include = false;
+			}
 			
-			# Get the config for the extension if available
-			//if(isset($this->options[$name]))
-			//	$config = $this->options[$name];
-
-			# Load the controller
-			if(file_exists($file))
-			{
-				require_once realpath($ext.$name.'.php');
+			if ($include) {
 				$object = new $class($config);
 				// $object->attach_helper($helper);
 				$this->attach($name,$object);

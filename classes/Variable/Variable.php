@@ -79,6 +79,23 @@ class StormStyles_Extension_Variable extends Scaffold_Extension_Observer {
 	}
 	
 	/**
+	 * Run on serialize (before inserting into DB)
+	 * 
+	 * @return array of vars to serialize
+	 **/
+	function __sleep() {
+		// unset( $this->scaffold );
+		
+		return array(
+			'file',
+			'cache_file',
+			'permalink',
+			'variables',
+			
+		);
+	}
+	
+	/**
 	 * Initialize CSScaffold
 	 * 
 	 * @since 0.1
@@ -218,16 +235,6 @@ class StormStyles_Extension_Variable extends Scaffold_Extension_Observer {
 			}
 		}
 		unset($tmp);
-	}
-	
-	/**
-	 * Remove object elements that don't need to be stored in database
-	 * 
-	 * @since 0.1.3
-	 * @return void
-	 **/
-	function db_cleanup() {
-		unset( $this->scaffold );
 	}
 	
 	function is_protected_key( $key ) {
