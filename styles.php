@@ -64,7 +64,6 @@ if ( !class_exists('FirePHP') ) {
 	include  dirname ( __FILE__ ) . '/classes/FirePHPCore/fb.php';
 }
 
-
 include dirname ( __FILE__ ) . '/classes/Observable.php';
 include dirname ( __FILE__ ) . '/classes/Observer.php';
 include dirname ( __FILE__ ) . '/classes/PDStylesObserver.php';
@@ -152,6 +151,9 @@ class PDStyles extends Scaffold_Extension_Observable {
 		// search for and process enqueued SCSS files
 		add_action( 'wp_print_styles', array( &$this , 'build' ), 9999);
 		add_action( 'admin_print_styles', array( &$this , 'build' ), 0);
+		
+		// Frontend
+		add_action ( 'template_redirect' , array( &$this , 'frontend_js' ) );
 
 		$this->register_scripts();
 		$this->load_extensions( $this->plugin_dir_path() . 'gui' );
@@ -181,6 +183,25 @@ class PDStyles extends Scaffold_Extension_Observable {
 		
 		// Not normally registered in frontend
 		wp_register_script('pds-media-upload', admin_url('js/media-upload.js'), array( 'thickbox' ));
+	}
+	
+	/**
+	 * Enqueue javascript required for the front-end editor
+	 * 
+	 * @return none
+	 * @since 0.1
+	 */
+	function frontend_js() {
+		if ( !current_user_can ( 'manage_options' ) ) {
+			return;
+		}
+		
+		// Live Preview
+		wp_enqueue_script('pds-frontend', $this->plugin_url().'/js/frontend-main.js', array('jqcookie', 'jquery', ), $this->version, true);
+		
+		wp_localize_script ( 'pds-frontend' , 'pds_frontend' , array(
+			'ajaxurl'	 => admin_url('admin-ajax.php') ,
+		) );
 	}
 	
 	/**
@@ -526,6 +547,7 @@ class PDStyles extends Scaffold_Extension_Observable {
 		$this->load_files();
 	}
 	
+	
 } // END PDStyles class
 /**
  * Instantiate the PDStylesFrontend or $PDStylesController Class
@@ -537,24 +559,18 @@ function PDStylesInit() {
 	if ( is_admin () ) {
 	
 		// include admin class
-
-		if ( @include dirname ( __FILE__ ) . '/classes/PDStylesAdminController.php' ) {
+		$file = '/classes/PDStylesAdminController.php';
+		if ( @include dirname ( __FILE__ ) . $file ) {
 			global $PDStylesController;
 			$PDStylesController = new PDStylesAdminController ();
 
 		} else {
-			PDStyles::deactivate_and_die ( dirname ( __FILE__ ) . '/inc/admin.php' );
+			PDStyles::deactivate_and_die ( dirname ( __FILE__ ) . $file );
 		}
 	} else {
-		
-		// include subadmin class
-	
-		if ( @include dirname ( __FILE__ ) . '/classes/PDStylesFrontendController.php' ) {
-			global $PDStylesController;
-			$PDStylesController = new PDStylesFrontendController ();
-		} else {
-			PDStyles::deactivate_and_die ( dirname ( __FILE__ ) . '/inc/front-end.php' );
-		}
+		// Just the basics
+		global $PDStylesController;
+		$PDStylesController = new PDStyles ();
 	}
 }
 add_action('init', 'PDStylesInit');
