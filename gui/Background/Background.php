@@ -107,13 +107,6 @@ class PDStyles_Extension_Background extends PDStyles_Extension_Observer {
 	function output() {	
 		$types = array( 'Image', 'Gradient', 'Color', );
 		?>
-		
-		<tr class="pds_background"><th valign="top" scrope="row">
-			<label for="<?php echo $this->form_id; ?>">
-				<?php echo $this->label ?>
-			</label>
-			
-		</th><td valign="top">	
 			
 			<div class="types">
 				<?php foreach ( $types as $type ) : ?>
@@ -126,8 +119,7 @@ class PDStyles_Extension_Background extends PDStyles_Extension_Observer {
 					<?php $this->$type->output_inner() ?>
 				</div>
 			<?php endforeach; ?>
-			
-		</td></tr>
+
 		<?php		
 	}
 	

@@ -112,6 +112,22 @@ class PDStyles extends Scaffold_Extension_Observable {
 	var $options;
 	
 	/**
+	 * Full file system path to the main plugin file
+	 *
+	 * @since 0.1
+	 * @var string
+	 */
+	var $plugin_file;
+
+	/**
+	 * Path to the main plugin file relative to WP_CONTENT_DIR/plugins
+	 *
+	 * @since 0.1
+	 * @var string
+	 */
+	var $plugin_basename;
+	
+	/**
 	 * Objet containing references to scaffold files
 	 * 
 	 * @since 0.1.3
@@ -157,6 +173,10 @@ class PDStyles extends Scaffold_Extension_Observable {
 
 		$this->register_scripts();
 		$this->load_extensions( $this->plugin_dir_path() . 'gui' );
+		
+		// Full path and plugin basename of the main plugin file
+		$this->plugin_file = dirname ( dirname ( dirname ( __FILE__ ) ) ) . '/styles.php';
+		$this->plugin_basename = plugin_basename ( $this->plugin_file );
 
 	}
 	
@@ -549,6 +569,7 @@ class PDStyles extends Scaffold_Extension_Observable {
 	
 	
 } // END PDStyles class
+
 /**
  * Instantiate the PDStylesFrontend or $PDStylesController Class
  *
@@ -558,11 +579,11 @@ function PDStylesInit() {
 	
 	if ( is_admin () ) {
 	
-		// include admin class
-		$file = '/classes/PDStylesAdminController.php';
+		// Admin class
+		$file = '/classes/PDStylesAdmin.php';
 		if ( @include dirname ( __FILE__ ) . $file ) {
 			global $PDStylesController;
-			$PDStylesController = new PDStylesAdminController ();
+			$PDStylesController = new PDStylesAdmin ();
 
 		} else {
 			PDStyles::deactivate_and_die ( dirname ( __FILE__ ) . $file );
@@ -574,8 +595,5 @@ function PDStylesInit() {
 	}
 }
 add_action('init', 'PDStylesInit');
-
-
-
 
 ?>

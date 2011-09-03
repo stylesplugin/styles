@@ -34,23 +34,7 @@ class PDStyles_Extension_Image extends PDStyles_Extension_Observer {
 		
 	}
 	
-	function output() {	
-		?>
-		
-		<tr class="pds_image"><th valign="top" scrope="row">
-			<label for="<?php echo $this->form_id; ?>">
-				<?php echo $this->label ?>
-			</label>
-			
-		</th><td valign="top">	
-			
-			<?php $this->output_inner(); ?>
-			
-		</td></tr>
-		<?php		
-	}
-	
-	function output_inner() {
+	function output() {
 		$value = $this->value('form', 'url');
 		$hidden = empty( $value ) ? 'hidden ' : '';
 		?>

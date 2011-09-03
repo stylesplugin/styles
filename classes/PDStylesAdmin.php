@@ -9,24 +9,8 @@
  * @subpackage Admin
  * @author pdclark
  **/
-class PDStylesAdminController extends PDStyles {
+class PDStylesAdmin extends PDStyles {
 	
-	/**
-	 * Full file system path to the main plugin file
-	 *
-	 * @since 0.1
-	 * @var string
-	 */
-	var $plugin_file;
-
-	/**
-	 * Path to the main plugin file relative to WP_CONTENT_DIR/plugins
-	 *
-	 * @since 0.1
-	 * @var string
-	 */
-	var $plugin_basename;
-
 	/**
 	 * Name of options page hook
 	 *
@@ -67,10 +51,6 @@ class PDStylesAdminController extends PDStyles {
 		// Activate the options page
 		add_action ( 'admin_menu' , array( &$this , 'add_page' ) ) ;
         
-		// Full path and plugin basename of the main plugin file
-		$this->plugin_file = dirname ( dirname ( dirname ( __FILE__ ) ) ) . '/pd-styles.php';
-		$this->plugin_basename = plugin_basename ( $this->plugin_file );
-		
 		// AJAX
 		add_action('wp_ajax_pdstyles-update-options', array( &$this, 'update_ajax') );
 		add_action('wp_ajax_pdstyles-frontend-load', array( &$this, 'ajax_frontend_load') );
@@ -83,8 +63,27 @@ class PDStylesAdminController extends PDStyles {
 	 * @return none
 	 */
 	function register_settings() {
-		register_setting ( 'pd-styles' , 'pd-styles' , array( &$this , 'update' ) );
+		register_setting ( 'pd-styles' , 'pd-styles' , array( &$this , 'update' ) ); // update = validation method
 		register_setting ( 'pd-styles' , 'pd-styles-preview' , array( &$this , 'update_preview' ) );
+		
+		register_setting(
+            'Demo_Vars_Group', 
+            'Demo_Vars', 
+            array('DemoPlugin', 'Validate'));
+ 
+        add_settings_section(
+            'Demo_Vars_ID', 
+            'Demo Vars Title', 
+            array('DemoPlugin', 'Overview'), 
+            'PDStyles_Settings');
+ 
+        add_settings_field(
+            'Control_ID',                         // Unique ID
+            'Demo Control Name',                  // Label
+            array('DemoPlugin', 'Demo_Control'),  // Display callback
+            'PDStyles_Settings',                  // Form page
+            'Demo_Vars_ID'                        // Form section
+		); 
 	}
 	
 	/**
