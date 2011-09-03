@@ -2,7 +2,7 @@
 /*
 Plugin Name: Styles
 Plugin URI: http://brainstormmedia.com
-Description: Now with less code and more style.
+Description: Less code, more style.
 Version: 0.2.0
 Author: Brainstorm Media
 Author URI: http://brainstormmedia.com
@@ -66,7 +66,7 @@ if ( !class_exists('FirePHP') ) {
 
 include dirname ( __FILE__ ) . '/classes/Observable.php';
 include dirname ( __FILE__ ) . '/classes/Observer.php';
-include dirname ( __FILE__ ) . '/classes/PDStylesObserver.php';
+include dirname ( __FILE__ ) . '/classes/StormStylesObserver.php';
 include dirname ( __FILE__ ) . '/classes/File/File.php';
 include dirname ( __FILE__ ) . '/classes/Variable/Variable.php';
 include dirname ( __FILE__ ) . '/classes/Group/Group.php';
@@ -77,11 +77,11 @@ include dirname ( __FILE__ ) . '/classes/Group/Group.php';
  *
  * This class contains all the shared functions required for PD Styles to work
  *
- * @package pd-styles
+ * @package StormStyles
  * @author pdclark
  **/
 
-class PDStyles extends Scaffold_Extension_Observable {
+class StormStyles extends Scaffold_Extension_Observable {
 	
 	/**
 	 * Plugin Version
@@ -91,7 +91,7 @@ class PDStyles extends Scaffold_Extension_Observable {
 	 * @since 0.1
 	 * @var int
 	 **/
-	var $version = '0.1.4';
+	var $version = '0.2.0';
 	
 	/**
 	 * Plugin DB version
@@ -131,7 +131,7 @@ class PDStyles extends Scaffold_Extension_Observable {
 	 * Objet containing references to scaffold files
 	 * 
 	 * @since 0.1.3
-	 * @var PDStyles_Extension_File
+	 * @var StormStyles_Extension_File
 	 **/
 	var $files;
 	
@@ -181,28 +181,18 @@ class PDStyles extends Scaffold_Extension_Observable {
 	}
 	
 	/**
-	 * Register scripts for use in front or back end
-	 * 
 	 * @since 0.1
 	 * @return void
 	 **/
 	function register_scripts() {
 		if ( !is_admin() ) { return; }
-		if ( !is_admin() || $_GET['page'] == 'pdstyles' ) {
-			// wp_deregister_script('jquery');//deregister current jquery
-			// wp_register_script('jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js', false, '1.4.4', true);
-			wp_enqueue_script('jquery');
-		}
 		
-		wp_register_script('pds-colorpicker', $this->plugin_url().'/js/colorpicker/js/colorpicker.js',array('jquery'), $this->version, true);
+		wp_register_script('storm-colorpicker', $this->plugin_url().'/js/colorpicker/js/colorpicker.js',array('jquery'), $this->version, true);
 		
-		wp_register_script('pds-position-input-slider', $this->plugin_url().'/js/jquery.ui.slider.js',array('jquery', 'jquery-ui-core'), $this->version, true);
-		wp_enqueue_script('pds-position-input-slider');
+		wp_register_script('storm-position-input-slider', $this->plugin_url().'/js/jquery.ui.slider.js',array('jquery', 'jquery-ui-core'), $this->version, true);
+		wp_enqueue_script('storm-position-input-slider');
 		wp_register_script('jqcookie', $this->plugin_url().'/js/jquery.cookie.js',array('jquery'), $this->version, true);
-		
-		
-		// Not normally registered in frontend
-		wp_register_script('pds-media-upload', admin_url('js/media-upload.js'), array( 'thickbox' ));
+	
 	}
 	
 	/**
@@ -217,9 +207,9 @@ class PDStyles extends Scaffold_Extension_Observable {
 		}
 		
 		// Live Preview
-		wp_enqueue_script('pds-frontend', $this->plugin_url().'/js/frontend-main.js', array('jqcookie', 'jquery', ), $this->version, true);
+		wp_enqueue_script('storm-frontend', $this->plugin_url().'/js/frontend-main.js', array('jqcookie', 'jquery', ), $this->version, true);
 		
-		wp_localize_script ( 'pds-frontend' , 'pds_frontend' , array(
+		wp_localize_script ( 'storm-frontend' , 'storm_frontend' , array(
 			'ajaxurl'	 => admin_url('admin-ajax.php') ,
 		) );
 	}
@@ -297,7 +287,7 @@ class PDStyles extends Scaffold_Extension_Observable {
 	 * @return none
 	 */
 	function deactivate_and_die( $file ) {
-		load_plugin_textdomain ( 'pd-styles' , false , 'pd-styles/localization' );
+		load_plugin_textdomain ( 'StormStyles' , false , 'StormStyles/localization' );
 		$message = sprintf ( __( "PD Styles has been automatically deactivated because the file <strong>%s</strong> is missing. Please reinstall the plugin and reactivate." ) , $file );
 		if ( ! function_exists ( 'deactivate_plugins' ) ) {
 			include ( ABSPATH . 'wp-admin/includes/plugin.php' );
@@ -317,7 +307,7 @@ class PDStyles extends Scaffold_Extension_Observable {
 		$file = dirname ( __FILE__ ) . '/views/'.$view;
 		
 		if ( ! @include ( $file ) ) {
-			_e ( sprintf ( '<div id="message" class="updated fade"><p>The file <strong>%s</strong> is missing.  Please reinstall the plugin.</p></div>' , $file ), 'pd-styles' );
+			_e ( sprintf ( '<div id="message" class="updated fade"><p>The file <strong>%s</strong> is missing.  Please reinstall the plugin.</p></div>' , $file ), 'StormStyles' );
 		}
 	}
 	
@@ -349,7 +339,7 @@ class PDStyles extends Scaffold_Extension_Observable {
 			$_GET['file'] = $this->files->active_file->file;
 		}
 		
-		$this->options = get_option( 'pd-styles' );
+		$this->options = get_option( 'StormStyles' );
 		$config = $this->get_scaffold_config();
 		
 		// From scaffold/index.php
@@ -509,7 +499,7 @@ class PDStyles extends Scaffold_Extension_Observable {
 		
 			$config 	= array();
 			$name 		= basename($ext);
-			$class 		= 'PDStyles_Extension_' . $name;
+			$class 		= 'StormStyles_Extension_' . $name;
 			$file 		= $ext.$name.'.php';
 			
 			# This extension isn't enabled
@@ -539,9 +529,9 @@ class PDStyles extends Scaffold_Extension_Observable {
 	 * @return void
 	 **/
 	function load_files() {
-		if ( is_a( $this->files, 'PDStyles_Extension_File' ) ) { return; }
+		if ( is_a( $this->files, 'StormStyles_Extension_File' ) ) { return; }
 		
-		$this->files = new PDStyles_Extension_File( apply_filters( 'bsm_scss_file', '/css/style.scss' ) );
+		$this->files = new StormStyles_Extension_File( apply_filters( 'bsm_scss_file', '/css/style.scss' ) );
 		
 		// Setup CSS path
 		$this->permalink = $this->files->active_id;
@@ -568,32 +558,32 @@ class PDStyles extends Scaffold_Extension_Observable {
 	}
 	
 	
-} // END PDStyles class
+} // END StormStyles class
 
 /**
- * Instantiate the PDStylesFrontend or $PDStylesController Class
+ * Instantiate the StormStylesFrontend or $StormStylesController Class
  *
  * Deactivate and die if files can not be included
  */
-function PDStylesInit() {
+function StormStylesInit() {
 	
 	if ( is_admin () ) {
 	
 		// Admin class
-		$file = '/classes/PDStylesAdmin.php';
+		$file = '/classes/StormStylesAdmin.php';
 		if ( @include dirname ( __FILE__ ) . $file ) {
-			global $PDStylesController;
-			$PDStylesController = new PDStylesAdmin ();
+			global $StormStylesController;
+			$StormStylesController = new StormStylesAdmin ();
 
 		} else {
-			PDStyles::deactivate_and_die ( dirname ( __FILE__ ) . $file );
+			StormStyles::deactivate_and_die ( dirname ( __FILE__ ) . $file );
 		}
 	} else {
 		// Just the basics
-		global $PDStylesController;
-		$PDStylesController = new PDStyles ();
+		global $StormStylesController;
+		$StormStylesController = new StormStyles ();
 	}
 }
-add_action('init', 'PDStylesInit');
+add_action('init', 'StormStylesInit');
 
 ?>

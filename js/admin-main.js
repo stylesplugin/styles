@@ -1,13 +1,13 @@
 
 jQuery(function($) {
 	// AJAX Preview Button
-	$('input.pds-submit', '#pdm_form').click( pds_preview_change );
+	$('input.storm-submit', '#StormForm').click( pds_preview_change );
 	
-	$('input, select', '#pdm_form').change( pds_preview_change );
-	$('input.pds_image_input', '#pdm_form').change( update_image_thumbnail );
-	$('a.value-toggle', '#pdm_form').click( pds_value_toggle );
+	$('input, select', '#StormForm').change( pds_preview_change );
+	$('input.pds_image_input', '#StormForm').change( update_image_thumbnail );
+	$('a.value-toggle', '#StormForm').click( pds_value_toggle );
 	
-	$('div.types input', '#pdm_form').change( pds_background_type );
+	$('div.types input', '#StormForm').change( pds_background_type );
 	
 	// Generic Slider
 	$('input.slider').each(function() {
@@ -409,13 +409,13 @@ function pds_preview_change() {
 	var $ = jQuery;
 	
 	// Display waiting graphic
-	var waiting = $('#pdm_form img.waiting').show();
-	window.response_wrapper = $('#pdm_form span.response').html('');
+	var waiting = $('#StormForm img.waiting').show();
+	window.response_wrapper = $('#StormForm span.response').html('');
 	
 	// Get form info
-	var data = $('#pdm_form').serialize();
+	var data = $('#StormForm').serialize();
 	
-	if ( ! $(this).hasClass('pds-submit') ) {
+	if ( ! $(this).hasClass('storm-submit') ) {
 		data = data + '&preview=1';
 	}
 	

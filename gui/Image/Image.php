@@ -4,10 +4,10 @@
  * Attaches a color picker to variables with a hex color format
  * 
  * @since 0.1
- * @package pd-styles
+ * @package StormStyles
  * @author pdclark
  **/
-class PDStyles_Extension_Image extends PDStyles_Extension_Observer {
+class StormStyles_Extension_Image extends StormStyles_Extension_Observer {
 	
 	function __construct( $args = array(), Scaffold_Extension_Observable $observable = null ) {
 		parent::__construct( $args, $observable );

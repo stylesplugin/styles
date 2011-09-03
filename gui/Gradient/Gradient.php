@@ -4,10 +4,10 @@
  * Attaches a gradient picker to variables with a hex gradient format
  * 
  * @since 0.1
- * @package pd-styles
+ * @package StormStyles
  * @author pdclark
  **/
-class PDStyles_Extension_Gradient extends PDStyles_Extension_Observer {
+class StormStyles_Extension_Gradient extends StormStyles_Extension_Observer {
 	
 	function __construct( $args = array(), Scaffold_Extension_Observable $observable = null ) {
 		parent::__construct( $args, $observable );

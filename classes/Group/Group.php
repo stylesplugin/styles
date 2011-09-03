@@ -4,10 +4,10 @@
  * Format and iterate variable groups
  * 
  * @since 0.1
- * @package pd-styles
+ * @package StormStyles
  * @author pdclark
  **/
-class PDStyles_Extension_Group extends Scaffold_Extension_Observer {
+class StormStyles_Extension_Group extends Scaffold_Extension_Observer {
 	
 	/**
 	 * Form element ID and Name
@@ -53,7 +53,7 @@ class PDStyles_Extension_Group extends Scaffold_Extension_Observer {
 	            $this->key, // Unique ID 
 	            $this->label, // Label
 	            null, //array('DemoPlugin', 'Overview'), // Description callback
-	            'PDStyles_Settings' // Page
+	            'StormStyles_Settings' // Page
 			);
 		}
 		
@@ -63,13 +63,13 @@ class PDStyles_Extension_Group extends Scaffold_Extension_Observer {
 	}
 	
 	function create_objects( $variables ) {
-		global $PDStylesController;
+		global $StormStylesController;
 		
 		// Instantiate Objects
 		foreach ( $variables as $key => $args ) {
 
 			if ( is_array($args) ) {
-				foreach ( $PDStylesController->extensions as $ext ){
+				foreach ( $StormStylesController->extensions as $ext ){
 
 					if ( is_a( $ext, $args['class'] ) ) {
 						$ext_class = get_class($ext);

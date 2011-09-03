@@ -1,9 +1,9 @@
 <?php
 /**
- * Uninstalls the pd-styles options when an uninstall has been requested 
+ * Uninstalls the StormStyles options when an uninstall has been requested 
  * from the WordPress admin
  *
- * @package pd-styles
+ * @package StormStyles
  * @subpackage uninstall
  * @since 0.1
  */
@@ -13,7 +13,7 @@ if( ! defined ( 'ABSPATH' ) && ! defined ( 'WP_UNINSTALL_PLUGIN' ) )
 	exit ();
 
 // Delete shadowbox option from options table
-delete_option ( 'pd-styles' );
+delete_option ( 'StormStyles' );
 
 // Remove files
 #	$upload_dir = wp_upload_dir ();

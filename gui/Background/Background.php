@@ -4,16 +4,16 @@
  * Combination of all possible background elements
  * 
  * @since 0.1.4
- * @package pd-styles
+ * @package StormStyles
  * @author pdclark
  **/
-class PDStyles_Extension_Background extends PDStyles_Extension_Observer {
+class StormStyles_Extension_Background extends StormStyles_Extension_Observer {
 	
 	/**
 	 * Container for color object
 	 * 
 	 * @since 0.1.4
-	 * @var PDStyles_Extension_Color
+	 * @var StormStyles_Extension_Color
 	 **/
 	var $Color;
 	
@@ -21,7 +21,7 @@ class PDStyles_Extension_Background extends PDStyles_Extension_Observer {
 	 * Container for image object
 	 * 
 	 * @since 0.1.4
-	 * @var PDStyles_Extension_Image
+	 * @var StormStyles_Extension_Image
 	 **/
 	var $Image;
 	
@@ -29,16 +29,16 @@ class PDStyles_Extension_Background extends PDStyles_Extension_Observer {
 	 * Container for gradient object
 	 * 
 	 * @since 0.1.3
-	 * @var PDStyles_Extension_Gradient
+	 * @var StormStyles_Extension_Gradient
 	 **/
 	var $Gradient;
 	
 	function __construct( $args = array(), Scaffold_Extension_Observable $observable = null ) {
 		parent::__construct( $args, $observable );
 
-		if ( class_exists('PDStyles_Extension_Color') ) $this->Color = new PDStyles_Extension_Color( $args, $observable );
-		if ( class_exists('PDStyles_Extension_Image') )  $this->Image = new PDStyles_Extension_Image( $args, $observable );
-		if ( class_exists('PDStyles_Extension_Gradient') )  $this->Gradient = new PDStyles_Extension_Gradient( $args, $observable );
+		if ( class_exists('StormStyles_Extension_Color') ) $this->Color = new StormStyles_Extension_Color( $args, $observable );
+		if ( class_exists('StormStyles_Extension_Image') )  $this->Image = new StormStyles_Extension_Image( $args, $observable );
+		if ( class_exists('StormStyles_Extension_Gradient') )  $this->Gradient = new StormStyles_Extension_Gradient( $args, $observable );
 	}
 	
 	/**

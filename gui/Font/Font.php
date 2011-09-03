@@ -4,10 +4,10 @@
  * Attaches a font picker to variables with a hex font format
  * 
  * @since 0.1
- * @package pd-styles
+ * @package StormStyles
  * @author pdclark
  **/
-class PDStyles_Extension_Font extends PDStyles_Extension_Observer {
+class StormStyles_Extension_Font extends StormStyles_Extension_Observer {
 	
 	var $families = array(
 		'delete'			=>	'',

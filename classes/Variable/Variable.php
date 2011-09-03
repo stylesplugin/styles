@@ -4,10 +4,10 @@
  * Get CSS variables from Scaffold, iterate down the tree
  * 
  * @since 0.1
- * @package pd-styles
+ * @package StormStyles
  * @author pdclark
  **/
-class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
+class StormStyles_Extension_Variable extends Scaffold_Extension_Observer {
 	
 	/**
 	 * Loaded SCSS file path
@@ -67,7 +67,7 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 
 			$group['form_name'] = "variables[$this->permalink]";
 			$group['key'] = $key;
-			$group = new PDStyles_Extension_Group( $group );
+			$group = new StormStyles_Extension_Group( $group );
 			
 			// Remove empty groups
 			if ( empty( $group->variables ) ) {
@@ -112,7 +112,7 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 
 		// Setup the env
 		date_default_timezone_set('GMT');
-		$system = PDStyles::plugin_dir_path() . 'scaffold';
+		$system = StormStyles::plugin_dir_path() . 'scaffold';
 		$environment = $system.'/lib/Scaffold/Environment.php';
 		
 		if ( @require_once ( $environment ) ) {
@@ -123,7 +123,7 @@ class PDStyles_Extension_Variable extends Scaffold_Extension_Observer {
 
 			$this->scaffold 	= $Container->build();
 		} else {
-			PDStyles::deactivate_and_die ( $environment );
+			StormStyles::deactivate_and_die ( $environment );
 		}
 		
 	}

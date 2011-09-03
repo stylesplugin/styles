@@ -65,25 +65,6 @@ class StormStylesAdmin extends StormStyles {
 	function register_settings() {
 		register_setting ( 'StormStyles' , 'StormStyles' , array( &$this , 'update' ) ); // update = validation method
 		register_setting ( 'StormStyles' , 'StormStyles-preview' , array( &$this , 'update_preview' ) );
-		
-		register_setting(
-            'Demo_Vars_Group', 
-            'Demo_Vars', 
-            array('DemoPlugin', 'Validate'));
- 
-        add_settings_section(
-            'Demo_Vars_ID', 
-            'Demo Vars Title', 
-            array('DemoPlugin', 'Overview'), 
-            'StormStyles_Settings');
- 
-        add_settings_field(
-            'Control_ID',                         // Unique ID
-            'Demo Control Name',                  // Label
-            array('DemoPlugin', 'Demo_Control'),  // Display callback
-            'StormStyles_Settings',                  // Form page
-            'Demo_Vars_ID'                        // Form section
-		); 
 	}
 	
 	/**
@@ -127,7 +108,8 @@ class StormStylesAdmin extends StormStyles {
 		wp_register_style('storm-slider', $this->plugin_url().'/css/ui-lightness/jquery-ui-1.8.6.custom.css',array( ), $this->version);
 		wp_enqueue_style('storm-slider');
 		
-		wp_enqueue_style ( 'storm-admin' , apply_filters ( 'storm-admin-css' , '/?scaffold&file=css/admin.css' ) , array('storm-colorpicker') , $this->version , 'screen' );
+		wp_enqueue_style ( 'StormStyles-admin' , apply_filters ( 'StormStyles-admin-css' , '/?scaffold&file=css/admin.css' ) , array('storm-colorpicker') , $this->version , 'screen' );
+		// wp_enqueue_style ( 'StormStyles-admin-test' , $this->plugin_dir_path() . 'example/vars.scss' , array() , $this->version , 'screen' );
 	}
 	
 	/**
