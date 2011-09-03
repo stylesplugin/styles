@@ -14,6 +14,7 @@ if( ! defined ( 'ABSPATH' ) && ! defined ( 'WP_UNINSTALL_PLUGIN' ) )
 
 // Delete shadowbox option from options table
 delete_option ( 'StormStyles' );
+delete_option ( 'StormStyles-preview' );
 
 // Remove files
 #	$upload_dir = wp_upload_dir ();
