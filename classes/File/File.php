@@ -4,16 +4,16 @@
  * Manage detection of scaffold files & IDs
  * 
  * @since 0.1
- * @package pd-styles
+ * @package StormStyles
  * @author pdclark
  **/
-class PDStyles_Extension_File {
+class StormStyles_Extension_File {
 	
 	/**
 	 * Reference to active file object in queue
 	 * 
 	 * @since 0.1.3
-	 * @var PDStyles_Extension_Variable
+	 * @var StormStyles_Extension_Variable
 	 **/
 	var $active_file;
 	
@@ -51,7 +51,7 @@ class PDStyles_Extension_File {
 
 		if ( is_admin() || isset( $_GET['scaffold'] ) || 'admin-ajax.php' == basename($_SERVER['PHP_SELF']) ) {
 			// Load up variables from SCSS if we're in Admin or running a cache save via AJAX
-			$this->active_file = new PDStyles_Extension_Variable( array(
+			$this->active_file = new StormStyles_Extension_Variable( array(
 	 			'file' => get_stylesheet_directory().$file, // Absolute path
 				'cache_file' => get_stylesheet_directory().$cached_file,
 				'permalink' => $this->active_id,
@@ -72,4 +72,4 @@ class PDStyles_Extension_File {
 		
 	}
 
-} // END class PDStyles_Extension_File
+} // END class StormStyles_Extension_File

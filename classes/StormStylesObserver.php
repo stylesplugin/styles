@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PDStyles_Extension_Observer
+ * StormStyles_Extension_Observer
  *
  * Observer class to implement the observer method
  * 
@@ -10,7 +10,7 @@
  * @copyright 		2009-2010 Paul Clark. All rights reserved.
  * @license 		http://opensource.org/licenses/bsd-license.php  New BSD License
  */
-abstract class PDStyles_Extension_Observer extends Scaffold_Extension_Observer
+abstract class StormStyles_Extension_Observer extends Scaffold_Extension_Observer
 {
 	/**
 	 * Form element ID
@@ -53,6 +53,13 @@ abstract class PDStyles_Extension_Observer extends Scaffold_Extension_Observer
 	var $values;
 	
 	/**
+	 * Settings group key to display in
+	 * 
+	 * @var string
+	 **/
+	var $group;
+	
+	/**
 	 * Arguments passed from CSS
 	 * 
 	 * @since 0.1
@@ -79,6 +86,7 @@ abstract class PDStyles_Extension_Observer extends Scaffold_Extension_Observer
 		$args = wp_parse_args( $args, $defaults );
 		
 		$this->key = $args['key'];
+		$this->group = $args['group'];
 		$this->label = $args['label'];
 		$this->method = $args['method'];
 		
@@ -88,6 +96,16 @@ abstract class PDStyles_Extension_Observer extends Scaffold_Extension_Observer
 		unset( $args['method'], $args['key'], $args['label'], $args['form_name'] );
 		
 		$this->args = $args;
+		
+		if (!empty( $this->args ) && function_exists('add_settings_field') ) {
+			add_settings_field(
+	           $this->key,   // Unique ID
+	           $this->label, // Label
+	           array($this, 'output'), // Display callback
+	           'StormStyles_Settings', // Form page
+	           $this->group     // Form section
+			);
+		}
 	}
 	
 	/**

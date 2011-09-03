@@ -4,10 +4,10 @@
  * Attaches a color picker to variables with a hex color format
  * 
  * @since 0.1
- * @package pd-styles
+ * @package StormStyles
  * @author pdclark
  **/
-class PDStyles_Extension_Image extends PDStyles_Extension_Observer {
+class StormStyles_Extension_Image extends StormStyles_Extension_Observer {
 	
 	function __construct( $args = array(), Scaffold_Extension_Observable $observable = null ) {
 		parent::__construct( $args, $observable );
@@ -34,23 +34,7 @@ class PDStyles_Extension_Image extends PDStyles_Extension_Observer {
 		
 	}
 	
-	function output() {	
-		?>
-		
-		<tr class="pds_image"><th valign="top" scrope="row">
-			<label for="<?php echo $this->form_id; ?>">
-				<?php echo $this->label ?>
-			</label>
-			
-		</th><td valign="top">	
-			
-			<?php $this->output_inner(); ?>
-			
-		</td></tr>
-		<?php		
-	}
-	
-	function output_inner() {
+	function output() {
 		$value = $this->value('form', 'url');
 		$hidden = empty( $value ) ? 'hidden ' : '';
 		?>

@@ -1,32 +1,16 @@
 <?php
 /**
- * PDStyles class for admin actions
+ * StormStyles class for admin actions
  * 
- * This class contains all functions and actions required for PDStyles to work in the admin of WordPress
+ * This class contains all functions and actions required for StormStyles to work in the admin of WordPress
  * 
  * @since 0.1
- * @package pd-styles
+ * @package StormStyles
  * @subpackage Admin
  * @author pdclark
  **/
-class PDStylesAdminController extends PDStyles {
+class StormStylesAdmin extends StormStyles {
 	
-	/**
-	 * Full file system path to the main plugin file
-	 *
-	 * @since 0.1
-	 * @var string
-	 */
-	var $plugin_file;
-
-	/**
-	 * Path to the main plugin file relative to WP_CONTENT_DIR/plugins
-	 *
-	 * @since 0.1
-	 * @var string
-	 */
-	var $plugin_basename;
-
 	/**
 	 * Name of options page hook
 	 *
@@ -49,7 +33,7 @@ class PDStylesAdminController extends PDStyles {
 		);
 		$args = wp_parse_args( $args, $defaults );
 		
-		$this->options = get_option( 'pd-styles' );
+		$this->options = get_option( 'StormStyles' );
 		
 		if ( version_compare ( $this->get_option ( 'version' ) , $this->dbversion , '!=' ) && ! empty ( $this->options ) ) {
 			$this->check_upgrade();
@@ -67,24 +51,20 @@ class PDStylesAdminController extends PDStyles {
 		// Activate the options page
 		add_action ( 'admin_menu' , array( &$this , 'add_page' ) ) ;
         
-		// Full path and plugin basename of the main plugin file
-		$this->plugin_file = dirname ( dirname ( dirname ( __FILE__ ) ) ) . '/pd-styles.php';
-		$this->plugin_basename = plugin_basename ( $this->plugin_file );
-		
 		// AJAX
 		add_action('wp_ajax_pdstyles-update-options', array( &$this, 'update_ajax') );
 		add_action('wp_ajax_pdstyles-frontend-load', array( &$this, 'ajax_frontend_load') );
 	}
 	
 	/**
-	 * Whitelist the pd-styles options
+	 * Whitelist the StormStyles options
 	 *
 	 * @since 0.1
 	 * @return none
 	 */
 	function register_settings() {
-		register_setting ( 'pd-styles' , 'pd-styles' , array( &$this , 'update' ) );
-		register_setting ( 'pd-styles' , 'pd-styles-preview' , array( &$this , 'update_preview' ) );
+		register_setting ( 'StormStyles' , 'StormStyles' , array( &$this , 'update' ) ); // update = validation method
+		register_setting ( 'StormStyles' , 'StormStyles-preview' , array( &$this , 'update_preview' ) );
 	}
 	
 	/**
@@ -95,10 +75,7 @@ class PDStylesAdminController extends PDStyles {
 	 */
 	function admin_js() {
 		
-		wp_enqueue_script('postbox');
-		wp_enqueue_script('dashboard');
-		
-		wp_enqueue_script('pds-admin-main', $this->plugin_url().'/js/admin-main.js', array('jqcookie', 'jquery', 'pds-colorpicker', 'thickbox', 'media-upload' ), $this->version, true);
+		wp_enqueue_script('storm-admin-main');
 
 		/*
 		// See http://www.prelovac.com/vladimir/best-practice-for-adding-javascript-code-to-wordpress-plugin
@@ -123,17 +100,17 @@ class PDStylesAdminController extends PDStyles {
 		wp_enqueue_style('global');
 		wp_enqueue_style('wp-admin');
 		
-		wp_register_style('pds-colorpicker', $this->plugin_url().'/js/colorpicker/css/colorpicker.css',array( ), $this->version);
+		wp_register_style('storm-colorpicker', $this->plugin_url().'/js/colorpicker/css/colorpicker.css',array( ), $this->version);
 		
-		wp_register_style('pds-slider', $this->plugin_url().'/css/ui-lightness/jquery-ui-1.8.6.custom.css',array( ), $this->version);
-		wp_enqueue_style('pds-slider');
+		wp_register_style('storm-slider', $this->plugin_url().'/css/ui-lightness/jquery-ui-1.8.6.custom.css',array( ), $this->version);
+		wp_enqueue_style('storm-slider');
 		
-		wp_enqueue_style ( 'pd-styles-admin' , apply_filters ( 'pd-styles-admin-css' , '/?scaffold&file=css/admin.css' ) , array('pds-colorpicker') , $this->version , 'screen' );
-		// wp_enqueue_style ( 'pd-styles-admin-test' , $this->plugin_dir_path() . 'example/vars.scss' , array() , $this->version , 'screen' );
+		wp_enqueue_style ( 'StormStyles-admin' , apply_filters ( 'StormStyles-admin-css' , '/?scaffold&file=css/admin.css' ) , array('storm-colorpicker') , $this->version , 'screen' );
+		// wp_enqueue_style ( 'StormStyles-admin-test' , $this->plugin_dir_path() . 'example/vars.scss' , array() , $this->version , 'screen' );
 	}
 	
 	/**
-	 * Return a list of the languages available to pd-styles.js
+	 * Return a list of the languages available to StormStyles.js
 	 *
 	 * @author Matt Martz <matt@sivel.net>
 	 * @since 2.0.3.3
@@ -310,9 +287,9 @@ class PDStylesAdminController extends PDStyles {
 	 * @since 0.1
 	 */
 	function init() {
-		if ( ! get_option ( 'pd-styles' ) ) {
+		if ( ! get_option ( 'StormStyles' ) ) {
 			$this->options = $this->defaults();
-			add_option ( 'pd-styles' , $this->options );
+			add_option ( 'StormStyles' , $this->options );
 		} else {
 			$this->check_upgrade();
 		}
@@ -429,7 +406,7 @@ class PDStylesAdminController extends PDStyles {
 		
 		// Check if we are supposed to remove options
 		if ( isset ( $input['delete'] ) && $input['delete'] == 'true' ) { 
-			delete_option ( 'pd-styles' );
+			delete_option ( 'StormStyles' );
 		} else if ( isset ( $input['default'] ) && $input['default'] == 'true' ) { // Check if we are supposed to reset to defaults
 			$this->options = $this->defaults();
 			return $this->options;
@@ -445,9 +422,6 @@ class PDStylesAdminController extends PDStyles {
 			
 			// Update current object for further processing
 			$this->options = $input; 
-			
-			// Strip Scaffold from object saved to DB
-			$input['variables'][ $this->permalink ]->db_cleanup();
 			
 			// Write to DB
 			return $input; 
@@ -468,9 +442,6 @@ class PDStylesAdminController extends PDStyles {
 		// Convert input array to object for storage
 		$input['variables'][ $this->permalink ] = $this->files->active_file;
 		
-		// Strip Scaffold from object saved to DB
-		$input['variables'][ $this->permalink ]->db_cleanup();
-		
 		return $input['variables'];
 	}
 	
@@ -481,63 +452,33 @@ class PDStylesAdminController extends PDStyles {
 	 * @return void
 	 **/
 	function update_ajax() {
-		global $blog_id;
 		
 		$response = array();
-		$class = 'updated';
-		
+
 		if ( isset( $_POST['preview'] )) {
 			
-			if ( update_option('pd-styles-preview', $_POST ) ) {
-				$response['message'] .= 'Preview variables updated.<br/>';
+			if ( update_option('StormStyles-preview', $_POST ) ) {
+				$response['message'] = 'Preview updated';
 			}else {
-				$response['message'] .= 'Preview variables unchanged.<br/>';
+				$response['message'] = 'Preview unchanged';
 			}
 			
 		}else {
-			if ( update_option('pd-styles', $_POST ) ) {
-				$response['message'] .= 'Variables saved.<br/>';
-			}else {
-				$response['message'] .= 'Variables unchanged.<br/>';
-			}
 			
-			$cache_file = $this->files->active_file->cache_file;
-			
-			$cache_written = @file_put_contents( $cache_file, $this->render() );
-			if ( false !== $cache_written ) {
-				$response['message'] .= 'Stylesheet rendered and cached to <code><abbr title="'.$cache_file.'">'.basename($cache_file).'</abbr></code>.<br/>';
+			if ( update_option('StormStyles', $_POST ) ) {
+				$response['message'] = 'Stylesheet saved';
 			}else {
-				$response['message'] = '<div><strong>Error:</strong> Could not write to file <code><abbr title="'.$cache_file.'">'.basename($cache_file).'</abbr></code>.<br/>Please save <a href="/?scaffold">the output</a> manually or make the file writable with: <code>chmod 666 '.$cache_file.'</code></div>';
-				$class = 'error';
+				$response['message'] = 'Stylesheet unchanged';
 			}
 			
 		}
-		
-		$response['message'] = '<div class="'.$class.' settings-error" id="setting-error-settings_updated"> 
-		<p>'.$response['message'].'</p></div>';
-		
 		$response['href'] = '/?scaffold&preview&time='.microtime(true);
-		$response['id'] = $blog_id;
-		
-		
+		$response['id'] = $this->files->active_id;
 		
 		echo json_encode( $response );
 
 		exit;
 		
-	}
-	
-	/**
-	 * Serve frontend view via AJAX
-	 * 
-	 * @since 0.1
-	 * @return void
-	 **/
-	function ajax_frontend_load() {
-		$this->build();
-		
-		$this->load_view('frontend-main.php');
-		exit;
 	}
 
 	/**
@@ -548,7 +489,7 @@ class PDStylesAdminController extends PDStyles {
 	 */
 	function add_page() {
 		if ( current_user_can ( 'manage_options' ) ) {
-			$this->options_page_hookname = add_theme_page ( __( 'Styles' , 'pd-styles' ) , __( 'Styles' , 'pd-styles' ) , 'manage_options' , 'pd-styles' , array( &$this , 'admin_page' ) );
+			$this->options_page_hookname = add_theme_page ( __( 'Styles' , 'StormStyles' ) , __( 'Styles' , 'StormStyles' ) , 'manage_options' , 'StormStyles' , array( &$this , 'admin_page' ) );
 			add_action ( "admin_print_scripts-{$this->options_page_hookname}" , array( &$this , 'admin_js' ) );
 			add_action ( "admin_print_styles-{$this->options_page_hookname}" , array( &$this , 'admin_css' ) );
 			add_filter ( "plugin_action_links_{$this->plugin_basename}" , array( &$this , 'filter_plugin_actions' ) );
@@ -564,7 +505,7 @@ class PDStylesAdminController extends PDStyles {
 	 * @since 0.1
 	 */
 	function filter_plugin_actions ( $links ) { 
-		$settings_link = '<a href="themes.php?page=pd-styles">' . __( 'Settings' , 'pd-styles' ) . '</a>'; 
+		$settings_link = '<a href="themes.php?page=StormStyles">' . __( 'Settings' , 'StormStyles' ) . '</a>'; 
 		array_unshift ( $links, $settings_link ); 
 		return $links;
 	}
@@ -577,14 +518,14 @@ class PDStylesAdminController extends PDStyles {
 	 */
 	function admin_page() {
 		// Update options if something was submitted
-		if ( $_POST['action'] == 'pdstyles-update-options' && check_admin_referer('pd-styles-update-options') ) {
+		if ( $_POST['action'] == 'pdstyles-update-options' && check_admin_referer('StormStyles-update-options') ) {
 			// Uses $this->update() sanitation callback
-			update_option('pd-styles', $_POST );
+			update_option('StormStyles', $_POST );
 		}
 
 		$this->load_view('admin-main.php');
 	}
 
-} // END class PDStylesAdminController extends PDStyles
+} // END class StormStylesAdminController extends StormStyles
 
 ?>

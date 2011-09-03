@@ -4,10 +4,10 @@
  * Attaches a font picker to variables with a hex font format
  * 
  * @since 0.1
- * @package pd-styles
+ * @package StormStyles
  * @author pdclark
  **/
-class PDStyles_Extension_Font extends PDStyles_Extension_Observer {
+class StormStyles_Extension_Font extends StormStyles_Extension_Observer {
 	
 	var $families = array(
 		'delete'			=>	'',
@@ -94,11 +94,6 @@ class PDStyles_Extension_Font extends PDStyles_Extension_Observer {
 	function output() {
 		$font_family = $this->value('form', 'font_family');
 		?>
-		<tr class="pds_font"><th valign="top" scrope="row">
-			<label for="<?php echo $this->form_id; ?>">
-				<?php echo $this->label ?>
-			</label>
-		</th><td valign="top">
 			<input name="<?php echo $this->form_name ?>[font_size]" class="pds_font_input" type="text" id="<?php echo $this->form_id ?>_font_size" value="<?php echo $this->value('form', 'font_size'); ?>" size="2" maxlength="4" />px
 			
 			<select name="<?php echo $this->form_name ?>[font_family]" class="pds_font_select">
@@ -119,8 +114,6 @@ class PDStyles_Extension_Font extends PDStyles_Extension_Observer {
 			
 			<a href="#" title="Leading" class="value-toggle line-height line-height-<?php echo str_replace('.', '', $this->value('form', 'line_height') ); ?>" data-type="line-height" data-options='<?php echo json_encode( $this->line_heights ) ?>' >Leading</a>
 			<input name="<?php echo $this->form_name ?>[line_height]" class="pds_font_input" type="hidden" id="<?php echo $this->form_id ?>_line_height" value="<?php echo $this->value('form', 'line_height'); ?>" />
-			
-		</td></tr>
 		<?php
 	}
 	

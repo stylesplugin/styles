@@ -4,10 +4,10 @@
  * Attaches a position picker to variables with a hex position format
  * 
  * @since 0.1
- * @package pd-styles
+ * @package StormStyles
  * @author pdclark
  **/
-class PDStyles_Extension_Position extends PDStyles_Extension_Observer {
+class StormStyles_Extension_Position extends StormStyles_Extension_Observer {
 	
 	function __construct( $args = array(), Scaffold_Extension_Observable $observable = null ) {
 		parent::__construct( $args, $observable );
@@ -70,17 +70,9 @@ class PDStyles_Extension_Position extends PDStyles_Extension_Observer {
 		@extract( $this->args );
 		
 		?>
-		<tr class="pds_slider"><th valign="top" scrope="row">
-			<label for="<?php echo $this->form_id; ?>">
-				<?php echo $this->label ?>
-			</label>
-		</th><td valign="top">
-			
 			<div>
 				<input class="pds_position_input slider" type="text" data-min="<?php echo $min; ?>" data-max="<?php echo $max; ?>" name="<?php echo $this->form_name ?>[value]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form'); ?>" size="4" maxlength="8" /> <?php echo $unit ?>
 			</div>
-		</td></tr>
-	
 		<?php
 	}
 	

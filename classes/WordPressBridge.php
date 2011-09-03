@@ -36,21 +36,21 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	function __construct( $config= array() ) {
 		parent::__construct($config);
 		
-		global $PDStylesController;
+		global $StormStylesController;
 		
-		$css_permalink = $PDStylesController->permalink;
+		$css_permalink = $StormStylesController->permalink;
 
-		$this->PIE = $PDStylesController->plugin_url().'/js/PIE/PIE.php';
+		$this->PIE = $StormStylesController->plugin_url().'/js/PIE/PIE.php';
 
 		if ( $this->config['preview'] ) {
 			
-			$preview = get_option('pd-styles-preview');
+			$preview = get_option('StormStyles-preview');
 			if( is_object( $preview[ $css_permalink ] ) ) {
 				$this->vals = $preview[ $css_permalink ]->get('css');
 			}
 
-		}else if( is_object( $PDStylesController->options['variables'][ $css_permalink ] ) ) {
-			$this->vals = $PDStylesController->options['variables'][ $css_permalink ]->get('css');
+		}else if( is_object( $StormStylesController->options['variables'][ $css_permalink ] ) ) {
+			$this->vals = $StormStylesController->options['variables'][ $css_permalink ]->get('css');
 		}
 	}
 	
@@ -100,7 +100,7 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 			'label' => $label,
 			'id'    => $id,
 			'key'   => $key,
-			'class' => 'PDStyles_Extension_Color',
+			'class' => 'StormStyles_Extension_Color',
 		);
 		
 		// Extract values saved from WP form
@@ -124,13 +124,13 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 			'label' => $label,
 			'id'    => $id,
 			'key'   => $key,
-			'class' => 'PDStyles_Extension_Font',
+			'class' => 'StormStyles_Extension_Font',
 		);
 		
 		// Extract values saved from WP form
 		@extract( $this->vals[$group][$key] );
 		
-		$opts = new PDStyles_Extension_Font();
+		$opts = new StormStyles_Extension_Font();
 		$font_family = $opts->families[$font_family];
 
 		if ( !empty($font_size) && !empty($font_family) ) {
@@ -154,9 +154,9 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 		extract( $this->extract($value, $id) );
 
 		if ( ($match = $this->find_linear_gradient( $value ))  ) {
-			$class = 'PDStyles_Extension_Gradient';
+			$class = 'StormStyles_Extension_Gradient';
 		}else if ( ($match = $this->find_background_url( $value ) ) ) {
-			$class = 'PDStyles_Extension_Image';
+			$class = 'StormStyles_Extension_Image';
 		}else {
 			return "/* Error: Could not detect image or gradient: $value */";
 		}

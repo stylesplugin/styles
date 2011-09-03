@@ -4,26 +4,31 @@
  *
  * This file contains all PHP and HTML required for the PD Styles Appearance Page in the admin of WordPress
  *
- * @package pd-styles
+ * @package StormStyles
  * @subpackage admin-main
  * @since 0.1
  */
 
 ?>
-<div class="wrap pd-styles">
-	<?php screen_icon("themes"); ?>
-	<h2><?php _e( 'Styles' , 'pd-styles' ); ?></h2>
+<div class="wrap StormStyles">
 	
-	<form method="post" id="pdm_form" action="<?php echo $_SERVER['REQUEST_URI'] ?>" enctype="multipart/form-data" name="post">
-		<?php wp_nonce_field( 'pd-styles-update-options' ); ?>
-		<?php
-			// Todo: Rewrite settings output using WP Settings API
-			// http://codex.wordpress.org/Settings_API
+	<?php screen_icon('themes'); ?>
+	<h2><?php _e( 'Styles' , 'StormStyles' ); ?></h2>
 	
-			$this->files->active_file->output();
-			// FB::log($this->files->active_file, '$this->files->active_file');
+	<form method="post" id="StormForm" action="<?php esc_attr_e($_SERVER['REQUEST_URI']) ?>" enctype="multipart/form-data" name="post">
+		<?php 
+			wp_nonce_field( 'StormStyles-update-options' );
+			settings_fields('StormStyles');
+			do_settings_sections('StormStyles_Settings');
 		?>
-
+		
+		<p class="submit">
+			<input class="storm-submit button-primary" type="submit" value="<?php _e('Save Changes'); ?>" />
+			
+			<img class="waiting" src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" alt="" /> 
+			<span class="response"> </span>
+		</p>
+		
 		<input type="hidden" name="action" class="action" value="pdstyles-update-options" />
 
 	</form>

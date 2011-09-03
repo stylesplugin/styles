@@ -4,10 +4,10 @@
  * Format and iterate variable groups
  * 
  * @since 0.1
- * @package pd-styles
+ * @package StormStyles
  * @author pdclark
  **/
-class PDStyles_Extension_Group extends Scaffold_Extension_Observer {
+class StormStyles_Extension_Group extends Scaffold_Extension_Observer {
 	
 	/**
 	 * Form element ID and Name
@@ -48,20 +48,28 @@ class PDStyles_Extension_Group extends Scaffold_Extension_Observer {
 		$this->label = ( empty( $args['label'] ) ) ? $args['key'] : $args['label'];
 		$this->form_name = "{$args['form_name']}[$this->key]";
 		
+		if ( function_exists('add_settings_section')  ) {
+			add_settings_section(
+	            $this->key, // Unique ID 
+	            $this->label, // Label
+	            null, //array('DemoPlugin', 'Overview'), // Description callback
+	            'StormStyles_Settings' // Page
+			);
+		}
+		
 		unset( $args['label'], $args['key'] );
 		
 		$this->create_objects( $args );
 	}
 	
 	function create_objects( $variables ) {
-		global $PDStylesController;
-		$controller = & $PDStylesController;
+		global $StormStylesController;
 		
 		// Instantiate Objects
 		foreach ( $variables as $key => $args ) {
 
 			if ( is_array($args) ) {
-				foreach ( $controller->extensions as $ext ){
+				foreach ( $StormStylesController->extensions as $ext ){
 
 					if ( is_a( $ext, $args['class'] ) ) {
 						$ext_class = get_class($ext);
@@ -83,31 +91,6 @@ class PDStyles_Extension_Group extends Scaffold_Extension_Observer {
 			}
 		}
 
-	}
-	
-	function output( ) {
-		$id = 'pds_'.md5($this->form_name).$this->key;
-		?>
-		<div id="<?php echo $id; ?>">
-			<?php if ( $this->label !== 'default') : ?>
-				<h3><?php echo $this->label; ?></h3>
-			<?php endif; ?>
-			<table class="form-table">
-			<?php 
-			foreach ( $this->variables as $variable ) {
-				$variable->output();
-			}
-			?>
-			</table>
-			
-			<p class="submit">
-				<input class="pds-submit button-primary" type="submit" value="<?php _e('Save Changes'); ?>" />
-				
-				<img class="waiting" src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" alt="" /> 
-				<span class="response"> </span>
-			</p>
-		</div>
-		<?php
 	}
 	
 	/**

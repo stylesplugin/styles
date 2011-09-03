@@ -1,4 +1,4 @@
-.pd-styles {
+.StormStyles {
 	.gradpicker {width: 300px;position:relative;}
 	.stop-markers, .grad-preview, .stop-markers .ui-slider {width: 100%;}
 	.stop-markers { position:relative;;margin-top:5px;height: 20px; background: #efefef;}
@@ -57,7 +57,7 @@
 	}
 	
 	.value-toggle {
-		background: transparent url(/wp-content/plugins/styles/extensions/Font/font-sprites.png) no-repeat 6px 6px;
+		background: transparent url(/wp-content/plugins/styles/css/font-sprites.png) no-repeat 6px 6px;
 		width: 9px;
 		height: 12px;
 		padding: 6px;
