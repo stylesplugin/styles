@@ -150,20 +150,14 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	public function wp_background($value, $scaffold, $meta) {
 		$id = $this->create_id($meta, $id);
 		$key = md5($id);
-		
+
 		extract( $this->extract($value, $id) );
 
-		if ( ($match = $this->find_linear_gradient( $value ))  ) {
-			$class = 'StormStyles_Extension_Gradient';
-		}else if ( ($match = $this->find_background_url( $value ) ) ) {
-			$class = 'StormStyles_Extension_Image';
-		}else {
-			return "/* Error: Could not detect image or gradient: $value */";
-		}
-		
 		if ( $stops = $this->find_linear_gradient($value) ) { $form_value = $stops; 
 		}else if ( $furl = $this->find_background_url($value)  ) { $form_value = $furl;
 		}else { $form_value = $value; }
+
+		$class = 'StormStyles_Extension_Background';
 
 		// Populate found array for WP UI generation
 		$this->found[$group][$key] = array(
@@ -174,35 +168,59 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 			'key'   => $key,
 			'class' => $class,
 		);
-		
-		// Extract values saved from WP form
-		@extract( $this->vals[$group][$key] );
 
-		if ( $url ) { 
-			$value = str_replace($match, $url, $value);
-			
-		}else if ( $stops ) {
-			$value = "linear-gradient( $stops )";
-		}
+		// Extract values saved from WP form -- $active, $css, $image, $color, $stops
+		@extract( $this->vals[$group][$key] ); 
 		
+		if ( $active && $css ) {
+			
+			switch( $active ) {
+				case 'image':
+					if ( $match = $this->find_background_url( $value ) ) {
+						// Declaration was originally an image. Just replace URL.
+						$value = str_replace($match, $image, $value);
+					}else {
+						// Run image replace
+						$value = "replace-url($image)";
+					}
+					break;
+				case 'gradient':
+					$value = "linear-gradient( $css )";
+					break;
+				case 'color':
+					$value = "$css url()";
+					break;
+				case 'transparent':
+					$value = 'transparent url()';
+					break;
+
+			}
+			
+		}
+	
+		// Remove Group & Label
 		$prop = $meta['property'];
 		if ( false !== strpos( $prop, $this->meta_gliph ) ) {
 			$prop = substr($meta['property'], 0, strrpos($meta['property'], $this->meta_gliph));
 		}
 		
+		// Remove -wp- prefix
 		$meta['property'] = str_replace('-wp-background', 'background', $prop).';';
-
 		return $this->background($value, $scaffold, $meta);
 	}
 	
 	public function background($value, $scaffold, $meta) {
 		extract( $this->extract($value) );
-
+		
 		if ( ($match = $this->find_linear_gradient( $value ))  ) {
 			return $this->linear_gradient($match);
 		}
 		if ( $this->is_image_replace( $value ) ) {
 			return $this->image_replace($value);
+		}
+		
+		if ( $value[0] == '#' || $value == 'transparent url()' ) { // Background color
+			return "background: $value;";
 		}
 		
 		if ( ( $url = $this->find_background_url($value) ) && ($original = $this->find_background_url($meta['property']) ) ) {
@@ -265,7 +283,9 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	 * @return string
 	 */
 	public function image_replace($value) {
-
+		
+		$value = str_replace( 'http://'.$_SERVER['HTTP_HOST'], '', $value);
+		
 		if( ($url = $this->find_background_url($value) ) && ($file = $this->source->find($url)) ) {
 
 			// Get the size of the image file

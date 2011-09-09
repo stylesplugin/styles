@@ -185,11 +185,11 @@ class StormStyles extends Scaffold_Extension_Observable {
 	 * @return void
 	 **/
 	function register_scripts() {
-		
 		wp_register_script('storm-colorpicker' , $this->plugin_url().'/js/colorpicker/js/colorpicker.js',array('jquery'), $this->version, true);
 		wp_register_script('storm-jq-ui-slider', $this->plugin_url().'/js/jquery.ui.slider.min.js'          ,array('jquery', 'jquery-ui-core' ), $this->version, true);
+		wp_register_script('storm-gradient-picker', $this->plugin_url().'/js/jq.gradientpicker.js'          ,array('storm-jq-ui-slider', 'storm-colorpicker' ), $this->version, true);
 		wp_register_script('jqcookie'          , $this->plugin_url().'/js/jquery.cookie.js'             ,array('jquery'), $this->version, true);
-		wp_register_script('storm-admin-main'  , $this->plugin_url().'/js/admin-main.js'                ,array('jqcookie', 'storm-jq-ui-slider', 'storm-colorpicker', 'thickbox', 'media-upload' ), $this->version, true);
+		wp_register_script('storm-admin-main'  , $this->plugin_url().'/js/admin-main.js'                ,array('jqcookie', 'storm-gradient-picker', 'storm-jq-ui-slider', 'storm-colorpicker', 'thickbox', 'media-upload' ), $this->version, true);
 		
 	}
 	
@@ -237,7 +237,7 @@ class StormStyles extends Scaffold_Extension_Observable {
 	 * @since 0.1
 	 */
 	function plugin_url() {
-		$plugin_url = plugins_url ( plugin_basename ( dirname ( __FILE__ ) ) );
+		$plugin_url = plugins_url ( basename( dirname( __FILE__) ) );
 		return $plugin_url;
 	}
 	

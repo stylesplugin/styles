@@ -76,6 +76,10 @@ class StormStylesAdmin extends StormStyles {
 	function admin_js() {
 		
 		wp_enqueue_script('storm-admin-main');
+		
+		wp_localize_script ( 'storm-admin-main' , 'storm_admin' , array(
+			'mediaUploadURL'	 => admin_url('media-upload.php') ,
+		) );
 
 		/*
 		// See http://www.prelovac.com/vladimir/best-practice-for-adding-javascript-code-to-wordpress-plugin
