@@ -69,9 +69,9 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 		$properties->register('-wp-background',array($this,'wp_background'));
 		$properties->register('-wp-background-color',array($this,'wp_background_color'));
 		$properties->register('-wp-font',array($this,'wp_font'));
-		// $properties->register('border-radius',array($this,'border_radius'));
-		// $properties->register('box-shadow',array($this,'box_shadow'));
-		// $properties->register('opacity',array($this,'opacity'));
+		$properties->register('border-radius',array($this,'border_radius'));
+		$properties->register('box-shadow',array($this,'box_shadow'));
+		$properties->register('opacity',array($this,'opacity'));
 		// $properties->register('text_shadow',array($this,'text_shadow'));
 		// $properties->register('transition',array($this,'transition'));
 	}
@@ -393,6 +393,64 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 		}
 		
 		return $output;
+	}
+	
+	/**
+	 * Expands border-radius property
+	 *
+	 * Adds -moz- and -webkit- variants of border-radius.
+	 * Uses ie-css3.htc for IE support.
+	 *   (http://www.fetchak.com/ie-css3/)
+	 *
+	 * @access public
+	 * @param $url
+	 * @return string
+	 */
+	public function border_radius($value, $scaffold, $meta) {
+		return "-moz-border-radius:{$value};"
+			. "-webkit-border-radius:{$value};"
+			. "-khtml-border-radius:{$value};"
+			. "border-radius:{$value};"
+			. "behavior: url($this->PIE);";
+	}
+
+	/**
+	 * Expands box-shadow property
+	 *
+	 * @access public
+	 * @param $url
+	 * @return string
+	 */
+	public function box_shadow($value) {
+		 return "-moz-box-shadow:{$value};"
+				. "-webkit-box-shadow:{$value};"
+				. "box-shadow:{$value};"
+				. "behavior: url($this->PIE);";
+	}
+
+	/**
+	 * Enables opacity in IE
+	 *
+	 * Uses a fliter to set opacity in IE.
+	 *
+	 * @access public
+	 * @param $url
+	 * @return string
+	 */
+	public function opacity($value) {
+		$regexp = '/\d?\.\d+/';
+		if (preg_match($regexp,$value,$match)) {
+			$opacity = $match[0];
+			$ms_opacity = round(100*$opacity);
+			$msie = '-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity='.$ms_opacity.')";'
+						."filter: alpha(opacity=$ms_opacity);";
+		}
+		$css = $msie
+			."-khtml-opacity: $value;"
+			."-moz-opacity: $value;"
+			."opacity: $value;";
+		
+		return $css;
 	}
 	
 	private function create_id($meta) {
