@@ -137,7 +137,7 @@ function send_to_editor(h) {
 
 function pds_preview_change() {
 	var $ = jQuery;
-	
+
 	// Display waiting graphic
 	var waiting = $('#StormForm img.waiting').show();
 	window.response_wrapper = $('#StormForm span.response').html('');
@@ -254,6 +254,8 @@ function pds_background_type() {
 			$stops = $element.find('div.data input[name$="[stops]"]'),
 			$color = $element.find('div.data input[name$="[color]"]');
 			
+		var timeoutID;
+			
 
 		// the "constructor" method that gets called when the object is created
 		plugin.init = function() {
@@ -265,7 +267,7 @@ function pds_background_type() {
 			
 			$color.add( $stops ).add( $image ).change( update_css );
 			$image.change( update_image_preview );
-
+			
 		}
 		
 		//
@@ -278,7 +280,7 @@ function pds_background_type() {
 		// private methods
 		//
 		var update_css = function () {
-			$css.val( $(this).val() );
+			$css.val( $(this).val() ).change();
 		}
 		
 		var type_click = function() {
@@ -311,7 +313,7 @@ function pds_background_type() {
 		}
 		
 		var load_transparent = function() {
-			$css.val('transparent');
+			$css.val('transparent').change();
 		}
 		
 		var load_gradient = function() {
@@ -319,7 +321,7 @@ function pds_background_type() {
 				$stops: $stops
 			});
 			
-			$css.val( $stops.val() );
+			$css.val( $stops.val() ).change();
 			
 			$ui.append( gradientPicker );
 		}
@@ -328,7 +330,7 @@ function pds_background_type() {
 			var imagePicker = $('<input type="button" class="button" value="Select Image" />').click( show_image_uploader );
 			var imagePreview = $('<img class="imagePreview" />').attr('src', $image.val() );
 			
-			$css.val( $image.val() );
+			$css.val( $image.val() ).change();
 			
 			$ui.append( imagePicker ).append( imagePreview );
 		}
@@ -340,7 +342,7 @@ function pds_background_type() {
 		var load_color = function() {
 			
 			$color.data('color',  $color.val().replace('#', '') );
-			$css.val( $color.val() );
+			$css.val( $color.val() ).change();
 			
 			var colorPicker = $('<div class="colorPicker" />').ColorPicker( {
 				onSubmit: function(hsb, hex, rgb, el) {
@@ -379,6 +381,12 @@ function pds_background_type() {
 			});
 			
 			$css.val( $color.val() );
+			
+			clearTimeout(timeoutID);
+			
+			timeoutID = setTimeout( function(){
+				$css.change();
+			}, 500);
 		}
 
 		var show_image_uploader = function() {
