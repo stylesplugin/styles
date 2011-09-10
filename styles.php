@@ -167,6 +167,9 @@ class StormStyles extends Scaffold_Extension_Observable {
 		add_action('parse_request', array( &$this, 'parse_request') );
 		add_filter('query_vars', array( &$this, 'query_vars') );
 		
+		// If we loaded CSS through @import, tell WordPress to dequeue
+		add_action( 'wp_print_styles', array( &$this , 'dequeue_at_imports' ), 0);
+		
 		// search for and process enqueued SCSS files
 		add_action( 'wp_print_styles', array( &$this , 'build' ), 9999);
 		add_action( 'admin_print_styles', array( &$this , 'build' ), 0);
@@ -554,6 +557,27 @@ class StormStyles extends Scaffold_Extension_Observable {
 	 **/
 	function build() {
 		$this->load_files();
+	}
+	
+	function dequeue_at_imports() {
+		global $wp_styles;
+		
+		$options = get_option( 'StormStyles' );
+		$loaded = $options['loaded_imports'];
+		
+		foreach( $wp_styles->queue as $handle ) {
+			$src = $wp_styles->registered[$handle]->src;
+			
+			$src_rel = str_replace( $wp_styles->content_url, '', $src );
+			
+			foreach ( $loaded as $abspath ) {
+				if ( false !== strpos( $abspath, $src_rel ) ) {
+					// This file was loaded via @import. Dequeue it.
+					wp_dequeue_style( $handle );
+				}
+			}
+		}
+		
 	}
 	
 	
