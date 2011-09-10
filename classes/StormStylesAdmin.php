@@ -392,6 +392,12 @@ class StormStylesAdmin extends StormStyles {
 	function update( $input ) {
 		if ( !is_object($this->variables) ) $this->build();
 		
+		// Save @import paths
+		$input['loaded_imports'] = $this->files->active_file->scaffold->extensions['Import']->loaded;
+		foreach( $input['loaded_imports'] as &$path ) {
+			$path = realpath($path);
+		}
+		
 		// Make sure there are no empty values, seems users like to clear out options before saving
 		foreach ( $this->defaults() as $key => $value ) {
 			if ( 
