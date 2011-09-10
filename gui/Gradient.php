@@ -30,7 +30,7 @@ class StormStyles_Extension_Gradient extends StormStyles_Extension_Observer {
 	
 	function output() {
 		?>
-		<div class="gradpicker">
+		<div class="gradPicker">
 			<label>Stops: <input class="pds_text_input stops" type="text" name="<?php echo $this->form_name ?>[stops]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'stops'); ?>" size="32" /></label>
 		</div>
 		<?php

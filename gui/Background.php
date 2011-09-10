@@ -10,71 +10,19 @@
 class StormStyles_Extension_Background extends StormStyles_Extension_Observer {
 	
 	/**
-	 * Container for color object
-	 * 
-	 * @since 0.1.4
-	 * @var StormStyles_Extension_Color
-	 **/
-	var $Color;
-	
-	/**
-	 * Container for image object
-	 * 
-	 * @since 0.1.4
-	 * @var StormStyles_Extension_Image
-	 **/
-	var $Image;
-	
-	/**
-	 * Container for gradient object
-	 * 
-	 * @since 0.1.3
-	 * @var StormStyles_Extension_Gradient
-	 **/
-	var $Gradient;
-	
-	function __construct( $args = array(), Scaffold_Extension_Observable $observable = null ) {
-		parent::__construct( $args, $observable );
-
-		if ( class_exists('StormStyles_Extension_Color') ) $this->Color = new StormStyles_Extension_Color( $args, $observable );
-		if ( class_exists('StormStyles_Extension_Image') )  $this->Image = new StormStyles_Extension_Image( $args, $observable );
-		if ( class_exists('StormStyles_Extension_Gradient') )  $this->Gradient = new StormStyles_Extension_Gradient( $args, $observable );
-	}
-	
-	/**
-	 * Output in CSS for method css_*
-	 * 
-	 * @since 0.1.4
-	 * @return string
-	 **/
-	function css_background() {
-		@extract($this->values);
-		
-		$out = '';
-		
-		if ( $enable_Color ) $out .= $this->Color->css_background_color();
-		if ( $enable_Image ) $out .= $this->Image->css_background_image();
-		if ( $enable_Gradient ) $out .= $this->Gradient->css_background_gradient();
-		
-		return $out;
-	}
-	
-	/**
 	 * Set variable with correct formatting
 	 * 
 	 * @since 0.1.4
 	 * @return string
 	 **/
 	function set( $variable, $values, $context = null ) {
-		if ( !empty( $values['url'] )) { $this->Image->set( $variable, $values, $context ); }
-		if ( !empty( $values['color'] )) { $this->Color->set( $variable, $values, $context ); }
-		if ( !empty( $values['from'] )) { $this->Gradient->set( $variable, $values, $context ); }
 		
-		$this->values = @array_merge( $this->values, $this->Image->values, $this->Color->values, $this->Gradient->values );
+		$this->values['active'] = $values['active'];
+		$this->values['css']    = $values['css'];
+		$this->values['image']  = $values['image'];
+		$this->values['color']  = $values['color'];
+		$this->values['stops']  = $values['stops'];
 		
-		$this->values['enable_Color'] = $values['enable_Color'];
-		$this->values['enable_Image'] = $values['enable_Image'];
-		$this->values['enable_Gradient'] = $values['enable_Gradient'];
 	}
 	
 	/**
@@ -85,17 +33,17 @@ class StormStyles_Extension_Background extends StormStyles_Extension_Observer {
 	 **/
 	function form_value( $key ) {
 		switch( $key ) {
-			case 'color':
-				return $this->Color->form_value( $key );
-				break;
 			case 'url':
-				return $this->Image->form_value( $key );
-				break;
-			case 'from':
-			case 'to':
-			case 'direction':
-			case 'size':
-				return $this->Gradient->form_value( $key );
+				
+				$uploads = wp_upload_dir();
+
+				// Get real uploads path, including multisite blogs.dir
+				if( defined('UPLOADS') ) { $values['url'] = str_replace( $uploads['baseurl'].'/', '/'.UPLOADS, $values['url']); }
+				// Convert URL to path
+				$values['url'] = str_replace( site_url(), '', $values['url']);
+
+				$this->values['url'] = $values['url'];
+				
 				break;
 			default:
 				return $this->values[ $key ];
@@ -104,22 +52,26 @@ class StormStyles_Extension_Background extends StormStyles_Extension_Observer {
 		
 	}
 	
-	function output() {	
-		$types = array( 'Image', 'Gradient', 'Color', );
+	function output() {		
 		?>
-			
-			<div class="types">
-				<?php foreach ( $types as $type ) : ?>
-					<label><input type="checkbox" name="<?php echo $this->form_name ?>[enable_<?php echo $type ?>]" value="<?php echo $type ?>" <?php if ( $type == $this->value('form', 'enable_'.$type ) ) echo 'checked="checked"' ?> > <?php echo $type ?> </label>
-				<?php endforeach; ?>
-			</div>
-			
-			<?php foreach ( $types as $type ) : ?>
-				<div class="pds_<?php echo $type; ?> <?php if ( $type !== $this->value('form', 'enable_'.$type ) ) echo 'hidden' ?>">
-					<?php $this->$type->output_inner() ?>
+			<div class="bgPicker">
+				<div class="types">
+					<a href="#" data-type="image">Image</a>
+					<a href="#" data-type="gradient">Gradient</a>
+					<a href="#" data-type="color">Color</a>
+					<a href="#" data-type="transparent">Transparent</a>
 				</div>
-			<?php endforeach; ?>
-
+			
+				<div class="data">
+					<label>Active <input type="text" name="<?php echo $this->form_name ?>[active]" value="<?php echo $this->value('form', 'active'); ?>" /></label>
+					<label>CSS <input type="text" name="<?php echo $this->form_name ?>[css]" value="<?php echo $this->value('form', 'css'); ?>" /></label>
+					<label>Image <input type="text" name="<?php echo $this->form_name ?>[image]" value="<?php echo $this->value('form', 'image');?>" id="<?php echo $this->form_id.'_image' ?>" /></label>
+					<label>Stops <input type="text" name="<?php echo $this->form_name ?>[stops]" value="<?php echo $this->value('form', 'stops'); ?>" /></label>
+					<label>Color <input type="text" name="<?php echo $this->form_name ?>[color]" value="<?php echo $this->value('form', 'color'); ?>" /></label>
+				</div>
+				
+				<div class="ui"></div>
+			</div>
 		<?php		
 	}
 	

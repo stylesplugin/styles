@@ -9,10 +9,6 @@
  **/
 class StormStyles_Extension_Image extends StormStyles_Extension_Observer {
 	
-	function __construct( $args = array(), Scaffold_Extension_Observable $observable = null ) {
-		parent::__construct( $args, $observable );
-	}
-	
 	/**
 	 * Set variable with correct formatting
 	 * 

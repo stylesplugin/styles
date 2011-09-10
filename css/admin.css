@@ -1,5 +1,5 @@
 .StormStyles {
-	.gradpicker {width: 300px;position:relative;}
+	.gradPicker {width: 300px;position:relative;}
 	.stop-markers, .grad-preview, .stop-markers .ui-slider {width: 100%;}
 	.stop-markers { position:relative;;margin-top:5px;height: 20px; background: #efefef;}
 	.stop-markers .ui-slider {position:absolute;top:0;left:0;height: 0px;border:none;background-image:url();}
@@ -26,6 +26,41 @@
 			line-height: 1;
 			padding: 2px;
 		}
+	}
+	
+	.imagePreview {
+		max-height: 80px;
+		display:block;
+		margin: 10px;
+	}
+	
+	.bgPicker {
+		.data {
+			display:none;
+		}
+		.types {
+			a {
+				background: url(/wp-content/plugins/styles/css/bg-sprites.png) no-repeat 3px 4px;
+				text-indent: -9999px;
+				overflow:hidden;
+				display:inline-block;
+				width: 16px;
+				height: 12px;
+				padding: 3px;
+				-moz-border-radius: 3px;
+				-khtml-border-radius: 3px;
+				-webkit-border-radius: 3px;
+				border-radius: 3px;
+				
+				&.active, &:hover {
+					background-color: #C1E7FF;
+				}
+			}
+			a[data-type="gradient"]     { background-position: -47px 4px; }
+			a[data-type="color"]        { background-position: -97px 4px; }
+			a[data-type="transparent"] { background-position: -147px 4px; }
+		}
+		
 	}
 	
 	img.waiting {
@@ -127,6 +162,20 @@
 	.pds_slider_ui {
 		width: 200px;
 		display:none;
+	}
+	
+	/* Background Module */
+	
+	.data {
+		label {
+			display:block;
+		}
+	}
+	.colorPicker {
+		width: 20px;
+		height: 20px;
+		border: 4px solid #ccc;
+		border-radius: 4px;
 	}
 	
 	/* Yoast */
