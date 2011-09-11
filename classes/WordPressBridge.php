@@ -379,7 +379,7 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 		}
 		$group = trim( $group );
 
-		if ( empty( $group ) ) { $group = 'default'; }
+		if ( empty( $group ) ) { $group = 'General'; }
 		if ( empty( $label ) ) { $label = $id; }
 		
 		$output = array(
