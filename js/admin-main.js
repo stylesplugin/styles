@@ -307,9 +307,14 @@ function pds_background_type() {
 				case 'transparent': load_transparent(); break;
 				case 'gradient':    load_gradient();    break;
 				case 'image':       load_image();       break;
+				case 'hide':        load_hide();       break;
 			}
 			
 			$active.val( type );
+		}
+		
+		var load_hide = function() {
+			$css.val('hide').change();
 		}
 		
 		var load_transparent = function() {

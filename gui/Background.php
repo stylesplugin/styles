@@ -56,10 +56,11 @@ class StormStyles_Extension_Background extends StormStyles_Extension_Observer {
 		?>
 			<div class="bgPicker">
 				<div class="types">
-					<a href="#" data-type="image">Image</a>
-					<a href="#" data-type="gradient">Gradient</a>
-					<a href="#" data-type="color">Color</a>
-					<a href="#" data-type="transparent">Transparent</a>
+					<a title="Image" href="#" data-type="image">Image</a>
+					<a title="Gradient" href="#" data-type="gradient">Gradient</a>
+					<a title="Color" href="#" data-type="color">Color</a>
+					<a title="Transparent" href="#" data-type="transparent">Transparent</a>
+					<a title="Hide" href="#" data-type="hide">Hide</a>
 				</div>
 			
 				<div class="data">
