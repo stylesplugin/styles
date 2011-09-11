@@ -59,6 +59,7 @@
 			a[data-type="gradient"]     { background-position: -47px 4px; }
 			a[data-type="color"]        { background-position: -97px 4px; }
 			a[data-type="transparent"] { background-position: -147px 4px; }
+			a[data-type="hide"] { background-position: -197px 4px; }
 		}
 		
 	}

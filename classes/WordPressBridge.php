@@ -193,6 +193,9 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 				case 'transparent':
 					$value = 'transparent url()';
 					break;
+				case 'hide':
+					return 'display:none;';
+					break;
 
 			}
 			
