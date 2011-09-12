@@ -69,6 +69,7 @@ class StormStyles_Extension_Font extends StormStyles_Extension_Observer {
 		}
 		
 		$this->values['font_size'] = preg_replace('/[^0-9\.]/', '', $input['font_size'] ); // Numbers only
+		$this->values['color'] = $input['color'];
 		
 		if ( array_key_exists( $input['font_family'], $this->families ) ) {
 			$this->values['font_family'] = $input['font_family'];
@@ -94,6 +95,9 @@ class StormStyles_Extension_Font extends StormStyles_Extension_Observer {
 	function output() {
 		$font_family = $this->value('form', 'font_family');
 		?>
+			<input class="pds_color_input" type="text" name="<?php echo $this->form_name ?>[color]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'color'); ?>" size="8" maxlength="8" />
+			
+		
 			<input name="<?php echo $this->form_name ?>[font_size]" class="pds_font_input" type="text" id="<?php echo $this->form_id ?>_font_size" value="<?php echo $this->value('form', 'font_size'); ?>" size="2" maxlength="4" />px
 			
 			<select name="<?php echo $this->form_name ?>[font_family]" class="pds_font_select">
