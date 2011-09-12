@@ -382,7 +382,7 @@ function storm_font_toggle(){
 			blogicons = {
 				uploadid: $image.attr('id')
 			}
-			tb_show('', storm_admin.mediaUploadURL+'?type=image&amp;TB_iframe=true');
+			tb_show('', storm_admin.mediaUploadURL+'?type=image&amp;tab=library&amp;TB_iframe=true');
 		}
 
 		plugin.init();
