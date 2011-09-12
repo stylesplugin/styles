@@ -1,7 +1,11 @@
 .StormStyles {
 	.gradPicker {width: 300px;position:relative;}
 	.stop-markers, .grad-preview, .stop-markers .ui-slider {width: 100%;}
-	.stop-markers { position:relative;;margin-top:5px;height: 20px; background: #efefef;}
+	.stop-markers { position:relative;;margin-top:5px;height: 20px; background: #efefef;
+	cursor:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAWCAYAAADAQbwGAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJ1JREFUeNq8VAEKwCAITOn%2FX3ZzTBCxUicTBsvsOO9EIKJhAwCe5H0H4xBvLQgOegV8yZ8AZwJHc8zKI4c53bk6IGNqMH3GCJuMlkeG4p4G1e5Lq1KXatmCM7AdrbLLq7FC0agycx7oXOmk8%2FY%2FPNjRR7s6ZFHFqY5AcasLFDPtpAC7WH7aNkxgO9gdLNv3oWdKiKXX7r8bu6rlJcAA9ZRfMt5oHoIAAAAASUVORK5CYII%3D') 5 0,pointer;
+	}
+	.macos .stop-markers { cursor:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAARCAYAAADdRIy%2BAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAelJREFUeNqMVDuPAVEYvbNEtYlniMRGiKg2NAoS2caj8Af8AL0foVdJVAqNBA2VxFYahQrR2ERCsokQCrG7xGu%2F%2Fe63TBgzEyc5zsx9nHvvd%2BZ6AgAmpdFoBMb4430f5xWcyI%2Bz%2FkM6OB6PwwVKplcwIX%2FOStAyCfr9PnsAfEdPyBfkF%2FIV%2BYn8vTPUaDSPGL4jn%2FlwpAVZRZ6Q33LHuTmyVqsldTqdEIvFzs20QxfyDTk7q4vapYY%2Bn080DAaD0Gw26TkQCIiLhMNhUKohmUQiETEAQRBo4ul0glwuJ5qn02nSUChEajabQTZlvhpHt9slU7fbDY9A8Qvw%2B%2F0wHo%2BlAwmdToe01WrB8XiEdrtN75PJRNmwWCyC1%2BuF9XpNg3e7HelyuQSTyUTtHo%2BH2iwWC%2BlgMFA25D%2BVSgUSicTNkWazGdXpcDjQ5Ol0Cna7nfqy2ay6IafNZqM6XrBYLOASkMPhgNVqBQaDQSxLrVZTNyyVSqDX66HX64mm%2BXyeNJVKkWYyGeAlUr3n1y%2FVahWsVisMh0PVdOv1uqKhILnsFFK5XGaFQoHpdDo2n8%2FZfr9no9GIYSgsGo3yiYLipZRbhdeTd8mRB6i0O9kdcjQaDdhut2yz2TC8y0RMnGFQLJlMCmr%2FGn8CDADjZb9gHU6eaQAAAABJRU5ErkJggg%3D%3D') 5 0,pointer;}
+	
 	.stop-markers .ui-slider {position:absolute;top:0;left:0;height: 0px;border:none;background-image:url();}
 	.stop-markers .ui-slider a {background-image:url();}
 	.grad-preview {height: 30px;display:block;border: 1px solid black;}

@@ -2,8 +2,8 @@
 // @author pdclark
 (function($) {
 
-    // here we go!
-    $.gradientPicker = function(element, options) {
+	// here we go!
+	$.gradientPicker = function(element, options) {
 
 		// to avoid confusion, use "plugin" to reference the current instance of the object
 		var plugin = this;
@@ -16,7 +16,7 @@
 		plugin.settings = {}
 
 		var $element = $(element),  // reference to the jQuery version of DOM element the plugin is attached to
-		    element = element;        // reference to the actual DOM element
+			element = element;		// reference to the actual DOM element
 		
 		var $markerWrap, $preview, $stops;
 		
@@ -52,14 +52,6 @@
 			}
 		};
 		
-		var sliderOpts = {
-			min: 0,
-			max: 100,
-			value: 0,
-			stop: function(){ stopsArrayToInput(); },
-			slide: function (){ stopsMarkersToArray(); }
-		};
-		
 		// plugin's default options
 		// this is private property and is  accessible only from inside the plugin
 		var defaults = {
@@ -74,7 +66,7 @@
 
 		}
 
-        // Constructor
+		// Constructor
 		plugin.init = function() {
 			// the plugin's final properties are the merged default and user-provided options (if any)
 			plugin.settings = $.extend({}, defaults, options);
@@ -91,16 +83,30 @@
 			stopsMarkersToArray();
 			
 			initComplete = true;
-        }
+		}
 
 		//
 		// public methods
 		//
-        // these methods can be called like:
-        // plugin.methodName(arg1, arg2, ... argn) from inside the plugin or
-        // element.data('gradientPicker').publicMethod(arg1, arg2, ... argn) from outside the plugin, where "element"
-        // is the element the plugin is attached to;
+		// these methods can be called like:
+		// plugin.methodName(arg1, arg2, ... argn) from inside the plugin or
+		// element.data('gradientPicker').publicMethod(arg1, arg2, ... argn) from outside the plugin, where "element"
+		// is the element the plugin is attached to;
 
+		plugin.updatePreview = function() {
+			var css = 'background:-webkit-linear-gradient(0deg, '+stops+');background:-moz-linear-gradient(0deg, '+stops+');background:-ms-linear-gradient(0deg, '+stops+');background:-o-linear-gradient(0deg, '+stops+');background:linear-gradient(0deg, '+stops+');';
+			
+			$preview.attr('style', css);
+
+			stopsArrayToInput();
+		}
+		
+		//
+		// Private Methods
+		//
+		
+		// --- Data passing
+		
 		var stopsInputToArray = function () {
 			stops.length = 0;
 			
@@ -148,14 +154,6 @@
 			}
 		}
 		
-		plugin.updatePreview = function() {
-			var css = 'background:-webkit-linear-gradient(0deg, '+stops+');background:-moz-linear-gradient(0deg, '+stops+');background:-ms-linear-gradient(0deg, '+stops+');background:-o-linear-gradient(0deg, '+stops+');background:linear-gradient(0deg, '+stops+');';
-			
-			$preview.attr('style', css);
-
-			stopsArrayToInput();
-		}
-		
 		var stopsMarkersToArray = function() {
 			if ( !initComplete ) { return; }
 			
@@ -163,7 +161,7 @@
 			
 			$markerWrap.find('div.marker').each(function(){
 				var hex   = $(this).data('color'),
-				    value = $(this).slider('value');
+					value = $(this).slider('value');
 				
 				stops.push({
 					hex: hex,
@@ -181,13 +179,33 @@
 			plugin.updatePreview();
 		}
 		
-		//
-		// Private Methods
-		//
+		// --- Sliders
 		
 		var markerSlide = function(event, ui) {
-			// console.log( ui.value );
+			var thisY = $(this).offset().top;
+			var mouseY = event.pageY;
+			
+			if ( (mouseY - thisY) > 25 ) { // Mouse has moved more than X pixels below slider
+				if ( ! $(this).data('remove') ) { // Slider not yet flagged 'remove'
+					$(this).data('remove', true); // Flag as 'remove'
+					$(this).css('opacity', '.2');
+				}
+			}else { // Mouse within X pixels of slider
+				if ( $(this).data('remove') ) { // Slider still flagged
+					$(this).data('remove', false); // Unflag it
+					$(this).css('opacity', '1');
+				}
+			}
+			
 			stopsMarkersToArray();
+		}
+		
+		var markerStop = function( event, ui ) {
+			if ( $(this).data('remove') ) {
+				$(this).slider('destroy').remove();
+				stopsMarkersToArray();
+			}
+			stopsArrayToInput();
 		}
 		
 		var setHandleColor = function(el, hex) {
@@ -206,8 +224,15 @@
 			if (   hex === undefined ) { hex = '000000'; }
 			
 			var marker = $('<div class="marker"/>');
-
-			sliderOpts.value = value;
+			
+			var sliderOpts = {
+				min: 0,
+				max: 100,
+				value: value,
+				stop: markerStop,
+				slide: markerSlide
+			};
+			
 			marker.slider( sliderOpts ).unbind( 'click' ).ColorPicker( colorPickerOpts ).click( removeMarker );
 			
 			$markerWrap.append( marker );
@@ -224,55 +249,53 @@
 				return false;
 			}
 		}
+		
+		// --- Utility
 
 		var rgbtohex = function(rgbString) {
 			var parts = rgbString
-			        .match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/)
+					.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/)
 			;
 			// parts now should be ["rgb(0, 70, 255", "0", "70", "255"]
 
 			delete (parts[0]);
 			for (var i = 1; i <= 3; ++i) {
-			    parts[i] = parseInt(parts[i]).toString(16);
-			    if (parts[i].length == 1) parts[i] = '0' + parts[i];
+				parts[i] = parseInt(parts[i]).toString(16);
+				if (parts[i].length == 1) parts[i] = '0' + parts[i];
 			}
 			return '#'+parts.join(''); // "0070ff"
 		}
 
+		// fire up the plugin!
+		// call the "constructor" method
+		plugin.init();
 
-        // a private method. for demonstration purposes only - remove it!
-        // var foo_private_method = function() {}
+	}
 
-        // fire up the plugin!
-        // call the "constructor" method
-        plugin.init();
+	// add the plugin to the jQuery.fn object
+	$.fn.gradientPicker = function(options) {
 
-    }
+		// iterate through the DOM elements we are attaching the plugin to
+		return this.each(function() {
 
-    // add the plugin to the jQuery.fn object
-    $.fn.gradientPicker = function(options) {
+			// if plugin has not already been attached to the element
+			if (undefined == $(this).data('gradientPicker')) {
 
-        // iterate through the DOM elements we are attaching the plugin to
-        return this.each(function() {
+				// create a new instance of the plugin
+				// pass the DOM element and the user-provided options as arguments
+				var plugin = new $.gradientPicker(this, options);
 
-            // if plugin has not already been attached to the element
-            if (undefined == $(this).data('gradientPicker')) {
+				// in the jQuery version of the element
+				// store a reference to the plugin object
+				// you can later access the plugin and its methods and properties like
+				// element.data('gradientPicker').publicMethod(arg1, arg2, ... argn) or
+				// element.data('gradientPicker').settings.propertyName
+				$(this).data('gradientPicker', plugin);
 
-                // create a new instance of the plugin
-                // pass the DOM element and the user-provided options as arguments
-                var plugin = new $.gradientPicker(this, options);
+			}
 
-                // in the jQuery version of the element
-                // store a reference to the plugin object
-                // you can later access the plugin and its methods and properties like
-                // element.data('gradientPicker').publicMethod(arg1, arg2, ... argn) or
-                // element.data('gradientPicker').settings.propertyName
-                $(this).data('gradientPicker', plugin);
+		});
 
-            }
-
-        });
-
-    }
+	}
 
 })(jQuery);
