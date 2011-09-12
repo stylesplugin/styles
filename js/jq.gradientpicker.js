@@ -1,7 +1,5 @@
-// jQuery Plugin Boilerplate
-// A boilerplate for jumpstarting jQuery plugins development
-// version 1.1, May 14th, 2011
-// by Stefan Gabos
+// Gradient Picker plugin
+// @author pdclark
 (function($) {
 
     // here we go!
@@ -96,7 +94,7 @@
         }
 
 		//
-        // public methods
+		// public methods
 		//
         // these methods can be called like:
         // plugin.methodName(arg1, arg2, ... argn) from inside the plugin or
@@ -151,7 +149,10 @@
 		}
 		
 		plugin.updatePreview = function() {
-			$preview.css('background', '-moz-linear-gradient(0deg, '+stops+')');
+			var css = 'background:-webkit-linear-gradient(0deg, '+stops+');background:-moz-linear-gradient(0deg, '+stops+');background:-ms-linear-gradient(0deg, '+stops+');background:-o-linear-gradient(0deg, '+stops+');background:linear-gradient(0deg, '+stops+');';
+			
+			$preview.attr('style', css);
+
 			stopsArrayToInput();
 		}
 		
