@@ -1,0 +1,6 @@
+#media-items tr.post_title,
+#media-items tr.image_alt,
+#media-items tr.post_excerpt,
+#media-items tr.post_content,
+#media-items tr.url,
+#media-items tr.align { display:none; }
