@@ -307,7 +307,7 @@ function storm_font_toggle(){
 					alphaSupport: true
 				}
 				,color: {
-					active: new $.jPicker.Color({ hex: $color.val() })
+					active: new $.jPicker.Color( { ahex: $color.data('ahex') } )
 				}
 				,localization: {
 					text: {
@@ -326,6 +326,7 @@ function storm_font_toggle(){
 				}
 
 				$color.val( rgba );
+				$color.data('ahex', color.val('ahex') );
 				$css.val( rgba );
 			},
 			function(color, context) { /* Cancel button clicked */ }
