@@ -65,7 +65,6 @@ jQuery(function($) {
 				'backgroundColor': '#' + hex,
 				'color': '#' + hex
 			});
-			update_handle_color(el);
 		}
 	})
 	.bind('keyup', function(){
@@ -351,6 +350,14 @@ function pds_background_type() {
 			var colorPicker = $('<div/>').jPicker({
 				images: {
 					clientPath: storm_admin.pluginURL + '/js/jpicker/images/'
+					,colorMap: {
+						width: 128
+						,height: 128
+					}
+					,colorBar: {
+						width: 20
+						,height: 128
+					}
 				}
 				,window: {
 					alphaSupport: true
@@ -358,12 +365,22 @@ function pds_background_type() {
 				,color: {
 					active: new $.jPicker.Color({ hex: $color.val() })
 				}
+				,localization: {
+					text: {
+						newColor: ' '
+						,currentColor: ' '
+					}
+				}
 			},
 			function(color, context) { /* Okay button clicked */ },
 			function(color, context) { /* Live color slide */
-				var alpha = Math.round( color.val('a') / 255 * 100 ) / 100;
-				
-				var rgba = 'rgba('+color.val('r')+','+color.val('g')+','+color.val('b')+','+alpha+')';
+				if ( color.val() == null ) {
+					var rgba = 'transparent';
+				}else {
+					var alpha = Math.round( color.val('a') / 255 * 100 ) / 100;
+					var rgba = 'rgba('+color.val('r')+','+color.val('g')+','+color.val('b')+','+alpha+')';
+				}
+
 				$color.val( rgba );
 				$css.val( rgba );
 			},
