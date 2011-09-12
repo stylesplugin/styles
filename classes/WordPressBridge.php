@@ -30,6 +30,12 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	 **/
 	var $PIE;
 	
+	/**
+	 * Holds queue of active Google Font @imports to be added to CSS head
+	 * 
+	 **/
+	var $google_fonts = array();
+	
 	var $meta_gliph = '~';
 	var $meta_separator = '.';
 	
@@ -85,6 +91,17 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 		$this->source = $source;
 	}
 	
+	/**
+	 * Add Google @import declarations to the beginning of the CSS Source
+	 */
+	public function post_process($source, $scaffold) {
+		foreach ( $this->google_fonts as $family => $src ) {
+			$imports .= "@import url(http://fonts.googleapis.com/css?family=$src);\r";
+		}
+		
+		$source->contents = $imports.$source->contents;
+	}
+	
 	public function wp_font($value, $scaffold, $meta) {
 		$id = $this->create_id($meta, $id);
 		$key = md5($id);
@@ -103,9 +120,15 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 		
 		// Extract values saved from WP form
 		@extract( $this->vals[$group][$key] );
-
+		
 		$opts = new StormStyles_Extension_Font();
-		$font_family = $opts->families[$font_family];
+		
+		if ( array_key_exists( $font_family, $opts->families) ) {
+			$font_family = $opts->families[$font_family];
+		}else if ( array_key_exists( $font_family, $opts->google_families) ) {
+			$this->google_fonts[$font_family] = $opts->google_families[$font_family]; // Add family name to @imports queue
+			$font_family = "\"$font_family\""; // Set CSS
+		}
 		
 		if ($color)          $output .= "color: #$color;";
 		if ($font_size)      $output .= "font-size: {$font_size}px;";
