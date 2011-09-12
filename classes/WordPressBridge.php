@@ -103,20 +103,23 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 		
 		// Extract values saved from WP form
 		@extract( $this->vals[$group][$key] );
-		
+
 		$opts = new StormStyles_Extension_Font();
 		$font_family = $opts->families[$font_family];
-
-		if ( !empty($font_size) && !empty($font_family) ) {
-			
-			if (!empty($line_height)) { $line_height = '/'.$line_height;}
-			
-			$output = "font: $font_style $font_weight {$font_size}px{$line_height} $font_family;";
-			if (!empty($text_transform))	$output .= "text-transform:{$text_transform};";
-			
+		
+		if ($font_size)      $output .= "font-size: {$font_size}px;";
+		if ($font_family)    $output .= "font-family: $font_family;";
+		if ($line_height)    $output .= "line-height: $line_height;";
+		if ($font_style)     $output .= "font-style: $font_style;";
+		if ($font_weight)    $output .= "font-weight: $font_weight;";
+		if ($text_transform) $output .= "text-transform: $text_transform;";
+		
+		if ( $output ) {
 			return $output;
+		}else if ( empty( $value ) ){
+			return '/* No font values set */';
 		}else {
-			return "font: $value";
+			return "font: $value;";
 		}
 
 	}
