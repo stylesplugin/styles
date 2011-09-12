@@ -52,7 +52,11 @@ class StormStyles_Extension_Background extends StormStyles_Extension_Observer {
 		
 	}
 	
-	function output() {		
+	function output() {
+		global $StormStylesController;
+		$wpb = $StormStylesController->files->active_file->scaffold->extensions['WordPressBridge']; // Awkward, but DRY. We need to get some object sharing up in here.
+		
+		$rgba = $wpb->rgba_to_ahex( $this->value('form', 'color') );
 		?>
 			<div class="bgPicker">
 				<div class="types">
@@ -68,7 +72,7 @@ class StormStyles_Extension_Background extends StormStyles_Extension_Observer {
 					<label>CSS <input type="text" name="<?php echo $this->form_name ?>[css]" value="<?php echo $this->value('form', 'css'); ?>" /></label>
 					<label>Image <input type="text" name="<?php echo $this->form_name ?>[image]" value="<?php echo $this->value('form', 'image');?>" id="<?php echo $this->form_id.'_image' ?>" /></label>
 					<label>Stops <input type="text" name="<?php echo $this->form_name ?>[stops]" value="<?php echo $this->value('form', 'stops'); ?>" /></label>
-					<label>Color <input type="text" name="<?php echo $this->form_name ?>[color]" value="<?php echo $this->value('form', 'color'); ?>" /></label>
+					<label>Color <input type="text" name="<?php echo $this->form_name ?>[color]" value="<?php echo $this->value('form', 'color'); ?>" data-ahex="<?php echo $rgba['hexa'] ?>"/></label>
 				</div>
 				
 				<div class="ui"></div>
