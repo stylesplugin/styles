@@ -36,7 +36,7 @@
 	
 	.bgPicker {
 		.data {
-/*			display:none;*/
+			display:none;
 		}
 		.types {
 			a {
@@ -218,6 +218,7 @@ table.jPicker {
 	background: transparent;
 	border: 0px none transparent;
 	padding: 0;
+	width: 290px;
 	input, textarea, select { padding: 0;}
 	.Title {display:none;}
 	.Map {margin-top:22px;}
@@ -228,4 +229,42 @@ table.jPicker {
 	    width: 37px;
 	}
 	.AHex {display:none;}
+	.Button {display:none;}
+	div.Map {
+		width:128px;
+		height: 128px;
+	}
+	div.Bar {
+		width: 20px;
+		height: 128px;
+	}
+	tr.Hue, tr.Saturation, tr.Value {display:none;}
+	.Preview {
+		text-align:left;
+		padding-left: 20px;
+		
+		div {
+			width: 32px;
+			height: 18px;
+			margin:0;
+			span {
+				width: 14px;
+				height: 17px;
+				float: left;
+			}
+		}
+	}
+	td.Radio {
+		width: 14px;
+	}
+	input[type="radio"] {
+		display:none;
+	}
+	input {
+		font-family: Courier, monospace;
+		font-size: 11px;
+	}
+	input.Hex {
+		margin-left: 12px;
+	}
 }
