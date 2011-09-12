@@ -173,7 +173,6 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 		@extract( $this->vals[$group][$key] ); 
 
 		if ( $active && $css ) {
-			
 			switch( $active ) {
 				case 'image':
 				
@@ -189,6 +188,7 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 					break;
 				case 'gradient':
 					$value = "linear-gradient( $css )";
+					$meta['property'] = "linear-gradient( $css )";
 					break;
 				case 'color':
 					$meta['property'] = $value = $this->background_rgba($css);
@@ -217,7 +217,6 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	
 	public function background($value, $scaffold, $meta) {
 		extract( $this->extract($value) );
-		
 		if ( ($match = $this->find_linear_gradient( $value ))  ) {
 			return $this->linear_gradient($match);
 		}
