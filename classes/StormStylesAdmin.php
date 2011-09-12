@@ -54,6 +54,11 @@ class StormStylesAdmin extends StormStyles {
 		// AJAX
 		add_action('wp_ajax_pdstyles-update-options', array( &$this, 'update_ajax') );
 		add_action('wp_ajax_pdstyles-frontend-load', array( &$this, 'ajax_frontend_load') );
+		
+		// Media Popup Styles
+		add_action('admin_print_styles-media-upload-popup', array(&$this, 'admin_css_media_upload'));
+		add_action('admin_print_scripts-media-upload-popup', array(&$this, 'admin_js_media_upload'));
+		
 	}
 	
 	/**
@@ -79,6 +84,7 @@ class StormStylesAdmin extends StormStyles {
 		
 		wp_localize_script ( 'storm-admin-main' , 'storm_admin' , array(
 			'mediaUploadURL'	 => admin_url('media-upload.php') ,
+			'pluginURL'	 => $this->plugin_url() ,
 		) );
 
 		/*
@@ -98,19 +104,35 @@ class StormStylesAdmin extends StormStyles {
 	 * @since 0.1
 	 */
 	function admin_css() {
-		
 		wp_enqueue_style('dashboard');
 		wp_enqueue_style('thickbox');
 		wp_enqueue_style('global');
 		wp_enqueue_style('wp-admin');
 		
-		wp_register_style('storm-colorpicker', $this->plugin_url().'/js/colorpicker/css/colorpicker.css',array( ), $this->version);
+		wp_register_style('storm-colorpicker', $this->plugin_url().'/js/colorpicker/css/colorpicker.css', array(), $this->version);
+		wp_register_style('storm-slider', $this->plugin_url().'/css/ui-lightness/jquery-ui-1.8.6.custom.css', array(), $this->version);
+		wp_register_style('jPicker', $this->plugin_url().'/js/jpicker/css/jPicker-1.1.6.css', array() , $this->version );
 		
-		wp_register_style('storm-slider', $this->plugin_url().'/css/ui-lightness/jquery-ui-1.8.6.custom.css',array( ), $this->version);
-		wp_enqueue_style('storm-slider');
+		wp_enqueue_style ( 'StormStyles-admin' , apply_filters ( 'StormStyles-admin-css' , '/?scaffold&file=css/admin.css' ) , array('jPicker', 'storm-colorpicker', 'storm-slider') , $this->version , 'screen' );
+	}
+	
+	/**
+	 * Enqueue CSS for media upload popup when called from Styles page
+	 * 
+	 * @return void
+	 **/
+	function admin_css_media_upload() {
+		$ref_url = parse_url( $_SERVER['HTTP_REFERER'] );
+		parse_str( $ref_url['query'], $ref_get );
 		
-		wp_enqueue_style ( 'StormStyles-admin' , apply_filters ( 'StormStyles-admin-css' , '/?scaffold&file=css/admin.css' ) , array('storm-colorpicker') , $this->version , 'screen' );
-		// wp_enqueue_style ( 'StormStyles-admin-test' , $this->plugin_dir_path() . 'example/vars.scss' , array() , $this->version , 'screen' );
+		if ( $ref_get['page'] !== 'StormStyles' && !isset( $_GET['StormStyles'] ) ) { return; }
+		
+		wp_enqueue_style ( 'StormStyles-media-upload' , $this->plugin_url().'/css/admin-media-upload.css' , array() , $this->version );
+		
+	}
+	
+	function admin_js_media_upload() {
+		wp_enqueue_script ( 'StormStyles-media-upload' , $this->plugin_url().'/js/admin-media-upload.js' , array('jquery') , $this->version );
 	}
 	
 	/**
