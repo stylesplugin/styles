@@ -1,4 +1,3 @@
-
 jQuery(function($) {
 	$('div.gradPicker', '#StormForm').gradientPicker();
 	$('div.bgPicker', '#StormForm').bgPicker();
@@ -15,7 +14,10 @@ jQuery(function($) {
 			,position: {x: 'right',y:'bottom'}
 		}
 		,localization: {text: {newColor: ' ',currentColor: ' '}}
-	});
+	}
+		,function(){} // On "OK"
+		,function(){ saveStyles(); } // On drag
+	);
 	
 	// Sliders for integer inputs
 	$('input.slider', '#StormForm').each(function() {
@@ -51,67 +53,72 @@ jQuery(function($) {
 	});
 	
 	// Font buttons
-	$('a.value-toggle', '#StormForm').click( storm_font_toggle );
+	$('a.value-toggle', '#StormForm').click( fontToggles );
 	
-	// AJAX Preview Button
-	$('input.storm-submit', '#StormForm').click( storm_save_styles );
-	$('input, select', '#StormForm').change( storm_save_styles );
+	// AJAX Submit & Preview
+	$('input.storm-submit', '#StormForm').click( saveStyles );
+	$('input, select', '#StormForm').change( saveStyles );
 	
-	
-	
-});
-
-function storm_save_styles() {
-	var $ = jQuery;
-
-	// Display waiting graphic
-	var waiting = $('#StormForm img.waiting').show();
-	window.response_wrapper = $('#StormForm span.response').html('');
-	
-	// Get form info
-	var data = $('#StormForm').serialize();
-	
-	if ( ! $(this).hasClass('storm-submit') ) {
-		data = data + '&preview=1';
-	}
-
-	$.post(ajaxurl, data, function( response ) {
-		if ( response.message.indexOf('updated') != -1 ) {
-			$.cookie('pdstyles_preview_update', '1', {path: '/'});
-			$.cookie('pdstyles_preview_id', response.id, {path: '/'});
-			$.cookie('pdstyles_preview_href', response.href, {path: '/'});
+	function saveStyles() {
+		if ( $(this).hasClass('storm-submit') ) {
+			var preview = false;
+		}else {
+			var preview = true;
 		}
 		
-		$(response_wrapper).html( response.message );
-		waiting.hide();
-		
-	}, 'json');
+		clearTimeout( window.stormSaveTimeout );
+		window.stormSaveTimeout = setTimeout( function(){
+			
+			// Display waiting graphic
+			var waiting = $('#StormForm img.waiting').show();
+			window.response_wrapper = $('#StormForm span.response').html('');
 
-	return false;
-}
+			// Get form info
+			var data = $('#StormForm').serialize();
+			if ( preview ) { data = data + '&preview=1'; }
 
-function storm_font_toggle(){
-	var $ = jQuery;
-	var old_val = $(this).next().val();
-	var options =  $(this).data('options');
-	var index = $.inArray( old_val, options );
+			$.post(ajaxurl, data, function( response ) {
+				if ( response.message.indexOf('updated') != -1 ) {
+					$.cookie('pdstyles_preview_update', '1', {path: '/'});
+					$.cookie('pdstyles_preview_id', response.id, {path: '/'});
+					$.cookie('pdstyles_preview_href', response.href, {path: '/'});
+				}
 
-	if ( -1 != index && (index+1) != options.length ) {
-		$(this).next().val( options[ index + 1 ] );
-	}else {
-		$(this).next().val( options[0] );
+				$(response_wrapper).html( response.message );
+				waiting.hide();
+
+			}, 'json');
+
+			return false;
+			
+		}, 500);
+
+		return false;
 	}
 	
-	var new_val = $(this).next().val();
-	var old_class = $(this).data('type') +'-'+ old_val.replace('.', '');
-	var new_class = $(this).data('type') +'-'+ new_val.replace('.', '');
+	function fontToggles(){
+		var old_val = $(this).next().val();
+		var options =  $(this).data('options');
+		var index = $.inArray( old_val, options );
+
+		if ( -1 != index && (index+1) != options.length ) {
+			$(this).next().val( options[ index + 1 ] );
+		}else {
+			$(this).next().val( options[0] );
+		}
+
+		var new_val = $(this).next().val();
+		var old_class = $(this).data('type') +'-'+ old_val.replace('.', '');
+		var new_class = $(this).data('type') +'-'+ new_val.replace('.', '');
+
+		$(this).removeClass( old_class ).addClass( new_class );
+
+		$(this).next().change();
+
+		return false;
+	}
 	
-	$(this).removeClass( old_class ).addClass( new_class );
-	
-	$(this).next().change();
-	
-	return false;
-}
+}); // End DOM Ready
 
 /**
  * Background Picker plugin
@@ -157,9 +164,6 @@ function storm_font_toggle(){
 			$stops = $element.find('div.data input[name$="[stops]"]'),
 			$color = $element.find('div.data input[name$="[color]"]');
 			
-		var timeoutID;
-			
-
 		// the "constructor" method that gets called when the object is created
 		plugin.init = function() {
 			// the plugin's final properties are the merged default and user-provided options (if any)
@@ -327,41 +331,13 @@ function storm_font_toggle(){
 
 				$color.val( rgba );
 				$color.data('ahex', color.val('ahex') );
-				$css.val( rgba );
+				$css.val( rgba ).change();
 			},
 			function(color, context) { /* Cancel button clicked */ }
 			);
 			
 			$ui.append( colorPicker );
 			
-			/*
-			var colorPicker = $('<div class="colorPicker" />').ColorPicker( {
-				onSubmit: function(hsb, hex, rgb, el) {
-					setColor(el, hex);
-					$(el).ColorPickerHide();
-				},
-				onBeforeShow: function () {
-					if ( $color.data('color') ) {
-						$(this).ColorPickerSetColor( $color.data('color') );
-					}
-				},
-				onHide: function (colpkr) {
-					var el = $(colpkr).data('colorpicker').el;
-					var hex = $(colpkr).find('div.colorpicker_hex input').val();
-
-					setColor(el, hex);
-
-					return true;
-				},
-				onChange: function(hsb, hex, rgb) {
-					var el = $(this).data('colorpicker').el;
-
-					setColor(el, hex);
-				}
-			} ).css( 
-				'backgroundColor', $color.val()
-			);
-			*/
 		}
 		
 		var setColor = function(el, hex) {
@@ -372,11 +348,7 @@ function storm_font_toggle(){
 			
 			$css.val( $color.val() );
 			
-			clearTimeout(timeoutID);
-			
-			timeoutID = setTimeout( function(){
-				$css.change();
-			}, 500);
+			$css.change();
 		}
 
 		var show_image_uploader = function() {
