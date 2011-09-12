@@ -1,7 +1,24 @@
 
 jQuery(function($) {
-	// Generic Slider
-	$('input.slider').each(function() {
+	$('div.gradPicker', '#StormForm').gradientPicker();
+	$('div.bgPicker', '#StormForm').bgPicker();
+
+	// Color Picker
+	$('input.pds_color_input', '#StormForm').hide().jPicker({
+		images: {
+			clientPath: storm_admin.pluginURL + '/js/jpicker/images/'
+			,colorMap: {width: 128,height: 128}
+			,colorBar: {width: 20,height: 128}
+		}
+		,window: {
+			effects: { type: 'fade' ,speed: {show:0,hide:0} }
+			,position: {x: 'right',y:'bottom'}
+		}
+		,localization: {text: {newColor: ' ',currentColor: ' '}}
+	});
+	
+	// Sliders for integer inputs
+	$('input.slider', '#StormForm').each(function() {
 		// Show/hide slider on input click
 		$(this).click(function( e ) {
 			
@@ -33,107 +50,18 @@ jQuery(function($) {
 		});
 	});
 	
-	$('div.gradPicker', '#StormForm').gradientPicker();
-	$('div.bgPicker', '#StormForm').bgPicker();
-
-	// Color Picker
-	$('input.pds_color_input').ColorPicker({
-		onSubmit: function(hsb, hex, rgb, el) {
-			$(el).val(hex);
-			$(el).ColorPickerHide();
-		},
-		onBeforeShow: function () {
-			$(this).ColorPickerSetColor(this.value);
-		},
-		onHide: function (colpkr) {
-			var el = $(colpkr).data('colorpicker').el;
-			var hex = $(colpkr).find('div.colorpicker_hex input').val();
-
-			$(el).val(hex).css({
-				'backgroundColor': '#' + hex,
-				'color': '#' + hex
-			});
-			
-			$(el).change();
-			
-			return true;
-		},
-		onChange: function(hsb, hex, rgb) {
-			var el = $(this).data('colorpicker').el;
-
-			$(el).val(hex).css({
-				'backgroundColor': '#' + hex,
-				'color': '#' + hex
-			});
-		}
-	})
-	.bind('keyup', function(){
-		$(this).ColorPickerSetColor(this.value);
-	})
-	.each(function(){
-		$(this).css({
-		'backgroundColor': '#' + $(this).val(),
-		'color': '#' + $(this).val()
-		});
-	});
-	
-	// thickbox settings
-	tb_position = function() {
-		var tbWindow = $('#TB_window');
-		var width = $(window).width();
-		var H = $(window).height();
-		var W = ( 720 < width ) ? 720 : width;
-
-		if ( tbWindow.size() ) {
-			tbWindow.width( W - 50 ).height( H - 45 );
-			$('#TB_iframeContent').width( W - 50 ).height( H - 75 );
-			tbWindow.css({'margin-left': '-' + parseInt((( W - 50 ) / 2),10) + 'px'});
-			if ( typeof document.body.style.maxWidth != 'undefined' )
-				tbWindow.css({'top':'20px','margin-top':'0'});
-			$('#TB_title').css({'background-color':'#222','color':'#cfcfcf'});
-		};
-
-		return $('a.thickbox').each( function() {
-			var href = $(this).attr('href');
-			if ( ! href ) return;
-			href = href.replace(/&width=[0-9]+/g, '');
-			href = href.replace(/&height=[0-9]+/g, '');
-			$(this).attr( 'href', href + '&width=' + ( W - 80 ) + '&height=' + ( H - 85 ) );
-		});
-	};
-
-	$(window).resize( function() { tb_position() } );
-	
+	// Font buttons
+	$('a.value-toggle', '#StormForm').click( storm_font_toggle );
 	
 	// AJAX Preview Button
-	$('input.storm-submit', '#StormForm').click( pds_preview_change );
-	$('input, select', '#StormForm').change( pds_preview_change );
-	$('input.pds_image_input', '#StormForm').change( update_image_thumbnail );
-	$('a.value-toggle', '#StormForm').click( pds_value_toggle );
+	$('input.storm-submit', '#StormForm').click( storm_save_styles );
+	$('input, select', '#StormForm').change( storm_save_styles );
 	
-	$('div.types input', '#StormForm').change( pds_background_type );
+	
+	
 });
 
-
-
-// Images Uploader
-function show_image_uploader(id) {
-	blogicons = {
-		uploadid: id
-	}
-	tb_show('', storm_admin.mediaUploadURL+'?type=image&amp;TB_iframe=true');
-}
-
-// send image url to the options field
-function send_to_editor(h) {
-	// get the image src from the html code in h
-	var re = new RegExp('<img src="([^"]+)"');
-	var m = re.exec(h);
-	jQuery('#'+blogicons.uploadid).val(m[1]).change();
-	tb_remove();
-}
-
-function pds_preview_change() {
+function storm_save_styles() {
 	var $ = jQuery;
 
 	// Display waiting graphic
@@ -162,7 +90,7 @@ function pds_preview_change() {
 	return false;
 }
 
-function pds_value_toggle(){
+function storm_font_toggle(){
 	var $ = jQuery;
 	var old_val = $(this).next().val();
 	var options =  $(this).data('options');
@@ -185,36 +113,13 @@ function pds_value_toggle(){
 	return false;
 }
 
-function update_image_thumbnail( ) {
-	var $ = jQuery;
-	
-	$(this).parent().find('a').attr('href', $(this).val() ).removeClass('hidden');
-	$(this).parent().find('img').attr('src', $(this).val() );
-	
-}
-
-function pds_background_type() {
-	var $ = jQuery;
-	
-	var target = $(this).parent().parent().nextAll('div').filter('div.pds_' + $(this).val() );
-
-	if ( $(this).is(':checked') ) {
-		target.show();
-		
-		// Uncheck Gradient if Image is checked
-		if ( 'Image' == $(this).val() ) $(this).parent().parent().find('input[value="Gradient"]').attr('checked', '').change();
-		// Uncheck Image if Gradient is checked
-		if ( 'Gradient' == $(this).val() ) $(this).parent().parent().find('input[value="Image"]').attr('checked', '').change();
-		
-	}else {
-		target.hide();
-	}
-}
-
-// jQuery Plugin Boilerplate
-// A boilerplate for jumpstarting jQuery plugins development
-// version 1.1, May 14th, 2011
-// by Stefan Gabos
+/**
+ * Background Picker plugin
+ *
+ * Creates UI for creating background CSS: Image, Gradient, RGBA Color, Transparent, Hidden
+ *
+ * @author pdclark
+**/
 (function($) {
 	$.bgPicker = function(element, options) {
 
@@ -267,6 +172,45 @@ function pds_background_type() {
 			$image.change( update_image_preview );
 			
 		}
+		
+		// Global method -- Override WordPress default behavior
+		// send image url to the options field
+		window.send_to_editor = function (h) {
+			// get the image src from the html code in h
+			var re = new RegExp('<img src="([^"]+)"');
+			var m = re.exec(h);
+			jQuery('#'+blogicons.uploadid).val(m[1]).change();
+			tb_remove();
+		}
+		
+		// Thickbox window position
+		if ( ! window.tb_resize_attached ) {
+			$(window).resize( function() { plugin.tb_position() } );
+			window.tb_resize_attached = true;
+		}
+		plugin.tb_position = function() {
+			var tbWindow = $('#TB_window');
+			var width = $(window).width();
+			var H = $(window).height();
+			var W = ( 720 < width ) ? 720 : width;
+
+			if ( tbWindow.size() ) {
+				tbWindow.width( W - 50 ).height( H - 45 );
+				$('#TB_iframeContent').width( W - 50 ).height( H - 75 );
+				tbWindow.css({'margin-left': '-' + parseInt((( W - 50 ) / 2),10) + 'px'});
+				if ( typeof document.body.style.maxWidth != 'undefined' )
+					tbWindow.css({'top':'20px','margin-top':'0'});
+				$('#TB_title').css({'background-color':'#222','color':'#cfcfcf'});
+			};
+
+			return $('a.thickbox').each( function() {
+				var href = $(this).attr('href');
+				if ( ! href ) return;
+				href = href.replace(/&width=[0-9]+/g, '');
+				href = href.replace(/&height=[0-9]+/g, '');
+				$(this).attr( 'href', href + '&width=' + ( W - 80 ) + '&height=' + ( H - 85 ) );
+			});
+		};
 		
 		//
 		// public methods

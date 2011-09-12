@@ -212,11 +212,17 @@
 	clear:both !important; 
 }
 
+.ui {
+	table.jPicker {
+		background: transparent;
+		border: 0px none transparent;
+		.Button
+	}
+}
 
 table.jPicker {
 	line-height: 1;
-	background: transparent;
-	border: 0px none transparent;
+	
 	padding: 0;
 	width: 290px;
 	input, textarea, select { padding: 0;}
@@ -229,7 +235,8 @@ table.jPicker {
 	    width: 37px;
 	}
 	.AHex {display:none;}
-	.Button {display:none;}
+	.Button hr {display:none;}
+	.Grid {display:none;}
 	div.Map {
 		width:128px;
 		height: 128px;
@@ -268,3 +275,5 @@ table.jPicker {
 		margin-left: 12px;
 	}
 }
+
+#TB_iframeContent .post_title { display:none;}
