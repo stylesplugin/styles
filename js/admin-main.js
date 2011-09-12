@@ -1,14 +1,5 @@
 
 jQuery(function($) {
-	// AJAX Preview Button
-	$('input.storm-submit', '#StormForm').click( pds_preview_change );
-	
-	$('input, select', '#StormForm').change( pds_preview_change );
-	$('input.pds_image_input', '#StormForm').change( update_image_thumbnail );
-	$('a.value-toggle', '#StormForm').click( pds_value_toggle );
-	
-	$('div.types input', '#StormForm').change( pds_background_type );
-	
 	// Generic Slider
 	$('input.slider').each(function() {
 		// Show/hide slider on input click
@@ -114,6 +105,14 @@ jQuery(function($) {
 
 	$(window).resize( function() { tb_position() } );
 	
+	
+	// AJAX Preview Button
+	$('input.storm-submit', '#StormForm').click( pds_preview_change );
+	$('input, select', '#StormForm').change( pds_preview_change );
+	$('input.pds_image_input', '#StormForm').change( update_image_thumbnail );
+	$('a.value-toggle', '#StormForm').click( pds_value_toggle );
+	
+	$('div.types input', '#StormForm').change( pds_background_type );
 });
 
 
@@ -349,6 +348,31 @@ function pds_background_type() {
 			$color.data('color',  $color.val().replace('#', '') );
 			$css.val( $color.val() ).change();
 			
+			var colorPicker = $('<div/>').jPicker({
+				images: {
+					clientPath: storm_admin.pluginURL + '/js/jpicker/images/'
+				}
+				,window: {
+					alphaSupport: true
+				}
+				,color: {
+					active: new $.jPicker.Color({ hex: $color.val() })
+				}
+			},
+			function(color, context) { /* Okay button clicked */ },
+			function(color, context) { /* Live color slide */
+				var alpha = Math.round( color.val('a') / 255 * 100 ) / 100;
+				
+				var rgba = 'rgba('+color.val('r')+','+color.val('g')+','+color.val('b')+','+alpha+')';
+				$color.val( rgba );
+				$css.val( rgba );
+			},
+			function(color, context) { /* Cancel button clicked */ }
+			);
+			
+			$ui.append( colorPicker );
+			
+			/*
 			var colorPicker = $('<div class="colorPicker" />').ColorPicker( {
 				onSubmit: function(hsb, hex, rgb, el) {
 					setColor(el, hex);
@@ -375,8 +399,7 @@ function pds_background_type() {
 			} ).css( 
 				'backgroundColor', $color.val()
 			);
-			
-			$ui.append( colorPicker );
+			*/
 		}
 		
 		var setColor = function(el, hex) {
