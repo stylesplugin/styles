@@ -296,8 +296,9 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 
 			$css = "background-color: transparent;" /*background-color: $hex_color; */
 				. "background-color: rgba($r, $g, $b, $a);"
-				. "filter: progid:DXImageTransform.Microsoft.gradient("
-					. "startColorStr='$ms_color',EndColorStr='$ms_color');";
+				. "*background: none; /* ie7 */"
+				. "-ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='$ms_color',EndColorStr='$ms_color');zoom: 1;"
+				. "filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='$ms_color',EndColorStr='$ms_color');zoom: 1;";
 		} else $css = "background-color: $value;";
 		return $css;
 	}

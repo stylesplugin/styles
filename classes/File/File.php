@@ -54,7 +54,7 @@ class StormStyles_Extension_File {
 			// Load up variables from SCSS if we're in Admin or running a cache save via AJAX
 			$this->active_file = new StormStyles_Extension_Variable( array(
 	 			'file' => get_stylesheet_directory().$file, // Absolute path
-				'CACHE_FILE' => get_stylesheet_directory().$cached_file,
+				'cache_file' => get_stylesheet_directory().$cached_file,
 				'permalink' => $this->active_id,
 			) );
 			
