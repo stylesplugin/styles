@@ -113,6 +113,25 @@
 		
 	}
 	
+	.pds_font_select {
+		option {
+			text-indent: 10px;
+		}
+		option.label {
+			font-family: Helvetica, Arial, sans-serif;
+			font-size: 11px;
+			color: #666;
+			font-style: normal;
+			font-weight: normal;
+			text-indent: 0;
+			margin-top:10px;
+		}
+		option.first {
+			margin-top:0;
+		}
+		
+	}
+	
 	.font-weight {
 		width: 9px;
 		height: 12px;

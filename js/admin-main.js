@@ -54,6 +54,13 @@ jQuery(function($) {
 	
 	// Font buttons
 	$('a.value-toggle', '#StormForm').click( fontToggles );
+	$('select.pds_font_select', '#StormForm').change(function(){
+		var src = $(this).val();
+		if ( src.indexOf("http://") != -1) {
+			window.open( src, 'Google Web Fonts' );
+		}
+		
+	})
 	
 	// AJAX Submit & Preview
 	$('input.storm-submit', '#StormForm').click( saveStyles );
