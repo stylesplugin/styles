@@ -107,6 +107,7 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 		$opts = new StormStyles_Extension_Font();
 		$font_family = $opts->families[$font_family];
 		
+		if ($color)          $output .= "color: #$color;";
 		if ($font_size)      $output .= "font-size: {$font_size}px;";
 		if ($font_family)    $output .= "font-family: $font_family;";
 		if ($line_height)    $output .= "line-height: $line_height;";
