@@ -59,6 +59,7 @@
 			a[data-type="gradient"]     { background-position: -47px 4px; }
 			a[data-type="color"]        { background-position: -97px 4px; }
 			a[data-type="transparent"] { background-position: -147px 4px; }
+			a[data-type="hide"] { background-position: -197px 4px; }
 		}
 		
 	}
@@ -109,6 +110,25 @@
 	
 	@variables font {
 		hover_bg: #C1E7FF;
+		
+	}
+	
+	.pds_font_select {
+		option {
+			text-indent: 10px;
+		}
+		option.label {
+			font-family: Helvetica, Arial, sans-serif;
+			font-size: 11px;
+			color: #666;
+			font-style: normal;
+			font-weight: normal;
+			text-indent: 0;
+			margin-top:10px;
+		}
+		option.first {
+			margin-top:0;
+		}
 		
 	}
 	
@@ -210,3 +230,69 @@
 #media-upload  .media-item {
 	clear:both !important; 
 }
+
+.ui {
+	table.jPicker {
+		background: transparent;
+		border: 0px none transparent;
+		.Button
+	}
+}
+
+table.jPicker {
+	line-height: 1;
+	
+	padding: 0;
+	width: 290px;
+	input, textarea, select { padding: 0;}
+	.Title {display:none;}
+	.Map {margin-top:22px;}
+	td.Radio { width: 45px; }
+	td.Text input {
+		height: 21px;
+	    padding: 3px;
+	    width: 37px;
+	}
+	.AHex {display:none;}
+	.Button hr {display:none;}
+	.Grid {display:none;}
+	div.Map {
+		width:128px;
+		height: 128px;
+	}
+	div.Bar {
+		width: 20px;
+		height: 128px;
+	}
+	tr.Hue, tr.Saturation, tr.Value {display:none;}
+	.Preview {
+		text-align:left;
+		padding-left: 20px;
+		
+		div {
+			width: 32px;
+			height: 18px;
+			margin:0;
+			span {
+				width: 14px;
+				height: 17px;
+				float: left;
+			}
+		}
+	}
+	td.Radio {
+		width: 14px;
+	}
+	input[type="radio"] {
+		display:none;
+	}
+	input {
+		font-family: Courier, monospace;
+		font-size: 11px;
+	}
+	input.Hex {
+		margin-left: 12px;
+	}
+}
+
+#TB_iframeContent .post_title { display:none;}

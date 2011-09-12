@@ -3,7 +3,7 @@
 Plugin Name: Styles
 Plugin URI: http://brainstormmedia.com
 Description: Less code, more style.
-Version: 0.3.1
+Version: 0.3.2
 Author: Brainstorm Media
 Author URI: http://brainstormmedia.com
 
@@ -101,7 +101,7 @@ class StormStyles extends Scaffold_Extension_Observable {
 	 * 
 	 * @var int
 	 **/
-	var $db_version = '0.3.1';
+	var $db_version = '0.3.2';
 	
 	/**
 	 * Options array containing all options for this plugin
@@ -188,11 +188,12 @@ class StormStyles extends Scaffold_Extension_Observable {
 	 * @return void
 	 **/
 	function register_scripts() {
-		wp_register_script('storm-colorpicker' , $this->plugin_url().'/js/colorpicker/js/colorpicker.js',array('jquery'), $this->version, true);
-		wp_register_script('storm-jq-ui-slider', $this->plugin_url().'/js/jquery.ui.slider.min.js'          ,array('jquery', 'jquery-ui-core' ), $this->version, true);
-		wp_register_script('storm-gradient-picker', $this->plugin_url().'/js/jq.gradientpicker.js'          ,array('storm-jq-ui-slider', 'storm-colorpicker' ), $this->version, true);
-		wp_register_script('jqcookie'          , $this->plugin_url().'/js/jquery.cookie.js'             ,array('jquery'), $this->version, true);
-		wp_register_script('storm-admin-main'  , $this->plugin_url().'/js/admin-main.js'                ,array('jqcookie', 'storm-gradient-picker', 'storm-jq-ui-slider', 'storm-colorpicker', 'thickbox', 'media-upload' ), $this->version, true);
+		wp_register_script('storm-colorpicker'    , $this->plugin_url().'/js/colorpicker/js/colorpicker.js',array('jquery'), $this->version, true);
+		wp_register_script('storm-jq-ui-slider'   , $this->plugin_url().'/js/jquery.ui.slider.min.js'      ,array('jquery', 'jquery-ui-core' ), $this->version, true);
+		wp_register_script('storm-gradient-picker', $this->plugin_url().'/js/jq.gradientpicker.js'         ,array('storm-jq-ui-slider', 'storm-colorpicker' ), $this->version, true);
+		wp_register_script('jqcookie'             , $this->plugin_url().'/js/jquery.cookie.js'             ,array('jquery'), $this->version, true);
+		wp_register_script('jpicker'              , $this->plugin_url().'/js/jpicker/jpicker-1.1.6.js'     ,array('jquery'), $this->version, true);
+		wp_register_script('storm-admin-main'     , $this->plugin_url().'/js/admin-main.js'                ,array('jqcookie', 'jpicker', 'storm-gradient-picker', 'storm-jq-ui-slider', 'storm-colorpicker', 'thickbox', 'media-upload' ), $this->version, true);
 		
 	}
 	
