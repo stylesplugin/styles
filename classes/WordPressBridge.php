@@ -65,7 +65,7 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 		
 		$this->behaviorpath = $system . 'extensions/CSS3/behaviors/';
 		$properties->register('background',array($this,'background'));
-		$properties->register('background-color',array($this,'background_color'));
+		$properties->register('background-color',array($this,'background_rgba'));
 		$properties->register('-wp-background',array($this,'wp_background'));
 		$properties->register('-wp-background-color',array($this,'wp_background_color'));
 		$properties->register('-wp-font',array($this,'wp_font'));
@@ -83,32 +83,6 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	 */
 	public function initialize($source,$scaffold) {
 		$this->source = $source;
-	}
-	
-	public function wp_background_color($value, $scaffold, $meta) {
-		
-		// Change color picker to http://www.digitalmagicpro.com/jPicker/
-		$id = $this->create_id($meta, $id);
-		$key = md5($id);
-		
-		extract( $this->extract($value, $id) );
-		
-		// Populate found array for WP UI generation
-		$this->found[$group][$key] = array(
-			'value' => $value,
-			'group' => $group,
-			'label' => $label,
-			'id'    => $id,
-			'key'   => $key,
-			'class' => 'StormStyles_Extension_Color',
-		);
-		
-		// Extract values saved from WP form
-		@extract( $this->vals[$group][$key] );
-
-		if ( !empty($color) ) { $value = $color; }
-
-		return $this->background_color($value);
 	}
 	
 	public function wp_font($value, $scaffold, $meta) {
@@ -157,8 +131,6 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 		}else if ( $furl = $this->find_background_url($value)  ) { $form_value = $furl;
 		}else { $form_value = $value; }
 
-		$class = 'StormStyles_Extension_Background';
-
 		// Populate found array for WP UI generation
 		$this->found[$group][$key] = array(
 			'value' => $form_value,
@@ -166,29 +138,33 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 			'label' => $label,
 			'id'    => $id,
 			'key'   => $key,
-			'class' => $class,
+			'class' => 'StormStyles_Extension_Background',
 		);
 
-		// Extract values saved from WP form -- $active, $css, $image, $color, $stops
+		// Extract values saved from WP form:
+		//   $active, $css, $image, $color, $stops
 		@extract( $this->vals[$group][$key] ); 
-		
+
 		if ( $active && $css ) {
 			
 			switch( $active ) {
 				case 'image':
+				
+					// This requires *something* in url() for replace-url to work.
 					if ( $match = $this->find_background_url( $value ) ) {
 						// Declaration was originally an image. Just replace URL.
 						$value = str_replace($match, $image, $value);
 					}else {
-						// Run image replace
-						$value = "replace-url($image)";
+						// Set background
+						$value = "transparent url($image)";
+						$meta['property'] = "background: $value";
 					}
 					break;
 				case 'gradient':
 					$value = "linear-gradient( $css )";
 					break;
 				case 'color':
-					$value = "$css url()";
+					$meta['property'] = $value = $this->background_rgba($css);
 					break;
 				case 'transparent':
 					$value = 'transparent url()';
@@ -200,7 +176,7 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 			}
 			
 		}
-	
+
 		// Remove Group & Label
 		$prop = $meta['property'];
 		if ( false !== strpos( $prop, $this->meta_gliph ) ) {
@@ -233,15 +209,32 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 		return $meta['property'];
 	}
 	
-	/**
-	 * Enables rgba backgrounds in IE
-	 *
-	 * Uses a fliter to emulate rgba backgrounds in IE.
-	 *
-	 * @access public
-	 * @param $url
-	 * @return string
-	 */
+	
+	public function wp_background_color($value, $scaffold, $meta) {
+		
+		// Change color picker to http://www.digitalmagicpro.com/jPicker/
+		$id = $this->create_id($meta, $id);
+		$key = md5($id);
+		
+		extract( $this->extract($value, $id) );
+		
+		// Populate found array for WP UI generation
+		$this->found[$group][$key] = array(
+			'value' => $value,
+			'group' => $group,
+			'label' => $label,
+			'id'    => $id,
+			'key'   => $key,
+			'class' => 'StormStyles_Extension_Color',
+		);
+		
+		// Extract values saved from WP form
+		@extract( $this->vals[$group][$key] );
+
+		if ( !empty($color) ) { $value = $color; }
+
+		return $this->background_rgba($value);
+	}
 	
 	public function linear_gradient($stops) {
 		// background: -webkit-gradient(linear, 0 0, 0 100%, from($from) to($to)); /*old webkit*/
@@ -255,7 +248,16 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	              behavior: url($this->PIE);";
 	}
 	
-	public function background_color($value) {
+	/**
+	 * Enables rgba backgrounds in IE
+	 *
+	 * Uses a fliter to emulate rgba backgrounds in IE.
+	 *
+	 * @access public
+	 * @param $url
+	 * @return string
+	 */
+	public function background_rgba($value) {
 		$regexp = '/rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*([\d\.]+)\s*\)/';
 		if (preg_match($regexp,$value,$match)) {
 
@@ -313,11 +315,11 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	}
 	
 	private function find_background_url($value) {
-		
+
 		$url = preg_match('/
 				(?:(?:replace-)?url\(\s*)      	 # required url( -- passive groups
 				[\'"]?               # maybe quote
-				([^\'\"\)]*)                # 1 = URI
+				([^\'\"\)]*)?                # 1 = Maybe URI
 				[\'"]?               # maybe end quote
 				(?:\\s*\\))?         # maybe )
 			/xsi',
@@ -325,7 +327,7 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 			$match
 		);
 
-		if( $match[1] ) {
+		if( $match[1] ) { // Requires something in url() to return true... Should adapt to allow replace-url() or url()
 			return $match[1];
 		}else {
 			return false;

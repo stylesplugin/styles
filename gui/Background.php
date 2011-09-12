@@ -16,7 +16,7 @@ class StormStyles_Extension_Background extends StormStyles_Extension_Observer {
 	 * @return string
 	 **/
 	function set( $variable, $values, $context = null ) {
-		
+
 		$this->values['active'] = $values['active'];
 		$this->values['css']    = $values['css'];
 		$this->values['image']  = $values['image'];

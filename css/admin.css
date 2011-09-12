@@ -36,7 +36,7 @@
 	
 	.bgPicker {
 		.data {
-			display:none;
+/*			display:none;*/
 		}
 		.types {
 			a {
@@ -210,4 +210,22 @@
 }
 #media-upload  .media-item {
 	clear:both !important; 
+}
+
+
+table.jPicker {
+	line-height: 1;
+	background: transparent;
+	border: 0px none transparent;
+	padding: 0;
+	input, textarea, select { padding: 0;}
+	.Title {display:none;}
+	.Map {margin-top:22px;}
+	td.Radio { width: 45px; }
+	td.Text input {
+		height: 21px;
+	    padding: 3px;
+	    width: 37px;
+	}
+	.AHex {display:none;}
 }
