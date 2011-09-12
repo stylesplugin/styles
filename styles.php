@@ -3,7 +3,7 @@
 Plugin Name: Styles
 Plugin URI: http://brainstormmedia.com
 Description: Less code, more style.
-Version: 0.3.2
+Version: 0.3.3
 Author: Brainstorm Media
 Author URI: http://brainstormmedia.com
 
@@ -91,7 +91,7 @@ class StormStyles extends Scaffold_Extension_Observable {
 	 * @since 0.1
 	 * @var int
 	 **/
-	var $version = '0.3.1';
+	var $version = '0.3.3';
 	
 	/**
 	 * Plugin DB version
@@ -101,7 +101,7 @@ class StormStyles extends Scaffold_Extension_Observable {
 	 * 
 	 * @var int
 	 **/
-	var $db_version = '0.3.2';
+	var $db_version = '0.3.3';
 	
 	/**
 	 * Options array containing all options for this plugin
@@ -176,11 +176,22 @@ class StormStyles extends Scaffold_Extension_Observable {
 
 		// Frontend
 		add_action ( 'template_redirect' , array( &$this , 'frontend_js' ) );
+		
+		// Admin Bar
+		add_action( 'admin_bar_menu', array( &$this, 'admin_bar' ), 95 );
 
 		// Full path and plugin basename of the main plugin file
 		$this->plugin_file = __FILE__;
 		$this->plugin_basename = plugin_basename ( $this->plugin_file );
 
+	}
+	
+	function admin_bar() {
+		global $wp_admin_bar;
+		if ( current_user_can('manage_options') && is_admin_bar_showing() ) {
+			$wp_admin_bar->add_menu( array( 'parent' => 'appearance', 'id' => 'storm-styles', 'title' => __( 'Styles' ), 'href' => admin_url('themes.php?page=StormStyles'), ) );
+		}
+		
 	}
 	
 	/**
@@ -570,7 +581,7 @@ class StormStyles extends Scaffold_Extension_Observable {
 			
 			$src_rel = str_replace( $wp_styles->content_url, '', $src );
 			
-			foreach ( $loaded as $abspath ) {
+			foreach ( (array)$loaded as $abspath ) {
 				if ( false !== strpos( $abspath, $src_rel ) ) {
 					// This file was loaded via @import. Dequeue it.
 					wp_dequeue_style( $handle );
