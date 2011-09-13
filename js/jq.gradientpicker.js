@@ -196,7 +196,8 @@
 					,'#cedbe9 0%,#aac5de 17%,#6199c7 50%,#3a84c3 51%,#419ad6 59%,#4bb8f0 71%,#3a8bc2 84%,#26558b 100%'
 					,'#e1ffff 0%,#e1ffff 7%,#e1ffff 12%,#fdffff 12%,#e6f8fd 30%,#c8eefb 54%,#bee4f8 75%,#b1d8f5 100%'
 					,'#e4f5fc 0%, #bfe8f9 50%, #9fd8ef 51%, #2ab0ed 100%'
-					,'#00b7ea 0%, #009ec3 100%'
+					// ,'#00b7ea 0%, #009ec3 100%'
+					,'#ff0000 0%,#ff9d00 20%,#fbff00 40%,#1fcf00 60%,#0011ff 80%,#c910c9 100%'
 				],
 				$list = $('<ul/>');
 			
@@ -228,6 +229,7 @@
 			
 			stopsInputToArray();
 			stopsArrayToMarkers();
+			$stops.change();
 			// stopsMarkersToArray();
 			
 		}
