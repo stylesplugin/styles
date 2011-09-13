@@ -284,22 +284,19 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	 * @return string
 	 */
 	public function background_rgba($value) {
-		$regexp = '/rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*([\d\.]+)\s*\)/';
-		if (preg_match($regexp,$value,$match)) {
-
-			list(,$r,$g,$b,$a) = $match;
-			$hex_color = $this->rgb2html($r,$g,$b);
-
-			$hex_a = dechex(255*floatval($a));
-			$hex_a = (strlen($hex_a) < 2?'0':'').$hex_a;
-			$ms_color = '#' . $hex_a . substr($hex_color,1);
+		@extract($this->rgba_to_ahex( $value, true ));
+		
+		if ( $ms_color && $r && $g && $b && $a) {
 
 			$css = "background-color: transparent;" /*background-color: $hex_color; */
 				. "background-color: rgba($r, $g, $b, $a);"
 				. "*background: none; /* ie7 */"
 				. "-ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='$ms_color',EndColorStr='$ms_color');zoom: 1;"
 				. "filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='$ms_color',EndColorStr='$ms_color');zoom: 1;";
-		} else $css = "background-color: $value;";
+				
+		} else {
+			$css = "background-color: $value;";
+		}
 		return $css;
 	}
 	
@@ -490,6 +487,28 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 		$property = substr($meta['property'], 0, strpos($meta['property'], ':') ); // Returns property name (before colon)
 		
 		return $selector.'{'.$property.'}';
+	}
+	
+	public function rgba_to_ahex($value) {
+		$regexp = '/rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*([\d\.]+)\s*\)/';
+		if (preg_match($regexp,$value,$match)) {
+
+			list(,$r,$g,$b,$a) = $match;
+			$hex_color = $this->rgb2html($r,$g,$b);
+
+			$hex_a = dechex(255*floatval($a));
+			$hex_a = (strlen($hex_a) < 2?'0':'').$hex_a;
+			
+			return array(
+				'r'=>$r,
+				'g'=>$g,
+				'b'=>$b,
+				'a'=>$a,
+				'ms_color'=> '#' . $hex_a . substr($hex_color,1),
+				'hexa' => $hex_color.$hex_a,
+			);
+			
+		} else return false;
 	}
 	
 	/**

@@ -9,13 +9,15 @@
  * @since 0.1
  */
 
+$mac = ( false === strpos($_SERVER['HTTP_USER_AGENT'],'Macintosh') ) ? '' : 'macos';
+
 ?>
 <div class="wrap StormStyles">
 	
 	<?php screen_icon('themes'); ?>
 	<h2><?php _e( 'Styles' , 'StormStyles' ); ?></h2>
 	
-	<form method="post" id="StormForm" action="<?php esc_attr_e($_SERVER['REQUEST_URI']) ?>" enctype="multipart/form-data" name="post">
+	<form method="post" id="StormForm" class="<?php echo $mac ?>" action="<?php esc_attr_e($_SERVER['REQUEST_URI']) ?>" enctype="multipart/form-data" name="post">
 		<?php 
 			wp_nonce_field( 'StormStyles-update-options' );
 			settings_fields('StormStyles');
