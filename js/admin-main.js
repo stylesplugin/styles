@@ -303,6 +303,8 @@ jQuery(function($) {
 			$color.data('color',  $color.val().replace('#', '') );
 			$css.val( $color.val() ).change();
 			
+			
+			
 			var colorPicker = $('<div/>').jPicker({
 				images: {
 					clientPath: storm_admin.pluginURL + '/js/jpicker/images/'
