@@ -3,7 +3,7 @@
 Plugin Name: Styles
 Plugin URI: http://brainstormmedia.com
 Description: Less code, more style.
-Version: 0.3.4
+Version: 0.3.5
 Author: Brainstorm Media
 Author URI: http://brainstormmedia.com
 
@@ -91,7 +91,7 @@ class StormStyles extends Scaffold_Extension_Observable {
 	 * @since 0.1
 	 * @var int
 	 **/
-	var $version = '0.3.4';
+	var $version = '0.3.5';
 	
 	/**
 	 * Plugin DB version
@@ -101,7 +101,7 @@ class StormStyles extends Scaffold_Extension_Observable {
 	 * 
 	 * @var int
 	 **/
-	var $db_version = '0.3.4';
+	var $db_version = '0.3.5';
 	
 	/**
 	 * Options array containing all options for this plugin
