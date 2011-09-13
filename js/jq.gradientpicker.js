@@ -18,7 +18,7 @@
 		var $element = $(element),  // reference to the jQuery version of DOM element the plugin is attached to
 			element = element;		// reference to the actual DOM element
 		
-		var $markerWrap, $preview, $stops;
+		var $markerWrap, $preview, $stops, $presets;
 		
 		var initComplete = false;
 		
@@ -71,16 +71,19 @@
 			// the plugin's final properties are the merged default and user-provided options (if any)
 			plugin.settings = $.extend({}, defaults, options);
 			
+			$presets = $('<div class="presets" />');
 			$preview = $('<div class="grad-preview" />');
 			$markerWrap = $('<div class="stop-markers" />').click( addMarker );
 			
 			$stops = plugin.settings.$stops;
 			
-			$element.append( $preview ).append( $markerWrap );
+			$element.append( $presets, $preview, $markerWrap );
 			
 			stopsInputToArray();
 			stopsArrayToMarkers();
 			stopsMarkersToArray();
+			
+			setupPresets();
 			
 			initComplete = true;
 		}
@@ -112,7 +115,7 @@
 			
 			var tmp = $stops.val();
 			tmp = tmp.split(',');
-			
+
 			$.each(tmp, function(i, val){
 				val = $.trim(val);
 				val = val.split(' ');
@@ -134,7 +137,6 @@
 		}
 		
 		var stopsArrayToMarkers = function () {
-			
 			$markerWrap.find('div.marker').slider('destroy').remove();
 			$.each( stops, function(i, stop){
 				addMarker( {}, stop.value, stop.hex );
@@ -179,6 +181,57 @@
 			plugin.updatePreview();
 		}
 		
+		// --- Presets
+		
+		var setupPresets = function() {
+			var li, css,
+				cssTemplate = 'background: -moz-linear-gradient(VAL);background: -webkit-linear-gradient(VAL);background: -o-linear-gradient(VAL);background: -ms-linear-gradient(VAL);background: linear-gradient(VAL);',
+				presets = [
+					'#000000 0%, #ffffff 100%'
+					,'#e2e2e2 0%, #dbdbdb 50%, #d1d1d1 51%, #fefefe 100%'
+					,'#d8e0de 0%, #aebfbc 22%, #99afab 33%, #8ea6a2 50%, #829d98 67%, #4e5c5a 82%, #0e0e0e 100%'
+					,'#b8e1fc 0%,#a9d2f3 10%,#90bae4 25%,#90bcea 37%,#90bff0 50%,#6ba8e5 51%,#a2daf5 83%,#bdf3fd 100%'
+					,'#3b679e 0%,#2b88d9 50%,#207cca 51%,#7db9e8 100%'
+					,'#b3dced 0%,#29b8e5 50%,#bce0ee 100%'
+					,'#cedbe9 0%,#aac5de 17%,#6199c7 50%,#3a84c3 51%,#419ad6 59%,#4bb8f0 71%,#3a8bc2 84%,#26558b 100%'
+					,'#e1ffff 0%,#e1ffff 7%,#e1ffff 12%,#fdffff 12%,#e6f8fd 30%,#c8eefb 54%,#bee4f8 75%,#b1d8f5 100%'
+					,'#e4f5fc 0%, #bfe8f9 50%, #9fd8ef 51%, #2ab0ed 100%'
+					,'#00b7ea 0%, #009ec3 100%'
+				],
+				$list = $('<ul/>');
+			
+			$.each( presets, function( index, value ){
+				
+				css = cssTemplate.replace(/VAL/g, '-45deg, '+value);
+				
+				li = $('<li/>')
+					.attr( 'style', css )
+					.data('value', value)
+					.click( loadPreset );
+				
+				$list.append( li );
+				
+			});
+			
+			$presets.append( $list );
+			
+			// If we don't have a gradient loaded by now,
+			// load the first preset
+			if ( stops.length == 1 ) {
+				$presets.find('li:first').click();
+			}
+			
+		}
+		
+		var loadPreset = function() {
+			$stops.val( $(this).data('value') );
+			
+			stopsInputToArray();
+			stopsArrayToMarkers();
+			// stopsMarkersToArray();
+			
+		}
+		
 		// --- Sliders
 		
 		var markerSlide = function(event, ui) {
@@ -208,12 +261,14 @@
 			stopsArrayToInput();
 		}
 		
-		var setHandleColor = function(el, hex) {
+		var setHandleColor = function(el, hex, newMarker) {
 			$(el).each(function() {
 				$(this).data('color', hex).find('a').css('backgroundColor', '#'+hex);
 			});
 			
-			stopsMarkersToArray();
+			if ( newMarker !== true ){
+				stopsMarkersToArray();
+			}
 		}
 		
 		var addMarker = function( e, value, hex ) {
@@ -237,7 +292,7 @@
 			
 			$markerWrap.append( marker );
 			
-			setHandleColor( marker, hex );
+			setHandleColor( marker, hex, true );
 			
 		}
 		
