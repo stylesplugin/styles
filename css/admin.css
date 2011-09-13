@@ -24,7 +24,32 @@
 		.ui-slider {
 			position:absolute;top:10px;left:0;height: 0px;border:none;background-image:url();
 			a {
-				background-image:url(); border: 1px solid #999;border-radius:0;
+				background-image:url(); border: 1px solid #999;border-radius: 0 0 2px 2px;
+				width: 11px;
+				height:11px;
+				margin-left: -0.39em;
+			}
+			a:before { /* Black arrow */
+				content: "<div/>";
+				width: 0;
+				height: 0;
+				position:absolute;
+				top:-7px;
+				left: 0px;
+				border-left:   6px solid transparent;
+				border-right:  6px solid transparent;
+				border-bottom: 6px solid #999;
+			}
+			a:after { /* White arrow */
+				content: "<div/>";
+				width: 0;
+				height: 0;
+				position:absolute;
+				top:-5px;
+				left:2px;
+				border-left:   4px solid transparent;
+				border-right:  4px solid transparent;
+				border-bottom: 4px solid #fff;
 			}
 		}
 	}
