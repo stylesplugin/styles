@@ -551,7 +551,7 @@ class StormStyles extends Scaffold_Extension_Observable {
 		$this->file = $this->files->queue[ $this->permalink ]->file;
 		
 		// Merge values from database into variable objects
-		if ( is_object( $this->options['variables'][ $this->permalink ] ) ) {
+		if ( is_object( $this->options['variables'][ $this->permalink ] ) && is_object($this->files->active_file) ) {
 			$this->files->active_file->set( array( $this->permalink => $this->options['variables'][ $this->permalink ]->get() ) );
 		}
 

@@ -300,10 +300,13 @@ jQuery(function($) {
 		
 		var load_color = function() {
 			
-			$color.data('color',  $color.val().replace('#', '') );
+			if ( $color.val().length > 1 ) {
+				$color.data('color',  $color.val().replace('#', '') );
+				$color.data('ahex',  $color.val().replace('#', '') );
+			}else {
+				$color.data('ahex',  'ffffffff' );
+			}
 			$css.val( $color.val() ).change();
-			
-			
 			
 			var colorPicker = $('<div/>').jPicker({
 				images: {
