@@ -49,6 +49,7 @@ class StormStyles_Extension_Font extends StormStyles_Extension_Observer {
 		'Cherry Cream Soda' => 'Cherry+Cream+Soda', 'Chewy' => 'Chewy', 'Coda' => 'Coda:800', 
 		'Coda Caption' => 'Coda+Caption:800', 'Coming Soon' => 'Coming+Soon', 
 		'Content' => 'Content:bold,normal', 'Copse' => 'Copse', 'Corben' => 'Corben:700', 
+		'Comfortaa' =>'Comfortaa',
 		'Cousine' => 'Cousine:italic,normal,italicbold,bold', 
 		'Covered By Your Grace' => 'Covered+By+Your+Grace', 'Crafty Girls' => 'Crafty+Girls', 
 		'Crimson Text' => 'Crimson+Text:700,italic400,400,italic600,italic700,600', 
