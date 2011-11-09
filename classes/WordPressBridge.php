@@ -265,13 +265,13 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	public function linear_gradient($stops) {
 		// background: -webkit-gradient(linear, 0 0, 0 100%, from($from) to($to)); /*old webkit*/
 		return "
-	            background: -webkit-linear-gradient($stops); /*new webkit*/
-	            background:    -moz-linear-gradient($stops); /*gecko*/
-	            background:     -ms-linear-gradient($stops); /*IE10 preview*/
-	            background:      -o-linear-gradient($stops); /*opera 11.10+*/
-	            background:         linear-gradient($stops); /*CSS3 browsers*/
-	       -pie-background:         linear-gradient($stops); /*PIE*/
-	              behavior: url($this->PIE);";
+     background: -webkit-linear-gradient($stops); /*new webkit*/
+     background:    -moz-linear-gradient($stops); /*gecko*/
+     background:     -ms-linear-gradient($stops); /*IE10 preview*/
+     background:      -o-linear-gradient($stops); /*opera 11.10+*/
+     background:         linear-gradient($stops); /*CSS3 browsers*/
+-pie-background:         linear-gradient($stops); /*PIE*/
+       behavior: url($this->PIE);";
 	}
 	
 	/**
@@ -286,7 +286,7 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	public function background_rgba($value) {
 		@extract($this->rgba_to_ahex( $value, true ));
 		
-		if ( $ms_color && $r && $g && $b && $a) {
+		if ( $ms_color && isset($r) && isset($g) && isset($b) && isset($a) ) {
 
 			$css = "background-color: transparent;" /*background-color: $hex_color; */
 				. "background-color: rgba($r, $g, $b, $a);"
