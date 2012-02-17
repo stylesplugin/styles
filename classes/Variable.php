@@ -50,14 +50,13 @@ class StormStyles_Extension_Variable extends Scaffold_Extension_Observer {
 	var $scaffold;
 	
 	function __construct( $args = array(), $styles ) {
-		if ( empty( $args['file'] ) ) {
+		if ( empty( $args['path'] ) ) {
 			FB::error('No file specified in '.__FILE__);
 			return false;
 		}
 		
-		$this->file = $args['file'];
-		$this->cache_file = $args['cache_file'];
-		$this->permalink = $args['permalink'];
+		$this->file = $args['path'];
+		$this->cache_file = $args['cache_path'];
 
 		$this->variables = $styles->css->wp_bridge->found;
 
