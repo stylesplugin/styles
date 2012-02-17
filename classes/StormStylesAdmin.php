@@ -499,21 +499,18 @@ class StormStylesAdmin extends StormStyles {
 			
 		}else {
 			
-			if ( update_option('StormStyles', $_POST ) ) {
-				
-				
-			}else {
+			if ( !update_option('StormStyles', $_POST ) ) {
 				$response['message'] .= 'Variables unchanged.<br/>';
 			}
 
-			$cache_file = $this->options['variables']->cache_file;
+			$cache_file = $this->file->cache_path;
 
-			$cache_written = @file_put_contents( $cache_file, $this->render() );
-			if ( false !== $cache_written ) {
-				$response['message'] .= 'Stylesheet rendered and cached to <code><abbr title="'.$cache_file.'">'.basename($cache_file).'</abbr></code>.<br/>';
+			if ( $cache_file !== false && @file_put_contents($cache_file, $this->render()) ) {
+				// Cache written to file
+				$response['message'] .= 'Stylesheet rendered and cached to <code><abbr title="'.$cache_file.'">'.str_replace(ABSPATH, '/', $cache_file).'</abbr></code>.<br/>';
 			}else {
-				$response['message'] = '<div><strong>Error:</strong> Could not write to file <code><abbr title="'.$cache_file.'">'.basename($cache_file).'</abbr></code>.<br/>Please save <a href="/?scaffold">the output</a> manually or make the file writable with: <code>chmod 666 '.$cache_file.'</code></div>';
-				$class = 'error';
+				$response['message'] = '<div>Could not write to  <code>wp-content/uploads/styles</code> directory.<br/> CSS has been cached to the database instead. This can be changed by making the directory writable with <code>chmod 666</code></div>';
+				update_option( 'StormStyles-cache', '/* Styles outputted inline because cache directory "wp-content/uploads/styles" is not writable */'."\r". Minify_CSS_Compressor::process($this->render()) );
 			}
 			
 		}
@@ -523,8 +520,6 @@ class StormStylesAdmin extends StormStyles {
 		
 		$response['href'] = '/?scaffold&preview&time='.microtime(true);
 		$response['id'] = $blog_id;
-		
-		
 		
 		echo json_encode( $response );
 

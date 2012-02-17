@@ -93,20 +93,12 @@ class StormStyles extends Scaffold_Extension_Observable {
 	var $plugin_basename;
 	
 	/**
-	 * Objet containing references to scaffold files
-	 * 
-	 * @since 0.1.3
-	 * @var StormStyles_Extension_File
-	 **/
-	var $files = false;
-	
-	/**
 	 * Path to CSS file being manipulated
 	 * 
 	 * @since 0.1
 	 * @var string
 	 **/
-	var $file;
+	var $file = false;
 	
 	/**
 	 * Setup shared functionality between admin and front-end
@@ -361,6 +353,60 @@ class StormStyles extends Scaffold_Extension_Observable {
 		// return $scaffold;
 	}
 	
+	function file_path() {
+		global $blog_id;
+		
+		$uri = $path = $cache_path = $cache_uri = false;
+		
+		if ( !empty($_GET['file']) ) {
+			$search_paths = array(
+				$_GET['file'],
+				trailingslashit(ABSPATH).$_GET['file'],
+			);
+		}
+
+		$search_paths[] = get_stylesheet_directory().'/css/styles-admin.css';
+		$search_paths[] = get_stylesheet_directory().'/styles-admin.css';
+		$search_paths[] = $this->plugin_dir_path().'themes/'.get_template().'.css';
+		
+		
+		// Search for CSS file in order of priority and stop at the first one found
+		foreach ($search_paths as $file ) {
+			if ( file_exists($file) ) {
+				$path = $file;
+				break;
+			}
+		}
+
+		if ( empty($path) ) {
+			FB::error('Could not find CSS to load for Styles GUI in '.__FILE__.':'.__LINE__);
+			return false;
+		}
+		
+		// URI for enqueing
+		$uri = str_replace( ABSPATH, '', $path );
+
+		// Cache file
+		$upload_dir = wp_upload_dir();
+		if ( is_multisite() ) {
+			$cache_file = "/styles/style-$blog_id.css";
+		}else {
+			$cache_file = "/styles/style.css";
+		}
+		
+		$cache_dir = dirname($upload_dir['basedir'].$cache_file);
+		if ( wp_mkdir_p( $cache_dir ) && is_writable( $cache_dir ) ) {
+			$cache_path = $upload_dir['basedir'].$cache_file;
+			$cache_uri = $upload_dir['baseurl'].$cache_file;
+		}else {
+			$cache_path = false;
+		}
+		
+		$array = compact('uri', 'path', 'cache_path', 'cache_uri');
+		
+		return $array;
+	}
+	
 	/**
 	 * Initialize files object based on WordPress style queue
 	 * 
@@ -368,29 +414,14 @@ class StormStyles extends Scaffold_Extension_Observable {
 	 * @return void
 	 **/
 	function load_file() {
-		if ( false !== $this->files ) { return; }
+		if ( false !== $this->file ) { return; }
 		
 		global $blog_id;
 
 		// Find SCSS file
-		if ( empty($_GET['file']) ) { 
-			$file = apply_filters( 'storm_styles_file', '/css/style.scss' );
-		}else {
-			$file = $_GET['file'];
-		}
-		$cached_file = str_replace('.scss', "-cache-$blog_id.css", $file);
-		
-		if ( !file_exists( get_stylesheet_directory().$file ) ) { 
-			FB::error( 'File not found: '.get_stylesheet_directory().$file );
-			return false; 
-		}
-		
-		// Check for cached output
-		if ( !file_exists( get_stylesheet_directory().$cached_file ) ) {
-			FB::error( 'Cached output not found: '.get_stylesheet_directory().$cached_file );
-			$have_cache = false;
-		}else {
-			$have_cache = true;
+		$file = apply_filters( 'storm_styles_file_path', $this->file_path() );
+		if ( !$file ) {
+			return;
 		}
 
 		if ( is_admin() || isset($_GET['scaffold']) || 'admin-ajax.php' == basename($_SERVER['PHP_SELF']) ) {
@@ -401,33 +432,28 @@ class StormStyles extends Scaffold_Extension_Observable {
 			}else {
 				$this->options = get_option( 'StormStyles' );
 			}
+
+			$this->css = new StormCSSParser( $file['path'], $this );
 			
-			$this->css = new StormCSSParser( get_stylesheet_directory().$file, $this );
+			$this->file   = new StormStyles_Extension_Variable( $file, $this );
 			
-			$this->file   = new StormStyles_Extension_Variable( array(
-	 			'file'       => get_stylesheet_directory().$file, // Absolute path
-				'cache_file' => get_stylesheet_directory().$cached_file,
-			), $this );
+		}else if ( BSM_DEVELOPMENT === true ){
 			
+			// Development: Force re-render on every CSS load
+			wp_enqueue_style('storm-scaffold', '/?scaffold', array(), time() );
+			
+		}else if ( $file['cache_uri'] !== false) {
+			// Enqueue cached output
+			wp_enqueue_style('storm-scaffold', $file['cache_uri'] );
+
 		}else {
-			if ( $have_cache && BSM_DEVELOPMENT !== true) {
-				// Enqueue cached output
-				wp_enqueue_style('storm-scaffold', get_stylesheet_directory_uri().$cached_file );
-			}else {
-				// If we're developing, force re-render on every CSS load
-				// Pairs well with: if ( '127.0.0.1' == $_SERVER['SERVER_ADDR'] ) {define('BSM_DEVELOPMENT', true);}
-				wp_enqueue_style('storm-scaffold', '/?scaffold', array(), time() );
-			}
+			add_action( 'wp_head', array($this, wp_head_output), 999 );
 		}
 
 		// Merge values from database into variable objects
 		if ( is_object( $this->options ) && is_object($this->file) ) {
 			$this->file->set( $this->options->get() );
 		}
-
-		// Hacky. Give Scaffold access to vars stored in WP database.
-		// Maybe load this via a scaffold extension?
-		// $this->file->scaffold->variables = & $this->file->variables;
 	}
 	
 	/**
@@ -438,6 +464,13 @@ class StormStyles extends Scaffold_Extension_Observable {
 	 **/
 	function build() {
 		$this->load_file();
+	}
+	
+	function wp_head_output() {
+		$css = get_option('StormStyles-cache');
+		if (!empty($css)) {
+			echo "<style id='storm-scaffold-css'>$css</style>";
+		}
 	}
 	
 	function dequeue_at_imports() {

@@ -1,0 +1,139 @@
+/*@!import '../style.css';*/
+
+/* 
+	-wp-background: url( http://wp-sandbox/wp-content/uploads/2011/08/ahia19h.png ) repeat 0 0 // Page;
+	-wp-font: 12px Times // Font;
+	-wp-background: linear-gradient(#236922 0%,#508580 21%,#522452 47%,#292c61 98%) // Header;
+	/!* CSS3 auto-expands to be compatible with all browsers; even IE *!/
+	background-color: rgba(0, 0, 0, .5);
+	opacity: .5;
+	
+	/!* Nested Selectors Allowed; replace-url hides text of any element and resizes to fit image *!/
+	-wp-background: replace-url(/wp-content/themes/twentyeleven/screenshot.png) no-repeat 0 0 // Logo;
+*/
+
+/* =Global
+----------------------------------------------- */
+
+body, input, textarea {
+	color: #373737;
+	-wp-font: 300 15px/1.625 "Helvetica Neue", Helvetica, Arial, sans-serif // Default Font;
+}
+html[dir="ltr"], body {
+	margin-top:0 !important;padding:0;
+}
+.page-wrapper {
+	-wp-background: #e2e2e2 // Window Background;
+	display:block;
+	margin:0;
+	padding:0 2em;
+	position:relative;
+}
+#page {
+	-wp-background: #fff // Page Background;
+}
+a {
+	color: #1982d1;
+	text-decoration: none;
+	&:focus, &:active, &:hover {
+		text-decoration: underline;
+	}
+}
+
+/* =Header
+----------------------------------------------- */
+
+#site-title {
+	a {
+		-wp-background: replace-url(#) // Logo;
+	}
+}
+
+/* =Main Menu
+-------------------------------------------------------------- */
+
+#access {
+	-wp-background: linear-gradient(#252525, #0a0a0a) // Navigation.Background;
+	ul {
+		-wp-font: // Navigation.Link Font;
+	}	
+	a {
+		color: #eee;
+		-wp-background: transparent // Navigation.Link BG;
+	}
+	& li:hover > a,
+	& ul ul :hover > a,
+	& a:focus {
+		-wp-background: linear-gradient(#f9f9f9, #e5e5e5) // Navigation.Link Hover BG;
+	}
+}
+
+/* =Search
+----------------------------------------------- */
+#branding #s {
+	-wp-background: #fff // Search Form BG;
+	&:focus {
+		-wp-background: #f9f9f9 // Search Form Active BG;
+	}
+}
+
+/* =Content
+----------------------------------------------- */
+
+.page-title {
+	-wp-font: //Content.Page Title;
+	a {
+		-wp-font: //Content.Page Title Link;
+	}
+}
+.entry-title, .singular .entry-title {
+	-wp-font: //Content.Blog Entry Title;
+}
+.entry-meta {
+	-wp-font: //Content.Blog Entry Meta;
+}
+
+.entry-content, .comment-content {
+	h1, h2 {
+		-wp-font: //Content.Heading 1 and 2;
+	}
+	h3 { -wp-font: //Content.Heading 3; }
+	h4 { -wp-font: //Content.Heading 4; }
+	h5 { -wp-font: //Content.Heading 5; }
+	h6 { -wp-font: //Content.Heading 6; }
+}
+
+/* Author Info */
+
+#author-info {
+	-wp-font: //Content.Author Info;
+}
+
+
+/* =Navigation
+-------------------------------------------------------------- */
+
+
+/* =Widgets
+----------------------------------------------- */
+
+
+/* =Comments
+----------------------------------------------- */
+
+
+/* =Footer
+----------------------------------------------- */
+
+#colophon {
+	-wp-background: transparent //Footer.Footer BG;
+}
+
+#supplementary {
+	-wp-background: transparent //Footer.Widget Area BG;
+}
+
+#site-generator {
+	-wp-background: #f9f9f9 //Footer.Site Generator BG;
+}
+
