@@ -69,6 +69,7 @@ class StormStyles_Extension_Group extends Scaffold_Extension_Observer {
 		foreach ( $variables as $key => $args ) {
 
 			if ( is_array($args) ) {
+
 				foreach ( $StormStylesController->extensions as $ext ){
 
 					if ( is_a( $ext, $args['class'] ) ) {

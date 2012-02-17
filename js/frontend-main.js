@@ -14,7 +14,7 @@ function storm_check_preview() {
 	if ( cookie.update == 1 ) {
 		jQuery.cookie('pdstyles_preview_update', '0', {path: '/'});
 
-		jQuery( 'link[id="bsm-scaffold-css"]' ).attr('href', cookie.href);
+		jQuery( 'link[id="storm-scaffold-css"]' ).attr('href', cookie.href);
 	}
 
 	setTimeout('storm_check_preview()', 1000);

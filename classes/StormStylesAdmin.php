@@ -113,7 +113,7 @@ class StormStylesAdmin extends StormStyles {
 		wp_register_style('storm-slider', $this->plugin_url().'/css/ui-lightness/jquery-ui-1.8.6.custom.css', array(), $this->version);
 		wp_register_style('jPicker', $this->plugin_url().'/js/jpicker/css/jPicker-1.1.6.css', array() , $this->version );
 		
-		wp_enqueue_style ( 'StormStyles-admin' , apply_filters ( 'StormStyles-admin-css' , '/?scaffold&file=css/admin.css' ) , array('jPicker', 'storm-colorpicker', 'storm-slider') , $this->version , 'screen' );
+		wp_enqueue_style ( 'StormStyles-admin' , apply_filters ( 'StormStyles-admin-css' , $this->plugin_url().'/css/admin.css' ) , array('jPicker', 'storm-colorpicker', 'storm-slider') , $this->version , 'screen' );
 	}
 	
 	/**
@@ -415,10 +415,10 @@ class StormStylesAdmin extends StormStyles {
 		if ( !is_object($this->variables) ) $this->build();
 		
 		// Save @import paths
-		$input['loaded_imports'] = $this->files->active_file->scaffold->extensions['Import']->loaded;
-		foreach( $input['loaded_imports'] as &$path ) {
-			$path = realpath($path);
-		}
+		// $input['loaded_imports'] = $this->file->scaffold->extensions['Import']->loaded;
+		// 		foreach( $input['loaded_imports'] as &$path ) {
+		// 			$path = realpath($path);
+		// 		}
 		
 		// Make sure there are no empty values, seems users like to clear out options before saving
 		foreach ( $this->defaults() as $key => $value ) {
@@ -432,9 +432,9 @@ class StormStylesAdmin extends StormStyles {
 		}
 
 		// Update vars in active file object
-		$this->files->active_file->set( $input['variables'] );
+		$this->file->set( $input['variables'] );
 		// Convert input array to object for storage
-		$input['variables'][ $this->permalink ] = $this->files->active_file;
+		$input['variables'] = $this->file;
 		
 		// Check if we are supposed to remove options
 		if ( isset ( $input['delete'] ) && $input['delete'] == 'true' ) { 
@@ -470,9 +470,9 @@ class StormStylesAdmin extends StormStyles {
 		$this->build();
 
 		// Update vars in active file object
-		$this->files->active_file->set( $input['variables'] );
+		$this->file->set( $input['variables'] );
 		// Convert input array to object for storage
-		$input['variables'][ $this->permalink ] = $this->files->active_file;
+		$input['variables'] = $this->file;
 		
 		return $input['variables'];
 	}
@@ -506,7 +506,7 @@ class StormStylesAdmin extends StormStyles {
 				$response['message'] .= 'Variables unchanged.<br/>';
 			}
 
-			$cache_file = $this->options['variables'][1]->cache_file;
+			$cache_file = $this->options['variables']->cache_file;
 
 			$cache_written = @file_put_contents( $cache_file, $this->render() );
 			if ( false !== $cache_written ) {
