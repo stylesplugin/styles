@@ -1,14 +1,16 @@
 <?php
 /*
 Plugin Name: Styles
-Plugin URI: http://brainstormmedia.com
-Description: Less code, more style.
-Version: 0.3.5
+Plugin URI: http://stylesplugin.com
+Description: Provides color, gradient, font, and image pickers from simple CSS syntax.
+Version: 0.4
 Author: Brainstorm Media
 Author URI: http://brainstormmedia.com
+Inspiration: sivil, gravity, CSS Scaffold, will norris, mingle
+Contributors: Anthony Short, sivil
 
 ------------------------------------------------------------------------
-Copyright 2010  Paul Clark  (email : support (at) pdclark.com)
+Copyright 2010  Paul Clark  (email : pdclark (at) brainstormmedia.com)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -24,58 +26,21 @@ Copyright 2010  Paul Clark  (email : support (at) pdclark.com)
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-
-## ---------------------------
-##	WP Notes
-## --------------------------{
-	Inspiration: sivil, gravity, CSScaffold, will norris, mingle
-	
-	"How 'NOT' to Build a WordPress Plugin", by Will Norris( 	http://wordpress.tv/2009/09/20/will-norris-building-plugins-portland09/ )
-	
-	###	Paths & URLs
-	Important Constants and Functions ( http://wpengineer.com/wordpress-return-url/ )
-		plugins_url( $path = '', $plugin = '' ); // ie: __FILE__
-		site_url();
-		content_url();
-		admin_url();
-		includes_url();
-		get_bloginfo('template_url');
-		
-		ABSPATH
-		WP_PLUGIN_DIR
-		WP_CONTENT_DIR
-
-	Actions and Filters
-	=======================================
-	http://codex.wordpress.org/Plugin_API
-	http://codex.wordpress.org/Plugin_API/Action_Reference
-	http://codex.wordpress.org/Plugin_API/Filter_Reference
-		
-	
-##}end WP Notes
-
 */  
 
-// Normally I'd include this in wp-config.php
-// It's here so I don't have to get anyone else to install it
-// When sharing code
-if ( !class_exists('FirePHP') ) {
-	ob_start();
-	include  dirname ( __FILE__ ) . '/classes/FirePHPCore/fb.php';
-}
-
-include dirname ( __FILE__ ) . '/classes/Observable.php';
-include dirname ( __FILE__ ) . '/classes/Observer.php';
+include dirname ( __FILE__ ) . '/classes/stormFirePHP/stormFirePHP.php';
+include dirname ( __FILE__ ) . '/classes/scaffold-bare/Observable.php';
+include dirname ( __FILE__ ) . '/classes/scaffold-bare/Observer.php';
 include dirname ( __FILE__ ) . '/classes/StormStylesObserver.php';
-include dirname ( __FILE__ ) . '/classes/File/File.php';
-include dirname ( __FILE__ ) . '/classes/Variable/Variable.php';
-include dirname ( __FILE__ ) . '/classes/Group/Group.php';
+include dirname ( __FILE__ ) . '/classes/StormCSSParser.php';
+include dirname ( __FILE__ ) . '/classes/Variable.php';
+include dirname ( __FILE__ ) . '/classes/Group.php';
 
 
 /**
- * PD Styles class for common actions between admin and frontend.
+ * Common actions between admin and front-end.
  *
- * This class contains all the shared functions required for PD Styles to work
+ * This class contains all the shared functions required for StormStyless to work
  *
  * @package StormStyles
  * @author pdclark
@@ -91,7 +56,7 @@ class StormStyles extends Scaffold_Extension_Observable {
 	 * @since 0.1
 	 * @var int
 	 **/
-	var $version = '0.3.5';
+	var $version = '0.4';
 	
 	/**
 	 * Plugin DB version
@@ -101,7 +66,7 @@ class StormStyles extends Scaffold_Extension_Observable {
 	 * 
 	 * @var int
 	 **/
-	var $db_version = '0.3.5';
+	var $db_version = '0.4';
 	
 	/**
 	 * Options array containing all options for this plugin
@@ -133,7 +98,7 @@ class StormStyles extends Scaffold_Extension_Observable {
 	 * @since 0.1.3
 	 * @var StormStyles_Extension_File
 	 **/
-	var $files;
+	var $files = false;
 	
 	/**
 	 * Path to CSS file being manipulated
@@ -142,15 +107,6 @@ class StormStyles extends Scaffold_Extension_Observable {
 	 * @var string
 	 **/
 	var $file;
-	
-	/**
-	 * Friendly formatting of path to $this->file from WP basedir
-	 * Allows for CSS links to not break between dev & production environments.
-	 * 
-	 * @since 0.1
-	 * @var string
-	 **/
-	var $permalink;
 	
 	/**
 	 * Setup shared functionality between admin and front-end
@@ -344,81 +300,15 @@ class StormStyles extends Scaffold_Extension_Observable {
 	function render( $file = '' ) {
 		
 		$this->load_extensions( $this->plugin_dir_path() . 'extensions' );
-		$this->load_files();
-		
-		if ( empty($_GET['file']) ) {
-			$_GET['file'] = $file;
-		}
-		if ( empty($_GET['file']) ) {
-			$_GET['file'] = $this->files->active_file->file;
-		}
-		
-		if ( isset($_GET['preview']) ) {
-			$this->options = get_option( 'StormStyles-preview' );
-		}else {
-			$this->options = get_option( 'StormStyles' );
-		}
-		$config = $this->get_scaffold_config();
-		
-		// From scaffold/index.php
-		/**
-		 * The location of this system folder
-		 */
-		$system = $this->plugin_dir_path() . 'scaffold'; // No trailing slash
-		
-		/**
-		 * The environment class helps us handle errors
-		 * and autoloading of classes. It's not required
-		 * to make Scaffold function, but makes it a bit
-		 * nicer to use.
-		 */
-		require_once $system.'/lib/Scaffold/Environment.php';
-
-		/**
-		 * Set timezone, just in case it isn't set. PHP 5.3+ 
-		 * throws a tantrum if you try and use time() without
-		 * this being set.
-		 */
-		date_default_timezone_set('GMT');
-
-		/**
-		 * Automatically load any Scaffold Classes
-		 */
-		Scaffold_Environment::auto_load();
-
-		/**
-		 * Let Scaffold handle errors
-		 */
-		Scaffold_Environment::handle_errors();
-
-		/** 
-		 * Set the view to use for errors and exceptions
-		 */
-		Scaffold_Environment::set_view(realpath($system.'/views/error.php'));
-
-		// =========================================
-		// = Start the scaffolding magic  =
-		// =========================================
-
-		// The container creates Scaffold objects
-		$Container = Scaffold_Container::getInstance($system,$config);
-
-		
-
-		// This is where the magic happens
-		$Scaffold = $Container->build();
-
-		// Get the sources
-		$Source = $Scaffold->getSource(null,$config);
-
-		// Compiles the source object
-		$Source = $Scaffold->compile($Source);
+		$this->load_file();
 		
 		if ( isset( $_GET['scaffold'] ) ) {
-			// Use the result to render it to the browser. Hooray!
-			$Scaffold->render($Source);
+			// Output to browser
+			header('Content-type: text/css');
+			echo $this->css->contents;
+			exit;
 		}else {
-			return $Source->contents;
+			return $this->css->contents;
 		}
 	}
 	
@@ -431,70 +321,6 @@ class StormStyles extends Scaffold_Extension_Observable {
 	function query_vars($vars) {
 	    $vars[] = 'scaffold';
 	    return $vars;
-	}
-	
-	/**
-	 * Default scaffold config values
-	 * 
-	 * @since 0.1
-	 * @return array
-	 **/
-	function get_scaffold_config() {
-		
-		// See scaffold/parse.php for full scaffold config documentation
-		$config		= array(
-			'production'			=> false,
-			'max_age'				=> false,
-			'output_compression'	=> false,
-			'set_etag'				=> true,
-			'enable_string'			=> false,
-			'enable_url'			=> false,
-			'extensions'			=> array(
-				'AbsoluteUrls',
-				'Embed',
-				'Functions',
-				//'HSL',
-				// 'ImageReplace',
-				// 'Minify',
-				'Properties',
-				'Random',
-				'Import',
-				'Mixins',
-				'NestedSelectors',
-				//'XMLVariables',
-				'Variables',
-				'WordPressBridge',
-				'Gradient',
-				// 'CSS3',
-        	
-				# Process-heavy Extensions
-				//'Sass',
-				// 'CSSTidy',
-				//'YUI'
-			),
-		);
-		
-		$config['import_paths'] = array(
-			untrailingslashit( get_stylesheet_directory() ),
-			untrailingslashit( get_stylesheet_directory() ).'/css',
-			untrailingslashit( $this->plugin_dir_path() ),
-		);
-
-		$config['load_paths'] = array(
-			untrailingslashit( get_stylesheet_directory() ),
-			untrailingslashit( $this->plugin_dir_path() ),
-		);
-		
-		if ( isset( $_GET['preview'] ) ) {
-			$config['WordPressBridge']['preview'] = true;
-		}
-		
-		// Minify CSS when in production
-		if ( $config['production'] === true ) {
-			$config['extensions'][] = 'Minify';
-		}
-		
-		return $config;
 	}
 	
 	/**
@@ -541,23 +367,67 @@ class StormStyles extends Scaffold_Extension_Observable {
 	 * @since 0.1.3
 	 * @return void
 	 **/
-	function load_files() {
-		if ( is_a( $this->files, 'StormStyles_Extension_File' ) ) { return; }
+	function load_file() {
+		if ( false !== $this->files ) { return; }
 		
-		$this->files = new StormStyles_Extension_File( apply_filters( 'bsm_scss_file', '/css/style.scss' ) );
+		global $blog_id;
+
+		// Find SCSS file
+		if ( empty($_GET['file']) ) { 
+			$file = apply_filters( 'storm_styles_file', '/css/style.scss' );
+		}else {
+			$file = $_GET['file'];
+		}
+		$cached_file = str_replace('.scss', "-cache-$blog_id.css", $file);
 		
-		// Setup CSS path
-		$this->permalink = $this->files->active_id;
-		$this->file = $this->files->queue[ $this->permalink ]->file;
+		if ( !file_exists( get_stylesheet_directory().$file ) ) { 
+			FB::error( 'File not found: '.get_stylesheet_directory().$file );
+			return false; 
+		}
 		
+		// Check for cached output
+		if ( !file_exists( get_stylesheet_directory().$cached_file ) ) {
+			FB::error( 'Cached output not found: '.get_stylesheet_directory().$cached_file );
+			$have_cache = false;
+		}else {
+			$have_cache = true;
+		}
+
+		if ( is_admin() || isset($_GET['scaffold']) || 'admin-ajax.php' == basename($_SERVER['PHP_SELF']) ) {
+			// Load up variables from SCSS if we're in Admin or running a cache save via AJAX
+			
+			if ( isset($_GET['preview']) ) {
+				$this->options = get_option( 'StormStyles-preview' );
+			}else {
+				$this->options = get_option( 'StormStyles' );
+			}
+			
+			$this->css = new StormCSSParser( get_stylesheet_directory().$file, $this );
+			
+			$this->file   = new StormStyles_Extension_Variable( array(
+	 			'file'       => get_stylesheet_directory().$file, // Absolute path
+				'cache_file' => get_stylesheet_directory().$cached_file,
+			), $this );
+			
+		}else {
+			if ( $have_cache && BSM_DEVELOPMENT !== true) {
+				// Enqueue cached output
+				wp_enqueue_style('storm-scaffold', get_stylesheet_directory_uri().$cached_file );
+			}else {
+				// If we're developing, force re-render on every CSS load
+				// Pairs well with: if ( '127.0.0.1' == $_SERVER['SERVER_ADDR'] ) {define('BSM_DEVELOPMENT', true);}
+				wp_enqueue_style('storm-scaffold', '/?scaffold', array(), time() );
+			}
+		}
+
 		// Merge values from database into variable objects
-		if ( is_object( $this->options['variables'][ $this->permalink ] ) && is_object($this->files->active_file) ) {
-			$this->files->active_file->set( array( $this->permalink => $this->options['variables'][ $this->permalink ]->get() ) );
+		if ( is_object( $this->options ) && is_object($this->file) ) {
+			$this->file->set( $this->options->get() );
 		}
 
 		// Hacky. Give Scaffold access to vars stored in WP database.
 		// Maybe load this via a scaffold extension?
-		$this->files->active_file->scaffold->variables = & $this->files->active_file->variables;
+		// $this->file->scaffold->variables = & $this->file->variables;
 	}
 	
 	/**
@@ -567,7 +437,7 @@ class StormStyles extends Scaffold_Extension_Observable {
 	 * @return void
 	 **/
 	function build() {
-		$this->load_files();
+		$this->load_file();
 	}
 	
 	function dequeue_at_imports() {

@@ -36,7 +36,7 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	 **/
 	var $google_fonts = array();
 	
-	var $meta_gliph = '~';
+	var $meta_gliph = '//';
 	var $meta_separator = '.';
 	
 	function __construct( $config= array() ) {
@@ -44,19 +44,17 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 		
 		global $StormStylesController;
 		
-		$css_permalink = $StormStylesController->permalink;
-
 		$this->PIE = $StormStylesController->plugin_url().'/js/PIE/PIE.php';
 
-		if ( $this->config['preview'] ) {
+		if ( isset($_GET['preview']) ) {
 			
 			$preview = get_option('StormStyles-preview');
-			if( is_object( $preview[ $css_permalink ] ) ) {
-				$this->vals = $preview[ $css_permalink ]->get('css');
+			if( is_object( $preview ) ) {
+				$this->vals = $preview->get('css');
 			}
 
-		}else if( is_object( $StormStylesController->options['variables'][ $css_permalink ] ) ) {
-			$this->vals = $StormStylesController->options['variables'][ $css_permalink ]->get('css');
+		}else if( is_object( $StormStylesController->options['variables'] ) ) {
+			$this->vals = $StormStylesController->options['variables']->get('css');
 		}
 	}
 	

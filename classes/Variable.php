@@ -49,7 +49,7 @@ class StormStyles_Extension_Variable extends Scaffold_Extension_Observer {
 	 **/
 	var $scaffold;
 	
-	function __construct( $args = array() ) {
+	function __construct( $args = array(), $styles ) {
 		if ( empty( $args['file'] ) ) {
 			FB::error('No file specified in '.__FILE__);
 			return false;
@@ -59,13 +59,11 @@ class StormStyles_Extension_Variable extends Scaffold_Extension_Observer {
 		$this->cache_file = $args['cache_file'];
 		$this->permalink = $args['permalink'];
 
-		$this->scaffold_init();
-		
-		$this->variables_load( $this->file );
-		
+		$this->variables = $styles->css->wp_bridge->found;
+
 		foreach( $this->variables as $key => &$group ) {
 
-			$group['form_name'] = "variables[$this->permalink]";
+			$group['form_name'] = "variables";
 			$group['key'] = $key;
 			$group = new StormStyles_Extension_Group( $group );
 			
@@ -84,98 +82,12 @@ class StormStyles_Extension_Variable extends Scaffold_Extension_Observer {
 	 * @return array of vars to serialize
 	 **/
 	function __sleep() {
-		// unset( $this->scaffold );
-		
 		return array(
 			'file',
 			'cache_file',
 			'permalink',
 			'variables',
-			
 		);
-	}
-	
-	/**
-	 * Initialize CSScaffold
-	 * 
-	 * @since 0.1
-	 * @return void
-	 **/
-	function scaffold_init() {
-		// Scaffold Configuration
-		$config = array(
-			'extensions' => array(
-				'AbsoluteUrls',
-				'Variables',
-				'Import',
-				'WordPressBridge',
-				'NestedSelectors',
-				'Properties',
-				// 'XMLVariables'
-			)
-		);
-		$config['import_paths'] = array(
-			untrailingslashit( get_stylesheet_directory() ),
-			untrailingslashit( get_stylesheet_directory() ).'/css',
-		);
-		
-		$config['load_paths'] = array(
-			untrailingslashit( dirname( dirname( dirname( __FILE__ ))) ),
-		);
-		
-		if ( isset( $_GET['preview'] ) ) {
-			$config['WordPressBridge']['preview'] = true;
-		}
-
-		// Setup the env
-		date_default_timezone_set('GMT');
-		$system = StormStyles::plugin_dir_path() . 'scaffold';
-		$environment = $system.'/lib/Scaffold/Environment.php';
-		
-		if ( @require_once ( $environment ) ) {
-			Scaffold_Environment::auto_load(true);
-
-			// Create Scaffold instance
-			$Container = Scaffold_Container::getInstance($system,$config);
-
-			$this->scaffold 	= $Container->build();
-		} else {
-			StormStyles::deactivate_and_die ( $environment );
-		}
-		
-	}
-
-	
-	/**
-	 * Load variables from CSS into array
-	 * 
-	 * @since 0.1
-	 * @return void
-	 **/
-	function variables_load( $file ) {
-		
-		// Load in the CSS file
-		$source = new Scaffold_Source_File( $file );
-
-		// Rather than parsing the whole thing through Scaffold, we just want the
-		// variables that are inside that source. So to save some time, we just get them manually.
-
-		// Parse imports
-		$import = $this->scaffold->extensions['Import'];
-		$import->replace_rules($source, $this->scaffold);
-		
-		// Parse variables
-		$variables = $this->scaffold->extensions['Variables'];
-		// Pull out the variables into an array 
-		// $this->variables = $variables->extract($source);
-		$this->variables = &$this->scaffold->extensions['WordPressBridge']->found;
-
-		$this->scaffold->compile($source);
-		
-		// FB::log($this->variables, '$this->variables');
-		// $this->variables_cleanup();
-		// FB::log($this->variables, '$this->variables');
-		// FB::log($this->scaffold->extensions['WordPressBridge']->found, 'WordPressBridge->found');
 	}
 	
 	/**
@@ -263,16 +175,16 @@ class StormStyles_Extension_Variable extends Scaffold_Extension_Observer {
 		if ( empty( $values ) ) {
 			return;
 		}
-		if ( !array_key_exists( $this->permalink, (array) $values )) {
-			FB::error('$this->permalink not found in $values.');
-			FB::error($this->permalink, '$this->permalink');
-			FB::error($values, '$values');
-			FB::error(debug_backtrace(), 'debug_backtrace()');
-			return;
-		}
+		//if ( !array_key_exists( $this->permalink, (array) $values )) {
+		//	FB::error('$this->permalink not found in $values.');
+		//	FB::error($this->permalink, '$this->permalink');
+		//	FB::error($values, '$values');
+		//	FB::error(debug_backtrace(), 'debug_backtrace()');
+		//	return;
+		//}
 		
 		foreach ($this->variables as $variable) {
-			$variable->set( $values[$this->permalink] );
+			$variable->set( $values );
 		}
 	}
 	

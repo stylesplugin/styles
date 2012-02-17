@@ -54,9 +54,8 @@ class StormStyles_Extension_Background extends StormStyles_Extension_Observer {
 	
 	function output() {
 		global $StormStylesController;
-		$wpb = $StormStylesController->files->active_file->scaffold->extensions['WordPressBridge']; // Awkward, but DRY. We need to get some object sharing up in here.
 		
-		$rgba = $wpb->rgba_to_ahex( $this->value('form', 'color') );
+		$rgba = $StormStylesController->css->wp_bridge->rgba_to_ahex( $this->value('form', 'color') );
 		?>
 			<div class="bgPicker">
 				<div class="types">
