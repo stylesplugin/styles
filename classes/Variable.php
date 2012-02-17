@@ -57,6 +57,11 @@ class StormStyles_Extension_Variable extends Scaffold_Extension_Observer {
 		
 		$this->file = $args['path'];
 		$this->cache_file = $args['cache_path'];
+		
+		$this->path = $args['path'];
+		$this->uri = $args['path'];
+		$this->cache_path = $args['cache_path'];
+		$this->cache_uri = $args['cache_path'];
 
 		$this->variables = $styles->css->wp_bridge->found;
 

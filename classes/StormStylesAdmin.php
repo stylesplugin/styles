@@ -503,13 +503,14 @@ class StormStylesAdmin extends StormStyles {
 				$response['message'] .= 'Variables unchanged.<br/>';
 			}
 
-			$cache_file = $this->options['variables']->cache_file;
-			if ( $cache_file !== false && file_exists($cache_file) && @file_put_contents($cache_file, $this->render()) ) {
+			$cache_file = $this->file->cache_path;
+
+			if ( $cache_file !== false && @file_put_contents($cache_file, $this->render()) ) {
 				// Cache written to file
-				$response['message'] .= 'Stylesheet rendered and cached to <code><abbr title="'.$cache_file.'">'.basename($cache_file).'</abbr></code>.<br/>';
+				$response['message'] .= 'Stylesheet rendered and cached to <code><abbr title="'.$cache_file.'">'.str_replace(ABSPATH, '/', $cache_file).'</abbr></code>.<br/>';
 			}else {
 				$response['message'] = '<div>Could not write to  <code>wp-content/uploads/styles</code> directory.<br/> CSS has been cached to the database instead. This can be changed by making the directory writable with <code>chmod 666</code></div>';
-				update_option( 'StormStyles-cache', '/* Styles outputted inline because cache directory was not writable */'."\r". Minify_CSS_Compressor::process($this->render()) );
+				update_option( 'StormStyles-cache', '/* Styles outputted inline because cache directory "wp-content/uploads/styles" is not writable */'."\r". Minify_CSS_Compressor::process($this->render()) );
 			}
 			
 		}

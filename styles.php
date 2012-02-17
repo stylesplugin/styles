@@ -367,7 +367,7 @@ class StormStyles extends Scaffold_Extension_Observable {
 
 		$search_paths[] = get_stylesheet_directory().'/css/styles-admin.css';
 		$search_paths[] = get_stylesheet_directory().'/styles-admin.css';
-		$search_paths[] = $this->plugin_dir_path().'/themes/'.get_template().'.css';
+		$search_paths[] = $this->plugin_dir_path().'themes/'.get_template().'.css';
 		
 		
 		// Search for CSS file in order of priority and stop at the first one found
@@ -432,7 +432,7 @@ class StormStyles extends Scaffold_Extension_Observable {
 			}else {
 				$this->options = get_option( 'StormStyles' );
 			}
-			
+
 			$this->css = new StormCSSParser( $file['path'], $this );
 			
 			$this->file   = new StormStyles_Extension_Variable( $file, $this );
@@ -442,9 +442,9 @@ class StormStyles extends Scaffold_Extension_Observable {
 			// Development: Force re-render on every CSS load
 			wp_enqueue_style('storm-scaffold', '/?scaffold', array(), time() );
 			
-		}else if ( $file['cache_path'] !== false) {
+		}else if ( $file['cache_uri'] !== false) {
 			// Enqueue cached output
-			wp_enqueue_style('storm-scaffold', get_stylesheet_directory_uri().$cached_file );
+			wp_enqueue_style('storm-scaffold', $file['cache_uri'] );
 
 		}else {
 			add_action( 'wp_head', array($this, wp_head_output), 999 );
