@@ -2,7 +2,7 @@
 /*
 Plugin Name: Styles
 Plugin URI: http://stylesplugin.com
-Description: Provides color, gradient, font, and image pickers from simple CSS syntax.
+Description: Change the appearance of any theme using the WordPress admin. Creates WordPress theme options from CSS: images, colors, gradients, and fonts.
 Version: 0.4
 Author: Brainstorm Media
 Author URI: http://brainstormmedia.com
