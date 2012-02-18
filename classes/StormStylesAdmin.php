@@ -111,7 +111,6 @@ class StormStylesAdmin extends StormStyles {
 		
 		wp_register_style('storm-colorpicker', $this->plugin_url().'/js/colorpicker/css/colorpicker.css', array(), $this->version);
 		wp_register_style('storm-slider', $this->plugin_url().'/css/ui-lightness/jquery-ui-1.8.6.custom.css', array(), $this->version);
-		wp_register_style('jPicker', $this->plugin_url().'/js/jpicker/css/jPicker-1.1.6.css', array() , $this->version );
 		
 		wp_enqueue_style ( 'StormStyles-admin' , apply_filters ( 'StormStyles-admin-css' , $this->plugin_url().'/css/admin.css' ) , array('storm-colorpicker', 'storm-slider') , $this->version , 'screen' );
 	}
