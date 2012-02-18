@@ -3,21 +3,34 @@ jQuery(function($) {
 	$('div.bgPicker', '#StormForm').bgPicker();
 
 	// Color Picker
-	$('input.pds_color_input', '#StormForm').hide().jPicker({
-		images: {
-			clientPath: storm_admin.pluginURL + '/js/jpicker/images/'
-			,colorMap: {width: 128,height: 128}
-			,colorBar: {width: 20,height: 128}
+	$('input.pds_color_input', '#StormForm').change(function(){
+		if ( $(this).val().length < 3 ) {return;}
+		$(this).css( 'color', '#'+$(this).val() );
+		$(this).css( 'background-color', '#'+$(this).val() );
+	}).change().ColorPicker({
+		onChange: function(){ 
+			var el = $(this).data('colorpicker').el;
+			var hex = $(this).find('div.colorpicker_hex input').val();
+			
+			$(el).val(hex).change();
+			saveStyles();
+		},
+		onSubmit: function(hsb, hex, rgb, el) {
+			$(el).val(hex).change();
+			$(el).ColorPickerHide();
+		},
+		onBeforeShow: function () {
+			$(this).ColorPickerSetColor( this.value );
+		},
+		onHide: function (colpkr) {
+			var el = $(colpkr).data('colorpicker').el;
+			var hex = $(colpkr).find('div.colorpicker_hex input').val();
+
+			$(el).val(hex).change();
+
+			return true;
 		}
-		,window: {
-			effects: { type: 'fade' ,speed: {show:0,hide:0} }
-			,position: {x: 'right',y:'bottom'}
-		}
-		,localization: {text: {newColor: ' ',currentColor: ' '}}
-	}
-		,function(){} // On "OK"
-		,function(){ saveStyles(); } // On drag
-	);
+	});
 	
 	// Sliders for integer inputs
 	$('input.slider', '#StormForm').each(function() {
@@ -171,6 +184,30 @@ jQuery(function($) {
 			$image = $element.find('div.data input[name$="[image]"]'),
 			$stops = $element.find('div.data input[name$="[stops]"]'),
 			$color = $element.find('div.data input[name$="[color]"]');
+		
+		var colorPickerOpts = {
+			onSubmit: function(hsb, hex, rgb, el) {
+				setColor(el, hex);
+				// $(el).ColorPickerHide();
+			},
+			onBeforeShow: function () {
+				if ( $(this).data('color') ) {
+					$(this).ColorPickerSetColor( $(this).data('color') );
+				}
+			},
+			onHide: function (colpkr) {
+				var el = $(colpkr).data('colorpicker').el;
+				var hex = $(colpkr).find('div.colorpicker_hex input').val();
+
+				setColor(el, hex);
+
+				return true;
+			},
+			onChange: function(hsb, hex, rgb) {
+				setColor($color, hex);
+			},
+			flat: true
+		};
 			
 		// the "constructor" method that gets called when the object is created
 		plugin.init = function() {
@@ -300,6 +337,7 @@ jQuery(function($) {
 		
 		var load_color = function() {
 			
+			// Update color field value
 			if ( $color.val().length > 1 ) {
 				$color.data('color',  $color.val().replace('#', '') );
 				$color.data('ahex',  $color.val().replace('#', '') );
@@ -308,55 +346,29 @@ jQuery(function($) {
 			}
 			$css.val( $color.val() ).change();
 			
-			var colorPicker = $('<div/>').jPicker({
-				images: {
-					clientPath: storm_admin.pluginURL + '/js/jpicker/images/'
-					,colorMap: {
-						width: 128
-						,height: 128
-					}
-					,colorBar: {
-						width: 20
-						,height: 128
-					}
-				}
-				,window: {
-					alphaSupport: true
-				}
-				,color: {
-					active: new $.jPicker.Color( { ahex: $color.data('ahex') } )
-				}
-				,localization: {
-					text: {
-						newColor: ' '
-						,currentColor: ' '
-					}
-				}
-			},
-			function(color, context) { /* Okay button clicked */ },
-			function(color, context) { /* Live color slide */
-				if ( color.val() == null ) {
-					var rgba = 'transparent';
-				}else {
-					var alpha = Math.round( color.val('a') / 255 * 100 ) / 100;
-					var rgba = 'rgba('+color.val('r')+','+color.val('g')+','+color.val('b')+','+alpha+')';
-				}
-
-				$color.val( rgba );
-				$color.data('ahex', color.val('ahex') );
-				$css.val( rgba ).change();
-			},
-			function(color, context) { /* Cancel button clicked */ }
-			);
+			var colorPicker = $('<div/>').ColorPicker( colorPickerOpts );
 			
 			$ui.append( colorPicker );
+		
+			// function(color, context) { /* Live color slide */
+			// 	if ( color.val() == null ) {
+			// 		var rgba = 'transparent';
+			// 	}else {
+			// 		var alpha = Math.round( color.val('a') / 255 * 100 ) / 100;
+			// 		var rgba = 'rgba('+color.val('r')+','+color.val('g')+','+color.val('b')+','+alpha+')';
+			// 	}
+			// 
+			// 	$color.val( rgba );
+			// 	$color.data('ahex', color.val('ahex') );
+			// 	$css.val( rgba ).change();
+			// }
 			
 		}
 		
 		var setColor = function(el, hex) {
 			$(el).each(function() {
 				$color.val( '#'+hex ).data('color', hex);
-				$(this).css('backgroundColor', $color.val() );
+				// $(this).css('backgroundColor', $color.val() );
 			});
 			
 			$css.val( $color.val() );
