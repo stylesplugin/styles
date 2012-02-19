@@ -129,17 +129,15 @@ body, input, textarea {
 	#secondary {
 		-wp-background: url(#) // Sidebar.Wrapper;
 	
-		.widget {
+		.widget-container {
 			-wp-background: url(#) // Sidebar.Widget;
+			-wp-font:  // Sidebar.Widget Content;
 			.widget-title {
 				-wp-font:  // Sidebar.Widget Title;
 			}
-			ul {
-				-wp-font:  // Sidebar.Widget Content;
-				a {
-					-wp-font:  // Sidebar.Widget Link;
-					&:hover{ -wp-font:  // Sidebar.Widget Link Hover; }
-				}
+			a {
+				-wp-font:  // Sidebar.Widget Link;
+				&:hover{ -wp-font:  // Sidebar.Widget Link Hover; }
 			}
 		}
 	}
