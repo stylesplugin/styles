@@ -29,7 +29,7 @@
 
 /* General */
 body, input, textarea {
-	-wp-background: // General.Window;
+	-wp-background: url(#) // General.Window;
 }
 
 #wrapper {
@@ -155,64 +155,6 @@ body, input, textarea {
 		}
 	}
 	
-	#primary.widget-area {
-
-		ul.xoxo {
-
-			li#search.widget-container.widget_search {
-
-				form#searchform {
-
-					div {
-
-						label.screen-reader-text {
-
-						}
-						input#s {
-							-wp-background: url(#) // Header.Search;
-							-wp-font:  // Header.Search;
-							&:focus {
-								-wp-background: url(#) // Header.Search Focus;
-							}
-						}
-						input#searchsubmit {
-
-						}
-					}
-				}
-			}
-			li#archives.widget-container {
-
-				h3.widget-title {
-
-				}
-				ul {
-
-					li {
-
-						a {
-
-						}
-					}
-				}
-			}
-			li#meta.widget-container {
-
-				h3.widget-title {
-
-				}
-				ul {
-
-					li {
-
-						a {
-
-						}
-					}
-				}
-			}
-		}
-	
 	/* Comments */
 	#comments {
 		
@@ -309,6 +251,27 @@ body, input, textarea {
 		#site-generator {
 			-wp-background: url(#) // Footer.Theme Credit;
 		}
-	}
-	
+	}	
+}
+
+
+
+/* Header Clearfix: To allow background color */
+#header {
+	display: inline-block;
+}
+#header:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+html[xmlns] #header {
+	display: block;
+}
+ 
+* html #header {
+	height: 1%;
 }
