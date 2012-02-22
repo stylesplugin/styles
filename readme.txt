@@ -6,7 +6,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: css, css3, scss, sass, scaffold, less, admin, gui, color picker, gradients, image upload, google fonts, user interface, twentyten, twentyeleven
 Requires at least: 3.1
 Tested up to: 3.3.1
-Stable tag: 0.4
+Stable tag: 0.4.0
 
 Change the appearance of supported themes using zero code. Creates appearance options for images, colors, gradients, and fonts.
 
@@ -69,7 +69,7 @@ We used Styles + Scaffold as our main CSS Processor for a very long time, but th
 
 == Changelog ==
 
-= 0.4 =
+= 0.4.0 =
 * Initial public release.
 
 == License ==
