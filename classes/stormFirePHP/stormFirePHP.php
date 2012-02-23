@@ -9,7 +9,7 @@ if ( !class_exists('FirePHP') && !function_exists('stormFirePHPShutdown') ) {
 	ob_start();
 	include dirname(__FILE__).'/FirePHPCore/fb.php';
 
-	if ( false !== strpos($_SERVER['DOCUMENT_ROOT'], '/Users/') || WP_DEBUG === true || BSM_DEVELOPMENT === true ) {
+	if ( false !== strpos($_SERVER['DOCUMENT_ROOT'], '/Users/') || BSM_DEVELOPMENT === true ) {
 		// Development
 		error_reporting(E_ALL & ~E_NOTICE );
 
