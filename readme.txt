@@ -6,7 +6,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: css, css3, scss, sass, scaffold, less, admin, gui, color picker, gradients, image upload, google fonts, user interface, twentyten, twentyeleven
 Requires at least: 3.1
 Tested up to: 3.3.1
-Stable tag: 0.4.0
+Stable tag: 0.4.1
 
 Change the appearance of supported themes using zero code. Creates appearance options for images, colors, gradients, and fonts.
 
@@ -20,12 +20,13 @@ Styles allows you to edit the appearance of themes that don't provide an interfa
 * Color Picker
 * Google Fonts
 * Font size, color, styling, and capitalization
+* Live preview
 
 The plugin includes full support for TwentyTen and TwentyEleven out of the box. Just enable the plugin, and you can start playing with your site's look under Appearance > Styles.
 
-For experienced developers, other themes can be integrated using only CSS. A full theme GUI can be created in less than an hour by those familiar with CSS syntax. An example of how fast this process is can be seen in the video below.
+Here's a quick demo of how it works in TwentyEleven:
 
-[youtube http://www.youtube.com/watch?v=-Iw8d0g_ltQ]
+[youtube http://www.youtube.com/watch?v=2gbRFFxx1GY]
 
 **Warning**: While we have spent a lot of time testing and using Styles, it is still experimental! We may add or remove features or change syntax in future updates. This plugin requires [PHP 5.2](https://codex.wordpress.org/Switching_to_PHP5), which is the minimum supported version as of WordPress 3.2.
 
@@ -68,6 +69,13 @@ Styles uses portions of Anthony Short's [Scaffold](https://github.com/anthonysho
 We used Styles + Scaffold as our main CSS Processor for a very long time, but the plugin as it exists today would not be appropriate for that purpose. We've pared the CSS processing libraries down to a bare minimum to keep things as simple and stable as possible to solve one problem: creating a theme UI. For general purpose CSS processing, you'll be much better off using one of the many desktop-based libraries.
 
 == Changelog ==
+
+= 0.4.1 =
+* Fix saved CSS being one update behind
+* Fix initial values of fields & background color picker
+* Fix preview update stall
+* Fix background value when no image selected
+* Fix background replacement matching
 
 = 0.4.0 =
 * Initial public release.

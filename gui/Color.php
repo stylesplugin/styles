@@ -40,7 +40,6 @@ class StormStyles_Extension_Color extends StormStyles_Extension_Observer {
 	}
 	
 	function output() {
-		// Change color picker to http://www.digitalmagicpro.com/jPicker/
 		?>
 		<input class="pds_color_input" type="text" name="<?php echo $this->form_name ?>[color]" id="<?php echo $this->form_id ?>" value="<?php echo $this->value('form', 'color'); ?>" size="8" maxlength="8" />
 		<?php

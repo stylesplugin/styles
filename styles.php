@@ -2,8 +2,8 @@
 /*
 Plugin Name: Styles
 Plugin URI: http://stylesplugin.com
-Description: Change the appearance of any theme using the WordPress admin. Creates WordPress theme options from CSS: images, colors, gradients, and fonts.
-Version: 0.4
+Description: Change the appearance of your theme using the WordPress admin. Creates WordPress theme options for images, colors, gradients, and fonts.
+Version: 0.4.1
 Author: Brainstorm Media
 Author URI: http://brainstormmedia.com
 Inspiration: sivil, gravity, CSS Scaffold, will norris, mingle
@@ -56,7 +56,7 @@ class StormStyles extends Scaffold_Extension_Observable {
 	 * @since 0.1
 	 * @var int
 	 **/
-	var $version = '0.4';
+	var $version = '0.4.1';
 	
 	/**
 	 * Plugin DB version
@@ -413,8 +413,6 @@ class StormStyles extends Scaffold_Extension_Observable {
 	 * @return void
 	 **/
 	function load_file() {
-		if ( false !== $this->file ) { return; }
-		
 		global $blog_id;
 
 		// Find SCSS file
@@ -433,10 +431,21 @@ class StormStyles extends Scaffold_Extension_Observable {
 			}
 
 			$this->css = new StormCSSParser( $file['path'], $this );
-			
-			$this->file   = new StormStyles_Extension_Variable( $file, $this );
-			
-		}else if ( BSM_DEVELOPMENT === true ){
+
+			if ( !isset($_GET['scaffold']) ) {
+				// No need to init vars if we're just outputting
+				$this->file   = new StormStyles_Extension_Variable( $file, $this );
+
+				// Merge values from database into variable objects
+				if ( @is_object( $this->options['variables'] ) && is_object($this->file) ) {
+					$this->file->set( $this->options['variables']->get() );
+				}
+			}
+		}
+		
+		if ( false !== $this->file ) { return; }
+
+		if ( BSM_DEVELOPMENT === true ){
 			
 			// Development: Force re-render on every CSS load
 			wp_enqueue_style('storm-scaffold', '/?scaffold', array(), time() );

@@ -469,11 +469,16 @@ class StormStylesAdmin extends StormStyles {
 		$this->build();
 
 		// Update vars in active file object
-		$this->file->set( $input['variables'] );
-		// Convert input array to object for storage
-		$input['variables'] = $this->file;
+		if ( is_array( $input ) ) {
+			$this->file->set( $input['variables'] );
+			// Convert input array to object for storage
+			$input['variables'] = $this->file;
+
+			return $input['variables'];
+		}else {
+			return false;
+		}
 		
-		return $input['variables'];
 	}
 	
 	/**
@@ -566,6 +571,8 @@ class StormStylesAdmin extends StormStyles {
 		if ( $_POST['action'] == 'pdstyles-update-options' && check_admin_referer('StormStyles-update-options') ) {
 			// Uses $this->update() sanitation callback
 			update_option('StormStyles', $_POST );
+		}else {
+			$this->build();
 		}
 
 		$this->load_view('admin-main.php');

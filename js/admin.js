@@ -206,7 +206,8 @@ jQuery(function($) {
 			onChange: function(hsb, hex, rgb) {
 				setColor($color, hex);
 			},
-			flat: true
+			flat: true,
+			color: 'ff0000'
 		};
 			
 		// the "constructor" method that gets called when the object is created
@@ -337,16 +338,20 @@ jQuery(function($) {
 		
 		var load_color = function() {
 			
+			var colorVal = $color.val().replace('#', '');
+			
 			// Update color field value
-			if ( $color.val().length > 1 ) {
-				$color.data('color',  $color.val().replace('#', '') );
-				$color.data('ahex',  $color.val().replace('#', '') );
+			if ( colorVal.length > 1 ) {
+				$color.data('color',  colorVal );
+				$color.data('ahex',  colorVal );
 			}else {
 				$color.data('ahex',  'ffffffff' );
 			}
-			$css.val( $color.val() ).change();
+			$css.val( $color.val() ).change(); // Keeps #
 			
-			var colorPicker = $('<div/>').ColorPicker( colorPickerOpts );
+			var tmpColorPickerOpts = $.extend( colorPickerOpts, { color: colorVal });
+			
+			var colorPicker = $('<div/>').ColorPicker( tmpColorPickerOpts );
 			
 			$ui.append( colorPicker );
 		
