@@ -413,8 +413,6 @@ class StormStyles extends Scaffold_Extension_Observable {
 	 * @return void
 	 **/
 	function load_file() {
-		if ( false !== $this->file ) { return; }
-		
 		global $blog_id;
 
 		// Find SCSS file
@@ -433,10 +431,21 @@ class StormStyles extends Scaffold_Extension_Observable {
 			}
 
 			$this->css = new StormCSSParser( $file['path'], $this );
-			
-			$this->file   = new StormStyles_Extension_Variable( $file, $this );
-			
-		}else if ( BSM_DEVELOPMENT === true ){
+
+			if ( !isset($_GET['scaffold']) ) {
+				// No need to init vars if we're just outputting
+				$this->file   = new StormStyles_Extension_Variable( $file, $this );
+
+				// Merge values from database into variable objects
+				if ( @is_object( $this->options['variables'] ) && is_object($this->file) ) {
+					$this->file->set( $this->options['variables']->get() );
+				}
+			}
+		}
+		
+		if ( false !== $this->file ) { return; }
+
+		if ( BSM_DEVELOPMENT === true ){
 			
 			// Development: Force re-render on every CSS load
 			wp_enqueue_style('storm-scaffold', '/?scaffold', array(), time() );

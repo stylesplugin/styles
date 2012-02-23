@@ -209,12 +209,14 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 		}
 		
 		// Remove -wp- prefix
-		$meta['property'] = str_replace('-wp-background', 'background', $prop).';';
+		$meta['property'] = trim(str_replace('-wp-background', 'background', $prop), ';').';';
+		
 		return $this->background($value, $scaffold, $meta);
 	}
 	
 	public function background($value, $scaffold, $meta) {
 		extract( $this->extract($value) );
+		
 		if ( ($match = $this->find_linear_gradient( $value ))  ) {
 			return $this->linear_gradient($match);
 		}
@@ -230,6 +232,10 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 			$meta['property'] = str_replace( $original, $url, $meta['property'] );
 		}
 		
+		if ( false !== strpos($meta['property'], 'url(#)') ) {
+			return '';
+		}
+
 		return $meta['property'];
 	}
 	
@@ -392,7 +398,9 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	
 	private function extract($value, $id = '') {
 
-		if ( false !== strpos( $value, $this->meta_gliph ) ) {
+		$glyphpos = strpos( $value, $this->meta_gliph );
+
+		if ( false !== $glyphpos && $value[$glyphpos-1] !== ':' ) { // Catch http:// when glyph == //
 			$meta = substr($value, strrpos($value, $this->meta_gliph) + strlen($this->meta_gliph) );
 			$value = substr($value, 0, strrpos($value, $this->meta_gliph));
 		}
