@@ -15,13 +15,13 @@ $mac = ( false === strpos($_SERVER['HTTP_USER_AGENT'],'Macintosh') ) ? '' : 'mac
 <div class="wrap StormStyles">
 	
 	<?php screen_icon('themes'); ?>
-	<h2><?php _e( 'Styles' , 'StormStyles' ); ?></h2>
+	<h2><?php _e( 'Styles' , 'styles' ); ?></h2>
 	
 	<form method="post" id="StormForm" class="<?php echo $mac ?>" action="<?php esc_attr_e($_SERVER['REQUEST_URI']) ?>" enctype="multipart/form-data" name="post">
 		<?php 
-			wp_nonce_field( 'StormStyles-update-options' );
-			settings_fields('StormStyles');
-			do_settings_sections('StormStyles_Settings');
+			wp_nonce_field( 'styles-update-options' );
+			settings_fields('styles');
+			do_settings_sections('styles-settings-sections');
 		?>
 		
 		<p class="submit">
@@ -31,7 +31,7 @@ $mac = ( false === strpos($_SERVER['HTTP_USER_AGENT'],'Macintosh') ) ? '' : 'mac
 			<span class="response"> </span>
 		</p>
 		
-		<input type="hidden" name="action" class="action" value="pdstyles-update-options" />
+		<input type="hidden" name="action" class="action" value="styles-update-options" />
 
 	</form>
 				

@@ -9,7 +9,7 @@ require 'scaffold-bare/Extension.php';
 require 'scaffold-bare/NestedSelectors.php';
 require 'scaffold-bare/Properties.php';
 require 'scaffold-bare/Compressor.php';
-require 'WordPressBridge.php';
+require 'storm-wp-bridge.php';
 
 class StormCSSParser {
 	
@@ -19,29 +19,31 @@ class StormCSSParser {
 	var $original;
 	var $wp_bridge;
 	var $import_paths;
+	var $styles;
 	
-	function __construct( $path, $styles ) {
+	function __construct( $styles ) {
+		$this->styles = $styles;
 		
-		$this->import_paths = array(
-			get_stylesheet_directory(),
-			$styles->plugin_dir_path(),
-		);
+		// Load CSS source
+		$this->contents = $this->original = file_get_contents( $styles->file_paths['path'] );
+
+		// Where to search for embedded files. Used by background-replace
+		$this->import_paths = array( get_stylesheet_directory(), $styles->wp->plugin_dir_path(), );
 		
+		// Init helper objects
 		$this->helper->css = new Scaffold_Helper_CSS();
+		$this->nested_selectors = new Scaffold_Extension_NestedSelectors();
+		$this->wp_bridge = new StormWPBridge( $styles );
+		$this->properties = new Scaffold_Extension_Properties();
 		
-		$this->path = $path;
-		$this->contents = $this->original = file_get_contents( $path );
+		add_action( 'styles_before_process', array($this->nested_selectors, 'styles_before_process'), 10, 1 );
 		
-		$nested = new Scaffold_Extension_NestedSelectors();
-		$nested->post_process( $this, null );
+		add_action( 'styles_before_process', array($this->wp_bridge, 'before_process'), 10, 1 );
+		add_action( 'styles_process',        array($this->wp_bridge, 'register_property'), 15, 1 );
+		add_action( 'styles_process',        array($this->wp_bridge, 'process'), 20, 1 );
 		
-		$this->wp_bridge = new Scaffold_Extension_WordPressBridge();
-		$properties = new Scaffold_Extension_Properties();
-		
-		$this->wp_bridge->initialize( $this, null );
-		$this->wp_bridge->register_property( $properties );
-		$properties->post_process( $this, $this );
-		$this->wp_bridge->post_process( $this, null );
+		add_action( 'styles_after_process',  array($this->properties, 'styles_post_process'), 10, 1 );
+		add_action( 'styles_after_process',  array($this->wp_bridge, 'post_process'), 20, 1 );
 		
 		// Minify
 		// $this->contents = Minify_CSS_Compressor::process($this->contents);

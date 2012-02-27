@@ -92,6 +92,7 @@
 			a[data-type="color"]        { background-position: -97px 4px; }
 			a[data-type="transparent"] { background-position: -147px 4px; }
 			a[data-type="hide"] { background-position: -197px 4px; }
+			a[data-type="font"] { background-position: -247px 4px; }
 		}
 		
 	}
@@ -124,12 +125,10 @@
 		border-radius: 4px;
 	}
 	
-	.pds_color {
-		input {
-			width: 50px;
-			font-size: 9px;
-			text-transform:uppercase;
-		}
+	.pds_color_input {
+		width: 20px;
+		font-size: 9px;
+		text-transform:uppercase;
 	}
 	
 	.colorpicker {
@@ -145,6 +144,10 @@
 
 	
 	/* Font Picker */
+	
+	.font {
+		display:none;
+	}
 	
 	.pds_font_select {
 		option {

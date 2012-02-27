@@ -183,7 +183,7 @@ jQuery(function($) {
 			$css   = $element.find('div.data input[name$="[css]"]'),
 			$image = $element.find('div.data input[name$="[image]"]'),
 			$stops = $element.find('div.data input[name$="[stops]"]'),
-			$color = $element.find('div.data input[name$="[color]"]');
+			$color = $element.find('div.data input[name$="[bg_color]"]');
 		
 		var colorPickerOpts = {
 			onSubmit: function(hsb, hex, rgb, el) {
@@ -300,9 +300,16 @@ jQuery(function($) {
 				case 'gradient':    load_gradient();    break;
 				case 'image':       load_image();       break;
 				case 'hide':        load_hide();       break;
+				case 'font':        load_font();       break;
 			}
 			
-			$active.val( type );
+			if ( type !== 'font' ) {
+				$active.val( type );
+			}
+		}
+		
+		var load_font = function() {
+			$ui.siblings('div.font').toggle();
 		}
 		
 		var load_hide = function() {

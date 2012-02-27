@@ -13,6 +13,15 @@
 class Scaffold_Extension_NestedSelectors extends Scaffold_Extension
 {	
 	/**
+	 * Styles plugin version of $this->post_process
+	 **/
+	public function styles_before_process( $styles ) {
+		$filename = empty($styles->file_paths['path']) ? $styles->file_paths['uri'] : $styles->file_paths['path'];
+		$xml = $this->to_xml($styles->css->contents, $filename );
+		$styles->css->contents = html_entity_decode($this->_parse_children($xml->children()));
+	}
+	
+	/**
 	 * @access public
 	 * @param $source Scaffold_Source
 	 * @param $scaffold Scaffold
