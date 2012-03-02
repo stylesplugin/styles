@@ -26,7 +26,6 @@
 .StormStyles .imagePreview { max-height: 80px; display: block; margin: 10px; }
 .StormStyles .colorPicker { width: 20px; height: 20px; border: 4px solid #ccc; border-radius: 4px; }
 .StormStyles .pds_color_input { width: 20px; font-size: 9px; text-transform: uppercase; }
-.StormStyles .colorpicker { z-index: 999; }
 .StormStyles .ui table.jPicker { background: transparent; border: 0px none transparent; }
 .StormStyles .font { display: none; }
 .StormStyles .pds_font_select option { text-indent: 10px; }
