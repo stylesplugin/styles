@@ -125,7 +125,8 @@ body, input, textarea {
 				group: Content;
 				label: Entry Meta Link;
 				&:hover {
-					Entry Meta Link Hover
+					group: Content;
+					label: Entry Meta Link Hover
 				}
 			}
 		}

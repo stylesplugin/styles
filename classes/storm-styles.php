@@ -2,21 +2,14 @@
 
 /**
  * Common actions between admin and front-end.
- *
- * This class contains all the shared functions required for StormStyles to work
- *
- * @package StormStyles
- * @author pdclark
  **/
-
-class StormStyles {
+class Storm_Styles {
 	
 	/**
 	 * Plugin Version
 	 *
 	 * Holds the current plugin version.
 	 *
-	 * @since 0.1
 	 * @var int
 	 **/
 	var $version = '0.5.0';
@@ -34,7 +27,6 @@ class StormStyles {
 	/**
 	 * Options array containing all options for this plugin
 	 * 
-	 * @since 0.1
 	 * @var string
 	 **/
 	var $options;
@@ -133,6 +125,8 @@ class StormStyles {
 			return $this->search_paths;
 		}
 		
+		$upload_dir = wp_upload_dir();
+		
 		if ( !empty($_GET['file']) ) {
 			$search_paths = array(
 				$_GET['file'],
@@ -140,9 +134,9 @@ class StormStyles {
 			);
 		}
 
-		$search_paths[] = get_stylesheet_directory().'/css/styles-admin.css';
-		$search_paths[] = get_stylesheet_directory().'/styles-admin.css';
-		$search_paths[] = $this->wp->plugin_dir_path().'themes/'.get_template().'.css';
+		$search_paths[] = $upload_dir['basedir'].'/styles/'.get_template().'.gui.css';
+		$search_paths[] = get_stylesheet_directory().'/styles.gui.css';
+		$search_paths[] = $this->wp->plugin_dir_path().'themes/'.get_template().'.gui.css';
 		
 		$this->search_paths = apply_filters('styles_search_paths', $search_paths);
 		
@@ -213,9 +207,9 @@ class StormStyles {
 	function get_cache_file() {
 		
 		if ( is_multisite() ) {
-			$cache_file = "/styles/style-$blog_id.css";
+			$cache_file = "/styles/cache-$blog_id.css";
 		}else {
-			$cache_file = "/styles/style.css";
+			$cache_file = "/styles/cache.css";
 		}
 		return $cache_file;
 	}
@@ -237,7 +231,7 @@ class StormStyles {
 			return false;
 		}
 		
-		$this->css = new StormCSSParser( $this );
+		$this->css = new Storm_CSS_Processor( $this );
 		
 	}
 	

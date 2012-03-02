@@ -1,13 +1,6 @@
 <?php
 /**
- * StormStyles class for admin actions
- * 
- * This class contains all functions and actions required for StormStyles to work in the admin of WordPress
- * 
- * @since 0.1
- * @package StormStyles
- * @subpackage Admin
- * @author pdclark
+ * All methods and actions required for Styles to work in the admin of WordPress
  **/
 class Storm_WP_Admin extends Storm_WP_Frontend {
 	
@@ -30,7 +23,6 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 	 * Setup backend functionality in WordPress
 	 *
 	 * @return none
-	 * @since 0.1
 	 */
 	function __construct( $styles ) {
 		parent::__construct( $styles ); // sets $this->styles = $styles
@@ -93,7 +85,6 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 	 * Enqueue javascript required for the admin settings page
 	 * 
 	 * @return none
-	 * @since 0.1
 	 */
 	function admin_js() {
 		
@@ -103,22 +94,13 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 			'mediaUploadURL'	 => admin_url('media-upload.php'),
 			'pluginURL'	 => $this->plugin_url(),
 		) );
-
-		/*
-		// See http://www.prelovac.com/vladimir/best-practice-for-adding-javascript-code-to-wordpress-plugin
-		wp_localize_script ( 'shadowbox-js-helper', 'shadowboxJsHelperL10n', array(
-			'advConfShow'	 => __( 'Show Advanced Configuration', 'shadowbox-js' ),
-			'advConfHide'	 => __( 'Hide Advanced Configuration', 'shadowbox-js' ),
-			'messageConfirm' => __( 'Do you agree that you are not using FLV support for commercial purposes or have already purchased a license for JW FLV Media Player?', 'shadowbox-js' )
-		) );
-		*/
+		
 	}
 	
 	/**
 	 * Enqueue CSS required for the admin settings page
 	 *
 	 * @return none
-	 * @since 0.1
 	 */
 	function admin_css() {
 		wp_enqueue_style('dashboard');
@@ -152,10 +134,10 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 	}
 	
 	/**
-	 * Return the default options
+	 * Return the default settings
 	 *
+	 * @author Matt Martz <matt@sivel.net>
 	 * @return array
-	 * @since 0.1
 	 */
 	function defaults() {
 		$defaults = array(
@@ -168,13 +150,13 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 	/**
 	 * Initialize the default options during plugin activation
 	 *
+	 * @author Matt Martz <matt@sivel.net>
 	 * @return none
-	 * @since 0.1
 	 */
 	function init() {
-		if ( ! get_option ( 'styles' ) ) {
+		if ( ! get_option ( 'styles-settings' ) ) {
 			$this->options = $this->defaults();
-			add_option ( 'styles', $this->options );
+			add_option( 'styles-settings', $this->options );
 		} else {
 			$this->check_upgrade();
 		}
@@ -182,6 +164,7 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 	
 	/**
 	 * Check if an upgrade is needed
+	 * 
 	 * @return none
 	 */
 	function check_upgrade() {
@@ -230,7 +213,7 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 		if ( !in_array( $line_height, $f->line_heights ) ) { $line_height = ''; }
 		
 		$safe = array(
-			'active'         => preg_replace( '/[^a-zA-Z0-9]/', '', $active ), // Alphanumeric
+			'active'         => preg_replace( '/[^a-zA-Z0-9_-]/', '', $active ), // Alphanumeric
 			'css'            => strip_tags( $css ),
 			'image'          => strip_tags( $image ),
 			'bg_color'       => preg_replace( '/[^0-9a-fA-F#]/', '', $color), // Hexadecimal, possibly a-hex (9 chars instead of 7)
@@ -250,7 +233,6 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 	/**
 	 * Update/validate the options in the options table from the POST
 	 *
-	 * @since 0.1
 	 * @return none
 	 */
 	function update( $input ) {
@@ -306,7 +288,6 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 	/**
 	 * Handle updating options via AJAX; cache Scaffold output
 	 * 
-	 * @since 0.1
 	 * @return void
 	 **/
 	function update_ajax() {
@@ -349,7 +330,6 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 	 * Add the options page
 	 *
 	 * @return none
-	 * @since 0.1
 	 */
 	function add_page() {
 		if ( current_user_can ( 'manage_options' ) ) {
@@ -365,10 +345,9 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 	 *
 	 * @param array $links Array of the plugin action links
 	 * @return array
-	 * @since 0.1
 	 */
 	function filter_plugin_actions ( $links ) { 
-		$settings_link = '<a href="themes.php?page=StormStyles">' . __( 'Settings', 'styles' ) . '</a>'; 
+		$settings_link = '<a href="themes.php?page=styles">' . __( 'Settings', 'styles' ) . '</a>'; 
 		array_unshift ( $links, $settings_link ); 
 		return $links;
 	}
@@ -377,7 +356,6 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 	 * Output the options page
 	 *
 	 * @return none
-	 * @since 0.1
 	 */
 	function admin_page() {
 		// Update options if something was submitted
@@ -491,6 +469,4 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 		return $lang;
 	}
 
-} // END class StormStylesAdminController extends StormStyles
-
-?>
+}

@@ -1,58 +1,72 @@
 <?php
 /**
- * StormWPBridge
- *
- * Preloads variables to use within the CSS from the WordPress Styles plugin.
- * 
- * @author 			Paul Clark <pdclark (at) brainstormmedia.com>
- * @copyright 		2011 Brainstorm Media. All rights reserved.
- * @license 		http://opensource.org/licenses/bsd-license.php  New BSD License
+ * Minimal includes from Anthony Short's CSS Scaffold
+ * @link https://github.com/anthonyshort/scaffold
  */
-class StormWPBridge extends Scaffold_Extension
-{	
+require dirname ( __FILE__ ) . '/scaffold-bare/CSS.php';
+require dirname ( __FILE__ ) . '/scaffold-bare/Observable.php';
+require dirname ( __FILE__ ) . '/scaffold-bare/Observer.php';
+require dirname ( __FILE__ ) . '/scaffold-bare/Extension.php';
+require dirname ( __FILE__ ) . '/scaffold-bare/NestedSelectors.php';
+require dirname ( __FILE__ ) . '/scaffold-bare/Properties.php';
+require dirname ( __FILE__ ) . '/scaffold-bare/Compressor.php';
 
-	/**
-	 * URL to CSS3PIE behavior
-	 * 
-	 * @var string
-	 **/
+class Storm_CSS_Processor {
+	
+	var $helper;
+	var $contents;
+	var $original;
+	var $import_paths;
+	var $styles;
+	
+	// URL to CSS3PIE behavior
 	var $PIE;
 	
-	/**
-	 * Holds queue of active Google Font @imports to be added to CSS head
-	 * 
-	 **/
+	// Queue of active Google Font @imports to be added to CSS head
 	var $google_fonts = array();
 	
-	var $meta_gliph = '//';
-	var $meta_separator = '.';
-	
-	/**
-	 * Gets all selectors
-	 * @var string
-	 */
+	// Gets all selectors
 	private $regex = '(IDENTIFIER)?\s*BLOCK';
 	
 	function __construct( $styles ) {
-		// parent::__construct( null );
-		
 		$this->styles = $styles;
 		
 		$this->PIE = $this->styles->wp->plugin_url().'/js/PIE/PIE.php';
 		
+		// Load CSS source
+		$this->contents = $this->original = file_get_contents( $styles->file_paths['path'] );
+
+		// Where to search for embedded files. Used by background-replace
+		$this->import_paths = array( get_stylesheet_directory(), $styles->wp->plugin_dir_path(), );
+		
+		// Init helper objects
+		$this->helper = new Scaffold_Helper_CSS();
+		$this->nested_selectors = new Scaffold_Extension_NestedSelectors();
+		$this->properties = new Scaffold_Extension_Properties();
+		
+		add_action( 'styles_before_process', array($this->nested_selectors, 'styles_before_process'), 10, 1 );
+		add_action( 'styles_before_process', array($this, 'before_process'), 10, 1 );
+		add_action( 'styles_before_process', array($this->properties, 'styles_before_process'), 20, 1 );
+		
+		add_action( 'styles_process',        array($this, 'register_property'), 15, 1 );
+		add_action( 'styles_process',        array($this, 'process'), 20, 1 );
+		
+		add_action( 'styles_after_process',  array($this, 'post_process'), 20, 1 );
+		
+		// Minify
+		// $this->contents = Minify_CSS_Compressor::process($this->contents);
 	}
 	
 	/**
 	 * Registers the supported properties
 	 * @access public
-	 * @param $properties Scaffold_Extension_Properties
 	 * @return array
 	 */
 	public function register_property( $styles ) {
 		global $system;
 		
 		$this->behaviorpath = $system . 'extensions/CSS3/behaviors/';
-		// $styles->css->properties->register('background',array($this,'background')); // Causes multiple gradients
+		$styles->css->properties->register('background',array($this,'background')); // Causes multiple gradients
 		$styles->css->properties->register('background-color',array($this,'background_rgba'));
 		$styles->css->properties->register('border-radius',array($this,'border_radius'));
 		$styles->css->properties->register('box-shadow',array($this,'box_shadow'));
@@ -68,10 +82,8 @@ class StormWPBridge extends Scaffold_Extension
 	 * @return string
 	 */
 	public function before_process( $styles ) {
-		$helper = $this->styles->css->helper->css;
-		
 		// Create a real regex string
-		$regex = $helper->create_regex($this->regex);
+		$regex = $this->helper->create_regex($this->regex);
 		$id_mask = '/[^a-zA-Z0-9\s]/';
 		
 		// Get all selectors
@@ -79,7 +91,7 @@ class StormWPBridge extends Scaffold_Extension
 			// Iterate through selectors
 			foreach ($matches[0] as $key => $value) {
 				$selector = trim($matches[1][$key]);
-				$values = $styles->css->helper->css->ruleset_to_array($matches[2][$key]);
+				$values = $this->helper->ruleset_to_array($matches[2][$key]);
 
 				// Values we're getting from the CSS
 				$default = $label = $id = '';
@@ -112,13 +124,13 @@ class StormWPBridge extends Scaffold_Extension
 				$styles->groups[$group][] = $id;
 			}
 		}
-		
+
 		// Remove properties
-		$styles->css->contents = $helper->remove_properties( 'value',  $styles->css->contents );
-		$styles->css->contents = $helper->remove_properties( 'group',  $styles->css->contents );
-		$styles->css->contents = $helper->remove_properties( 'label',  $styles->css->contents );
-		$styles->css->contents = $helper->remove_properties( 'id',     $styles->css->contents );
-		$styles->css->contents = $helper->remove_properties( 'enable', $styles->css->contents );
+		$styles->css->contents = $this->helper->remove_properties( 'value',  $styles->css->contents );
+		$styles->css->contents = $this->helper->remove_properties( 'group',  $styles->css->contents );
+		$styles->css->contents = $this->helper->remove_properties( 'label',  $styles->css->contents );
+		$styles->css->contents = $this->helper->remove_properties( 'id',     $styles->css->contents );
+		$styles->css->contents = $this->helper->remove_properties( 'enable', $styles->css->contents );
 		
 		// Remove empty selectors, keep selectors with content remaining
 		if( preg_match_all('/'.$regex.'/xs', $styles->css->contents, $matches) ) {
@@ -149,7 +161,7 @@ class StormWPBridge extends Scaffold_Extension
 			if ( empty($active) || empty($selector) ) { continue; }
 			
 			$properties = '';
-			
+
 			// Create new styles
 			switch( $active ) {
 				case 'image':
@@ -672,6 +684,40 @@ class StormWPBridge extends Scaffold_Extension
 		$rotation = round( atan2(-$y,$x) * 180/pi() );
 		$strength = round( sqrt($x*$x) + sqrt($y*$y) );
 		return array($rotation, $strength);
+	}
+	
+	/**
+	 * Finds a file relative to the source file from a URL
+	 * @access public
+	 * @param $url
+	 * @return mixed
+	 * @author Anthony Short <anthonyshort@me.com>
+	 */
+	public function find( $url ) {
+		if($url[0] == '/' OR $url[0] == '\\')
+		{
+			$path = $_SERVER['DOCUMENT_ROOT'].$url;
+			if ( !file_exists($path) ) {
+				$path = false;
+			}
+		}
+		else
+		{
+			$import_paths = $this->import_paths;
+			array_unshift($import_paths, dirname($this->basepath));
+			
+			foreach ( $import_paths as $import_path ) {
+				$path = $import_path.DIRECTORY_SEPARATOR.$url;
+				if ( file_exists($path) ) {
+					break;
+				}
+			}
+			if ( !file_exists($path) ) {
+				$path = false;
+			}
+		}
+		
+		return $path;
 	}
 	
 }

@@ -58,7 +58,7 @@ class Storm_WP_Frontend {
 	function admin_bar() {
 		global $wp_admin_bar;
 		if ( current_user_can('manage_options') && is_admin_bar_showing() ) {
-			$wp_admin_bar->add_menu( array( 'parent' => 'appearance', 'id' => 'storm-styles', 'title' => __( 'Styles' ), 'href' => admin_url('themes.php?page=StormStyles'), ) );
+			$wp_admin_bar->add_menu( array( 'parent' => 'appearance', 'id' => 'storm-styles', 'title' => __( 'Styles' ), 'href' => admin_url('themes.php?page=styles'), ) );
 		}
 		
 	}

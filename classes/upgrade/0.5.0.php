@@ -106,4 +106,9 @@ $this->options = get_option('styles-settings');
 delete_option('StormStyles');
 delete_option('StormStyles-preview');
 
+// Rename cache file
+$upload_dir = wp_upload_dir();
+$cache_file = '/styles/cache.css';
+@rename( $upload_dir['basedir'].'/styles/styles.css', $upload_dir['basedir'].'/styles/cache.css');
+
 // Yay. We're done.

@@ -16,7 +16,7 @@
 .StormStyles .bgPicker .types a { background: url(/wp-content/plugins/styles/css/bg-sprites.png) no-repeat 3px 4px; text-indent: -9999px; overflow: hidden; display: inline-block; width: 16px; height: 12px; padding: 3px; -moz-border-radius: 3px; -khtml-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; }
 .StormStyles .bgPicker .types a.active, .StormStyles .bgPicker .types a:hover { background-color: #C1E7FF; }
 .StormStyles .bgPicker .types a[data-type="gradient"] { background-position: -47px 4px; }
-.StormStyles .bgPicker .types a[data-type="color"] { background-position: -97px 4px; }
+.StormStyles .bgPicker .types a[data-type="bg_color"] { background-position: -97px 4px; }
 .StormStyles .bgPicker .types a[data-type="transparent"] { background-position: -147px 4px; }
 .StormStyles .bgPicker .types a[data-type="hide"] { background-position: -197px 4px; }
 .StormStyles .bgPicker .types a[data-type="font"] { background-position: -247px 4px; }

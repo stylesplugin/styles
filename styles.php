@@ -46,20 +46,17 @@ if ( version_compare(PHP_VERSION, '5.2', '<') ) {
 function storm_styles_init() {
 	
 	require dirname ( __FILE__ ) . '/classes/stormFirePHP/stormFirePHP.php';
-	require dirname ( __FILE__ ) . '/classes/scaffold-bare/Observable.php';
 	require dirname ( __FILE__ ) . '/classes/storm-styles.php';
 	require dirname ( __FILE__ ) . '/classes/storm-wp-frontend.php';
 	
 	if ( is_admin() || DOING_AJAX ) {
 		// Only load heavy files if we're in wp-admin or processing CSS over AJAX
-		require dirname ( __FILE__ ) . '/classes/scaffold-bare/Observer.php';
-		require dirname ( __FILE__ ) . '/classes/storm-css-parser.php';
+		require dirname ( __FILE__ ) . '/classes/storm-css-processor.php';
 		require dirname ( __FILE__ ) . '/classes/storm-css-settings.php';
-		include dirname ( __FILE__ ) . '/classes/storm-wp-admin.php';
+		require dirname ( __FILE__ ) . '/classes/storm-wp-admin.php';
 	}
 	
-	global $StormStyles;
-	$StormStyles = new StormStyles();
+	$storm_styles = new Storm_Styles();
 	
 }
 add_action('init', 'storm_styles_init');

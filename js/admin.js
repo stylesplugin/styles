@@ -295,7 +295,7 @@ jQuery(function($) {
 			});
 			
 			switch ( type ) {
-				case 'color':       load_color();       break;
+				case 'bg_color':       load_color();       break;
 				case 'transparent': load_transparent(); break;
 				case 'gradient':    load_gradient();    break;
 				case 'image':       load_image();       break;

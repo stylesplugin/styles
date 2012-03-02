@@ -1,11 +1,7 @@
 <?php
 
 /**
- * Get CSS variables from Scaffold, iterate down the tree
- * 
- * @since 0.1
- * @package StormStyles
- * @author pdclark
+ * Generate WordPress admin settings sections and GUI
  **/
 class Storm_CSS_Settings {
 	
@@ -78,7 +74,7 @@ class Storm_CSS_Settings {
 		extract($el); // $form_id, $form_name, $id, $label, $group, $selector, $values
 		extract($values); // $active, $css, $image, $bg_color, $stops, $color, $font_size, $font_family, $font_weight, $font_style, $text_transform, $line_height
 		
-		$rgba = $this->styles->css->wp_bridge->rgba_to_ahex( $color );
+		$rgba = $this->styles->css->rgba_to_ahex( $color );
 		
 		?>
 			<div class="bgPicker">
@@ -86,9 +82,9 @@ class Storm_CSS_Settings {
 					<a title="Font" href="#" data-type="font">Font</a>
 					<a title="Image" href="#" data-type="image">Image</a>
 					<a title="Gradient" href="#" data-type="gradient">Gradient</a>
-					<a title="Color" href="#" data-type="color">Color</a>
+					<a title="Color" href="#" data-type="bg_color">Color</a>
 					<a title="Transparent" href="#" data-type="transparent">Transparent</a>
-					<a title="Hide" href="#" data-type="hide">Hide</a>
+					<?php /* <a title="Hide" href="#" data-type="hide">Hide</a> */ ?>
 				</div>
 			
 				<div class="data">

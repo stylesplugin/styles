@@ -47,7 +47,7 @@ class Scaffold_Extension_Properties extends Scaffold_Extension
 	 * @param $source
 	 * @return string
 	 */
-	public function styles_post_process( $styles )
+	public function styles_before_process( $styles )
 	{
 		// Go through each custom function
 		foreach($this->properties as $name => $property)
@@ -56,7 +56,7 @@ class Scaffold_Extension_Properties extends Scaffold_Extension
 			$method = $property[1];
 
 			// Find them in the CSS
-			foreach($styles->css->helper->css->find_properties($name,$styles->css->contents) as $found)
+			foreach($styles->css->helper->find_properties($name,$styles->css->contents) as $found)
 			{
 				// Call the hook method for this function
 				$result = call_user_func_array(array($obj,$method),array($found['value'], $styles->css, $found ));
