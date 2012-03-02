@@ -111,4 +111,7 @@ $upload_dir = wp_upload_dir();
 $cache_file = '/styles/cache.css';
 @rename( $upload_dir['basedir'].'/styles/styles.css', $upload_dir['basedir'].'/styles/cache.css');
 
+// Rewrite the cache file / DB entry
+$this->force_recache();
+
 // Yay. We're done.
