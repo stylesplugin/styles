@@ -19,7 +19,7 @@ class StormStyles {
 	 * @since 0.1
 	 * @var int
 	 **/
-	var $version = '0.4.1';
+	var $version = '0.5.0';
 	
 	/**
 	 * Plugin DB version
@@ -29,7 +29,7 @@ class StormStyles {
 	 * 
 	 * @var int
 	 **/
-	var $db_version = '0.4';
+	var $db_version = '0.5.0';
 	
 	/**
 	 * Options array containing all options for this plugin
@@ -86,13 +86,13 @@ class StormStyles {
 				'image'          => '', // Image URL
 				'bg_color'       => '', // Solid color background
 				'stops'          => '', // Gradient background
-				'color           => '', // Font color
+				'color'           => '', // Font color
 				'font_size'      => '',
 				'font_family'    => '',
 				'font_weight'    => '',
 				'font_style'     => '',
 				'text_transform' => '',
-				'line_height     => '',
+				'line_height'     => '',
 			),
 		),
 		etc...

@@ -21,7 +21,6 @@
 		
 		background-color: rgba(0, 0, 0, .5);
 		opacity: .5;
-		background: linear-gradient(#236922 0%, #508580 21%, #522452 47%, #292c61 98%);
 		background: replace-url() -- Will cause element to hide text and match dimensions of uploaded image
 		SCSS-style nested selectors
 
@@ -29,58 +28,64 @@
 
 /* General */
 body, input, textarea {
-	-wp-background: url(#) // General.Window;
+	group: General;
+	label: Window;
 }
 
 #wrapper {
-	
-	-wp-background: url(#) // General.Page;
-	-wp-font:	// General.Default Font;
+	group: General;
+	label: Page;
 	
 	a {
-		-wp-font: // Default Link;
+		group: General;
+		label: Default Link;
 		&:focus, &:active, &:hover {
-			-wp-font: // Default Link Hover;
+			group: General;
+			label: Default Link Hover;
 		}
 	}
 	
 	/* Header */
 	#header {
 		
-		-wp-background: url(#) // Header.Background;
+		group: Header;
+		label: Background;
 		
 		#site-title a {
-			-wp-background: replace-url(#) // Header.Site Title;
-			-wp-font: // Header.Site Title;
+			group: Header;
+			label: Site Title;
 		}
 		#site-description {
-			-wp-font:  // Header.Tagline;
+			group: Header;
+			label: Tagline;
 		}
 	}
 	
 	/* Main Menu */
 	#access {
-		-wp-background: url(#) // Main Menu.Wrapper;
+		group: Main Menu;
+		label: Wrapper;
 		ul > li {
 			a {
-				-wp-background: url(#) // Main Menu.Link: Top Level;
-				-wp-font:  // Main Menu.Link: Top Level;
+				group: Main Menu;
+				label: Link Top Level;
 			}
 			a:hover, li:hover > a, a:focus {
-				-wp-background: url(#) // Main Menu.Link: Top Level Hover;
-				-wp-font:  // Main Menu.Link: Top Level Hover;
+				group: Main Menu;
+				label: Link Top Level Hover;
 			}
 		}
 		.sub-menu {
-			-wp-background: url(#) // Main Menu.Submenu;
+			group: Main Menu;
+			label: Submenu;
 			li {
 				a {
-					-wp-background: url(#) // Main Menu.Submenu Link;
-					-wp-font:  // Main Menu.Submenu Link;
+					group: Main Menu;
+					label: Submenu Link;
 				}
 				a:hover, li:hover > a, a:focus {
-					-wp-background: url(#) // Main Menu.Submenu Link Hover;
-					-wp-font:  // Main Menu.Submenu Link Hover;
+					group: Main Menu;
+					label: Submenu Link Hover;
 				}
 			}
 		}
@@ -88,51 +93,67 @@ body, input, textarea {
 	
 	/* Body */
 	#main {
-		-wp-background: url(#) // Content.Wrapper;
+		group: Content;
+		label: Wrapper;
 	}
 	
 	/* Content */
 	#content {
-		-wp-background: url(#) // Content.Content;
+		group: Content;
+		label: Wrapper;
 		
 		.page-title, .entry-title, .singular .entry-title {
-			-wp-font: // Content.Entry Title;
+			group: Content;
+			label: Entry Title;
 			a { 
-				-wp-font:  // Content.Entry Title Link;
+				group: Content;
+				label: Entry Title Link;
 			}
 		}
 		.entry-meta {
-			-wp-font: // Content.Entry Meta;
+			group: Content;
+			label: Entry Meta;
 			a {
-				-wp-font: // Content.Entry Meta Link;
+				group: Content;
+				label: Entry Meta Link;
+				&:hover {
+					group: Content;
+					label: Entry Meta Link Hover
+				}
 			}
 		}
 		#entry-author-info {
-			-wp-background: url(#) // Content.Author Info Wrapper;
+			group: Content;
+			label: Author Info Wrapper;
 			
 			#author-description {
-				-wp-font:  // Content.Author Info Content;
+				group: Content;
+				label: Author Info Content;
 				h2 {
-					-wp-font:  // Content.Author Info Title;
+					group: Content;
+					label: Author Info Title;
 				}
 			}
 		}
 
 		.entry-content, .comment-content {
-			h1 { -wp-font: // Content.Heading 1;}
-			h2 { -wp-font: // Content.Heading 2;}
-			h3 { -wp-font: // Content.Heading 3; }
-			h4 { -wp-font: // Content.Heading 4; }
-			h5 { -wp-font: // Content.Heading 5; }
-			h6 { -wp-font: // Content.Heading 6; }
+			h1 { group: Content; label: Heading 1; }
+			h2 { group: Content; label: Heading 2; }
+			h3 { group: Content; label: Heading 3; }
+			h4 { group: Content; label: Heading 4; }
+			h5 { group: Content; label: Heading 5; }
+			h6 { group: Content; label: Heading 6; }
 		}
 		
 		.entry-utility {
-			-wp-font:  // Content.Entry Utility;
+			group: Content;
+			label: Entry Utility;
 			a {
-				-wp-font:  // Content.Entry Utility Link;
+				group: Content;
+				label: Entry Utility Link;
 				&:hover {
-					-wp-font:  // Content.Entry Utility Link Hover;					
+					group: Content;
+					label: Entry Meta Utility Hover
 				}
 			}
 		}
@@ -140,17 +161,20 @@ body, input, textarea {
 	
 	/* Sidebar */
 	#primary {
-		-wp-background: url(#) // Sidebar.Wrapper;
+		group: Sidebar;
+		label: Wrapper;
 	
 		.widget-container {
-			-wp-background: url(#) // Sidebar.Widget;
-			-wp-font:  // Sidebar.Widget Content;
+			group: Sidebar;
+			label: Widget;
 			.widget-title {
-				-wp-font:  // Sidebar.Widget Title;
+				group: Sidebar;
+				label: Widget Title;
 			}
 			a {
-				-wp-font:  // Sidebar.Widget Link;
-				&:hover{ -wp-font:  // Sidebar.Widget Link Hover; }
+				group: Sidebar;
+				label: Widget Link;
+				&:hover{ group: Sidebar; label: Widget Link Hover; }
 			}
 		}
 	}
@@ -158,57 +182,68 @@ body, input, textarea {
 	/* Comments */
 	#comments {
 		
-		-wp-background: url(#) // Comment Listing.Wrapper;
+		group: Comment Listing;
+		label: Wrapper;
 		
 		#comments-title {
-			-wp-font:  // Comment Listing.Title;
+			group: Comment Listing;
+			label: Title;
 		}
 		
 		.commentlist {
 			li {
-				-wp-background: url(#) // Comment Listing.Wrapper;
+				group: Comment Listing;
+				label: Wrapper;
 				.comment-meta {
-					-wp-font:  // Comment Listing.Comment Meta;
+					group: Comment Listing;
+					label: Comment Meta;
 					a {
-						-wp-font:  // Comment Listing.Comment Meta Link;
-						&:hover { -wp-font:  // Comment Listing.Comment Meta Link Hover;}
+						group: Comment Listing;
+						label: Comment Meta Link;
+						&:hover { group: Comment Listing; label: Comment Meta Link Hover;}
 					}
 				}
 				.comment-content {
-					-wp-font:  // Comment Listing.Comment Content;
+					group: Comment Listing;
+					label: Comment Content;
 				}
 				.comment-reply-link {
-					-wp-font:  // Comment Listing.Comment Reply Link;
-					-wp-background: url(#) // Comment Listing.Comment Reply Link;
+					group: Comment Listing;
+					label: Comment Reply Link;
 				}
 			}
 			.even {
-				-wp-background: url(#) // Comment Listing.Even Comment Wrapper;
+				group: Comment Listing;
+				label: Even Comment Wrapper;
 			}
 			.odd {
-				-wp-background: url(#) // Comment Listing.Odd Comment Wrapper;
+				group: Comment Listing;
+				label: Odd Comment Wrapper;
 			}
 		}
 		
 		/* Response Form */
 		#respond {
-			-wp-background: url(#) // Comment Response Form.Response Wrapper;
+			group: Comment Response Form;
+			label: Response Wrapper;
 			
 			#reply-title {
-				-wp-font:  // Comment Response Form.Response Title;
+				group: Comment Response Form;
+				label: Response Title;
 			}
 			
 			.comment-form-comment {
 				label {
-					-wp-background: url(#) // Comment Response Form.Response Label;
+					group: Comment Response Form;
+					label: Response Label;
 				}
 				textarea#comment {
-					-wp-font:  // Comment Response Form.Response Textarea;
-					-wp-background: url(#) // Comment Response Form.Response Textarea;
+					group: Comment Response Form;
+					label: Response Textarea;
 				}
 				#submit {
-					-wp-font:  // Comment Response Form.Response Submit Button;
-					-wp-background: url(#) // Comment Response Form.Response Submit Button;
+					group: Comment Response Form;
+					label: Response Submit Button;
 				}
 			}
 		}
@@ -217,39 +252,47 @@ body, input, textarea {
 	/* Footer */
 	#colophon {
 		
-		-wp-background: url(#) // Footer.Wrapper;
+		group: Footer;
+		label: Wrapper;
 		
 		#footer-widget-area {
 			.widget-area {
-				-wp-background: url(#) // Footer.Widget Area;
+				group: Footer;
+				label: Widget Area;
 			}
 			#first.widget-area {
-				-wp-background: url(#) // Footer.First Widget Area;
-				aside#archives-4.widget.widget_archive {
+				group: Footer;
+				label: First Widget Area;
 					
-					h3.widget-title {
-						-wp-font:  // Footer.Widget Title;
-					}
-					ul {
-						-wp-font:  // Footer.Widget Content;
-						a {
-							-wp-background: url(#) // Footer.Widget Link;
-						}
+				h3.widget-title {
+					group: Footer;
+					label: Widget Title;
+				}
+				ul {
+					group: Footer;
+					label: Widget Content;
+					a {
+						group: Footer;
+						label: Widget Link;
 					}
 				}
 			}
 		}
 		#site-info {
-			-wp-font:  // Footer.Site Info;
+			group: Footer;
+			label: Site Info;
 			a {
-				-wp-font:  // Footer.Site Info Link;
+				group: Footer;
+				label: Site Info Link;
 				&:hover {
-					-wp-font:  // Footer.Site Info Link Hover;
+					group: Footer;
+					label: Site Info Link Hover;
 				}
 			}
 		}
 		#site-generator {
-			-wp-background: url(#) // Footer.Theme Credit;
+			group: Footer;
+			label: Theme Credit;
 		}
 	}	
 }

@@ -40,9 +40,10 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 		);
 		$args = wp_parse_args( $args, $defaults );
 		
-		$this->options = get_option( 'styles' );
+		$this->options = get_option( 'styles-settings' );
 		
-		if ( version_compare ( $this->get_option ( 'version' ), $this->dbversion, '!=' ) && ! empty ( $this->options ) ) {
+		
+		if ( version_compare ( $this->get_option ('version'), $this->styles->db_version, '!=' ) ) {
 			$this->check_upgrade();
 		}
 		
@@ -76,14 +77,13 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 	}
 	
 	/**
-	 * Whitelist the StormStyles options
+	 * Register settings sanitization methods
 	 *
-	 * @since 0.1
 	 * @return none
 	 */
 	function register_settings() {
-		register_setting ( 'styles', 'styles',         array( $this, 'update' ) ); // update = validation method
-		register_setting ( 'styles', 'styles-preview', array( $this, 'update' ) );
+		register_setting ( 'styles', 'styles',          array( $this, 'update' ) ); // update = validation method
+		register_setting ( 'styles', 'styles-preview',  array( $this, 'update' ) );
 	}
 	
 	/**
@@ -149,10 +149,9 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 	}
 	
 	/**
-	 * Return a list of the languages available to StormStyles.js
+	 * Return a list of languages available
 	 *
 	 * @author Matt Martz <matt@sivel.net>
-	 * @since 2.0.3.3
 	 * @return array
 	 */
 	function languages() {
@@ -197,7 +196,6 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 	 * Try to set pdstyles language based on defined language for WordPress
 	 *
 	 * @author Matt Martz <matt@sivel.net>
-	 * @since 0.1
 	 * @return string
 	 */
 	function set_lang() {
@@ -313,7 +311,7 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 	 */
 	function defaults() {
 		$defaults = array(
-			'version'           => $this->db_version,
+			'version'           => $this->styles->db_version,
 			'language'          => $this->set_lang(),
 		);
 		return $defaults;
@@ -335,87 +333,38 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 	}
 	
 	/**
-	 * Check if an upgraded is needed
-	 *
+	 * Check if an upgrade is needed
 	 * @return none
-	 * @since 0.1
 	 */
 	function check_upgrade() {
-		/*
-		if ( $this->version_compare ( array( '3.0.0.0' => '<' ) ) )
-			$this->upgrade ( '3.0.0.0' );
-		else if ( $this->version_compare ( array( '3.0.0.0' => '>', '3.0.0.2' => '<' ) ) )
-			$this->upgrade ( '3.0.0.2' );
-		else if ( $this->version_compare ( array( '3.0.0.2' => '>', '3.0.3' => '<' ) ) )
-			$this->upgrade ( '3.0.3' );
-		*/
+
+		if ( $this->version_compare ( array( '0.5.0' => '<' ) ) ) {
+
+			// Upgrades for versions below 0.5.0
+			include dirname(__FILE__)."/upgrade/0.5.0.php"; 
+			
+			// Check for additional upgrade
+			$this->check_upgrade();
+			
+		} //else if ( $this->version_compare ( array( '0.5.0' => '>', 'X.Y.Z' => '<' ) ) ) {}
+			
 	}
 	
 	/**
 	 * Compare Versions
 	 *
+	 * @author Matt Martz <matt@sivel.net>
 	 * @param array Array of the version you want to compare to the version stored in the database as the key and the operator as the value
 	 * @return bool
-	 * @since 0.1
 	 */
 	function version_compare ( $versions ) {
 		foreach ( $versions as $version => $operator ) {
-			if ( version_compare ( $this->get_option ( 'version' ), $version, $operator ) )
+			if ( version_compare ( $this->get_option('version'), $version, $operator ) )
 				$response = true;
 			else
 				$response = false; 
 		}
 		return $response;
-	}
-	
-	/**
-	 * Upgrade options 
-	 *
-	 * @return none
-	 * @since 0.1
-	 */
-	function upgrade( $ver ) {
-		/*
-		if ( $ver == '3.0.0.0' ) { // Upgrades for versions below 3.0.0.0
-			$newopts = array(
-				'version'           => '3.0.0.0',
-				'smartLoad'         => 'false',
-				'enableFlv'         => 'false',
-				'tubeWidth'         => 640,
-				'tubeHeight'        => 385,
-				'players'           => $this->players(),
-				'autoDimensions'    => 'false',
-				'showOverlay'       => 'true',
-				'skipSetup'         => 'false',
-				'flashParams'       => '{bgcolor:"#000000", allowFullScreen:true}', 
-				'flashVars'         => '{}',
-				'flashVersion'      => '9.0.0'
-			);
-			unset ( $this->options['ie8hack'], $this->options['skin'] );
-			$this->options = array_merge ( $this->options, $newopts );
-			update_option ( 'shadowbox', $this->options );
-		} else if ( $ver == '3.0.0.2' ) { // Upgrades for versions below 3.0.0.2
-			$newopts = array( 
-				'version'           => '3.0.0.2',
-				'useSizzle'         => 'false',
-				'genericVideoHeight'=> $this->options['tubeHeight'],
-				'genericVideoWidth' => $this->options['tubeWidth']
-			);
-			if ( $this->options['enableFlv'] == 'true' )
-				$newopts['autoflv'] = 'true';
-			else
-				$newopts['autoflv'] = 'false';
-			unset ( $this->options['tubeHeight'], $this->options['tubeWidth'] );
-			$this->options = array_merge ( $this->options, $newopts );
-			update_option ( 'shadowbox', $this->options );
-		} else if ( $ver == '3.0.3' ) { // Upgrades for versions below 3.0.3
-			$this->options['version'] = '3.0.3';
-			if ( in_array( $this->options['library'], array( 'ext', 'dojo') ) )
-				$this->options['library'] = 'base';
-			update_option ( 'shadowbox', $this->options );
-		}
-		*/
-		$this->check_upgrade();
 	}
 	
 	/**
@@ -457,7 +406,6 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 	 * @return none
 	 */
 	function update( $input ) {
-		
 		do_action('styles_init', $this->styles);
 		do_action('styles_before_process', $this->styles);
 		do_action('styles_process', $this->styles);

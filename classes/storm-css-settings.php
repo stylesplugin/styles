@@ -47,7 +47,15 @@ class Storm_CSS_Settings {
 		
 		foreach( $styles->variables as $key => $element ){
 			
-			// $form_id, $form_name, $id, $label, $group, $selector, $values[active,css,image,bg_color,stops,$color, $font_size, $font_family, $font_weight, $font_style, $text_transform, $line_height]
+			if ( empty( $element['id']) ) { 
+				// Skip items that don't exist in the current theme
+				continue;
+			}
+			
+			// $form_id, $form_name, $id, $label, $group,$selector
+			// $values[ active,css,image,bg_color,stops,$color,
+			// 	$font_size, $font_family, $font_weight,
+			// 	$font_style, $text_transform, $line_height ]
 			extract($element);
 			
 			add_settings_field(

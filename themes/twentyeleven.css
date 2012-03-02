@@ -21,7 +21,6 @@
 		
 		background-color: rgba(0, 0, 0, .5);
 		opacity: .5;
-		background: linear-gradient(#236922 0%, #508580 21%, #522452 47%, #292c61 98%);
 		background: replace-url() -- Will cause element to hide text and match dimensions of uploaded image
 		SCSS-style nested selectors
 
@@ -125,12 +124,15 @@ body, input, textarea {
 			a {
 				group: Content;
 				label: Entry Meta Link;
+				&:hover {
+					Entry Meta Link Hover
+				}
 			}
 		}
 
 		.entry-content, .comment-content {
-			h1 { group: Content; label: Heading 1;}
-			h2 { group: Content; label: Heading 2;}
+			h1 { group: Content; label: Heading 1; }
+			h2 { group: Content; label: Heading 2; }
 			h3 { group: Content; label: Heading 3; }
 			h4 { group: Content; label: Heading 4; }
 			h5 { group: Content; label: Heading 5; }

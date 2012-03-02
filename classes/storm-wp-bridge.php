@@ -146,7 +146,7 @@ class StormWPBridge extends Scaffold_Extension
 			// $font_size, $font_family, $font_weight, $font_style, $text_transform, $line_height
 			extract( $el['values'] );
 
-			if ( empty($active) || empty($css) || empty($selector) ) { continue; }
+			if ( empty($active) || empty($selector) ) { continue; }
 			
 			$properties = '';
 			
@@ -356,6 +356,8 @@ class StormWPBridge extends Scaffold_Extension
 	}
 	
 	public function linear_gradient($stops) {
+		if ( empty($stops) ) return;
+		
 		// background: -webkit-gradient(linear, 0 0, 0 100%, from($from) to($to)); /*old webkit*/
 		return "
      background: -webkit-linear-gradient($stops); /*new webkit*/
@@ -377,6 +379,8 @@ class StormWPBridge extends Scaffold_Extension
 	 * @return string
 	 */
 	public function background_rgba($value) {
+		if ( empty($value) ) return;
+		
 		@extract($this->rgba_to_ahex( $value, true ));
 		
 		if ( $ms_color && isset($r) && isset($g) && isset($b) && isset($a) ) {
