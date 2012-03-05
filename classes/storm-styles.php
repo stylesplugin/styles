@@ -178,7 +178,8 @@ class Storm_Styles {
 
 		if ( empty($path) ) {
 			FB::error('Could not find CSS to load for Styles GUI in '.__FILE__.':'.__LINE__);
-			return false;
+			$path = false;
+			$uri = false;
 		}
 		
 		// URI for enqueing
