@@ -136,7 +136,7 @@ class Storm_Styles {
 
 		$search_paths[] = $upload_dir['basedir'].'/styles/'.get_template().'.gui.css';
 		$search_paths[] = get_stylesheet_directory().'/styles.gui.css';
-		$search_paths[] = $this->wp->plugin_dir_path().'themes/'.get_template().'.gui.css';
+		// $search_paths[] = $this->wp->plugin_dir_path().'themes/'.get_template().'.gui.css';
 		
 		$this->search_paths = apply_filters('styles_search_paths', $search_paths);
 		
@@ -218,8 +218,16 @@ class Storm_Styles {
 	 * Extract IDs, labels, groups, etc for the GUI from CSS
 	 */
 	function parse_css() {
-		if ( !$this->file_paths ) {
-			return false; // No theme file found. Nothing to process
+		global $wp_settings_errors;
+		
+		$contents = @file_get_contents( $styles->file_paths['path'] );
+		
+		if ( empty($contents) ) {
+			$contents = get_option( 'styles-'.get_template() );
+		}
+		if ( empty($contents) && empty($wp_settings_errors) ) {
+			// Just in case the API didn't send this error
+			add_settings_error( 'styles-api-key', 'no-css', 'Sorry, '.get_template().' is either not supported or could not be loaded. You can request support for this theme <a href="https://www.google.com/moderator/?authuser=2#16/e=1f6d0a">on this page</a>.', 'error' );			
 		}
 		
 		// Interpret CSS only if:
@@ -231,7 +239,7 @@ class Storm_Styles {
 			return false;
 		}
 		
-		$this->css = new Storm_CSS_Processor( $this );
+		$this->css = new Storm_CSS_Processor( $this, $contents );
 		
 	}
 	

@@ -65,10 +65,10 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 		$this->admin_settings = new Storm_CSS_Settings( $this->styles );
 		add_action( 'styles_settings', array($this->admin_settings, 'settings_sections'), 10, $this->styles );
 		add_action( 'styles_settings', array($this->admin_settings, 'settings_items'), 20, $this->styles );
+		add_action( 'styles_init', array($this->admin_settings, 'remote_api'), 0, $this->styles );
 		
 		// Sanatize before DB commit
 		add_filter( 'styles_before_save_element_values', array($this, 'before_save_element_values'), 10 );
-		
 	}
 	
 	/**

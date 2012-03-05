@@ -28,13 +28,13 @@ class Storm_CSS_Processor {
 	// Gets all selectors
 	private $regex = '(IDENTIFIER)?\s*BLOCK';
 	
-	function __construct( $styles ) {
+	function __construct( $styles, $contents ) {
 		$this->styles = $styles;
 		
 		$this->PIE = $this->styles->wp->plugin_url().'/js/PIE/PIE.php';
 		
 		// Load CSS source
-		$this->contents = $this->original = file_get_contents( $styles->file_paths['path'] );
+		$this->contents = $contents;
 
 		// Where to search for embedded files. Used by background-replace
 		$this->import_paths = array( get_stylesheet_directory(), $styles->wp->plugin_dir_path(), );

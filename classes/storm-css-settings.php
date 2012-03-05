@@ -26,12 +26,21 @@ class Storm_CSS_Settings {
 	 */
 	function settings_sections( $styles ) {
 		
+		// General
+		add_settings_section(
+			'styles-general', // Unique ID 
+			'Settings', // Label
+			null,   // array('DemoPlugin', 'Overview'), // Description callback
+			'styles-general' // Page
+		);
+		
+		// GUI
 		foreach( $styles->groups as $group => $elements ) {			
 			add_settings_section(
 				$group, // Unique ID 
 				$group, // Label
 				null,   // array('DemoPlugin', 'Overview'), // Description callback
-				'styles-settings-sections' // Page
+				'styles-gui' // Page
 			);
 		}
 	}
@@ -41,6 +50,17 @@ class Storm_CSS_Settings {
 	 */
 	public function settings_items( $styles ) {
 		
+		// General
+		add_settings_field(
+			'styles-api-key',                   // Unique ID
+			'Support License Key',                 // Label
+			array( $this, 'api_key_field' ), // Display callback
+			'styles-general', // Form page
+			'styles-general',                 // Form section
+			null                // Args passed to callback
+		);
+		
+		// GUI
 		foreach( $styles->variables as $key => $element ){
 			
 			if ( empty( $element['id']) ) { 
@@ -58,7 +78,7 @@ class Storm_CSS_Settings {
 				$key,                   // Unique ID
 				$label,                 // Label
 				array($this, 'form_element'), // Display callback
-				'styles-settings-sections', // Form page
+				'styles-gui', // Form page
 				$group,                 // Form section
 				$element                // Args passed to callback
 			);
@@ -136,4 +156,64 @@ class Storm_CSS_Settings {
 		<?php		
 	}
 	
+	public function api_key_field() {
+		$api_key = $this->styles->wp->get_option('api_key');
+		
+		?>
+
+		<input value="<?php esc_attr_e($api_key) ?>" name="styles_api_key" id="styles_api_key" type="text" class="regular-text" />
+		<p>This license key is used for access to theme upgrades and support.
+
+		<?php
+	}
+	
+	public function remote_api() {
+
+		if ( false != get_option('styles-'.get_template() ) && empty( $_POST['styles_api_key'] ) ) {
+			// Already have CSS for this template
+			// API key isn't being set
+			return true;
+		}
+		
+		// Check / Set API key
+		if ( !empty( $_POST['styles_api_key'] ) && wp_verify_nonce( $_POST['_wpnonce'], 'styles-options') ) {
+			$api_key = $_POST['styles_api_key'];
+			$this->styles->wp->options['api_key'] = $api_key;
+			update_option( 'styles-settings', $this->styles->wp->options );
+		}else {
+			$api_key = $this->styles->wp->get_option('api_key');
+		}
+
+		
+		// Setup verification request
+		$request = array(
+			'installed_themes' => array_keys(search_theme_directories()),
+			'active_theme' => get_template(),
+			'api_key' => $api_key,
+			'version' => $this->styles->version,
+		);
+
+		$response = wp_remote_get('http://stylesplugin.com?'.http_build_query($request) );
+		
+		if ( $response['response']['code'] != 200 || is_wp_error( $response ) ) {
+			add_settings_error( 'styles-api-key', '404', 'Could not connect to API host. Please try again later.', 'error' );			
+		}
+		
+		$data = json_decode( $response['body'] );
+		
+		$this->styles->wp->options['api_valid'] = $data->api_valid;
+		$this->styles->wp->options['license'] = $data->license;
+		update_option( 'styles-settings', $this->styles->wp->options );
+		
+		if ( !empty($data->message) ) {
+			add_settings_error( 'styles-api-key', 'api-message', $data->message, $data->type );
+		}
+		if ( !empty($data->supported_themes) ) {
+			$this->styles->wp->options['supported_themes'] = $data->supported_themes;
+		}
+		if ( !empty($data->css) ) {
+			delete_option('styles-'.get_template() );
+			add_option('styles-'.get_template(), $data->css, null, 'no'); // Don't autoload
+		}
+	}
 }
