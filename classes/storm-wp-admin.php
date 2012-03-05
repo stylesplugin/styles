@@ -216,7 +216,7 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 			'active'         => preg_replace( '/[^a-zA-Z0-9_-]/', '', $active ), // Alphanumeric
 			'css'            => strip_tags( $css ),
 			'image'          => strip_tags( $image ),
-			'bg_color'       => preg_replace( '/[^0-9a-fA-F#]/', '', $color), // Hexadecimal, possibly a-hex (9 chars instead of 7)
+			'bg_color'       => preg_replace( '/[^0-9a-fA-F#]/', '', $bg_color), // Hexadecimal, possibly a-hex (9 chars instead of 7)
 			'stops'          => strip_tags( $stops ),
 			'color'          => preg_replace( '/[^0-9a-fA-F#]/', '', $color), // Hexadecimal, possibly a-hex (9 chars instead of 7)
 			'font_size'      => preg_replace('/[^0-9\.]/', '',$font_size), // Number / decimal
