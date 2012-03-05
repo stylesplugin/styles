@@ -18,9 +18,10 @@ $mac = ( false === strpos($_SERVER['HTTP_USER_AGENT'],'Macintosh') ) ? '' : 'mac
 		<?php 
 			settings_errors();
 			settings_fields('styles'); // includes nonce
+			$css = get_option('styles-'.get_template());
 		?>
 		
-		<?php if ( isset($_GET['settings']) || empty( $this->styles->css->contents ) ) : ?>
+		<?php if ( isset($_GET['settings']) || ( empty( $this->styles->css->contents ) && empty($css) ) ) : ?>
 			<p><a href="themes.php?page=styles">Appearance</a> Settings</p>
 			
 			<?php do_settings_sections('styles-general'); ?>

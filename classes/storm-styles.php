@@ -238,7 +238,7 @@ class Storm_Styles {
 		) ){
 			return false;
 		}
-		
+
 		$this->css = new Storm_CSS_Processor( $this, $contents );
 		
 	}
