@@ -163,8 +163,11 @@ class Storm_CSS_Processor {
 
 			extract( $el['values'] );
 
-			if ( empty($active) || empty($selector) ) { continue; }
-			
+			if ( empty($selector) ) { continue; }
+			if ( empty($active) && empty($color) && empty($font_size) && empty($font_family) && empty($font_weight) && empty($font_style) && empty($text_transform) && empty($line_height) ) {
+				continue;
+			}
+
 			$properties = '';
 
 			// Create new styles
@@ -226,7 +229,7 @@ class Storm_CSS_Processor {
 		// $color, $font_size, $font_family, $font_weight
 		// $font_style, $text_transform, $line_height
 		extract( $values );
-		
+
 		if ( is_object( $this->styles->wp->admin_settings )) {
 			$opts = $this->styles->wp->admin_settings;
 		}else {
