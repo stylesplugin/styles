@@ -6,7 +6,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: css, stylesheet, scss, sass, scaffold, less, admin, gui, color picker, gradient, image upload, google fonts, user interface, twentyten, twentyeleven
 Requires at least: 3.1
 Tested up to: 3.3.1
-Stable tag: 0.5.0
+Stable tag: 0.5.1
 
 Change the appearance of supported themes using zero code. Creates appearance options for images, colors, gradients, and fonts.
 
@@ -79,6 +79,9 @@ Styles uses portions of Anthony Short's [Scaffold](https://github.com/anthonysho
 For general purpose CSS processing, you'll be much better off using one of the many desktop-based libraries. We used Styles + Scaffold as our main CSS Processor for a very long time. However, the plugin as it exists today would not be appropriate for that purpose. We've pared the CSS processing libraries down to a bare minimum to keep things as simple and stable as possible. The plugin as it is today is meant only to create a theme user interface.
 
 == Changelog ==
+
+= 0.5.1 =
+* Fix issue that would prevent Font styles from outputting if another option wasn't set on the same element.
 
 = 0.5.0 =
 * Load themes from API: Allows for theme support to be added without plugin updates.
