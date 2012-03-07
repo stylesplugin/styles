@@ -310,14 +310,17 @@ jQuery(function($) {
 		
 		var load_font = function() {
 			$ui.siblings('div.font').toggle();
+			$ui.siblings('div.background-image').hide();
 		}
 		
 		var load_hide = function() {
 			$css.val('hide').change();
+			$ui.siblings('div.background-image').hide();
 		}
 		
 		var load_transparent = function() {
 			$css.val('transparent').change();
+			$ui.siblings('div.background-image').hide();
 		}
 		
 		var load_gradient = function() {
@@ -326,7 +329,7 @@ jQuery(function($) {
 			});
 			
 			$css.val( $stops.val() ).change();
-			
+			$ui.siblings('div.background-image').hide();
 			$ui.append( gradientPicker );
 		}
 		
@@ -336,6 +339,7 @@ jQuery(function($) {
 			
 			$css.val( $image.val() ).change();
 			
+			$ui.siblings('div.background-image').show();
 			$ui.append( imagePicker ).append( imagePreview );
 		}
 		
@@ -344,6 +348,7 @@ jQuery(function($) {
 		}
 		
 		var load_color = function() {
+			$ui.siblings('div.background-image').hide();
 			
 			var colorVal = $color.val().replace('#', '');
 			

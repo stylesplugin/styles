@@ -76,12 +76,6 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 		
 		// Settings page setup
 		$this->admin_settings = new Storm_WP_Settings( $this->styles );
-		add_action( 'styles_settings', array($this->admin_settings, 'settings_sections'), 10, $this->styles );
-		add_action( 'styles_settings', array($this->admin_settings, 'settings_items'), 20, $this->styles );
-		add_action( 'styles_init', array($this->admin_settings, 'remote_api'), 0, $this->styles );
-		
-		// Sanatize before DB commit
-		add_filter( 'styles_before_save_element_values', array($this, 'before_save_element_values'), 10 );
 	}
 	
 	/**
@@ -209,38 +203,6 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 				$response = false; 
 		}
 		return $response;
-	}
-	
-	/**
-	 * Sanitize form values before saving to DB
-	 */
-	public function before_save_element_values( $values ) {
-
-		extract($values);
-		
-		$f = $this->admin_settings;
-		if ( !array_key_exists( $font_family, $f->families ) && !array_key_exists( $font_family, $f->google_families ) ) { $font_family = ''; }
-		if ( !in_array( $font_weight, $f->weights ) ) { $font_weight = ''; }
-		if ( !in_array( $font_style, $f->font_styles ) ) { $font_style = ''; }
-		if ( !in_array( $text_transform, $f->transforms ) ) { $text_transform = ''; }
-		if ( !in_array( $line_height, $f->line_heights ) ) { $line_height = ''; }
-		
-		$safe = array(
-			'active'         => preg_replace( '/[^a-zA-Z0-9_-]/', '', $active ), // Alphanumeric
-			'css'            => strip_tags( $css ),
-			'image'          => strip_tags( $image ),
-			'bg_color'       => preg_replace( '/[^0-9a-fA-F#]/', '', $bg_color), // Hexadecimal, possibly a-hex (9 chars instead of 7)
-			'stops'          => strip_tags( $stops ),
-			'color'          => preg_replace( '/[^0-9a-fA-F#]/', '', $color), // Hexadecimal, possibly a-hex (9 chars instead of 7)
-			'font_size'      => preg_replace('/[^0-9\.]/', '',$font_size), // Number / decimal
-			'font_family'    => $font_family   ,
-			'font_weight'    => $font_weight   ,
-			'font_style'     => $font_style    ,
-			'text_transform' => $text_transform,
-			'line_height'    => $line_height   ,
-		);
-		return $safe;
-		
 	}
 	
 	/**

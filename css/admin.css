@@ -22,6 +22,7 @@
 .styles-admin .bgPicker .types a[data-type="transparent"] { background-position: -147px 4px; }
 .styles-admin .bgPicker .types a[data-type="hide"] { background-position: -197px 4px; }
 .styles-admin .bgPicker .types a[data-type="font"] { background-position: -247px 4px; }
+.styles-admin .background-image { display: none; }
 .styles-admin .pds_image .current { margin-bottom: 5px; }
 .styles-admin .pds_image .current img { height: 80px; }
 .styles-admin .pds_image .pds_image_input { width: 60%; }

@@ -17,6 +17,13 @@ class Storm_WP_Settings {
 	function __construct( $styles ) {
 		$this->styles = $styles;
 
+		add_action( 'styles_settings', array($this, 'settings_sections'), 10 );
+		add_action( 'styles_settings', array($this, 'settings_items'), 20 );
+		add_action( 'styles_init', array($this, 'remote_api'), 0 );
+		
+		// Sanatize before DB commit
+		add_filter( 'styles_before_save_element_values', array($this, 'before_save_element_values'), 10 );
+
 		return true;
 	}
 	
@@ -24,7 +31,7 @@ class Storm_WP_Settings {
 	 * Register wp-admin GUI sections.
 	 * e.g., General, Header, Footer, Content, Sidebar
 	 */
-	function settings_sections( $styles ) {
+	function settings_sections() {
 		
 		// General
 		add_settings_section(
@@ -35,7 +42,7 @@ class Storm_WP_Settings {
 		);
 		
 		// GUI
-		foreach( $styles->groups as $group => $elements ) {			
+		foreach( $this->styles->groups as $group => $elements ) {			
 			add_settings_section(
 				$group, // Unique ID 
 				$group, // Label
@@ -48,7 +55,7 @@ class Storm_WP_Settings {
 	/**
 	 * Register individual settings fields
 	 */
-	public function settings_items( $styles ) {
+	public function settings_items() {
 		
 		// General
 		add_settings_field(
@@ -61,7 +68,7 @@ class Storm_WP_Settings {
 		);
 		
 		// GUI
-		foreach( $styles->variables as $key => $element ){
+		foreach( $this->styles->variables as $key => $element ){
 			
 			if ( empty( $element['id']) ) { 
 				// Skip items that don't exist in the current theme
@@ -84,6 +91,38 @@ class Storm_WP_Settings {
 			);
 		}
 
+	}
+
+	/**
+	 * Sanitize form values before saving to DB
+	 */
+	public function before_save_element_values( $values ) {
+
+		extract($values);
+		
+		if ( !array_key_exists( $font_family, $this->families ) && !array_key_exists( $font_family, $this->google_families ) ) { $font_family = ''; }
+		if ( !in_array( $font_weight, $this->weights ) ) { $font_weight = ''; }
+		if ( !in_array( $font_style, $this->font_styles ) ) { $font_style = ''; }
+		if ( !in_array( $text_transform, $this->transforms ) ) { $text_transform = ''; }
+		if ( !in_array( $line_height, $this->line_heights ) ) { $line_height = ''; }
+		
+		$safe = array(
+			'active'         => preg_replace( '/[^a-zA-Z0-9_-]/', '', $active ), // Alphanumeric
+			'css'            => strip_tags( $css ),
+			'image'          => strip_tags( $image ),
+			'image_replace'  => isset( $image_replace ),
+			'bg_color'       => preg_replace( '/[^0-9a-fA-F#]/', '', $bg_color), // Hexadecimal, possibly a-hex (9 chars instead of 7)
+			'stops'          => strip_tags( $stops ),
+			'color'          => preg_replace( '/[^0-9a-fA-F#]/', '', $color), // Hexadecimal, possibly a-hex (9 chars instead of 7)
+			'font_size'      => preg_replace('/[^0-9\.]/', '',$font_size), // Number / decimal
+			'font_family'    => $font_family   ,
+			'font_weight'    => $font_weight   ,
+			'font_style'     => $font_style    ,
+			'text_transform' => $text_transform,
+			'line_height'    => $line_height   ,
+		);
+		return $safe;
+		
 	}
 	
 	/**
@@ -118,6 +157,13 @@ class Storm_WP_Settings {
 				
 				<div class="ui"></div>
 				
+				<div class="background-image">
+					<label>
+						<input type="checkbox" value="1" name="<?php esc_attr_e($form_name) ?>[image_replace]" <?php checked($image_replace) ?> id="<?php esc_attr_e($form_id.'_image_replace') ?>" />
+						Hide text and replace with image
+					</label>
+				</div>
+
 				<div class="font">
 					<input class="pds_color_input" type="text" name="<?php esc_attr_e($form_name) ?>[color]" id="<?php esc_attr_e($form_id) ?>_color" value="<?php esc_attr_e($color) ?>" size="8" maxlength="8" />
 

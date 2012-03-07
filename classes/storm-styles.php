@@ -76,6 +76,7 @@ class Storm_Styles {
 				'active'         => '', // Which elements should be output
 				'css'            => '', // CSS value for the active element (needs refactoring to allow multiple)
 				'image'          => '', // Image URL
+				'image_replace'  => '', // (bool) Whether or not to run the image replace filter
 				'bg_color'       => '', // Solid color background
 				'stops'          => '', // Gradient background
 				'color'           => '', // Font color

@@ -171,7 +171,11 @@ class Storm_CSS_Processor {
 			switch( $active ) {
 				case 'image':
 
-					$properties .= "background-image: url($image);" ;
+					if ( $image_replace ) {
+						$properties .= $this->image_replace($image);
+					}else {
+						$properties .= "background-image: url($image);" ;
+					}
 
 					break;
 				case 'gradient':
@@ -181,6 +185,7 @@ class Storm_CSS_Processor {
 					break;
 				case 'bg_color':
 				
+					$properties .= 'background-image:url();'; // Until the UI supports both at once
 					$properties .= $this->background_rgba($css);
 					
 					break;
@@ -426,10 +431,10 @@ class Storm_CSS_Processor {
 	 * @return string
 	 */
 	public function image_replace($value) {
-		
-		$value = str_replace( 'http://'.$_SERVER['HTTP_HOST'], '', $value);
-		
-		if( ($url = $this->find_background_url($value) ) && ($file = $this->styles->css->find($url)) ) {
+
+		$path = str_replace( home_url(), '', $value );
+
+		if( $file = $this->find( $path ) ) {
 
 			// Get the size of the image file
 			$size = GetImageSize($file);
@@ -441,10 +446,10 @@ class Storm_CSS_Processor {
 				$width = $height = 0;
 			}
 			
-			// Build the selector
-			$properties = 'background:url('.$url.') no-repeat 0 0;height:0;padding-top:'.$height.'px;width:'.$width.'px;display:block;text-indent:-9999px;overflow:hidden;';
+			// Build the CSS
+			$css = 'background:url('.$value.') no-repeat 0 0;height:0;padding-top:'.$height.'px;width:'.$width.'px;display:block;text-indent:-9999px;overflow:hidden;';
 		
-			return $properties;
+			return $css;
 		}else {
 			return "/* Error: could not find file: $value */";
 		}
@@ -699,11 +704,16 @@ class Storm_CSS_Processor {
 	 * @author Anthony Short <anthonyshort@me.com>
 	 */
 	public function find( $url ) {
+		if ( file_exists($url) ) { return $url; }
+
 		if($url[0] == '/' OR $url[0] == '\\')
 		{
 			$path = $_SERVER['DOCUMENT_ROOT'].$url;
 			if ( !file_exists($path) ) {
-				$path = false;
+				$path = untrailingslashit(ABSPATH).$url;
+				if ( !file_exists($path) ) {
+					$path = false;
+				}
 			}
 		}
 		else
