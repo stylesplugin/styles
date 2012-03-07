@@ -41,6 +41,33 @@ class Scaffold_Extension_Properties extends Scaffold_Extension
 	}
 	
 	/**
+	 * Styles plugin version of post_process
+	 * 
+	 * @access public
+	 * @param $source
+	 * @return string
+	 */
+	public function styles_before_process( $styles )
+	{
+		// Go through each custom function
+		foreach($this->properties as $name => $property)
+		{
+			$obj 	= $property[0];
+			$method = $property[1];
+
+			// Find them in the CSS
+			foreach($styles->css->helper->find_properties($name,$styles->css->contents) as $found)
+			{
+				// Call the hook method for this function
+				$result = call_user_func_array(array($obj,$method),array($found['value'], $styles->css, $found ));
+				
+				// Replace it in the CSS
+				$styles->css->contents = str_replace($found['property'],$result,$styles->css->contents);
+			}
+		}
+	}
+	
+	/**
 	 * @access public
 	 * @param $source
 	 * @return string

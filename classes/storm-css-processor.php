@@ -1,83 +1,79 @@
 <?php
 /**
- * Scaffold_Extension_WordPressBridge
- *
- * Preloads variables to use within the CSS from the WordPress Styles plugin.
- * 
- * @package 		Scaffold
- * @author 			Paul Clark <pdclark (at) brainstormmedia.com>
- * @copyright 		2011 Brainstorm Media. All rights reserved.
- * @license 		http://opensource.org/licenses/bsd-license.php  New BSD License
+ * Minimal includes from Anthony Short's CSS Scaffold
+ * @link https://github.com/anthonyshort/scaffold
  */
-class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
-{	
-	/**
-	 *  Raw values for use in property functions. Meant to replace $variables.
-	 */
-	public $vals = array();
+require dirname ( __FILE__ ) . '/scaffold-bare/CSS.php';
+require dirname ( __FILE__ ) . '/scaffold-bare/Observable.php';
+require dirname ( __FILE__ ) . '/scaffold-bare/Observer.php';
+require dirname ( __FILE__ ) . '/scaffold-bare/Extension.php';
+require dirname ( __FILE__ ) . '/scaffold-bare/NestedSelectors.php';
+require dirname ( __FILE__ ) . '/scaffold-bare/Properties.php';
+require dirname ( __FILE__ ) . '/scaffold-bare/Compressor.php';
+
+class Storm_CSS_Processor {
 	
-	/**
-	 * All found properties
-	 * 
-	 * @var array
-	 **/
-	var $found = array();
+	var $helper;
+	var $contents;
+	var $original;
+	var $import_paths;
+	var $styles;
 	
-	/**
-	 * URL to CSS3PIE behavior
-	 * 
-	 * @var string
-	 **/
+	// URL to CSS3PIE behavior
 	var $PIE;
 	
-	/**
-	 * Holds queue of active Google Font @imports to be added to CSS head
-	 * 
-	 **/
+	// Queue of active Google Font @imports to be added to CSS head
 	var $google_fonts = array();
 	
-	var $meta_gliph = '//';
-	var $meta_separator = '.';
+	// Gets all selectors
+	private $regex = '(IDENTIFIER)?\s*BLOCK';
 	
-	function __construct( $config= array() ) {
-		parent::__construct($config);
+	function __construct( $styles, $contents ) {
+		$this->styles = $styles;
 		
-		global $StormStylesController;
+		$this->PIE = $this->styles->wp->plugin_url().'/js/PIE/PIE.php';
 		
-		$this->PIE = $StormStylesController->plugin_url().'/js/PIE/PIE.php';
+		// Load CSS source
+		$this->contents = $contents;
 
-		if ( isset($_GET['preview']) ) {
-			
-			$preview = get_option('StormStyles-preview');
-			if( is_object( $preview ) ) {
-				$this->vals = $preview->get('css');
-			}
-
-		}else if( is_object( $StormStylesController->options['variables'] ) ) {
-			$this->vals = $StormStylesController->options['variables']->get('css');
-		}
+		// Where to search for embedded files. Used by background-replace
+		$this->import_paths = array( get_stylesheet_directory(), $styles->wp->plugin_dir_path(), );
+		
+		// Init helper objects
+		$this->helper = new Scaffold_Helper_CSS();
+		$this->nested_selectors = new Scaffold_Extension_NestedSelectors();
+		$this->properties = new Scaffold_Extension_Properties();
+		
+		add_action( 'styles_before_process', array($this->nested_selectors, 'styles_before_process'), 10, 1 );
+		add_action( 'styles_before_process', array($this, 'before_process'), 10, 1 );
+		add_action( 'styles_before_process', array($this->properties, 'styles_before_process'), 20, 1 );
+		
+		add_action( 'styles_process',        array($this, 'register_property'), 15, 1 );
+		add_action( 'styles_process',        array($this, 'process'), 20, 1 );
+		
+		add_action( 'styles_after_process',  array($this, 'post_process'), 20, 1 );
+		
+		// Minify
+		// $this->contents = Minify_CSS_Compressor::process($this->contents);
 	}
 	
 	/**
 	 * Registers the supported properties
 	 * @access public
-	 * @param $properties Scaffold_Extension_Properties
 	 * @return array
 	 */
-	public function register_property($properties) {
+	public function register_property( $styles ) {
 		global $system;
 		
 		$this->behaviorpath = $system . 'extensions/CSS3/behaviors/';
-		$properties->register('background',array($this,'background'));
-		$properties->register('background-color',array($this,'background_rgba'));
-		$properties->register('-wp-background',array($this,'wp_background'));
-		$properties->register('-wp-background-color',array($this,'wp_background_color'));
-		$properties->register('-wp-font',array($this,'wp_font'));
-		$properties->register('border-radius',array($this,'border_radius'));
-		$properties->register('box-shadow',array($this,'box_shadow'));
-		$properties->register('opacity',array($this,'opacity'));
+		$styles->css->properties->register('background',array($this,'background')); // Causes multiple gradients
+		$styles->css->properties->register('background-color',array($this,'background_rgba'));
+		$styles->css->properties->register('border-radius',array($this,'border_radius'));
+		$styles->css->properties->register('box-shadow',array($this,'box_shadow'));
+		$styles->css->properties->register('opacity',array($this,'opacity'));
 		// $properties->register('text_shadow',array($this,'text_shadow'));
 		// $properties->register('transition',array($this,'transition'));
+		
 	}
 
 	/**
@@ -85,48 +81,169 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	 * @param $source
 	 * @return string
 	 */
-	public function initialize($source,$scaffold) {
-		$this->source = $source;
+	public function before_process( $styles ) {
+		// Create a real regex string
+		$regex = $this->helper->create_regex($this->regex);
+		$id_mask = '/[^a-zA-Z0-9\s]/';
+		
+		// Get all selectors
+		if( preg_match_all('/'.$regex.'/xs', $styles->css->contents, $matches) ) {
+			// Iterate through selectors
+			foreach ($matches[0] as $key => $value) {
+				$selector = trim($matches[1][$key]);
+				$values = $this->helper->ruleset_to_array($matches[2][$key]);
+
+				if (empty($values)) continue;
+
+				// Values we're getting from the CSS
+				$default = $label = $id = '';
+				$group = 'General';
+				$enable = 'all';
+				extract($values, EXTR_IF_EXISTS);
+
+				if ( empty($label) && empty($id) ) {
+					continue;
+				}
+				
+				// Set ID from group+label if it doesn't exist
+				if ( empty($id) ) {
+					// Strip non alpha-numeric
+					$id = preg_replace($id_mask, '', $group).'.'.preg_replace($id_mask, '', $label);
+					// Replace white-space of any length with a hyphen
+					$id = preg_replace('/[\s]+/', '.', strtolower($id));
+				}
+				
+				// Add items to variables array, keeping extra IDs if they exist
+				$styles->variables[$id]['group']     = $group;
+				$styles->variables[$id]['label']     = $label;
+				$styles->variables[$id]['id']        = $id;
+				$styles->variables[$id]['enable']    = $enable;
+				$styles->variables[$id]['selector']  = $selector;
+				$styles->variables[$id]['form_name'] = "variables[$id][values]";
+				$styles->variables[$id]['form_id']   = 'st_'.md5($id);
+				
+				// Organize variables IDs into groups
+				$styles->groups[$group][] = $id;
+			}
+		}
+
+		// Remove properties
+		$styles->css->contents = $this->helper->remove_properties( 'value',  $styles->css->contents );
+		$styles->css->contents = $this->helper->remove_properties( 'group',  $styles->css->contents );
+		$styles->css->contents = $this->helper->remove_properties( 'label',  $styles->css->contents );
+		$styles->css->contents = $this->helper->remove_properties( 'id',     $styles->css->contents );
+		$styles->css->contents = $this->helper->remove_properties( 'enable', $styles->css->contents );
+		
+		// Remove empty selectors, keep selectors with content remaining
+		if( preg_match_all('/'.$regex.'/xs', $styles->css->contents, $matches) ) {
+			
+			// Clear CSS contents
+			$styles->css->contents = '';
+
+			// Iterate through selectors and add back those with values
+			foreach ($matches[0] as $key => $value) {
+				// Ignore non-alphanumeric (strip white space)
+				$test_value = preg_replace('/[^0-9a-z]/i', '', $matches[2][$key] );
+				if ( !empty( $test_value ) ) {
+					// Add back to CSS contents if something besides whitespace is there
+					$styles->css->contents .= $value."\n";
+				}
+			}
+		}
+	}
+	
+	public function process( $styles ) {
+		
+		foreach( $styles->variables as $id => $el ) {
+			$selector = $el['selector'];
+			// $active, $css, $image, $bg_color, $stops, $color
+			// $font_size, $font_family, $font_weight, $font_style, $text_transform, $line_height
+			
+			if ( empty($el['values']) ) { continue; }
+
+			extract( $el['values'] );
+
+			if ( empty($active) || empty($selector) ) { continue; }
+			
+			$properties = '';
+
+			// Create new styles
+			switch( $active ) {
+				case 'image':
+
+					if ( $image_replace ) {
+						$properties .= $this->image_replace($image);
+					}else {
+						$properties .= "background-image: url($image);" ;
+					}
+
+					break;
+				case 'gradient':
+				
+					$properties .= $this->linear_gradient($css) ;
+
+					break;
+				case 'bg_color':
+				
+					$properties .= 'background-image:url();'; // Until the UI supports both at once
+					$properties .= $this->background_rgba($css);
+					
+					break;
+				case 'transparent':
+				
+					$properties .= 'transparent url();' ;
+				
+					break;
+				case 'hide':
+				
+					$properties .= 'display:none;' ;
+					
+					break;
+
+			}
+			
+			$properties .= $this->wp_font( $el['values'] );
+			
+			// Add selector and properties to CSS source
+			$styles->css->contents .= "$selector { $properties }\n" ;
+			
+		} // end foreach
+		
 	}
 	
 	/**
 	 * Add Google @import declarations to the beginning of the CSS Source
 	 */
-	public function post_process($source, $scaffold) {
+	public function post_process( $styles ) {
 		foreach ( $this->google_fonts as $family => $src ) {
 			$imports .= "@import url(http://fonts.googleapis.com/css?family=$src);\r";
 		}
 		
-		$source->contents = $imports.$source->contents;
+		$styles->css->contents = $imports.$styles->css->contents;
 	}
 	
-	public function wp_font($value, $scaffold, $meta) {
-		$id = $this->create_id($meta, $id);
-		$key = md5($id);
+	public function wp_font( $values ) {
+		// $color, $font_size, $font_family, $font_weight
+		// $font_style, $text_transform, $line_height
+		extract( $values );
 		
-		extract( $this->extract($value, $id) );
-		
-		// Populate found array for WP UI generation
-		$this->found[$group][$key] = array(
-			'value' => $value,
-			'group' => $group,
-			'label' => $label,
-			'id'    => $id,
-			'key'   => $key,
-			'class' => 'StormStyles_Extension_Font',
-		);
-		
-		// Extract values saved from WP form
-		@extract( $this->vals[$group][$key] );
-		
-		$opts = new StormStyles_Extension_Font();
-		
+		if ( is_object( $this->styles->wp->admin_settings )) {
+			$opts = $this->styles->wp->admin_settings;
+		}else {
+			FB::error('Couldn\'t load $this->styles->wp->admin_settings in '.__FILE__);
+			return;
+		}
+
 		if ( array_key_exists( $font_family, $opts->families) ) {
 			$font_family = $opts->families[$font_family];
-		}else if ( array_key_exists( $font_family, $opts->google_families) ) {
+		}else if ( array_key_exists( $font_family, $opts->google_families) ) { // Check for Google Fonts
 			$this->google_fonts[$font_family] = $opts->google_families[$font_family]; // Add family name to @imports queue
 			$font_family = "\"$font_family\""; // Set CSS
 		}
+		
+		$output = '';
+		
+		$color = trim($color, '#');
 		
 		if ($color)          $output .= "color: #$color;";
 		if ($font_size)      $output .= "font-size: {$font_size}px;";
@@ -136,39 +253,33 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 		if ($font_weight)    $output .= "font-weight: $font_weight;";
 		if ($text_transform) $output .= "text-transform: $text_transform;";
 		
-		if ( $output ) {
-			return $output;
-		}else if ( empty( $value ) ){
-			return '/* No font values set */';
-		}else {
-			return "font: $value;";
-		}
+		return $output;
 
 	}
 	
 	public function wp_background($value, $scaffold, $meta) {
+
 		$id = $this->create_id($meta, $id);
 		$key = md5($id);
 
 		extract( $this->extract($value, $id) );
-
 		if ( $stops = $this->find_linear_gradient($value) ) { $form_value = $stops; 
 		}else if ( $furl = $this->find_background_url($value)  ) { $form_value = $furl;
 		}else { $form_value = $value; }
 
 		// Populate found array for WP UI generation
-		$this->found[$group][$key] = array(
-			'value' => $form_value,
-			'group' => $group,
-			'label' => $label,
-			'id'    => $id,
-			'key'   => $key,
-			'class' => 'StormStyles_Extension_Background',
-		);
+		// $this->found[$group][$key] = array(
+		// 			'value' => $form_value,
+		// 			'group' => $group,
+		// 			'label' => $label,
+		// 			'id'    => $id,
+		// 			'key'   => $key,
+		// 			'class' => 'StormStyles_Extension_Background',
+		// 		);
 
 		// Extract values saved from WP form:
 		//   $active, $css, $image, $color, $stops
-		@extract( $this->vals[$group][$key] ); 
+		@extract( $this->styles->variables[$key] ); 
 
 		if ( $active && $css ) {
 			switch( $active ) {
@@ -186,13 +297,13 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 					break;
 				case 'gradient':
 					$value = "linear-gradient( $css )";
-					$meta['property'] = "linear-gradient( $css )";
+					$meta['property'] = "linear-gradient( $css );";
 					break;
 				case 'color':
 					$meta['property'] = $value = $this->background_rgba($css);
 					break;
 				case 'transparent':
-					$value = 'transparent url()';
+					$value = 'transparent url();';
 					break;
 				case 'hide':
 					return 'display:none;';
@@ -249,17 +360,17 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 		extract( $this->extract($value, $id) );
 		
 		// Populate found array for WP UI generation
-		$this->found[$group][$key] = array(
-			'value' => $value,
-			'group' => $group,
-			'label' => $label,
-			'id'    => $id,
-			'key'   => $key,
-			'class' => 'StormStyles_Extension_Color',
-		);
+		// $this->found[$group][$key] = array(
+		// 			'value' => $value,
+		// 			'group' => $group,
+		// 			'label' => $label,
+		// 			'id'    => $id,
+		// 			'key'   => $key,
+		// 			'class' => 'StormStyles_Extension_Color',
+		// 		);
 		
 		// Extract values saved from WP form
-		@extract( $this->vals[$group][$key] );
+		@extract( $this->styles->variables[$key] );
 
 		if ( !empty($color) ) { $value = $color; }
 
@@ -267,6 +378,8 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	}
 	
 	public function linear_gradient($stops) {
+		if ( empty($stops) ) return;
+		
 		// background: -webkit-gradient(linear, 0 0, 0 100%, from($from) to($to)); /*old webkit*/
 		return "
      background: -webkit-linear-gradient($stops); /*new webkit*/
@@ -288,6 +401,8 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	 * @return string
 	 */
 	public function background_rgba($value) {
+		if ( empty($value) ) return;
+		
 		@extract($this->rgba_to_ahex( $value, true ));
 		
 		if ( $ms_color && isset($r) && isset($g) && isset($b) && isset($a) ) {
@@ -316,10 +431,10 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 	 * @return string
 	 */
 	public function image_replace($value) {
-		
-		$value = str_replace( 'http://'.$_SERVER['HTTP_HOST'], '', $value);
-		
-		if( ($url = $this->find_background_url($value) ) && ($file = $this->source->find($url)) ) {
+
+		$path = str_replace( home_url(), '', $value );
+
+		if( $file = $this->find( $path ) ) {
 
 			// Get the size of the image file
 			$size = GetImageSize($file);
@@ -331,10 +446,10 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 				$width = $height = 0;
 			}
 			
-			// Build the selector
-			$properties = 'background:url('.$url.') no-repeat 0 0;height:0;padding-top:'.$height.'px;width:'.$width.'px;display:block;text-indent:-9999px;overflow:hidden;';
+			// Build the CSS
+			$css = 'background:url('.$value.') no-repeat 0 0;height:0;padding-top:'.$height.'px;width:'.$width.'px;display:block;text-indent:-9999px;overflow:hidden;';
 		
-			return $properties;
+			return $css;
 		}else {
 			return "/* Error: could not find file: $value */";
 		}
@@ -579,6 +694,45 @@ class Scaffold_Extension_WordPressBridge extends Scaffold_Extension
 		$rotation = round( atan2(-$y,$x) * 180/pi() );
 		$strength = round( sqrt($x*$x) + sqrt($y*$y) );
 		return array($rotation, $strength);
+	}
+	
+	/**
+	 * Finds a file relative to the source file from a URL
+	 * @access public
+	 * @param $url
+	 * @return mixed
+	 * @author Anthony Short <anthonyshort@me.com>
+	 */
+	public function find( $url ) {
+		if ( file_exists($url) ) { return $url; }
+
+		if($url[0] == '/' OR $url[0] == '\\')
+		{
+			$path = $_SERVER['DOCUMENT_ROOT'].$url;
+			if ( !file_exists($path) ) {
+				$path = untrailingslashit(ABSPATH).$url;
+				if ( !file_exists($path) ) {
+					$path = false;
+				}
+			}
+		}
+		else
+		{
+			$import_paths = $this->import_paths;
+			array_unshift($import_paths, dirname($this->basepath));
+			
+			foreach ( $import_paths as $import_path ) {
+				$path = $import_path.DIRECTORY_SEPARATOR.$url;
+				if ( file_exists($path) ) {
+					break;
+				}
+			}
+			if ( !file_exists($path) ) {
+				$path = false;
+			}
+		}
+		
+		return $path;
 	}
 	
 }

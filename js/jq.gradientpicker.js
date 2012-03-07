@@ -238,8 +238,8 @@
 		
 		var markerSlide = function(event, ui) {
 			var thisY = $(this).offset().top;
-			var mouseY = event.pageY;
-			
+			var mouseY = event.originalEvent.pageY;
+
 			if ( (mouseY - thisY) > 25 ) { // Mouse has moved more than X pixels below slider
 				if ( ! $(this).data('remove') ) { // Slider not yet flagged 'remove'
 					$(this).data('remove', true); // Flag as 'remove'
@@ -277,8 +277,16 @@
 			if ( 'object' == typeof(e.target) && $(e.target).is('a') ) {
 				return;
 			}
+			
+			if ( e.layerX === undefined ) {
+				var offset = $(this).offset();
+				if ( offset != null ) { e.layerX = e.pageX - offset.left; }
+			}
+			
 			if ( value === undefined ) { value  = Math.round( e.layerX / $(this).width() * 100 ); }
 			if (   hex === undefined ) { hex = '000000'; }
+			
+			if ( isNaN(value) ) return;
 			
 			var marker = $('<div class="marker"/>');
 			

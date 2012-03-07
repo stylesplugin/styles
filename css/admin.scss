@@ -1,5 +1,8 @@
-.StormStyles {
-	
+.styles-admin {
+
+	.primary { width:70%; }
+	.secondary { width: 20%; }
+
 	/* Gradient Picker */
 	
 	.gradPicker {
@@ -89,15 +92,18 @@
 				}
 			}
 			a[data-type="gradient"]     { background-position: -47px 4px; }
-			a[data-type="color"]        { background-position: -97px 4px; }
+			a[data-type="bg_color"]        { background-position: -97px 4px; }
 			a[data-type="transparent"] { background-position: -147px 4px; }
 			a[data-type="hide"] { background-position: -197px 4px; }
+			a[data-type="font"] { background-position: -247px 4px; }
 		}
 		
 	}
 	
 	/* Image Picker */
-	
+	.background-image {
+		display:none;
+	}
 	.pds_image {
 		.current {
 			margin-bottom: 5px;
@@ -124,16 +130,10 @@
 		border-radius: 4px;
 	}
 	
-	.pds_color {
-		input {
-			width: 50px;
-			font-size: 9px;
-			text-transform:uppercase;
-		}
-	}
-	
-	.colorpicker {
-		z-index: 999;
+	.pds_color_input {
+		width: 20px;
+		font-size: 9px;
+		text-transform:uppercase;
 	}
 
 	.ui {
@@ -145,6 +145,10 @@
 
 	
 	/* Font Picker */
+	
+	.font {
+		display:none;
+	}
 	
 	.pds_font_select {
 		option {
@@ -326,5 +330,12 @@ table.jPicker {
 	}
 	input.Hex {
 		margin-left: 12px;
+	}
+}
+
+@media only screen and (max-width:768px){
+	.styles-admin {
+		.primary { width:100%; }
+		.secondary { display:none; }
 	}
 }
