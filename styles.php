@@ -52,7 +52,7 @@ function storm_styles_init() {
 	if ( is_admin() || DOING_AJAX ) {
 		// Only load heavy files if we're in wp-admin or processing CSS over AJAX
 		require dirname ( __FILE__ ) . '/classes/storm-css-processor.php';
-		require dirname ( __FILE__ ) . '/classes/storm-css-settings.php';
+		require dirname ( __FILE__ ) . '/classes/storm-wp-settings.php';
 		require dirname ( __FILE__ ) . '/classes/storm-wp-admin.php';
 	}
 	

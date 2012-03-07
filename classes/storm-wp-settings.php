@@ -3,7 +3,7 @@
 /**
  * Generate WordPress admin settings sections and GUI
  **/
-class Storm_CSS_Settings {
+class Storm_WP_Settings {
 	
 	var $families = array( 'Arial'=>'Arial, Helvetica, sans-serif', 'Bookman'=>'Bookman, Palatino, Georgia, serif', 'Century Gothic'=>'"Century Gothic", Helvetica, Arial, sans-serif', 'Comic Sans MS'=>'"Comic Sans MS", Arial, sans-serif', 'Courier'=>'Courier, monospace', 'Garamond'=>'Garamond, Palatino, Georgia, serif', 'Georgia'=>'Georgia, Times, serif', 'Helvetica'=>'Helvetica, Arial, sans-serif', 'Lucida Grande'=>'"Lucida Grande","Lucida Sans Unicode",Tahoma,Verdana,sans-serif', 'Palatino'=>'Palatino, Georgia, serif', 'Tahoma'=>'Tahoma, Verdana, Helvetica, sans-serif', 'Times'=>'Times, Georgia, serif', 'Trebuchet MS'=>'"Trebuchet MS", Tahoma, Helvetica, sans-serif', 'Verdana'=>'Verdana, Tahoma, sans-serif', );
 	
@@ -169,7 +169,14 @@ class Storm_CSS_Settings {
 	
 	public function remote_api() {
 
-		if ( false != get_option('styles-'.get_template() ) && empty( $_POST['styles_api_key'] ) ) {
+		$this->styles->wp->api_options = get_transient('styles-api');
+		$css = get_option('styles-'.get_template());
+
+		if (
+			!empty( $css ) // Have CSS for the current theme
+			&& !empty( $this->styles->wp->api_options )   // API key doesn't need refreshing
+			&& empty( $_POST['styles_api_key'] )
+		) {
 			// Already have CSS for this template
 			// API key isn't being set
 			return true;
@@ -178,8 +185,8 @@ class Storm_CSS_Settings {
 		// Check / Set API key
 		if ( !empty( $_POST['styles_api_key'] ) && wp_verify_nonce( $_POST['_wpnonce'], 'styles-options') ) {
 			$api_key = $_POST['styles_api_key'];
-			$this->styles->wp->options['api_key'] = $api_key;
-			update_option( 'styles-settings', $this->styles->wp->options );
+			$this->styles->wp->api_options['api_key'] = $api_key;
+			set_transient( 'styles-api', $this->styles->wp->api_options, 60*60*24*7 );
 		}else {
 			$api_key = $this->styles->wp->get_option('api_key');
 		}
@@ -201,15 +208,17 @@ class Storm_CSS_Settings {
 		
 		$data = json_decode( $response['body'] );
 		
-		$this->styles->wp->options['api_valid'] = $data->api_valid;
-		$this->styles->wp->options['license'] = $data->license;
-		update_option( 'styles-settings', $this->styles->wp->options );
+		$this->styles->wp->api_options['api_valid']  = $data->api_valid;
+		$this->styles->wp->api_options['license']    = $data->license;
+		$this->styles->wp->api_options['meta_boxes'] = $data->meta_boxes;
+
+		set_transient( 'styles-api', $this->styles->wp->api_options, $data->transient_expire );
 		
 		if ( !empty($data->message) ) {
 			add_settings_error( 'styles-api-key', 'api-message', $data->message, $data->type );
 		}
 		if ( !empty($data->supported_themes) ) {
-			$this->styles->wp->options['supported_themes'] = $data->supported_themes;
+			$this->styles->wp->api_options['supported_themes'] = $data->supported_themes;
 		}
 		if ( !empty($data->css) ) {
 			delete_option('styles-'.get_template() );

@@ -18,6 +18,20 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 	 * @var Storm_CSS_Settings
 	 **/
 	var $admin_settings;
+
+	/**
+	 * Transient of API returned values
+	 *
+	 * @var array
+	 **/
+	var $api_options;
+
+	/**
+	 * Container of get_option('styles-settings')
+	 *
+	 * @var array
+	 **/
+	var $options;
 	
 	/**
 	 * Setup backend functionality in WordPress
@@ -33,8 +47,7 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 		$args = wp_parse_args( $args, $defaults );
 		
 		$this->options = get_option( 'styles-settings' );
-		
-		
+
 		if ( version_compare ( $this->get_option ('version'), $this->styles->db_version, '!=' ) ) {
 			$this->check_upgrade();
 		}
@@ -62,7 +75,7 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 		add_action('admin_print_scripts-media-upload-popup', array($this, 'admin_js_media_upload'));
 		
 		// Settings page setup
-		$this->admin_settings = new Storm_CSS_Settings( $this->styles );
+		$this->admin_settings = new Storm_WP_Settings( $this->styles );
 		add_action( 'styles_settings', array($this->admin_settings, 'settings_sections'), 10, $this->styles );
 		add_action( 'styles_settings', array($this->admin_settings, 'settings_items'), 20, $this->styles );
 		add_action( 'styles_init', array($this->admin_settings, 'remote_api'), 0, $this->styles );
@@ -371,6 +384,26 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 		}
 
 		$this->load_view('admin.php');
+	}
+
+	/**
+	 * Create a potbox widget
+	 *
+	 * From WordPress SEO by Joost de Valk. Some of the best code in the WP community.
+	 *
+	 * @author Joost de Valk http://yoast.com/
+	 * @link http://yoast.com/wordpress/seo/
+	 */
+	function postbox($id, $title, $content) {
+	?>
+		<div id="<?php echo $id; ?>" class="postbox">
+			<div class="handlediv" title="Click to toggle"><br /></div>
+			<h3 class="hndle"><span><?php echo $title; ?></span></h3>
+			<div class="inside">
+				<?php echo $content; ?>
+			</div>
+		</div>
+	<?php
 	}
 	
 	/**

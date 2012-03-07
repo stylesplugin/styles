@@ -1,9 +1,9 @@
 jQuery(function($) {
-	$('div.gradPicker', '#StormForm').gradientPicker();
-	$('div.bgPicker', '#StormForm').bgPicker();
+	$('div.gradPicker', '#styles-form').gradientPicker();
+	$('div.bgPicker', '#styles-form').bgPicker();
 
 	// Color Picker
-	$('input.pds_color_input', '#StormForm').change(function(){
+	$('input.pds_color_input', '#styles-form').change(function(){
 		if ( $(this).val().length < 3 ) {return;}
 		$(this).css( 'color', '#'+$(this).val() );
 		$(this).css( 'background-color', '#'+$(this).val() );
@@ -33,7 +33,7 @@ jQuery(function($) {
 	});
 	
 	// Sliders for integer inputs
-	$('input.slider', '#StormForm').each(function() {
+	$('input.slider', '#styles-form').each(function() {
 		// Show/hide slider on input click
 		$(this).click(function( e ) {
 			
@@ -66,9 +66,9 @@ jQuery(function($) {
 	});
 	
 	// Font buttons
-	$('a.value-toggle', '#StormForm').click( fontToggles );
+	$('a.value-toggle', '#styles-form').click( fontToggles );
 
-	$('select.pds_font_select', '#StormForm').change(function(){
+	$('select.pds_font_select', '#styles-form').change(function(){
 		var src = $(this).val();
 		if ( src.indexOf("http://") != -1) {
 			window.open( src, 'Google Web Fonts' );
@@ -77,8 +77,8 @@ jQuery(function($) {
 	})
 	
 	// AJAX Submit & Preview
-	$('input.storm-submit', '#StormForm').click( saveStyles );
-	$('input, select', '#StormForm').change( saveStyles );
+	$('input.storm-submit', '#styles-form').click( saveStyles );
+	$('input, select', '#styles-form').change( saveStyles );
 	
 	function saveStyles() {
 		if ( $(this).hasClass('storm-submit') ) {
@@ -91,11 +91,11 @@ jQuery(function($) {
 		window.stormSaveTimeout = setTimeout( function(){
 			
 			// Display waiting graphic
-			var waiting = $('#StormForm img.waiting').show();
-			window.response_wrapper = $('#StormForm span.response').html('');
+			var waiting = $('#styles-form img.waiting').show();
+			window.response_wrapper = $('#styles-form span.response').html('');
 
 			// Get form info
-			var data = $('#StormForm').serialize();
+			var data = $('#styles-form').serialize();
 			if ( preview ) { data = data + '&preview=1'; }
 
 			$.post(ajaxurl, data, function( response ) {

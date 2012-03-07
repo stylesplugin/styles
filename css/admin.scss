@@ -1,5 +1,8 @@
-.StormStyles {
-	
+.styles-admin {
+
+	.primary { width:70%; }
+	.secondary { width: 20%; }
+
 	/* Gradient Picker */
 	
 	.gradPicker {
@@ -325,5 +328,12 @@ table.jPicker {
 	}
 	input.Hex {
 		margin-left: 12px;
+	}
+}
+
+@media only screen and (max-width:768px){
+	.styles-admin {
+		.primary { width:100%; }
+		.secondary { display:none; }
 	}
 }

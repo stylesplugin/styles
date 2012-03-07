@@ -93,6 +93,8 @@ class Storm_CSS_Processor {
 				$selector = trim($matches[1][$key]);
 				$values = $this->helper->ruleset_to_array($matches[2][$key]);
 
+				if (empty($values)) continue;
+
 				// Values we're getting from the CSS
 				$default = $label = $id = '';
 				$group = 'General';
@@ -156,6 +158,9 @@ class Storm_CSS_Processor {
 			$selector = $el['selector'];
 			// $active, $css, $image, $bg_color, $stops, $color
 			// $font_size, $font_family, $font_weight, $font_style, $text_transform, $line_height
+			
+			if ( empty($el['values']) ) { continue; }
+
 			extract( $el['values'] );
 
 			if ( empty($active) || empty($selector) ) { continue; }

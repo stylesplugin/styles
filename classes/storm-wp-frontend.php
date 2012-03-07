@@ -99,6 +99,8 @@ class Storm_WP_Frontend {
 	function get_option($option) {
 		if ( isset( $this->options[$option] ) ) {
 			return $this->options[$option];
+		}else if ( isset( $this->api_options[$option] ) ) {
+			return $this->api_options[$option];
 		}else {
 			return false;
 		}
