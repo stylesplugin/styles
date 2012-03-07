@@ -171,7 +171,7 @@ class Storm_CSS_Processor {
 			switch( $active ) {
 				case 'image':
 
-					$properties .= "background-image: $value;" ;
+					$properties .= "background-image: url($image);" ;
 
 					break;
 				case 'gradient':
