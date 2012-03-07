@@ -7,7 +7,6 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 	/**
 	 * Name of options page hook
 	 *
-	 * @since 0.1
 	 * @var string
 	 */
 	var $options_page_hookname;

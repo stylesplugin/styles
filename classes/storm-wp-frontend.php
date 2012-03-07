@@ -184,7 +184,6 @@ class Storm_WP_Frontend {
 	/**
 	 * Pass ?scaffold requests to the CSS processor
 	 * 
-	 * @since 0.1
 	 * @return void
 	 **/
 	function parse_request() {
@@ -204,7 +203,6 @@ class Storm_WP_Frontend {
 	/**
 	 * Whitelist the scaffold query var for parse_request()
 	 * 
-	 * @since 0.1
 	 * @return void
 	 **/
 	function query_vars($vars) {
