@@ -221,6 +221,7 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 				// Sanatize here before going to DB
 				$values = apply_filters( 'styles_before_save_element_values', $el['values'] );
 				$this->styles->variables[$id]['values'] = $values;
+				unset( $this->styles->variables[$id]['selector'] );
 			}
 			
 			return $this->styles->variables; // Write to DB

@@ -124,8 +124,13 @@ class Storm_CSS_Processor {
 				
 				// Organize variables IDs into groups
 				$styles->groups[$group][] = $id;
+
+				// Debug: Groups & Labels
+				// $_groups[$group][] = $label;
 			}
 		}
+		// Debug: Groups & Labels
+		// echo '<pre>';print_r($_groups);exit;
 
 		// Remove properties
 		$styles->css->contents = $this->helper->remove_properties( 'value',  $styles->css->contents );
@@ -194,7 +199,7 @@ class Storm_CSS_Processor {
 					break;
 				case 'transparent':
 				
-					$properties .= 'transparent url();' ;
+					$properties .= 'background:transparent url();' ;
 				
 					break;
 				case 'hide':

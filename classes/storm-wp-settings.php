@@ -56,7 +56,7 @@ class Storm_WP_Settings {
 	 * Register individual settings fields
 	 */
 	public function settings_items() {
-		
+
 		// General
 		add_settings_field(
 			'styles-api-key',                   // Unique ID
@@ -69,8 +69,7 @@ class Storm_WP_Settings {
 		
 		// GUI
 		foreach( $this->styles->variables as $key => $element ){
-			
-			if ( empty( $element['id']) ) { 
+			if ( empty( $element['selector']) ) { 
 				// Skip items that don't exist in the current theme
 				continue;
 			}
