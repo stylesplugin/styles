@@ -12,7 +12,7 @@ class Storm_Styles {
 	 *
 	 * @var int
 	 **/
-	var $version = '0.5.0';
+	var $version = '0.5.1.1';
 	
 	/**
 	 * Plugin DB version
