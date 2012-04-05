@@ -52,7 +52,7 @@ This plugin requires [PHP 5.2](https://codex.wordpress.org/Switching_to_PHP5), t
 3. Background color picker.
 4. Google Fonts and other typographic settings.
 
-== FAQ ==
+== Frequently Asked Questions == 
 
 = What features do you plan to charge for? =
 
@@ -107,6 +107,11 @@ For general purpose CSS processing, you'll be much better off using one of the m
 
 = 0.4.0 =
 * Initial public release.
+
+== Upgrade Notice ==
+
+* Fix transparent background option
+* Fix display of unavailable theme options
 
 == License ==
 
