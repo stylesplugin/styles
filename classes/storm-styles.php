@@ -135,9 +135,9 @@ class Storm_Styles {
 			);
 		}
 
-		$search_paths[] = $upload_dir['basedir'].'/styles/'.get_template().'.gui.css';
-		$search_paths[] = get_stylesheet_directory().'/styles.gui.css';
-		// $search_paths[] = $this->wp->plugin_dir_path().'themes/'.get_template().'.gui.css';
+		$search_paths[] = $upload_dir['basedir'].'/styles/'.get_template().'.customize.css';
+		$search_paths[] = get_stylesheet_directory().'/customize.css';
+		// $search_paths[] = $this->wp->plugin_dir_path().'themes/'.get_template().'.customize.css';
 		
 		$this->search_paths = apply_filters('styles_search_paths', $search_paths);
 		
@@ -222,7 +222,7 @@ class Storm_Styles {
 	function parse_css() {
 		global $wp_settings_errors;
 		
-		$contents = @file_get_contents( $styles->file_paths['path'] );
+		$contents = @file_get_contents( $this->file_paths['path'] );
 		
 		if ( empty($contents) ) {
 			$contents = get_option( 'styles-'.get_template() );
