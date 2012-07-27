@@ -224,7 +224,7 @@ class Storm_CSS_Processor {
 	 */
 	public function post_process( $styles ) {
 		foreach ( $this->google_fonts as $family => $src ) {
-			$imports .= "@import url(http://fonts.googleapis.com/css?family=$src);\r";
+			$imports .= "@import url(//fonts.googleapis.com/css?family=$src);\r";
 		}
 		
 		$styles->css->contents = $imports.$styles->css->contents;
