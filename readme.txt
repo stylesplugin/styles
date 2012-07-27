@@ -6,11 +6,13 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: css, stylesheet, scss, sass, scaffold, less, admin, gui, color picker, gradient, image upload, google fonts, user interface, twentyten, twentyeleven
 Requires at least: 3.1
 Tested up to: 3.4
-Stable tag: 0.5.2
+Stable tag: 0.5.3
 
 Change the appearance of supported themes using zero code. Creates appearance options for images, colors, gradients, and fonts.
 
 == Description ==
+
+**Note:** There are plans to modify this plugin to tie-in with the new WordPress 3.4 theme customizer, but it requires a considerable rewrite. The final version would setup the Theme Customizer based on CSS only. If you're interested in contributing, please get in contact.
 
 Styles allows you to edit the appearance of themes that don't provide an interface in the WordPress admin for doing so. Themes supported by the free version include:
 
@@ -113,6 +115,10 @@ For general purpose CSS processing, you'll be much better off using one of the m
 
 == Upgrade Notice ==
 
+= 0.5.3 =
+* Allow fonts to load over HTTP or HTTPS
+
+= 0.5.2 =
 * Fix transparent background option
 * Fix display of unavailable theme options
 
