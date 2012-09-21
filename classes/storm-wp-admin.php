@@ -122,6 +122,7 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 	
 	/**
 	 * Enqueue CSS for media upload popup when called from Styles page
+	 * Used to simplify the file upload window used on the Styles admin page
 	 * 
 	 * @return void
 	 **/
