@@ -39,6 +39,7 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 	 */
 	function __construct( $styles ) {
 		parent::__construct( $styles ); // sets $this->styles = $styles
+		global $wp_version;
 
 		$defaults = array(
 			'file'	=> apply_filters( 'pdstyles_default_file', $this->plugin_dir_path() . 'example/vars.scss' ),
@@ -59,9 +60,11 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
         
 		// Whitelist options
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
-        
-		// Activate the options page
-		add_action( 'admin_menu', array( $this, 'add_page' ) );
+
+		if ( version_compare( $wp_version, '3.4', '>=' ) || false !== strpos( $wp_version, 'alpha' ) || false !== strpos( $wp_version, 'beta' ) ) {
+			// Activate the options page
+			add_action( 'admin_menu', array( $this, 'add_page' ) );
+		}
 		
 		// Rebuild CSS on theme switch
 		add_action( 'switch_theme', array($this, 'force_recache') );

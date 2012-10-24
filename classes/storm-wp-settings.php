@@ -15,16 +15,119 @@ class Storm_WP_Settings {
 	var $line_heights = array('1','1.25','1.5','1.75','2',);
 	
 	function __construct( $styles ) {
+		global $wp_version;
 		$this->styles = $styles;
 
-		add_action( 'styles_settings', array($this, 'settings_sections'), 10 );
-		add_action( 'styles_settings', array($this, 'settings_items'), 20 );
-		add_action( 'styles_init', array($this, 'remote_api'), 0 );
+		if ( version_compare( $wp_version, '3.4', '>=' ) || false !== strpos( $wp_version, 'alpha' ) || false !== strpos( $wp_version, 'beta' ) ) {
+			// WordPress 3.4+
+			add_action( 'customize_register', array( $this, 'customize_sections' ), 10 );
+			add_action( 'customize_register', array( $this, 'customize_items' ), 11 );
+		} else {
+			// WordPress < 3.4
+			add_action( 'styles_settings', array( $this, 'settings_sections' ), 10 );
+			add_action( 'styles_settings', array( $this, 'settings_items' ), 20 );
+			add_action( 'styles_init', array( $this, 'remote_api' ), 0 );
+		}
 		
 		// Sanatize before DB commit
 		add_filter( 'styles_before_save_element_values', array($this, 'before_save_element_values'), 10 );
 
 		return true;
+	}
+
+	/**
+	 * Register sections with WordPress theme customizer in WordPress 3.4+
+	 * e.g., General, Header, Footer, Content, Sidebar
+	 */
+	function customize_sections( $wp_customize ) {
+		// Maybe move to storm-wp-admin.php
+		do_action( 'styles_init', $this->styles );
+		do_action( 'styles_before_process', $this->styles );
+		do_action( 'styles_process', $this->styles );
+		do_action( 'styles_after_process', $this->styles );
+
+		// General
+		$wp_customize->add_section( 'styles-General', array(
+			'title'    => __( 'General Styles', 'storm' ),
+			'priority' => 940,
+		) );
+
+		$wp_customize->add_section( 'test', array(
+			'title'    => __( 'Test Styles', 'storm' ),
+			'priority' => 940,
+		) );
+
+		// GUI
+		/*foreach ( $this->styles->groups as $group => $elements ) {
+			$wp_customize->add_section( $group, array( // Namespace as storm_$group in future
+				'title'    => __( $group, 'storm' ),
+				'priority' => 950,
+			) );
+		}*/
+	}
+
+	/**
+	 * Register individual customize fields in WordPress 3.4+
+	 */
+	public function customize_items( $wp_customize ) {
+		FB::log( __FUNCTION__ );
+
+		// FB::log($this->styles->groups, '$this->styles->groups');
+		// FB::log($this->styles->variables, '$this->styles->variables');
+
+		$wp_customize->add_setting( 'content_textcolor', array(
+			'default'   => '#000000',
+			'transport' => 'refresh',
+		) );
+
+		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'content_textcolor', array(
+			'label'    => __( 'Content Text Color', 'storm' ),
+			'section'  => 'test',
+			'settings' => 'content_textcolor',
+		) ) );
+
+		// GUI
+		foreach ( $this->styles->variables as $key => $element ) {
+			if ( empty( $element['selector'] ) ) {
+				// Skip items that don't exist in the current theme
+				continue;
+			}
+
+			// $form_id, $form_name, $id, $label, $group,$selector
+			// $values[ active,css,image,bg_color,stops,$color,
+			// 	$font_size, $font_family, $font_weight,
+			// 	$font_style, $text_transform, $line_height ]
+			extract( $element );
+			$js_id = str_replace( '.', '_', $id );
+
+			$wp_customize->add_setting( "styles-test[$id][values][css]", array(
+				'default'    => '',
+				'type'       => 'option',
+				'capability' => 'edit_theme_options',
+				// 'transport'      => 'postMessage',
+			) );
+
+			foreach ( $enable as $type ) {
+				switch ( $type ) {
+					case 'bg_color':
+						$suffix = ' BG Color';
+						$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "storm_$js_id", array(
+							'label'    => __( $label.$suffix, 'styles' ),
+							'section'  => "styles-$group",
+							'settings' => "styles-test[$id][values][css]",
+						) ) );
+						break;
+				}
+			}
+			/*add_settings_field(
+				$key,                   // Unique ID
+				$label,                 // Label
+				array($this, 'form_element'), // Display callback
+				'styles-gui', // Form page
+				$group,                 // Form section
+				$element                // Args passed to callback
+			);*/
+		}
 	}
 	
 	/**
