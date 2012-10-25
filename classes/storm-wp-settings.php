@@ -46,24 +46,21 @@ class Storm_WP_Settings {
 		do_action( 'styles_process', $this->styles );
 		do_action( 'styles_after_process', $this->styles );
 
-		// General
-		$wp_customize->add_section( 'styles-General', array(
-			'title'    => __( 'General Styles', 'storm' ),
-			'priority' => 940,
-		) );
-
 		$wp_customize->add_section( 'test', array(
 			'title'    => __( 'Test Styles', 'storm' ),
 			'priority' => 940,
 		) );
 
 		// GUI
-		/*foreach ( $this->styles->groups as $group => $elements ) {
+
+		foreach ( $this->styles->groups as $group => $elements ) {
+			//FB::log( $group, '$group');
+			//FB::log( $elements, '$elements');
 			$wp_customize->add_section( $group, array( // Namespace as storm_$group in future
 				'title'    => __( $group, 'storm' ),
 				'priority' => 950,
 			) );
-		}*/
+		}
 	}
 
 	/**
@@ -72,8 +69,8 @@ class Storm_WP_Settings {
 	public function customize_items( $wp_customize ) {
 		FB::log( __FUNCTION__ );
 
-		// FB::log($this->styles->groups, '$this->styles->groups');
-		// FB::log($this->styles->variables, '$this->styles->variables');
+		FB::log( $this->styles->groups, '$this->styles->groups' );
+		FB::log($this->styles->variables, '$this->styles->variables');
 
 		$wp_customize->add_setting( 'content_textcolor', array(
 			'default'   => '#000000',
@@ -109,11 +106,11 @@ class Storm_WP_Settings {
 
 			foreach ( $enable as $type ) {
 				switch ( $type ) {
-					case 'bg_color':
+					case 'all':
 						$suffix = ' BG Color';
 						$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "storm_$js_id", array(
 							'label'    => __( $label.$suffix, 'styles' ),
-							'section'  => "styles-$group",
+							'section'  => "$group",
 							'settings' => "styles-test[$id][values][css]",
 						) ) );
 						break;

@@ -99,6 +99,7 @@ class Storm_CSS_Processor {
 				$default = $label = $id = '';
 				$group = 'General';
 				$enable = 'all';
+				$type = 'background-color';
 				extract($values, EXTR_IF_EXISTS);
 
 				if ( empty($label) && empty($id) ) {
@@ -117,10 +118,11 @@ class Storm_CSS_Processor {
 				$styles->variables[$id]['group']     = $group;
 				$styles->variables[$id]['label']     = $label;
 				$styles->variables[$id]['id']        = $id;
-				$styles->variables[$id]['enable']    = $enable;
+				$styles->variables[$id]['enable']    = array( $enable );
 				$styles->variables[$id]['selector']  = $selector;
 				$styles->variables[$id]['form_name'] = "variables[$id][values]";
 				$styles->variables[$id]['form_id']   = 'st_'.md5($id);
+				$styles->variables[$id]['type']      = $type;
 				
 				// Organize variables IDs into groups
 				$styles->groups[$group][] = $id;
@@ -158,25 +160,26 @@ class Storm_CSS_Processor {
 	}
 	
 	public function process( $styles ) {
-		
+		FB::log( $styles->variables, '$style-variables');
 		foreach( $styles->variables as $id => $el ) {
 			$selector = $el['selector'];
 			// $active, $css, $image, $bg_color, $stops, $color
 			// $font_size, $font_family, $font_weight, $font_style, $text_transform, $line_height
 			
 			if ( empty($el['values']) ) { continue; }
-
+			extract( $el );
 			extract( $el['values'] );
 
-			if ( empty($selector) ) { continue; }
-			if ( empty($active) && empty($color) && empty($font_size) && empty($font_family) && empty($font_weight) && empty($font_style) && empty($text_transform) && empty($line_height) ) {
+			/*if ( empty($selector) ) { continue; }
+			if ( empty($type) && empty($color) && empty($font_size) && empty($font_family) && empty($font_weight) && empty($font_style) && empty($text_transform) && empty($line_height) ) {
 				continue;
-			}
+			}*/
 
 			$properties = '';
+			FB::log( $type, '$type' );
 
 			// Create new styles
-			switch( $active ) {
+			switch( $type ) {
 				case 'image':
 
 					if ( $image_replace ) {
@@ -191,8 +194,8 @@ class Storm_CSS_Processor {
 					$properties .= $this->linear_gradient($css) ;
 
 					break;
-				case 'bg_color':
-				
+				case 'background-color':
+				FB::log( $css, '$css' );
 					$properties .= 'background-image:url();'; // Until the UI supports both at once
 					$properties .= $this->background_rgba($css);
 					
@@ -289,8 +292,8 @@ class Storm_CSS_Processor {
 		//   $active, $css, $image, $color, $stops
 		@extract( $this->styles->variables[$key] ); 
 
-		if ( $active && $css ) {
-			switch( $active ) {
+		if ( $type && $css ) {
+			switch( $type ) {
 				case 'image':
 				
 					// This requires *something* in url() for replace-url to work.
