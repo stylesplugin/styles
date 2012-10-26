@@ -95,19 +95,21 @@ class Storm_WP_Settings {
 			// 	$font_size, $font_family, $font_weight,
 			// 	$font_style, $text_transform, $line_height ]
 			extract( $element );
+			list( $selector, $type) = explode( '_', $id );
 			$js_id = str_replace( '.', '_', $id );
 
-			$wp_customize->add_setting( "styles-test[$id][values][css]", array(
-				'default'    => '',
-				'type'       => 'option',
-				'capability' => 'edit_theme_options',
-				// 'transport'      => 'postMessage',
-			) );
+			//$types = explode( ',', $type );
 
-			foreach ( $enable as $type ) {
+			//foreach ( $types as $type ) {
 				switch ( $type ) {
-					case 'all':
+					case 'background-color':
 						$suffix = ' BG Color';
+						$wp_customize->add_setting( "styles-test[$id][values][css]", array(
+							'default'    => '',
+							'type'       => 'option',
+							'capability' => 'edit_theme_options',
+							// 'transport'      => 'postMessage',
+						) );
 						$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "storm_$js_id", array(
 							'label'    => __( $label.$suffix, 'styles' ),
 							'section'  => "$group",
@@ -115,7 +117,7 @@ class Storm_WP_Settings {
 						) ) );
 						break;
 				}
-			}
+			//}
 			/*add_settings_field(
 				$key,                   // Unique ID
 				$label,                 // Label
