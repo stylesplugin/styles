@@ -51,6 +51,8 @@ if ( version_compare(PHP_VERSION, '5.2', '<') ) {
  * Instantiate the $StormStyles object
  */
 function storm_styles_init() {
+
+	define( 'BSM_DEVELOPMENT', true );
 	
 	require dirname ( __FILE__ ) . '/classes/stormFirePHP/stormFirePHP.php';
 	require dirname ( __FILE__ ) . '/classes/storm-styles.php';

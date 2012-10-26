@@ -85,52 +85,59 @@ class Storm_CSS_Processor {
 		// Create a real regex string
 		$regex = $this->helper->create_regex($this->regex);
 		$id_mask = '/[^a-zA-Z0-9\s]/';
-		
-		// Get all selectors
-		if( preg_match_all('/'.$regex.'/xs', $styles->css->contents, $matches) ) {
-			// Iterate through selectors
-			foreach ($matches[0] as $key => $value) {
-				$selector = trim($matches[1][$key]);
-				$values = $this->helper->ruleset_to_array($matches[2][$key]);
 
-				if (empty($values)) continue;
+		$types = array('background-color', 'color');
 
-				// Values we're getting from the CSS
-				$default = $label = $id = '';
-				$group = 'General';
-				$enable = 'all';
-				$type = 'background-color';
-				extract($values, EXTR_IF_EXISTS);
+		foreach ( $types as $a_type ) {
+			// Get all selectors
+			if ( preg_match_all( '/'.$regex.'/xs', $styles->css->contents, $matches ) ) {
+				// Iterate through selectors
+				foreach ( $matches[0] as $key => $value ) {
+					$selector = trim( $matches[1][$key] );
+					$values   = $this->helper->ruleset_to_array( $matches[2][$key] );
 
-				if ( empty($label) && empty($id) ) {
-					continue;
+					if ( empty( $values ) ) continue;
+
+					// Values we're getting from the CSS
+					$default = $label = $id = '';
+					$group   = 'General';
+					$enable  = 'all';
+					$type = 'background-color';
+					extract( $values, EXTR_IF_EXISTS );
+
+					if ( empty( $label ) && empty( $id ) ) {
+						continue;
+					}
+
+					// Set ID from group+label if it doesn't exist
+					if ( empty( $id ) ) {
+						// Strip non alpha-numeric
+						$id = preg_replace( $id_mask, '', $group ).'.'.preg_replace( $id_mask, '', $label );
+						// Replace white-space of any length with a hyphen
+						$id = preg_replace( '/[\s]+/', '.', strtolower( $id ) );
+					}
+
+					$id = $id.'_'.$a_type;
+
+					// Add items to variables array, keeping extra IDs if they exist
+					$styles->variables[$id]['group']     = $group;
+					$styles->variables[$id]['label']     = $label;
+					$styles->variables[$id]['id']        = $id;
+					$styles->variables[$id]['enable']    = array( $enable );
+					$styles->variables[$id]['selector']  = $selector;
+					$styles->variables[$id]['form_name'] = "variables[$id][values]";
+					$styles->variables[$id]['form_id']   = 'st_'.md5( $id );
+					$styles->variables[$id]['type']      = $type;
+
+					// Organize variables IDs into groups
+					$styles->groups[$group][] = $id;
+					// Debug: Groups & Labels
+					// $_groups[$group][] = $label;
 				}
-				
-				// Set ID from group+label if it doesn't exist
-				if ( empty($id) ) {
-					// Strip non alpha-numeric
-					$id = preg_replace($id_mask, '', $group).'.'.preg_replace($id_mask, '', $label);
-					// Replace white-space of any length with a hyphen
-					$id = preg_replace('/[\s]+/', '.', strtolower($id));
-				}
-				
-				// Add items to variables array, keeping extra IDs if they exist
-				$styles->variables[$id]['group']     = $group;
-				$styles->variables[$id]['label']     = $label;
-				$styles->variables[$id]['id']        = $id;
-				$styles->variables[$id]['enable']    = array( $enable );
-				$styles->variables[$id]['selector']  = $selector;
-				$styles->variables[$id]['form_name'] = "variables[$id][values]";
-				$styles->variables[$id]['form_id']   = 'st_'.md5($id);
-				$styles->variables[$id]['type']      = $type;
-				
-				// Organize variables IDs into groups
-				$styles->groups[$group][] = $id;
-
-				// Debug: Groups & Labels
-				// $_groups[$group][] = $label;
 			}
 		}
+		
+
 		// Debug: Groups & Labels
 		// echo '<pre>';print_r($_groups);exit;
 
@@ -140,6 +147,7 @@ class Storm_CSS_Processor {
 		$styles->css->contents = $this->helper->remove_properties( 'label',  $styles->css->contents );
 		$styles->css->contents = $this->helper->remove_properties( 'id',     $styles->css->contents );
 		$styles->css->contents = $this->helper->remove_properties( 'enable', $styles->css->contents );
+		$styles->css->contents = $this->helper->remove_properties( 'type',   $styles->css->contents );
 		
 		// Remove empty selectors, keep selectors with content remaining
 		if( preg_match_all('/'.$regex.'/xs', $styles->css->contents, $matches) ) {
@@ -166,9 +174,9 @@ class Storm_CSS_Processor {
 			// $active, $css, $image, $bg_color, $stops, $color
 			// $font_size, $font_family, $font_weight, $font_style, $text_transform, $line_height
 			
-			if ( empty($el['values']) ) { continue; }
+			//if ( empty($el['values']) ) { continue; }
 			extract( $el );
-			extract( $el['values'] );
+			//extract( $el['values'] );
 
 			/*if ( empty($selector) ) { continue; }
 			if ( empty($type) && empty($color) && empty($font_size) && empty($font_family) && empty($font_weight) && empty($font_style) && empty($text_transform) && empty($line_height) ) {
