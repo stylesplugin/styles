@@ -41,10 +41,10 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 		parent::__construct( $styles ); // sets $this->styles = $styles
 		global $wp_version;
 
-		$defaults = array(
+		/*$defaults = array(
 			'file'	=> apply_filters( 'pdstyles_default_file', $this->plugin_dir_path() . 'example/vars.scss' ),
-		);
-		$args = wp_parse_args( $args, $defaults );
+		);*/
+		//$args = wp_parse_args( $args, $defaults );
 		
 		$this->options = get_option( 'styles-settings' );
 
@@ -259,7 +259,8 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 			// Cache written to file
 			return 'Stylesheet rendered and cached to <a href="'.site_url().$cache_nicename.'">'.$cache_nicename.'</a>.<br/>';
 		}else {
-			update_option( 'styles-cache', '/* Styles outputted inline because cache directory "'.$cache_nicename.'" is not writable */'."\r". Minify_CSS_Compressor::process($this->styles->css->contents) );
+			update_option( 'styles-cache', '/* Styles outputted inline because cache directory "'.$cache_nicename.'" is not writable */'."\r". Minify_CSS_Compressor::process
+			($this->styles->css->contents) );
 			return '<div>Could not write to  <code>'.$cache_nicename.'</code> directory.<br/> CSS has been cached to the database instead. This can be changed by making the directory writable with <code>chmod 666</code></div>';
 		}
 	}

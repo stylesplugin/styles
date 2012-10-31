@@ -52,13 +52,14 @@ if ( version_compare(PHP_VERSION, '5.2', '<') ) {
  */
 function storm_styles_init() {
 
-	define( 'BSM_DEVELOPMENT', true );
+	// TODO: set to false for release
+	if ( !defined( 'BSM_DEVELOPMENT' ) ) define( 'BSM_DEVELOPMENT', true );
 	
 	require dirname ( __FILE__ ) . '/classes/stormFirePHP/stormFirePHP.php';
 	require dirname ( __FILE__ ) . '/classes/storm-styles.php';
 	require dirname ( __FILE__ ) . '/classes/storm-wp-frontend.php';
 	
-	if ( is_admin() || DOING_AJAX ) {
+	if ( is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX || BSM_DEVELOPMENT ) ) {
 		// Only load heavy files if we're in wp-admin or processing CSS over AJAX
 		require dirname ( __FILE__ ) . '/classes/storm-css-processor.php';
 		require dirname ( __FILE__ ) . '/classes/storm-wp-settings.php';

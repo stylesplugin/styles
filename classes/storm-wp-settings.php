@@ -121,7 +121,7 @@ class Storm_WP_Settings {
 					break;
 				case 'font-family':
 					$suffix = ' Font Family';
-					$wp_customize->add_setting( "styles-test[$id][values][css]", array(
+					$wp_customize->add_setting( "styles-test[$id][values][font_family]", array(
 						'default'    => '',
 						'type'       => 'option',
 						'capability' => 'edit_theme_options',
@@ -130,7 +130,7 @@ class Storm_WP_Settings {
 					$wp_customize->add_control( "storm_$js_id", array(
 						'label'    => __( $label.$suffix, 'styles' ),
 						'section'  => "$group",
-						'settings' => "styles-test[$id][values][css]",
+						'settings' => "styles-test[$id][values][font_family]",
 						'priority' => $priority,
 						'type'     => 'select',
 						'choices'  => $fonts,

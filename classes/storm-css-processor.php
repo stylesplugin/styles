@@ -166,7 +166,7 @@ class Storm_CSS_Processor {
 	}
 	
 	public function process( $styles ) {
-		//FB::log( $styles->variables, '$style-variables');
+		FB::log( $styles->variables, '$style-variables');
 		foreach( $styles->variables as $id => $el ) {
 			$selector = $el['selector'];
 			// $active, $css, $image, $bg_color, $stops, $color
@@ -177,12 +177,10 @@ class Storm_CSS_Processor {
 			extract( $el['values'] );
 
 			if ( empty($selector) ) { continue; }
-			if ( empty($css) ) {
-				continue;
+
+			if ( empty($css) && empty($color) && empty($font_size) && empty($font_family) && empty($font_weight) && empty($font_style) && empty($text_transform) && empty($line_height) ) {
+				//continue;
 			}
-			/*if ( empty($type) && empty($color) && empty($font_size) && empty($font_family) && empty($font_weight) && empty($font_style) && empty($text_transform) && empty($line_height) ) {
-				continue;
-			}*/
 
 			$properties = '';
 			list( $x, $type ) = explode( '_', $id );
@@ -254,9 +252,13 @@ class Storm_CSS_Processor {
 		if ( is_object( $this->styles->wp->admin_settings )) {
 			$opts = $this->styles->wp->admin_settings;
 		}else {
-			FB::error('Couldn\'t load $this->styles->wp->admin_settings in '.__FILE__);
-			return;
+			// TODO: re-enable after settings page set up
+			//FB::error('Couldn\'t load $this->styles->wp->admin_settings in '.__FILE__);
+			//return;
+			$opts->families = array();
+			$opts->google_families = array();
 		}
+
 
 		if ( array_key_exists( $font_family, $opts->families) ) {
 			$font_family = $opts->families[$font_family];
@@ -268,8 +270,8 @@ class Storm_CSS_Processor {
 		$output = '';
 		
 		$color = trim($color, '#');
-		
-		if ($color)          $output .= "color: #$color;";
+
+		//if ($color)          $output .= "color: #$color;";
 		if ($font_size)      $output .= "font-size: {$font_size}px;";
 		if ($font_family)    $output .= "font-family: $font_family;";
 		if ($line_height)    $output .= "line-height: $line_height;";

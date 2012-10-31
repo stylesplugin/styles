@@ -106,7 +106,7 @@ class Storm_Styles {
 	public function __construct() {
 
 		// Load WordPress Utilties
-		if ( is_admin() || DOING_AJAX ) {
+		if ( is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
 			$this->wp = new Storm_WP_Admin( $this );
 		}else {
 			$this->wp = new Storm_WP_Frontend( $this );
