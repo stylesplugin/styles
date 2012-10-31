@@ -86,9 +86,9 @@ class Storm_CSS_Processor {
 		$regex = $this->helper->create_regex($this->regex);
 		$id_mask = '/[^a-zA-Z0-9\s]/';
 
-		$types = array('background-color', 'color');
+		$types = array('background-color', 'color', 'font-family');
 
-		foreach ( $types as $a_type ) {
+		foreach ( $types as $type ) {
 			// Get all selectors
 			if ( preg_match_all( '/'.$regex.'/xs', $styles->css->contents, $matches ) ) {
 				// Iterate through selectors
@@ -102,7 +102,6 @@ class Storm_CSS_Processor {
 					$default = $label = $id = '';
 					$group   = 'General';
 					$enable  = 'all';
-					$type = 'background-color';
 					extract( $values, EXTR_IF_EXISTS );
 
 					if ( empty( $label ) && empty( $id ) ) {
@@ -117,7 +116,7 @@ class Storm_CSS_Processor {
 						$id = preg_replace( '/[\s]+/', '.', strtolower( $id ) );
 					}
 
-					$id = $id.'_'.$a_type;
+					$id = $id.'_'.$type;
 
 					// Add items to variables array, keeping extra IDs if they exist
 					$styles->variables[$id]['group']     = $group;
@@ -127,7 +126,7 @@ class Storm_CSS_Processor {
 					$styles->variables[$id]['selector']  = $selector;
 					$styles->variables[$id]['form_name'] = "variables[$id][values]";
 					$styles->variables[$id]['form_id']   = 'st_'.md5( $id );
-					$styles->variables[$id]['type']      = $type;
+					$styles->variables[$id]['priority']  = $key;
 
 					// Organize variables IDs into groups
 					$styles->groups[$group][] = $id;
@@ -147,7 +146,6 @@ class Storm_CSS_Processor {
 		$styles->css->contents = $this->helper->remove_properties( 'label',  $styles->css->contents );
 		$styles->css->contents = $this->helper->remove_properties( 'id',     $styles->css->contents );
 		$styles->css->contents = $this->helper->remove_properties( 'enable', $styles->css->contents );
-		$styles->css->contents = $this->helper->remove_properties( 'type',   $styles->css->contents );
 		
 		// Remove empty selectors, keep selectors with content remaining
 		if( preg_match_all('/'.$regex.'/xs', $styles->css->contents, $matches) ) {
@@ -168,26 +166,33 @@ class Storm_CSS_Processor {
 	}
 	
 	public function process( $styles ) {
-		FB::log( $styles->variables, '$style-variables');
+		//FB::log( $styles->variables, '$style-variables');
 		foreach( $styles->variables as $id => $el ) {
 			$selector = $el['selector'];
 			// $active, $css, $image, $bg_color, $stops, $color
 			// $font_size, $font_family, $font_weight, $font_style, $text_transform, $line_height
 			
-			//if ( empty($el['values']) ) { continue; }
+			if ( empty($el['values']) ) { continue; }
 			extract( $el );
-			//extract( $el['values'] );
+			extract( $el['values'] );
 
-			/*if ( empty($selector) ) { continue; }
-			if ( empty($type) && empty($color) && empty($font_size) && empty($font_family) && empty($font_weight) && empty($font_style) && empty($text_transform) && empty($line_height) ) {
+			if ( empty($selector) ) { continue; }
+			if ( empty($css) ) {
+				continue;
+			}
+			/*if ( empty($type) && empty($color) && empty($font_size) && empty($font_family) && empty($font_weight) && empty($font_style) && empty($text_transform) && empty($line_height) ) {
 				continue;
 			}*/
 
 			$properties = '';
-			FB::log( $type, '$type' );
+			list( $x, $type ) = explode( '_', $id );
+			//FB::log( $type, '$type' );
 
 			// Create new styles
 			switch( $type ) {
+				case 'color':
+					$properties .= "color: $css;";
+					break;
 				case 'image':
 
 					if ( $image_replace ) {
@@ -203,7 +208,7 @@ class Storm_CSS_Processor {
 
 					break;
 				case 'background-color':
-				FB::log( $css, '$css' );
+				//FB::log( $css, '$css' );
 					$properties .= 'background-image:url();'; // Until the UI supports both at once
 					$properties .= $this->background_rgba($css);
 					
