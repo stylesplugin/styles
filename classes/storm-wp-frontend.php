@@ -31,8 +31,10 @@ class Storm_WP_Frontend {
 	var $styles;
 
 	function __construct( $styles ) {
+		global $wp_version;
 		// Pointer to parent object
 		$this->styles = $styles;
+		$this->version = '0.5.3';
 		
 		// Full path and plugin basename of the main plugin file
 		$this->plugin_file = __FILE__;
@@ -48,7 +50,9 @@ class Storm_WP_Frontend {
 		add_action ( 'template_redirect' , array( $this , 'frontend_js' ) );
 		
 		// Admin Bar
-		add_action( 'admin_bar_menu', array( $this, 'admin_bar' ), 95 );
+		if ( version_compare( $wp_version, '3.4', '<' ) || false !== strpos( $wp_version, 'alpha' ) || false !== strpos( $wp_version, 'beta' ) ) {
+			add_action( 'admin_bar_menu', array( $this, 'admin_bar' ), 95 );
+		}
 
 		// If we loaded CSS through @import, tell WordPress to dequeue
 		// add_action( 'wp_print_styles', array( $this , 'dequeue_at_imports' ), 0);
