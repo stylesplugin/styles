@@ -61,7 +61,7 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 		// Whitelist options
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
 
-		if ( version_compare( $wp_version, '3.4', '>=' ) || false !== strpos( $wp_version, 'alpha' ) || false !== strpos( $wp_version, 'beta' ) ) {
+		if ( version_compare( $wp_version, '3.4', '<' ) || false !== strpos( $wp_version, 'alpha' ) || false !== strpos( $wp_version, 'beta' ) ) {
 			// Activate the options page
 			add_action( 'admin_menu', array( $this, 'add_page' ) );
 		}

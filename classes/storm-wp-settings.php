@@ -46,16 +46,8 @@ class Storm_WP_Settings {
 		do_action( 'styles_process', $this->styles );
 		do_action( 'styles_after_process', $this->styles );
 
-		$wp_customize->add_section( 'test', array(
-			'title'    => __( 'Test Styles', 'storm' ),
-			'priority' => 940,
-		) );
-
 		// GUI
-
 		foreach ( $this->styles->groups as $group => $elements ) {
-			//FB::log( $group, '$group');
-			//FB::log( $elements, '$elements');
 			$wp_customize->add_section( $group, array( // Namespace as storm_$group in future
 				'title'    => __( $group, 'storm' ),
 				'priority' => 950,
@@ -69,19 +61,8 @@ class Storm_WP_Settings {
 	public function customize_items( $wp_customize ) {
 		FB::log( __FUNCTION__ );
 
-		FB::log( $this->styles->groups, '$this->styles->groups' );
+		//FB::log( $this->styles->groups, '$this->styles->groups' );
 		FB::log($this->styles->variables, '$this->styles->variables');
-
-		$wp_customize->add_setting( 'content_textcolor', array(
-			'default'   => '#000000',
-			'transport' => 'refresh',
-		) );
-
-		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'content_textcolor', array(
-			'label'    => __( 'Content Text Color', 'storm' ),
-			'section'  => 'test',
-			'settings' => 'content_textcolor',
-		) ) );
 
 		// GUI
 		foreach ( $this->styles->variables as $key => $element ) {
@@ -95,37 +76,69 @@ class Storm_WP_Settings {
 			// 	$font_size, $font_family, $font_weight,
 			// 	$font_style, $text_transform, $line_height ]
 			extract( $element );
-			list( $selector, $type) = explode( '_', $id );
+			list( $x, $type) = explode( '_', $id );
 			$js_id = str_replace( '.', '_', $id );
+			foreach ( $this->families as $name => $value ) {
+				if ( empty( $value ) ) continue;
+				$fonts[esc_attr( $name )] = $name;
+			}
 
-			//$types = explode( ',', $type );
+			foreach ( $this->google_families as $name => $value ) {
+				if ( empty( $value ) ) continue;
+				$fonts[esc_attr( $name )] = $name;
+			}
 
-			//foreach ( $types as $type ) {
-				switch ( $type ) {
-					case 'background-color':
-						$suffix = ' BG Color';
-						$wp_customize->add_setting( "styles-test[$id][values][css]", array(
-							'default'    => '',
-							'type'       => 'option',
-							'capability' => 'edit_theme_options',
-							// 'transport'      => 'postMessage',
-						) );
-						$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "storm_$js_id", array(
-							'label'    => __( $label.$suffix, 'styles' ),
-							'section'  => "$group",
-							'settings' => "styles-test[$id][values][css]",
-						) ) );
-						break;
-				}
-			//}
-			/*add_settings_field(
-				$key,                   // Unique ID
-				$label,                 // Label
-				array($this, 'form_element'), // Display callback
-				'styles-gui', // Form page
-				$group,                 // Form section
-				$element                // Args passed to callback
-			);*/
+			switch ( $type ) {
+				case 'background-color':
+					$suffix = ' Background Color';
+					$wp_customize->add_setting( "styles-test[$id][values][css]", array(
+						'default'    => '',
+						'type'       => 'option',
+						'capability' => 'edit_theme_options',
+						// 'transport'      => 'postMessage',
+					) );
+					$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "storm_$js_id", array(
+						'label'    => __( $label.$suffix, 'styles' ),
+						'section'  => "$group",
+						'settings' => "styles-test[$id][values][css]",
+						'priority' => $priority,
+					) ) );
+					break;
+				case 'color':
+					$suffix = ' Text Color';
+					$wp_customize->add_setting( "styles-test[$id][values][css]", array(
+						'default'    => '',
+						'type'       => 'option',
+						'capability' => 'edit_theme_options',
+						// 'transport'      => 'postMessage',
+					) );
+					$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "storm_$js_id", array(
+						'label'    => __( $label.$suffix, 'styles' ),
+						'section'  => "$group",
+						'settings' => "styles-test[$id][values][css]",
+						'priority' => $priority,
+					) ) );
+					break;
+				case 'font-family':
+					$suffix = ' Font Family';
+					$wp_customize->add_setting( "styles-test[$id][values][css]", array(
+						'default'    => '',
+						'type'       => 'option',
+						'capability' => 'edit_theme_options',
+						// 'transport'      => 'postMessage',
+					) );
+					$wp_customize->add_control( "storm_$js_id", array(
+						'label'    => __( $label.$suffix, 'styles' ),
+						'section'  => "$group",
+						'settings' => "styles-test[$id][values][css]",
+						'priority' => $priority,
+						'type'     => 'select',
+						'choices'  => $fonts,
+
+					) );
+					break;
+			}
+
 		}
 	}
 	
