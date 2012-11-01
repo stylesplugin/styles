@@ -86,7 +86,7 @@ class Storm_CSS_Processor {
 		$regex = $this->helper->create_regex($this->regex);
 		$id_mask = '/[^a-zA-Z0-9\s]/';
 
-		$types = array('background-color', 'color', 'font-family');
+		$types = array('background-color', 'color', 'font-family', 'font-size', 'font-weight', 'font-style', 'text-transform', 'line-height');
 
 		foreach ( $types as $type ) {
 			// Get all selectors
@@ -179,7 +179,7 @@ class Storm_CSS_Processor {
 			if ( empty($selector) ) { continue; }
 
 			if ( empty($css) && empty($color) && empty($font_size) && empty($font_family) && empty($font_weight) && empty($font_style) && empty($text_transform) && empty($line_height) ) {
-				//continue;
+				continue;
 			}
 
 			$properties = '';
