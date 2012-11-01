@@ -78,6 +78,8 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 		
 		// Settings page setup
 		$this->admin_settings = new Storm_WP_Settings( $this->styles );
+
+		add_action( 'customize_save', array($this, 'force_recache') );
 	}
 	
 	/**
