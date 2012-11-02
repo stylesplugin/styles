@@ -59,10 +59,10 @@ class Storm_WP_Settings {
 	 * Register individual customize fields in WordPress 3.4+
 	 */
 	public function customize_items( $wp_customize ) {
-		FB::log( __FUNCTION__ );
+		//FB::log( __FUNCTION__ );
 
 		//FB::log( $this->styles->groups, '$this->styles->groups' );
-		FB::log($this->styles->variables, '$this->styles->variables');
+		//FB::log($this->styles->variables, '$this->styles->variables');
 
 		// GUI
 		foreach ( $this->styles->variables as $key => $element ) {
@@ -88,6 +88,32 @@ class Storm_WP_Settings {
 				$fonts[esc_attr( $name )] = $name;
 			}
 
+			/*$wp_customize->add_setting( "styles-test[$id][values][subsection]", array(
+				'default'    => '',
+				'type'       => 'option',
+				'capability' => 'edit_theme_options',
+				// 'transport'      => 'postMessage',
+			) );
+
+			$wp_customize->add_control( new Example_Customize_Subsection_Control( $wp_customize, "storm_$js_id", array(
+				'label'    => __( 'Test', 'styles' ),
+				'section'  => "$group",
+				'settings' => "styles-test[$id][values][subsection]",
+				'priority' => $priority.'0',
+				'type'     => 'subsection',
+			) ) );*/
+
+			$wp_customize->add_setting( 'textarea_setting', array(
+				'default' => 'Some default text for the textarea',
+			) );
+
+			$wp_customize->add_control( new Example_Customize_Textarea_Control( $wp_customize, 'textarea_setting', array(
+				'label'    => 'Textarea Setting',
+				'section'  => "$group",
+				'settings' => 'textarea_setting',
+				'priority' => 0,
+			) ) );
+
 			switch ( $type ) {
 				case 'background-color':
 					$suffix = ' Background Color';
@@ -101,7 +127,7 @@ class Storm_WP_Settings {
 						'label'    => __( $label.$suffix, 'styles' ),
 						'section'  => "$group",
 						'settings' => "styles-test[$id][values][css]",
-						'priority' => $priority,
+						'priority' => $priority.'1',
 					) ) );
 					break;
 				case 'color':
@@ -116,7 +142,7 @@ class Storm_WP_Settings {
 						'label'    => __( $label.$suffix, 'styles' ),
 						'section'  => "$group",
 						'settings' => "styles-test[$id][values][css]",
-						'priority' => $priority,
+						'priority' => $priority.'2',
 					) ) );
 					break;
 				case 'font-family':
@@ -131,10 +157,9 @@ class Storm_WP_Settings {
 						'label'    => __( $label.$suffix, 'styles' ),
 						'section'  => "$group",
 						'settings' => "styles-test[$id][values][font_family]",
-						'priority' => $priority,
+						'priority' => $priority.'3',
 						'type'     => 'select',
 						'choices'  => $fonts,
-
 					) );
 					break;
 				case 'font-size':
@@ -149,7 +174,24 @@ class Storm_WP_Settings {
 						'label'    => __( $label.$suffix, 'styles' ),
 						'section'  => "$group",
 						'settings' => "styles-test[$id][values][font_size]",
-						'priority' => $priority,
+						'priority' => $priority.'4',
+						'type'     => 'text'
+
+					) );
+					break;
+				case 'line-height':
+					$suffix = ' Line Height (px)';
+					$wp_customize->add_setting( "styles-test[$id][values][line_height]", array(
+						'default'    => '',
+						'type'       => 'option',
+						'capability' => 'edit_theme_options',
+						// 'transport'      => 'postMessage',
+					) );
+					$wp_customize->add_control( "storm_$js_id", array(
+						'label'    => __( $label.$suffix, 'styles' ),
+						'section'  => "$group",
+						'settings' => "styles-test[$id][values][line_height]",
+						'priority' => $priority.'5',
 						'type'     => 'text'
 
 					) );
@@ -166,7 +208,7 @@ class Storm_WP_Settings {
 						'label'    => __( $label.$suffix, 'styles' ),
 						'section'  => "$group",
 						'settings' => "styles-test[$id][values][font_weight]",
-						'priority' => $priority,
+						'priority' => $priority.'6',
 						'type'     => 'select',
 						'choices'  => array(
 							'100' => '100',
@@ -193,7 +235,7 @@ class Storm_WP_Settings {
 						'label'    => __( $label.$suffix, 'styles' ),
 						'section'  => "$group",
 						'settings' => "styles-test[$id][values][font_style]",
-						'priority' => $priority,
+						'priority' => $priority.'7',
 						'type'     => 'select',
 						'choices'  => array(
 							'normal' => 'Normal',
@@ -214,7 +256,7 @@ class Storm_WP_Settings {
 						'label'    => __( $label.$suffix, 'styles' ),
 						'section'  => "$group",
 						'settings' => "styles-test[$id][values][text_transform]",
-						'priority' => $priority,
+						'priority' => $priority.'8',
 						'type'     => 'select',
 						'choices'  => array(
 							'none'  => 'None',
@@ -224,24 +266,22 @@ class Storm_WP_Settings {
 						),
 					) );
 					break;
-				case 'line-height':
-					$suffix = ' Line Height (px)';
-					$wp_customize->add_setting( "styles-test[$id][values][line_height]", array(
-						'default'    => '',
-						'type'       => 'option',
-						'capability' => 'edit_theme_options',
-						// 'transport'      => 'postMessage',
-					) );
-					$wp_customize->add_control( "storm_$js_id", array(
-						'label'    => __( $label.$suffix, 'styles' ),
-						'section'  => "$group",
-						'settings' => "styles-test[$id][values][line_height]",
-						'priority' => $priority,
-						'type'     => 'text'
-
-					) );
-					break;
 			}
+
+			/*$wp_customize->add_setting( "styles-test[$id][values][]", array(
+				'default'    => '',
+				'type'       => 'option',
+				'capability' => 'edit_theme_options',
+				// 'transport'      => 'postMessage',
+			) );
+
+			$wp_customize->add_control( new Example_Customize_EndSubsection_Control( $wp_customize, "storm_$js_id", array(
+				'label'    => __( 'Test', 'styles' ),
+				'section'  => "$group",
+				'settings' => "styles-test[$id][values][]",
+				'priority' => $priority.'0',
+				'type'     => 'endsubsection',
+			) ) );*/
 
 		}
 	}
@@ -489,4 +529,39 @@ class Storm_WP_Settings {
 			add_option('styles-'.get_template(), $data->css, null, 'no'); // Don't autoload
 		}
 	}
+}
+
+if (class_exists('WP_Customize_Control')) {
+	class Example_Customize_Textarea_Control extends WP_Customize_Control {
+		public $type = 'textarea';
+
+		public function render_content() {
+			?>
+            <label>
+                <span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
+                <textarea rows="5" style="width:100%;" <?php $this->link(); ?>><?php echo esc_textarea( $this->value() ); ?></textarea>
+            </label>
+			<?php
+		}
+	}
+class Example_Customize_Subsection_Control extends WP_Customize_Control {
+	public $type = 'subsection';
+
+	public function render_content() {
+		?>
+           <div class="customize-control-title">QQQQ<?php echo esc_html( $this->label ); ?></div>
+
+	<?php
+	}
+}
+
+class Example_Customize_EndSubsection_Control extends WP_Customize_Control {
+	public $type = 'endsubsection';
+
+	public function render_content() {
+		?>
+
+	<?php
+	}
+}
 }
