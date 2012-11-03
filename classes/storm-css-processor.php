@@ -86,9 +86,11 @@ class Storm_CSS_Processor {
 		$regex = $this->helper->create_regex($this->regex);
 		$id_mask = '/[^a-zA-Z0-9\s]/';
 
-		$types = array('background-color', 'color', 'font-family', 'font-size', 'font-weight', 'font-style', 'text-transform', 'line-height');
+		$types = array('background-color', 'color', 'font-family', 'font-size', 'font-weight', 'font-style', 'text-transform', 'line-height', 'open-section', 'close-section');
 
 		foreach ( $types as $type ) {
+			//if ( $type != 'open-section' && $type != 'close-section' ) {
+
 			// Get all selectors
 			if ( preg_match_all( '/'.$regex.'/xs', $styles->css->contents, $matches ) ) {
 				// Iterate through selectors
@@ -134,6 +136,7 @@ class Storm_CSS_Processor {
 					// $_groups[$group][] = $label;
 				}
 			}
+			//}
 		}
 		
 

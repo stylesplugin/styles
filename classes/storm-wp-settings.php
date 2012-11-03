@@ -46,14 +46,22 @@ class Storm_WP_Settings {
 		do_action( 'styles_process', $this->styles );
 		do_action( 'styles_after_process', $this->styles );
 
+		$wp_customize->add_section( 'test', array(
+			'title'    => __( 'Test', 'themename' ),
+			'priority' => 1,
+		) );
+
 		// GUI
+		$i = 950;
 		foreach ( $this->styles->groups as $group => $elements ) {
 			$wp_customize->add_section( $group, array( // Namespace as storm_$group in future
 				'title'    => __( $group, 'storm' ),
-				'priority' => 950,
+				'priority' => $i,
 			) );
+			$i++;
 		}
 	}
+
 
 	/**
 	 * Register individual customize fields in WordPress 3.4+
@@ -71,6 +79,10 @@ class Storm_WP_Settings {
 				continue;
 			}
 
+			if ( !in_array( $element['id'], $this->styles->groups[$element['group']] ) ) {
+				continue;
+			}
+
 			// $form_id, $form_name, $id, $label, $group,$selector
 			// $values[ active,css,image,bg_color,stops,$color,
 			// 	$font_size, $font_family, $font_weight,
@@ -78,6 +90,7 @@ class Storm_WP_Settings {
 			extract( $element );
 			list( $x, $type) = explode( '_', $id );
 			$js_id = str_replace( '.', '_', $id );
+
 			foreach ( $this->families as $name => $value ) {
 				if ( empty( $value ) ) continue;
 				$fonts[esc_attr( $name )] = $name;
@@ -88,33 +101,26 @@ class Storm_WP_Settings {
 				$fonts[esc_attr( $name )] = $name;
 			}
 
-			/*$wp_customize->add_setting( "styles-test[$id][values][subsection]", array(
-				'default'    => '',
-				'type'       => 'option',
-				'capability' => 'edit_theme_options',
-				// 'transport'      => 'postMessage',
-			) );
 
-			$wp_customize->add_control( new Example_Customize_Subsection_Control( $wp_customize, "storm_$js_id", array(
-				'label'    => __( 'Test', 'styles' ),
-				'section'  => "$group",
-				'settings' => "styles-test[$id][values][subsection]",
-				'priority' => $priority.'0',
-				'type'     => 'subsection',
-			) ) );*/
 
-			$wp_customize->add_setting( 'textarea_setting', array(
-				'default' => 'Some default text for the textarea',
-			) );
 
-			$wp_customize->add_control( new Example_Customize_Textarea_Control( $wp_customize, 'textarea_setting', array(
-				'label'    => 'Textarea Setting',
-				'section'  => "$group",
-				'settings' => 'textarea_setting',
-				'priority' => 0,
-			) ) );
 
 			switch ( $type ) {
+				case 'open-section':
+					$wp_customize->add_setting( "styles-test[$id][values][subsection]", array(
+						'default'    => '',
+						'type'       => 'option',
+						'capability' => 'edit_theme_options',
+						// 'transport'      => 'postMessage',
+					) );
+
+					$wp_customize->add_control( new Styles_Customize_Subsection_Control( $wp_customize, "storm_$js_id", array(
+						'label'    => "$label",
+						'section'  => "$group",
+						'settings' => "styles-test[$id][values][subsection]",
+						'priority' => $priority.'0',
+					) ) );
+					break;
 				case 'background-color':
 					$suffix = ' Background Color';
 					$wp_customize->add_setting( "styles-test[$id][values][css]", array(
@@ -266,22 +272,23 @@ class Storm_WP_Settings {
 						),
 					) );
 					break;
+				case 'close-section':
+					$wp_customize->add_setting( "styles-test[$id][values][]", array(
+						'default'    => '',
+						'type'       => 'option',
+						'capability' => 'edit_theme_options',
+						// 'transport'      => 'postMessage',
+					) );
+
+					$wp_customize->add_control( new Styles_Customize_EndSubsection_Control( $wp_customize, "storm_$js_id", array(
+						'label'    => __( 'End', 'styles' ),
+						'section'  => "$group",
+						'settings' => "styles-test[$id][values][]",
+						'priority' => $priority.'9',
+						'type'     => 'endsubsection',
+					) ) );
+					break;
 			}
-
-			/*$wp_customize->add_setting( "styles-test[$id][values][]", array(
-				'default'    => '',
-				'type'       => 'option',
-				'capability' => 'edit_theme_options',
-				// 'transport'      => 'postMessage',
-			) );
-
-			$wp_customize->add_control( new Example_Customize_EndSubsection_Control( $wp_customize, "storm_$js_id", array(
-				'label'    => __( 'Test', 'styles' ),
-				'section'  => "$group",
-				'settings' => "styles-test[$id][values][]",
-				'priority' => $priority.'0',
-				'type'     => 'endsubsection',
-			) ) );*/
 
 		}
 	}
@@ -544,24 +551,25 @@ if (class_exists('WP_Customize_Control')) {
 			<?php
 		}
 	}
-class Example_Customize_Subsection_Control extends WP_Customize_Control {
-	public $type = 'subsection';
 
-	public function render_content() {
-		?>
-           <div class="customize-control-title">QQQQ<?php echo esc_html( $this->label ); ?></div>
+	class Styles_Customize_Subsection_Control extends WP_Customize_Control {
+		public $type = 'subsection';
 
-	<?php
+		public function render_content() {
+			?>
+        <h3 class="styles-subsection-title"><?php echo esc_html( $this->label ); ?></h3>
+			<ul class="styles-subsection">
+		<?php
+		}
 	}
-}
 
-class Example_Customize_EndSubsection_Control extends WP_Customize_Control {
-	public $type = 'endsubsection';
+	class Styles_Customize_EndSubsection_Control extends WP_Customize_Control {
+		public $type = 'endsubsection';
 
-	public function render_content() {
-		?>
-
-	<?php
+		public function render_content() {
+			?>
+			</ul>
+		<?php
+		}
 	}
-}
 }
