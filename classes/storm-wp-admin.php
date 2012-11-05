@@ -80,6 +80,15 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 		$this->admin_settings = new Storm_WP_Settings( $this->styles );
 
 		add_action( 'customize_save', array($this, 'force_recache') );
+
+		add_action( 'customize_controls_enqueue_scripts', array( $this, 'customizer_scripts' ) );
+	}
+
+	function customizer_scripts() {
+		wp_register_style( 'styles-customizer', $this->plugin_url().'/css/styles-customizer.css', array(), $this->version );
+		wp_enqueue_style( 'styles-customizer' );
+		wp_register_script( 'styles-customizer-js', $this->plugin_url().'/js/styles-customizer.js', array(), $this->version );
+		wp_enqueue_script( 'styles-customizer-js' );
 	}
 	
 	/**

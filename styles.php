@@ -52,7 +52,6 @@ if ( version_compare(PHP_VERSION, '5.2', '<') ) {
  */
 function storm_styles_init() {
 
-	// TODO: set to false for release
 	if ( !defined( 'BSM_DEVELOPMENT' ) ) define( 'BSM_DEVELOPMENT', false );
 	
 	require dirname ( __FILE__ ) . '/classes/stormFirePHP/stormFirePHP.php';

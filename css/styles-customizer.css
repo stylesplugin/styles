@@ -1,0 +1,34 @@
+.customize-control input[type="text"].styles-pixels {
+	width: 50px;
+}
+
+.customize-control-title.styles-label {
+	display: inline;
+}
+
+.styles-subsection-title:after {
+	border-color: #CCCCCC transparent;
+	border-style: solid;
+	border-width: 6px 6px 0;
+	content: "";
+	height: 0;
+	position: absolute;
+	right: 20px;
+	top: 15px;
+	width: 0;
+	z-index: 1;
+}
+
+.styles-subsection-title {
+	background-color: #F5F5F5;
+	background-image: -moz-linear-gradient(center top, #F5F5F5, #EEEEEE);
+	font-family: Georgia, "Times New Roman", "Bitstream Charter", Times, serif;
+	font-size: 15px;
+	font-weight: normal;
+	padding: 10px 20px;
+	text-shadow: 0 1px 0 #FFFFFF;
+	-moz-user-select: none;
+	cursor: pointer;
+	position: relative;
+	margin: -10px -20px 10px -20px;
+}
