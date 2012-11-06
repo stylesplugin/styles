@@ -2,10 +2,6 @@
 	width: 50px;
 }
 
-.customize-control-title.styles-label {
-	display: inline;
-}
-
 .styles-subsection-title:after {
 	border-color: #CCCCCC transparent;
 	border-style: solid;
@@ -21,14 +17,38 @@
 
 .styles-subsection-title {
 	background-color: #F5F5F5;
-	background-image: -moz-linear-gradient(center top, #F5F5F5, #EEEEEE);
+	background-image: -moz-linear-gradient(center top, #e8e8e8, #e0e0e0);
 	font-family: Georgia, "Times New Roman", "Bitstream Charter", Times, serif;
 	font-size: 15px;
 	font-weight: normal;
-	padding: 10px 20px;
+	padding: 11px 20px;
 	text-shadow: 0 1px 0 #FFFFFF;
 	-moz-user-select: none;
 	cursor: pointer;
 	position: relative;
-	margin: -10px -20px 10px -20px;
+	margin: 0 -20px -8px;
+	border-bottom: 1px solid #efefef;
+}
+
+.customize-section-content li:first-child .styles-subsection-title {
+	margin-top: -10px;
+}
+
+.open-subsection .styles-subsection-title {
+	border-bottom: 1px solid #6D6D6D;
+}
+
+.control-section .styles-subsection-title:hover, .open-subsection .styles-subsection-title {
+	background-color: #808080;
+	background-image: -moz-linear-gradient(center top, #9B9B9B, #848484);
+	color: #FFFFFF;
+	text-shadow: 0 -1px 0 #333333;
+}
+
+.customize-section-content {
+	padding-bottom: 0;
+}
+
+.styles-subsection {
+	padding: 20px 0;
 }
