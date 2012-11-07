@@ -169,7 +169,7 @@ class Storm_CSS_Processor {
 	}
 	
 	public function process( $styles ) {
-		FB::log( $styles->variables, '$style-variables');
+		//FB::log( $styles->variables, '$style-variables');
 		foreach( $styles->variables as $id => $el ) {
 			$selector = $el['selector'];
 			// $active, $css, $image, $bg_color, $stops, $color

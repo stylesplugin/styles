@@ -233,14 +233,18 @@ class Storm_Styles {
 		}
 		if ( empty($contents) && empty($wp_settings_errors) ) {
 			// Just in case the API didn't send this error
-			add_settings_error( 'styles-api-key', 'no-css', 'Sorry, '.get_template().' is either not supported or could not be loaded. You can request support for this theme <a href="https://www.google.com/moderator/?authuser=2#16/e=1f6d0a">on this page</a>.', 'error' );			
+			global $wp_customize;
+			if ( !isset( $wp_customize ) ) {
+				add_settings_error( 'styles-api-key', 'no-css', 'Sorry, '.get_template().' is either not supported or could not be loaded. You can request support for this theme <a href="https://www
+			.google.com/moderator/?authuser=2#16/e=1f6d0a">on this page</a>.', 'error' );
+			}
 		}
 		
 		// Interpret CSS only if:
 		if ( !(
 			is_admin()                    // We're loading the wp-admin Styles page
 			|| isset($_GET['scaffold'])   // Responding to a live redraw via parse_request: site.com/?scaffold
-			|| DOING_AJAX                 // Saving the cache via AJAX
+			|| ( defined( 'DOING_AJAX' ) && DOING_AJAX )                // Saving the cache via AJAX
 		) ){
 			return false;
 		}
