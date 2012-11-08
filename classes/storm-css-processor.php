@@ -240,11 +240,16 @@ class Storm_CSS_Processor {
 	 * Add Google @import declarations to the beginning of the CSS Source
 	 */
 	public function post_process( $styles ) {
-		foreach ( $this->google_fonts as $family => $src ) {
-			$imports .= "@import url(//fonts.googleapis.com/css?family=$src);\r";
+		static $i = 0;
+		if ( $i == 1 ) {
+			foreach ( $this->google_fonts as $family => $src ) {
+				$imports .= "@import url(//fonts.googleapis.com/css?family=$src);\r";
+			}
+
+			$styles->css->contents = $imports.$styles->css->contents;
+
 		}
-		
-		$styles->css->contents = $imports.$styles->css->contents;
+		$i++;
 	}
 	
 	public function wp_font( $values ) {
