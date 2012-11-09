@@ -170,6 +170,7 @@ class Storm_CSS_Processor {
 	
 	public function process( $styles ) {
 		//FB::log( $styles->variables, '$style-variables');
+		if ( did_action( 'styles_process' ) == 2 ) {
 		foreach( $styles->variables as $id => $el ) {
 			$selector = $el['selector'];
 			// $active, $css, $image, $bg_color, $stops, $color
@@ -187,7 +188,6 @@ class Storm_CSS_Processor {
 
 			$properties = '';
 			list( $x, $type ) = explode( '_', $id );
-			//FB::log( $type, '$type' );
 
 			// Create new styles
 			switch( $type ) {
@@ -209,7 +209,7 @@ class Storm_CSS_Processor {
 
 					break;
 				case 'background-color':
-				//FB::log( $css, '$css' );
+
 					$properties .= 'background-image:url();'; // Until the UI supports both at once
 					$properties .= $this->background_rgba($css);
 					
@@ -230,9 +230,11 @@ class Storm_CSS_Processor {
 			$properties .= $this->wp_font( $el['values'] );
 			
 			// Add selector and properties to CSS source
-			$styles->css->contents .= "$selector { $properties }\n" ;
+			$styles->css->contents .= "$selector { $properties }\n";
 			
 		} // end foreach
+
+		}
 		
 	}
 	
@@ -241,7 +243,7 @@ class Storm_CSS_Processor {
 	 */
 	public function post_process( $styles ) {
 		static $i = 0;
-		if ( $i == 1 ) {
+		if ( $i == 1  || BSM_DEVELOPMENT == true ) {
 			foreach ( $this->google_fonts as $family => $src ) {
 				$imports .= "@import url(//fonts.googleapis.com/css?family=$src);\r";
 			}

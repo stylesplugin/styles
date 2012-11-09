@@ -198,6 +198,7 @@ class Storm_WP_Settings {
 						'priority' => $priority.'6',
 						'type'     => 'select',
 						'choices'  => array(
+							'' => 'Default',
 							'100' => '100',
 							'200' => '200',
 							'300' => '300',
@@ -552,14 +553,23 @@ if (class_exists('WP_Customize_Control')) {
 			}
 
 			?>
-            <label>
+
+	        <label>
                 <span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
-                <select <?php $this->link(); ?>>
-					<?php
-					foreach ( $fonts as $value => $label )
-						echo '<option value="'.esc_attr( $value ).'"'.selected( $this->value(), $value, false ).'>'.$label.'</option>';
-					?>
-                </select>
+                <select <?php $this->link(); ?> class="pds_font_select">
+                <option class="label first" value="">Select</option>
+
+                <option class="label" value="">Standard Fonts</option>
+				<?php foreach ( $this->families as $name => $value ) : if ( empty( $value ) ) continue; ?>
+                <option value='<?php esc_attr_e( $name ) ?>' <?php if ( $name == $font_family ) echo 'selected'; ?> ><?php echo $name ?></option>
+				<?php endforeach; ?>
+
+                <option class="label" value="">Google Fonts</option>
+				<?php foreach ( $this->google_families as $name => $value ) : if ( empty( $value ) ) continue; ?>
+                <option value='<?php esc_attr_e( $name ) ?>' <?php if ( $name == $font_family ) echo 'selected'; ?> ><?php echo $name ?></option>
+				<?php endforeach; ?>
+
+            </select>
             </label>
 			<?php
 		}
