@@ -170,7 +170,7 @@ class Storm_CSS_Processor {
 	
 	public function process( $styles ) {
 		//FB::log( $styles->variables, '$style-variables');
-		if ( did_action( 'styles_process' ) == 2 ) {
+		if ( did_action( 'styles_process' ) == 2 || BSM_DEVELOPMENT ) {
 		foreach( $styles->variables as $id => $el ) {
 			$selector = $el['selector'];
 			// $active, $css, $image, $bg_color, $stops, $color
@@ -243,7 +243,7 @@ class Storm_CSS_Processor {
 	 */
 	public function post_process( $styles ) {
 		static $i = 0;
-		if ( $i == 1  || BSM_DEVELOPMENT == true ) {
+		if ( $i == 1  || BSM_DEVELOPMENT ) {
 			foreach ( $this->google_fonts as $family => $src ) {
 				$imports .= "@import url(//fonts.googleapis.com/css?family=$src);\r";
 			}
@@ -269,14 +269,13 @@ class Storm_CSS_Processor {
 			$opts->google_families = array();
 		}
 
-
 		if ( array_key_exists( $font_family, $opts->families) ) {
 			$font_family = $opts->families[$font_family];
 		}else if ( array_key_exists( $font_family, $opts->google_families) ) { // Check for Google Fonts
 			$this->google_fonts[$font_family] = $opts->google_families[$font_family]; // Add family name to @imports queue
 			$font_family = "\"$font_family\""; // Set CSS
 		}
-		
+
 		$output = '';
 		
 		$color = trim($color, '#');

@@ -80,7 +80,6 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 		$this->admin_settings = new Storm_WP_Settings( $this->styles );
 
 		add_action( 'customize_save', array($this, 'force_recache') );
-
 		add_action( 'customize_controls_enqueue_scripts', array( $this, 'customizer_scripts' ) );
 	}
 
@@ -263,6 +262,9 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 	 * Write... to the cache.
 	 */
 	function write_to_cache() {
+
+		update_option( 'styles-preview', $this->styles->css->contents );
+
 		$cache_file = $this->styles->file_paths['cache_path'];
 		$cache_nicename = str_replace(ABSPATH, '/', $cache_file);
 
@@ -275,6 +277,7 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 			 <code>chmod 666</code></div>';*/
 		}
 	}
+
 	
 	/**
 	 * Handle updating options via AJAX; cache Scaffold output
@@ -286,6 +289,7 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 		
 		$response = array();
 		$class = 'updated';
+
 		
 		if ( isset( $_POST['preview'] )) {
 			
