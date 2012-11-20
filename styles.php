@@ -36,16 +36,20 @@ Author URI: http://brainstormmedia.com
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+$styles_exit_msg = esc_html__( 'Styles requires WordPress 3.4 or newer. <a href="http://codex.wordpress.org/Upgrading_WordPress">Please update.</a>', 'styles' );
+if ( version_compare( $wp_version, "3.4", "<" ) ) {
+	exit( $styles_exit_msg );
+}
 /**
  * PHP version check based on WP SEO by Joost de Valk http://yoast.com/wordpress/seo/
  */
-if ( version_compare(PHP_VERSION, '5.2', '<') ) {
+/*if ( version_compare(PHP_VERSION, '5.2', '<') ) {
 	if ( is_admin() && (!defined('DOING_AJAX') || !DOING_AJAX) ) {
 		require_once ABSPATH.'/wp-admin/includes/plugin.php';
 		deactivate_plugins( __FILE__ );
 	   wp_die( sprintf( __('Styles requires PHP 5.2 or higher, as does WordPress 3.2 and higher. The plugin has now disabled itself. For more info, %s$1see this post%s$2.', 'Styles'), '<a href="http://codex.wordpress.org/Switching_to_PHP5">', '</a>') );
 	}
-}
+}*/
 
 /**
  * Instantiate the $StormStyles object

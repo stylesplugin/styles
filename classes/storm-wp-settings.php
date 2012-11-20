@@ -18,16 +18,16 @@ class Storm_WP_Settings {
 		global $wp_version;
 		$this->styles = $styles;
 
-		if ( version_compare( $wp_version, '3.4', '>=' ) || false !== strpos( $wp_version, 'alpha' ) || false !== strpos( $wp_version, 'beta' ) ) {
+		//if ( version_compare( $wp_version, '3.4', '>=' ) || false !== strpos( $wp_version, 'alpha' ) || false !== strpos( $wp_version, 'beta' ) ) {
 			// WordPress 3.4+
 			add_action( 'customize_register', array( $this, 'customize_sections' ), 10 );
 			add_action( 'customize_register', array( $this, 'customize_items' ), 11 );
-		} else {
+		//} else {
 			// WordPress < 3.4
 			add_action( 'styles_settings', array( $this, 'settings_sections' ), 10 );
 			add_action( 'styles_settings', array( $this, 'settings_items' ), 20 );
 			add_action( 'styles_init', array( $this, 'remote_api' ), 0 );
-		}
+		//}
 		
 		// Sanatize before DB commit
 		add_filter( 'styles_before_save_element_values', array($this, 'before_save_element_values'), 10 );
@@ -290,14 +290,14 @@ class Storm_WP_Settings {
 		);
 		
 		// GUI
-		foreach( $this->styles->groups as $group => $elements ) {			
+		/*foreach( $this->styles->groups as $group => $elements ) {
 			add_settings_section(
 				$group, // Unique ID 
 				$group, // Label
 				null,   // array('DemoPlugin', 'Overview'), // Description callback
 				'styles-gui' // Page
 			);
-		}
+		}*/
 	}
 	
 	/**
@@ -316,7 +316,7 @@ class Storm_WP_Settings {
 		);
 		
 		// GUI
-		foreach( $this->styles->variables as $key => $element ){
+		/*foreach( $this->styles->variables as $key => $element ){
 			if ( empty( $element['selector']) ) { 
 				// Skip items that don't exist in the current theme
 				continue;
@@ -336,7 +336,7 @@ class Storm_WP_Settings {
 				$group,                 // Form section
 				$element                // Args passed to callback
 			);
-		}
+		}*/
 
 	}
 
