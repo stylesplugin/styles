@@ -61,10 +61,8 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 		// Whitelist options
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
 
-		if ( version_compare( $wp_version, '3.4', '<' ) || false !== strpos( $wp_version, 'alpha' ) || false !== strpos( $wp_version, 'beta' ) ) {
-			// Activate the options page
-			add_action( 'admin_menu', array( $this, 'add_page' ) );
-		}
+		// Activate the options page
+		add_action( 'admin_menu', array( $this, 'add_page' ) );
 		
 		// Rebuild CSS on theme switch
 		add_action( 'switch_theme', array($this, 'force_recache') );
@@ -81,6 +79,9 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 
 		add_action( 'customize_save', array($this, 'force_recache') );
 		add_action( 'customize_controls_enqueue_scripts', array( $this, 'customizer_scripts' ) );
+
+		if ( current_user_can( 'manage_options' ) ) add_filter( 'plugin_action_links', array( $this, 'filter_plugin_actions' ), 10, 2 );
+
 	}
 
 	function customizer_scripts() {
@@ -327,23 +328,35 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 	 * @return none
 	 */
 	function add_page() {
-		if ( current_user_can ( 'manage_options' ) ) {
-			$this->options_page_hookname = add_theme_page ( __( 'Styles', 'styles' ), __( 'Styles', 'styles' ), 'manage_options', 'styles', array( $this, 'admin_page' ) );
-			add_action ( "admin_print_scripts-{$this->options_page_hookname}", array( $this, 'admin_js' ) );
-			add_action ( "admin_print_styles-{$this->options_page_hookname}", array( $this, 'admin_css' ) );
-			add_filter ( "plugin_action_links_{$this->plugin_basename}", array( $this, 'filter_plugin_actions' ) );
+		global $wp_version;
+		if ( version_compare( $wp_version, '3.4', '<' ) || false !== strpos( $wp_version, 'alpha' ) || false !== strpos( $wp_version, 'beta' ) ) {
+			if ( current_user_can( 'manage_options' ) ) {
+				$this->options_page_hookname = add_theme_page( __( 'Styles', 'styles' ), __( 'Styles', 'styles' ), 'manage_options', 'styles', array( $this, 'admin_page' ) );
+				add_action( "admin_print_scripts-{$this->options_page_hookname}", array( $this, 'admin_js' ) );
+				add_action( "admin_print_styles-{$this->options_page_hookname}", array( $this, 'admin_css' ) );
+				add_filter( "plugin_action_links_{$this->plugin_basename}", array( $this, 'filter_plugin_actions' ) );
+			}
+		} else {
+			add_submenu_page( NULL, esc_attr__( 'Styles', 'styles' ), esc_attr__( 'Styles', 'styles' ), 'manage_options', 'styles-settings', array( $this, 'admin_page' ) );
 		}
 	}
-	
+
 	/**
 	 * Add a settings link to the plugin actions
 	 *
 	 * @param array $links Array of the plugin action links
+	 * @param $file
 	 * @return array
 	 */
-	function filter_plugin_actions ( $links ) { 
-		$settings_link = '<a href="themes.php?page=styles">' . __( 'Settings', 'styles' ) . '</a>'; 
-		array_unshift ( $links, $settings_link ); 
+	function filter_plugin_actions ( $links, $file ) {
+		static $this_plugin;
+		if ( !$this_plugin ) $this_plugin = STYLES_BASENAME;
+
+		if ( $file == $this_plugin ) {
+			$settings_link = '<a href="'.admin_url( 'options-general.php?page=styles-settings' ).'">'.esc_attr__( 'Settings', 'styles' ).'</a>';
+			array_unshift( $links, $settings_link );
+		}
+
 		return $links;
 	}
 	
