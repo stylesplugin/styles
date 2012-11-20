@@ -14,11 +14,9 @@ $mac = ( false === strpos($_SERVER['HTTP_USER_AGENT'],'Macintosh') ) ? '' : 'mac
 		<?php screen_icon('themes'); ?>
 		<h2><?php _e( 'Styles' , 'styles' ); ?></h2>
 
-		<?php if ( isset($_GET['settings']) || ( empty( $this->styles->css->contents ) && empty($css) ) ) : ?>
-				<p><a href="themes.php?page=styles">Appearance</a> Settings</p>
-		<?php else: ?>
-				<p>Appearance <a href="themes.php?page=styles&amp;settings">Settings</a></p>
-		<?php endif; ?>
+		<p><a href="customize.php"><?php esc_html_e( 'Customize Appearance', 'styles' ); ?></a></p>
+
+		<h3><?php esc_html__( 'Settings', 'styles' ); ?></h3>
 	</div>
 
 	<div class="postbox-container primary"> 
@@ -29,29 +27,12 @@ $mac = ( false === strpos($_SERVER['HTTP_USER_AGENT'],'Macintosh') ) ? '' : 'mac
 				settings_fields('styles'); // includes nonce
 				$css = get_option('styles-'.get_template());
 			?>
-			
-			<?php if ( isset($_GET['settings']) || ( empty( $this->styles->css->contents ) && empty($css) ) ) : ?>
-				
+
 				<?php do_settings_sections('styles-general'); ?>
-			
+
 				<p class="submit">
 					<input class="button-primary" type="submit" value="<?php _e('Save API Key'); ?>" />
 				</p>
-				
-			<?php else: ?>
-
-				<?php do_settings_sections('styles-gui'); ?>
-
-				<p class="submit">
-					<input class="storm-submit button-primary" type="submit" value="<?php _e('Save Changes'); ?>" />
-
-					<img class="waiting" src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" alt="" /> 
-					<span class="response"> </span>
-				</p>
-
-				<input type="hidden" name="action" class="action" value="styles-update-options" />
-			
-			<?php endif; ?>
 
 		</form>
 	</div>

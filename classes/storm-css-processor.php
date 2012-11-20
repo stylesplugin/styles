@@ -262,11 +262,8 @@ class Storm_CSS_Processor {
 		if ( is_object( $this->styles->wp->admin_settings )) {
 			$opts = $this->styles->wp->admin_settings;
 		}else {
-			// TODO: re-enable after settings page set up
 			//FB::error('Couldn\'t load $this->styles->wp->admin_settings in '.__FILE__);
-			//return;
-			$opts->families = array();
-			$opts->google_families = array();
+			return;
 		}
 
 		if ( array_key_exists( $font_family, $opts->families) ) {
