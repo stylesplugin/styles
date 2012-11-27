@@ -170,7 +170,7 @@ class Storm_CSS_Processor {
 	
 	public function process( $styles ) {
 		//FB::log( $styles->variables, '$style-variables');
-		if ( did_action( 'styles_process' ) == 2 || BSM_DEVELOPMENT ) {
+		//if ( did_action( 'styles_process' ) == 2 || BSM_DEVELOPMENT ) {
 		foreach( $styles->variables as $id => $el ) {
 			$selector = $el['selector'];
 			// $active, $css, $image, $bg_color, $stops, $color
@@ -234,7 +234,7 @@ class Storm_CSS_Processor {
 			
 		} // end foreach
 
-		}
+		//}
 		
 	}
 	
@@ -263,7 +263,9 @@ class Storm_CSS_Processor {
 			$opts = $this->styles->wp->admin_settings;
 		}else {
 			//FB::error('Couldn\'t load $this->styles->wp->admin_settings in '.__FILE__);
-			return;
+			$opts->families = array();
+			$opts->google_families = array();
+			//return;
 		}
 
 		if ( array_key_exists( $font_family, $opts->families) ) {
