@@ -122,6 +122,21 @@ class Storm_WP_Settings {
 						'priority' => $priority.'1',
 					) ) );
 					break;
+				case 'gradient':
+					$suffix = ' Background Gradient';
+					$wp_customize->add_setting( "styles-test[$id][values][css]", array(
+						'default'    => '',
+						'type'       => 'option',
+						'capability' => 'edit_theme_options',
+						// 'transport'      => 'postMessage',
+					) );
+					$wp_customize->add_control( new Styles_Customize_Gradient_Control( $wp_customize, "storm_$js_id", array(
+						'label'    => __( $label.$suffix, 'styles' ),
+						'section'  => "$group",
+						'settings' => "styles-test[$id][values][css]",
+						'priority' => $priority.'1',
+					) ) );
+					break;
 				case 'color':
 					$suffix = ' Text Color';
 					$wp_customize->add_setting( "styles-test[$id][values][css]", array(
@@ -521,6 +536,20 @@ class Storm_WP_Settings {
 }
 
 if (class_exists('WP_Customize_Control')) {
+	class Styles_Customize_Gradient_Control extends WP_Customize_Control {
+		public $type = 'gradient';
+
+		public function render_content() {
+			?>
+            <label>
+                <span class="customize-control-title styles-label"><?php echo esc_html( $this->label ); ?></span>
+                <div class="ui">gradient</div>
+            </label>
+			<?php
+		}
+	}
+
+
 	class Styles_Customize_Text_Pixels_Control extends WP_Customize_Control {
 		public $type = 'textpixels';
 

@@ -86,7 +86,7 @@ class Storm_CSS_Processor {
 		$regex = $this->helper->create_regex($this->regex);
 		$id_mask = '/[^a-zA-Z0-9\s]/';
 
-		$types = array('background-color', 'color', 'font-family', 'font-size', 'font-weight', 'font-style', 'text-transform', 'line-height', 'open-section', 'close-section');
+		$types = array('background-color', 'gradient', 'color', 'font-family', 'font-size', 'font-weight', 'font-style', 'text-transform', 'line-height', 'open-section', 'close-section');
 
 		foreach ( $types as $type ) {
 			//if ( $type != 'open-section' && $type != 'close-section' ) {

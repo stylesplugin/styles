@@ -89,6 +89,9 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 		wp_enqueue_style( 'styles-customizer' );
 		wp_register_script( 'styles-customizer-js', $this->plugin_url().'/js/styles-customizer.js', array(), $this->version );
 		wp_enqueue_script( 'styles-customizer-js' );
+		wp_register_style( 'storm-colorpicker', $this->plugin_url().'/js/colorpicker/css/colorpicker.css', array(), $this->version );
+		wp_register_style( 'storm-slider', $this->plugin_url().'/css/ui-lightness/jquery-ui-1.8.6.custom.css', array(), $this->version );
+		wp_enqueue_script( 'storm-admin-main' );
 	}
 	
 	/**
@@ -98,7 +101,7 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 	 */
 	function register_settings() {
 		register_setting ( 'styles', 'styles',          array( $this, 'update' ) ); // update = validation method
-		register_setting ( 'styles', 'styles-preview',  array( $this, 'update' ) );
+		//register_setting ( 'styles', 'styles-preview',  array( $this, 'update' ) );
 	}
 	
 	/**
