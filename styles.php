@@ -50,7 +50,7 @@ function storm_styles_init() {
 	}
 
 	if ( isset( $_GET['scaffold'] ) ) define( 'BSM_DEVELOPMENT', true );
-	if ( !defined( 'BSM_DEVELOPMENT' ) ) define( 'BSM_DEVELOPMENT', false );
+	if ( !defined( 'BSM_DEVELOPMENT' ) ) define( 'BSM_DEVELOPMENT', true );
 	if ( !defined( 'STYLES_BASENAME' ) ) define( 'STYLES_BASENAME', plugin_basename( __FILE__ ) );
 
 	require dirname ( __FILE__ ) . '/classes/stormFirePHP/stormFirePHP.php';
