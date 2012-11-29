@@ -122,7 +122,7 @@ class Storm_WP_Settings {
 						'priority' => $priority.'1',
 					) ) );
 					break;
-				case 'gradient':
+				/*case 'gradient':
 					$suffix = ' Background Gradient';
 					$wp_customize->add_setting( "styles-test[$id][values][css]", array(
 						'default'    => '',
@@ -136,7 +136,7 @@ class Storm_WP_Settings {
 						'settings' => "styles-test[$id][values][css]",
 						'priority' => $priority.'1',
 					) ) );
-					break;
+					break;*/
 				case 'color':
 					$suffix = ' Text Color';
 					$wp_customize->add_setting( "styles-test[$id][values][css]", array(
