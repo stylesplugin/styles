@@ -57,7 +57,7 @@ class Storm_WP_Frontend {
 		// If we loaded CSS through @import, tell WordPress to dequeue
 		// add_action( 'wp_print_styles', array( $this , 'dequeue_at_imports' ), 0);
 
-		$this->admin_settings = new Storm_WP_Settings( $this->styles );
+		if ( isset( $_GET['scaffold'] ) ) $this->admin_settings = new Storm_WP_Settings( $this->styles );
 
 	}
 	
