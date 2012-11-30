@@ -148,7 +148,7 @@ class Storm_Styles {
 	 * Load either live or preview options based on $_GET
 	 */
 	public function load_variables() {
-		
+
 		if ( isset($_GET['preview']) ) {
 			$this->variables = get_option( 'styles-preview' );
 		}else {
