@@ -152,7 +152,7 @@ class Storm_Styles {
 		if ( isset($_GET['preview']) ) {
 			$this->variables = get_option( 'styles-preview' );
 		}else {
-			$this->variables = get_option( 'styles-test' );
+			$this->variables = get_option( 'styles' );
 		}
 		
 	}

@@ -59,7 +59,7 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 		register_activation_hook( $this->plugin_file, array( $this, 'init' ) );
         
 		// Whitelist options
-		add_action( 'admin_init', array( $this, 'register_settings' ) );
+		//add_action( 'admin_init', array( $this, 'register_settings' ) );
 
 		// Activate the options page
 		add_action( 'admin_menu', array( $this, 'add_page' ) );
@@ -100,7 +100,7 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 	 * @return none
 	 */
 	function register_settings() {
-		register_setting ( 'styles', 'styles',          array( $this, 'update' ) ); // update = validation method
+		//register_setting ( 'styles', 'styles',          array( $this, 'update' ) ); // update = validation method
 		//register_setting ( 'styles', 'styles-preview',  array( $this, 'update' ) );
 	}
 	

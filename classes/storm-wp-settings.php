@@ -93,7 +93,7 @@ class Storm_WP_Settings {
 
 			switch ( $type ) {
 				case 'open-section':
-					$wp_customize->add_setting( "styles-test[$id][values][subsection]", array(
+					$wp_customize->add_setting( "styles[$id][values][subsection]", array(
 						'default'    => '',
 						'type'       => 'option',
 						'capability' => 'edit_theme_options',
@@ -103,13 +103,13 @@ class Storm_WP_Settings {
 					$wp_customize->add_control( new Styles_Customize_Subsection_Control( $wp_customize, "storm_$js_id", array(
 						'label'    => "$label",
 						'section'  => "$group",
-						'settings' => "styles-test[$id][values][subsection]",
+						'settings' => "styles[$id][values][subsection]",
 						'priority' => $priority.'0',
 					) ) );
 					break;
 				case 'background-color':
 					$suffix = ' Background Color';
-					$wp_customize->add_setting( "styles-test[$id][values][css]", array(
+					$wp_customize->add_setting( "styles[$id][values][css]", array(
 						'default'    => '',
 						'type'       => 'option',
 						'capability' => 'edit_theme_options',
@@ -118,13 +118,13 @@ class Storm_WP_Settings {
 					$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "storm_$js_id", array(
 						'label'    => __( $label.$suffix, 'styles' ),
 						'section'  => "$group",
-						'settings' => "styles-test[$id][values][css]",
+						'settings' => "styles[$id][values][css]",
 						'priority' => $priority.'1',
 					) ) );
 					break;
 				/*case 'gradient':
 					$suffix = ' Background Gradient';
-					$wp_customize->add_setting( "styles-test[$id][values][css]", array(
+					$wp_customize->add_setting( "styles[$id][values][css]", array(
 						'default'    => '',
 						'type'       => 'option',
 						'capability' => 'edit_theme_options',
@@ -133,13 +133,13 @@ class Storm_WP_Settings {
 					$wp_customize->add_control( new Styles_Customize_Gradient_Control( $wp_customize, "storm_$js_id", array(
 						'label'    => __( $label.$suffix, 'styles' ),
 						'section'  => "$group",
-						'settings' => "styles-test[$id][values][css]",
+						'settings' => "styles[$id][values][css]",
 						'priority' => $priority.'1',
 					) ) );
 					break;*/
 				case 'color':
 					$suffix = ' Text Color';
-					$wp_customize->add_setting( "styles-test[$id][values][css]", array(
+					$wp_customize->add_setting( "styles[$id][values][css]", array(
 						'default'    => '',
 						'type'       => 'option',
 						'capability' => 'edit_theme_options',
@@ -148,13 +148,13 @@ class Storm_WP_Settings {
 					$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "storm_$js_id", array(
 						'label'    => __( $label.$suffix, 'styles' ),
 						'section'  => "$group",
-						'settings' => "styles-test[$id][values][css]",
+						'settings' => "styles[$id][values][css]",
 						'priority' => $priority.'2',
 					) ) );
 					break;
 				case 'font-family':
 					$suffix = ' Font Family';
-					$wp_customize->add_setting( "styles-test[$id][values][font_family]", array(
+					$wp_customize->add_setting( "styles[$id][values][font_family]", array(
 						'default'    => '',
 						'type'       => 'option',
 						'capability' => 'edit_theme_options',
@@ -163,13 +163,13 @@ class Storm_WP_Settings {
 					$wp_customize->add_control( new Styles_Customize_Font_Family_Control( $wp_customize, "storm_$js_id", array(
 						'label'    => __( $label.$suffix, 'styles' ),
 						'section'  => "$group",
-						'settings' => "styles-test[$id][values][font_family]",
+						'settings' => "styles[$id][values][font_family]",
 						'priority' => $priority.'3',
 					) ) );
 					break;
 				case 'font-size':
 					$suffix = ' Font Size';
-					$wp_customize->add_setting( "styles-test[$id][values][font_size]", array(
+					$wp_customize->add_setting( "styles[$id][values][font_size]", array(
 						'default'    => '',
 						'type'       => 'option',
 						'capability' => 'edit_theme_options',
@@ -178,13 +178,13 @@ class Storm_WP_Settings {
 					$wp_customize->add_control( new Styles_Customize_Text_Pixels_Control( $wp_customize, "storm_$js_id", array(
 						'label'    => __( $label.$suffix, 'styles' ),
 						'section'  => "$group",
-						'settings' => "styles-test[$id][values][font_size]",
+						'settings' => "styles[$id][values][font_size]",
 						'priority' => $priority.'4',
 					) ) );
 					break;
 				case 'line-height':
 					$suffix = ' Line Height';
-					$wp_customize->add_setting( "styles-test[$id][values][line_height]", array(
+					$wp_customize->add_setting( "styles[$id][values][line_height]", array(
 						'default'    => '',
 						'type'       => 'option',
 						'capability' => 'edit_theme_options',
@@ -193,14 +193,14 @@ class Storm_WP_Settings {
 					$wp_customize->add_control( new Styles_Customize_Text_Pixels_Control( $wp_customize, "storm_$js_id", array(
 						'label'    => __( $label.$suffix, 'styles' ),
 						'section'  => "$group",
-						'settings' => "styles-test[$id][values][line_height]",
+						'settings' => "styles[$id][values][line_height]",
 						'priority' => $priority.'5',
 						'type'     => 'text'
 					) ) );
 					break;
 				case 'font-weight':
 					$suffix = ' Font Weight';
-					$wp_customize->add_setting( "styles-test[$id][values][font_weight]", array(
+					$wp_customize->add_setting( "styles[$id][values][font_weight]", array(
 						'default'    => '',
 						'type'       => 'option',
 						'capability' => 'edit_theme_options',
@@ -209,7 +209,7 @@ class Storm_WP_Settings {
 					$wp_customize->add_control( "storm_$js_id", array(
 						'label'    => __( $label.$suffix, 'styles' ),
 						'section'  => "$group",
-						'settings' => "styles-test[$id][values][font_weight]",
+						'settings' => "styles[$id][values][font_weight]",
 						'priority' => $priority.'6',
 						'type'     => 'select',
 						'choices'  => array(
@@ -228,7 +228,7 @@ class Storm_WP_Settings {
 					break;
 				case 'font-style':
 					$suffix = ' Font Style';
-					$wp_customize->add_setting( "styles-test[$id][values][font_style]", array(
+					$wp_customize->add_setting( "styles[$id][values][font_style]", array(
 						'default'    => '',
 						'type'       => 'option',
 						'capability' => 'edit_theme_options',
@@ -237,7 +237,7 @@ class Storm_WP_Settings {
 					$wp_customize->add_control( "storm_$js_id", array(
 						'label'    => __( $label.$suffix, 'styles' ),
 						'section'  => "$group",
-						'settings' => "styles-test[$id][values][font_style]",
+						'settings' => "styles[$id][values][font_style]",
 						'priority' => $priority.'7',
 						'type'     => 'select',
 						'choices'  => array(
@@ -249,7 +249,7 @@ class Storm_WP_Settings {
 					break;
 				case 'text-transform':
 					$suffix = ' Text Transform';
-					$wp_customize->add_setting( "styles-test[$id][values][text_transform]", array(
+					$wp_customize->add_setting( "styles[$id][values][text_transform]", array(
 						'default'    => '',
 						'type'       => 'option',
 						'capability' => 'edit_theme_options',
@@ -258,7 +258,7 @@ class Storm_WP_Settings {
 					$wp_customize->add_control( "storm_$js_id", array(
 						'label'    => __( $label.$suffix, 'styles' ),
 						'section'  => "$group",
-						'settings' => "styles-test[$id][values][text_transform]",
+						'settings' => "styles[$id][values][text_transform]",
 						'priority' => $priority.'8',
 						'type'     => 'select',
 						'choices'  => array(
@@ -270,7 +270,7 @@ class Storm_WP_Settings {
 					) );
 					break;
 				case 'close-section':
-					$wp_customize->add_setting( "styles-test[$id][values][]", array(
+					$wp_customize->add_setting( "styles[$id][values][]", array(
 						'default'    => '',
 						'type'       => 'option',
 						'capability' => 'edit_theme_options',
@@ -280,7 +280,7 @@ class Storm_WP_Settings {
 					$wp_customize->add_control( new Styles_Customize_EndSubsection_Control( $wp_customize, "storm_$js_id", array(
 						'label'    => __( 'End', 'styles' ),
 						'section'  => "$group",
-						'settings' => "styles-test[$id][values][]",
+						'settings' => "styles[$id][values][]",
 						'priority' => $priority.'9',
 						'type'     => 'endsubsection',
 					) ) );
