@@ -590,12 +590,12 @@ if (class_exists('WP_Customize_Control')) {
 
                 <option class="label" value="">Standard Fonts</option>
 				<?php foreach ( $this->families as $name => $value ) : if ( empty( $value ) ) continue; ?>
-                <option value='<?php esc_attr_e( $name ) ?>' <?php if ( $name == $font_family ) echo 'selected'; ?> ><?php echo $name ?></option>
+                <option value='<?php esc_attr_e( $name ) ?>' <?php if ( $name == $this->value() ) echo 'selected'; ?> ><?php echo $name ?></option>
 				<?php endforeach; ?>
 
                 <option class="label" value="">Google Fonts</option>
 				<?php foreach ( $this->google_families as $name => $value ) : if ( empty( $value ) ) continue; ?>
-                <option value='<?php esc_attr_e( $name ) ?>' <?php if ( $name == $font_family ) echo 'selected'; ?> ><?php echo $name ?></option>
+                <option value='<?php esc_attr_e( $name ) ?>' <?php if ( $name == $this->value() ) echo 'selected'; ?> ><?php echo $name ?></option>
 				<?php endforeach; ?>
 
             </select>
