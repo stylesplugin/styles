@@ -277,7 +277,7 @@ class Storm_Styles {
 		}else {
 			
 			// No cache file. Load from DB cache
-			add_action( 'wp_head', array($this, wp_head_output), 999 );
+			add_action( 'wp_head', array($this, 'wp_head_output'), 999 );
 			
 		}
 
