@@ -46,17 +46,17 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 		);*/
 		//$args = wp_parse_args( $args, $defaults );
 		
-		$this->options = get_option( 'styles-settings' );
-
-		if ( version_compare ( $this->get_option ('version'), $this->styles->db_version, '!=' ) ) {
-			$this->check_upgrade();
-		}
-		
 		// Load localizations if available
 		// load_plugin_textdomain ( 'styles', false, 'styles/localization' );
         
 		// Activation hook
 		register_activation_hook( $this->plugin_file, array( $this, 'init' ) );
+
+		$this->options = get_option( 'styles-settings' );
+
+		if ( version_compare( $this->get_option( 'version' ), $this->styles->db_version, '!=' ) ) {
+			$this->check_upgrade();
+		}
         
 		// Whitelist options
 		//add_action( 'admin_init', array( $this, 'register_settings' ) );
@@ -77,7 +77,7 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 		// Settings page setup
 		$this->admin_settings = new Storm_WP_Settings( $this->styles );
 
-		add_action( 'customize_save', array($this, 'force_recache') );
+		add_action( 'update_option_styles', array($this, 'force_recache') );
 		add_action( 'customize_controls_enqueue_scripts', array( $this, 'customizer_scripts' ) );
 
 		if ( current_user_can( 'manage_options' ) ) add_filter( 'plugin_action_links', array( $this, 'filter_plugin_actions' ), 10, 2 );
@@ -178,7 +178,7 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 	 * @return none
 	 */
 	function init() {
-		if ( ! get_option ( 'styles-settings' ) ) {
+		if ( !get_option( 'styles-settings' ) ) {
 			$this->options = $this->defaults();
 			add_option( 'styles-settings', $this->options );
 		} else {
