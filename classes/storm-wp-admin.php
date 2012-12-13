@@ -31,6 +31,13 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 	 * @var array
 	 **/
 	var $options;
+
+	/**
+	 * License class
+	 *
+	 * @var Storm_Licenses
+	 */
+	var $licenses;
 	
 	/**
 	 * Setup backend functionality in WordPress
@@ -77,10 +84,13 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 		// Settings page setup
 		$this->admin_settings = new Storm_WP_Settings( $this->styles );
 
+		// Licenses setup
+		$this->licenses = new Storm_Licenses();
+
 		add_action( 'update_option_styles', array($this, 'force_recache') );
 		add_action( 'customize_controls_enqueue_scripts', array( $this, 'customizer_scripts' ) );
 
-		if ( current_user_can( 'manage_options' ) ) add_filter( 'plugin_action_links', array( $this, 'filter_plugin_actions' ), 10, 2 );
+
 
 	}
 
@@ -341,25 +351,6 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 		} else {
 			add_submenu_page( NULL, esc_attr__( 'Styles', 'styles' ), esc_attr__( 'Styles', 'styles' ), 'manage_options', 'styles-settings', array( $this, 'admin_page' ) );
 		}
-	}
-
-	/**
-	 * Add a settings link to the plugin actions
-	 *
-	 * @param array $links Array of the plugin action links
-	 * @param $file
-	 * @return array
-	 */
-	function filter_plugin_actions ( $links, $file ) {
-		static $this_plugin;
-		if ( !$this_plugin ) $this_plugin = STYLES_BASENAME;
-
-		if ( $file == $this_plugin ) {
-			$settings_link = '<a href="'.admin_url( 'options-general.php?page=styles-settings' ).'">'.esc_attr__( 'Settings', 'styles' ).'</a>';
-			array_unshift( $links, $settings_link );
-		}
-
-		return $links;
 	}
 	
 	/**
