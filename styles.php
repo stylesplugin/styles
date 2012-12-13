@@ -3,7 +3,7 @@
 Plugin Name: Styles
 Plugin URI: http://stylesplugin.com
 Description: Change the appearance of your theme using the WordPress admin. Creates WordPress theme options for images, colors, gradients, and fonts.
-Version: 0.5.2
+Version: 0.5.3
 Author: Brainstorm Media
 Author URI: http://brainstormmedia.com
 */
