@@ -192,6 +192,9 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 	 * @return none
 	 */
 	function check_upgrade() {
+		if ( false === $this->get_option('version') ) {
+			return;
+		}
 
 		if ( $this->version_compare ( array( '0.5.0' => '<' ) ) ) {
 
