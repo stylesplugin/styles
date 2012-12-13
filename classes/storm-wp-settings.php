@@ -463,7 +463,8 @@ class Storm_WP_Settings {
 
 		<?php		
 	}
-	
+
+	/* moved to storm-licenses.php
 	public function api_key_field() {
 		$api_key = $this->styles->wp->get_option('api_key');
 		
@@ -532,7 +533,7 @@ class Storm_WP_Settings {
 			delete_option('styles-'.get_template() );
 			add_option('styles-'.get_template(), $data->css, null, 'no'); // Don't autoload
 		}
-	}
+	}*/
 }
 
 if (class_exists('WP_Customize_Control')) {

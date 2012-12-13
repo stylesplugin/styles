@@ -52,6 +52,9 @@ function storm_styles_init() {
 	if ( isset( $_GET['scaffold'] ) ) define( 'BSM_DEVELOPMENT', true );
 	if ( !defined( 'BSM_DEVELOPMENT' ) ) define( 'BSM_DEVELOPMENT', false );
 	if ( !defined( 'STYLES_BASENAME' ) ) define( 'STYLES_BASENAME', plugin_basename( __FILE__ ) );
+	if ( !defined( 'STYLES_DIR' ) ) define( 'STYLES_DIR', plugin_dir_path( __FILE__ ) );
+	if ( !defined( 'STYLES_SLUG' ) ) define( 'STYLES_SLUG', 'styles' );
+	if ( !defined( 'STYLES_API_URL' ) ) define( 'STYLES_API_URL', 'http://stylesplugin.com/' );
 
 	require dirname ( __FILE__ ) . '/classes/stormFirePHP/stormFirePHP.php';
 	require dirname ( __FILE__ ) . '/classes/storm-styles.php';
@@ -62,6 +65,7 @@ function storm_styles_init() {
 		require dirname ( __FILE__ ) . '/classes/storm-css-processor.php';
 		require dirname ( __FILE__ ) . '/classes/storm-wp-settings.php';
 		require dirname ( __FILE__ ) . '/classes/storm-wp-admin.php';
+		require dirname ( __FILE__ ) . '/classes/storm-licenses.php';
 	}
 	
 	$storm_styles = new Storm_Styles();
