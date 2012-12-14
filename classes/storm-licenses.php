@@ -38,4 +38,19 @@ class Storm_Licenses {
 		die();
 	}
 
+	function validate_license() {
+		// get license option
+
+		// check with store site to see if license valid
+
+		// return if license is valid or not
+	}
+
+	function get_license_from_login() {
+		// send user/pass to store site, get either error message or license key in return
+
+		// save license key to styles-api-key option
+
+		//return error message or success message
+	}
 }
