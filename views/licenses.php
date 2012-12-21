@@ -1,6 +1,86 @@
 <?php
 // @todo: add callback for validation
 register_setting( 'styles-licenses', 'styles-api-key' );
+
+global $current_user;
+$current_plugin = $this->plugins[$this->plugin_slug];
+//Perform actions
+if ( isset( $_POST['actionb'] ) ) {
+	$current_plugin = $this->plugins[$this->plugin_slug];
+	$body           = array(
+		'action'   => 'licenses',
+		'actionb'  => $_POST['actionb'],
+		'hash'     => $this->plugins['userhash'],
+		'wpuser'   => $current_user->user_login,
+		'username' => isset( $_POST['username'] ) ? $_POST['username'] : $this->plugins['username'],
+		'password' => isset( $_POST['password'] ) ? $_POST['password'] : '',
+		'try_key'  => isset( $_POST['try_key'] ) ? $_POST['try_key'] : false,
+	);
+	if ( $_POST['actionb'] == 'logout' ) {
+		$this->plugins[$this->plugin_slug] = $current_plugin;
+		$this->save_plugin_options( true );
+		?>
+    <div class='updated'><p><strong>You have been logged out.</strong></p></div>
+	<?php
+	} else {
+		$response = $this->perform_remote_request( array( 'body' => $body ) );
+	}
+
+	switch ( $_POST['actionb'] ) {
+		case 'license_site_manually':
+		case 'license_site_existing':
+		case 'license_site_new':
+			//Add the key to the current site
+			if ( $response->key_status == 'ok' ) {
+				$current_plugin->key_status        = 'ok';
+				$current_plugin->key               = $response->key;
+				$this->plugins[$this->plugin_slug] = $current_plugin;
+				$this->save_plugin_options();
+			}
+			break;
+		case 'unlicense_site':
+		case 'unlicense_site_existing':
+			//Find out if the removed key matches the current site and remove it
+			if ( $response->unset_key ) {
+				if ( $_POST['try_key'] == $current_plugin->key ) {
+					$current_plugin->key_status        = 'invalid';
+					$current_plugin->key               = '';
+					$this->plugins[$this->plugin_slug] = $current_plugin;
+					$this->save_plugin_options();
+				}
+			}
+			break;
+		default:
+			break;
+	} //end switch
+
+	//Output errors or messages
+	if ( isset( $response->errors ) && isset( $response->message ) && $response->errors ) {
+		?>
+    <div class='error'><p><strong><?php echo esc_html( $response->message ); ?></strong></p></div>
+	<?php
+	} elseif ( isset( $response->message ) ) {
+		?>
+    <div class='updated'><p><strong><?php echo esc_html( $response->message ); ?></strong></p></div>
+	<?php
+	}
+	/*$response = $this->perform_remote_request(
+		array(
+			'body' => array(
+				'action' => 'licenses',
+				'actionb' => $_POST[ 'actionb' ],
+				'hash' => $current_plugin->hash,
+				'wpuser' => $current_user->user_login,
+				'username' => isset( $_POST[ 'username' ] ) ? $_POST[ 'username' ] : $current_plugin->username,
+				'password' => isset( $_POST[ 'password' ] ) ? $_POST[ 'password' ] : '',
+				'trykey' => isset( $_POST[ 'trykey' ] ) ? $_POST[ 'trykey' ] ? false,
+				'key' => $current_plugin->key
+			)
+		)
+	);
+	die( print_r( $response, true ) );*/
+}
+
 ?>
 
 
@@ -18,9 +98,10 @@ register_setting( 'styles-licenses', 'styles-api-key' );
 	do_action( 'admin_head' );
 	?>
 </head>
-<?php /*
+<?php
 global $current_user;
-$self_url = add_query_arg( array( 'slug' => $this->plugin_slug, 'action' => $this->plugin_slug.'licenses', '_ajax_nonce' => wp_create_nonce( $this->plugin_slug.'licenses' ) ), admin_url( 'admin-ajax.php' ) );
+$self_url = add_query_arg( array( 'slug' => STYLES_SLUG, 'action' => STYLES_SLUG.'licenses', '_ajax_nonce' => wp_create_nonce( STYLES_SLUG.'licenses' ) ),
+	admin_url( 'admin-ajax.php' ) );
 $licenses = array();
 
 //Get licensing info from the user
@@ -54,9 +135,9 @@ if ( $response->authenticated ) {
 	$this->authenticated = true;
 } elseif ( isset( $_POST['password'] ) && !$response->authenticated ) {
 	?>
-<div class='error'><p><strong>Username and/or password is invalid. Are you using your iThemes password?</strong></p></div>
+<div class='error'><p><strong>Username and/or password is invalid.</strong></p></div>
 	<?php
-} */
+}
 ?>
 <body>
 
@@ -64,7 +145,7 @@ if ( $response->authenticated ) {
     <!--User Login Form-->
 	<?php if ( !$this->authenticated ) : ?>
     <div class="rounded">
-        Log in with your PluginBuddy / iThemes Member account to generate license keys & managing existing licenses.<br /><br />
+        Log in with your Styles account to retrieve your license key<br /><br />
 
         <form method="post" action="<?php echo esc_url( $self_url ); ?>">
             <table>
@@ -84,6 +165,8 @@ if ( $response->authenticated ) {
             </table>
         </form>
     </div>
+
+	<h2>Manually enter your license key</h2>
     <form method="post" id="styles-form" action="" name="post">
 
 		<?php

@@ -121,6 +121,7 @@ class Storm_Licenses {
 	<?php
 	}
 
+	// from original styles api
 	public function remote_api() {
 
 		$this->styles->wp->api_options = get_transient( 'styles-api' );
@@ -183,4 +184,127 @@ class Storm_Licenses {
 
 		echo '<div class="error"><p>'.esc_html( $this->client->message->faultString ).'</p></div>';
 	}
+
+	// from backup buddy
+	public function perform_remote_request( $args ) {
+
+		$defaults = array(
+			'action'        => false,
+			'body'          => array(),
+			'headers'       => array(),
+			'return_format' => 'json',
+			'remote_url'    => false,
+			'method'        => false,
+		);
+		$args     = wp_parse_args( $args, $defaults );
+
+		extract( $args );
+
+		$remote_url = $remote_url ? $remote_url : $this->remote_url;
+
+		$body = wp_parse_args( $body, array(
+			'product'    => $this->product,
+			'key'        => $this->plugins[$this->plugin_slug]->key,
+			'guid'       => $this->plugins[$this->plugin_slug]->guid,
+			'userhash'   => $this->plugins['userhash'],
+			'username'   => $this->plugins['username'],
+			'action'     => $action,
+			'wp-version' => get_bloginfo( 'version' ),
+			'referer'    => str_replace( 'https://', 'http://', site_url() ),
+			'site'       => str_replace( 'https://', 'http://', site_url() ),
+			'version'    => $this->version,
+		) );
+
+		$body   = apply_filters( "pluginbuddy_remote_body_{$this->plugin_slug}", $body );
+		$method = $method ? $method : $this->method;
+		if ( $method == 'GET' ) {
+			$remote_url = add_query_arg( $body, $remote_url );
+		} else {
+			$body = http_build_query( $body );
+		}
+
+		$headers = wp_parse_args( $headers, array(
+			'Content-Type'   => 'application/x-www-form-urlencoded',
+			'Content-Length' => is_array( $body ) ? 0 : strlen( $body )
+		) );
+		$headers = apply_filters( "pluginbuddy_remote_headers_{$this->plugin_slug}", $headers );
+
+		$post = apply_filters( "pluginbuddy_remote_args_{$this->plugin_slug}", array( 'headers' => $headers, 'body' => $body, 'timeout' => 20 ) );
+
+		//die( '<pre>' . print_r( $post, true ) );
+		//Retrieve response
+		if ( $method == 'GET' ) {
+			$response = wp_remote_get( esc_url_raw( $remote_url ), $post );
+		} else {
+			$response = wp_remote_post( esc_url_raw( $remote_url ), $post );
+		}
+
+		$response_code = wp_remote_retrieve_response_code( $response );
+		$response_body = wp_remote_retrieve_body( $response );
+		//$current_plugin = $this->plugins[ 'pluginbuddy_loopbuddy' ];
+
+		if ( $response_code != 200 || is_wp_error( $response_body ) ) {
+			return false;
+		}
+		switch ( $return_format ) {
+			case 'json':
+				return json_decode( $response_body );
+				break;
+			case 'serialized':
+				return maybe_unserialize( $response_body );
+				break;
+			default:
+				return $response_body;
+				break;
+		} //end switch
+		return false;
+	} //end perform_remote_request
+
+	// from backup buddy
+	private function save_plugin_options( $clearhash = false ) {
+		//echo 'saving';
+
+		//Get plugin options
+		$options                     = $this->get_plugin_options(); //Since multiple plugins are using the same class variable, make sure the class variable is up to date before updating it
+		$options[$this->plugin_slug] = $this->plugins[$this->plugin_slug];
+		if ( !empty( $this->plugins['userhash'] ) ) $options['userhash'] = $this->plugins['userhash'];
+		if ( !empty( $this->plugins['username'] ) ) $options['username'] = $this->plugins['username'];
+		if ( $clearhash == true ) {
+			$this->plugins['userhash'] = $options['userhash'] = '';
+			$this->plugins['username'] = $options['username'] = '';
+		}
+		if ( $this->plugin_slug == 'pluginbuddy_loopbuddy' ) {
+			//die( '<pre>' . print_r( $options[ $this->plugin_slug ], true ) );
+		}
+
+		//echo '<pre>' . print_r( $options, true ) . '</pre>';
+
+		if ( is_multisite() ) {
+			$this->update_site_option( 'pluginbuddy_plugins', $options );
+		} else {
+			$this->update_option( 'pluginbuddy_plugins', $options );
+		}
+	} //end save_plugin_options
+
+	// from backup buddy
+	private function get_defaults() {
+		//Fill out defaults for the global variable
+		if ( !isset( $this->plugins['userhash'] ) ) {
+			$this->plugins['userhash'] = '';
+			$this->plugins['username'] = '';
+		}
+
+		//Fill out defaults for the individual plugin
+		$plugin_options              = new stdClass;
+		$plugin_options->url         = $this->plugin_url;
+		$plugin_options->slug        = $this->plugin_slug;
+		$plugin_options->package     = '';
+		$plugin_options->new_version = $this->version;
+		$plugin_options->last_update = time();
+		$plugin_options->id          = "0";
+		$plugin_options->key         = false;
+		$plugin_options->key_status  = 'not_set';
+		$plugin_options->guid        = uniqid( '' );
+		return $plugin_options;
+	} //end get_defaults
 }
