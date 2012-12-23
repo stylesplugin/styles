@@ -48,26 +48,27 @@ if ( version_compare(PHP_VERSION, '5.2', '<') ) {
 }
 
 /**
- * Instantiate the $StormStyles object
+ * Instantiate the $storm_styles object
  */
 function storm_styles_init() {
+	global $storm_styles;
+
+	$args = array(
+		'plugin_basename' => plugin_basename( __FILE__ ),
+	);
 	
-	require dirname ( __FILE__ ) . '/classes/stormFirePHP/stormFirePHP.php';
-	require dirname ( __FILE__ ) . '/classes/storm-styles.php';
-	require dirname ( __FILE__ ) . '/classes/storm-wp-frontend.php';
+	require_once dirname ( __FILE__ ) . '/classes/stormFirePHP/stormFirePHP.php';
+	require_once dirname ( __FILE__ ) . '/classes/storm-styles.php';
+	require_once dirname ( __FILE__ ) . '/classes/storm-wp-frontend.php';
 	
-	if ( is_admin() || DOING_AJAX ) {
+	if ( is_admin() || ( defined( 'DOING_AJAX') && DOING_AJAX ) ) {
 		// Only load heavy files if we're in wp-admin or processing CSS over AJAX
-		require dirname ( __FILE__ ) . '/classes/storm-css-processor.php';
-		require dirname ( __FILE__ ) . '/classes/storm-wp-settings.php';
-		require dirname ( __FILE__ ) . '/classes/storm-wp-admin.php';
+		require_once dirname ( __FILE__ ) . '/classes/storm-css-processor.php';
+		require_once dirname ( __FILE__ ) . '/classes/storm-wp-settings.php';
+		require_once dirname ( __FILE__ ) . '/classes/storm-wp-admin.php';
 	}
 	
-	$storm_styles = new Storm_Styles();
+	$storm_styles = new Storm_Styles( $args );
 	
 }
 add_action('init', 'storm_styles_init');
-
-
-
-

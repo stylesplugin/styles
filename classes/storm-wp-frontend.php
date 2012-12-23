@@ -64,12 +64,12 @@ class Storm_WP_Frontend {
 	}
 	
 	function register_scripts() {
-		wp_register_script('storm-colorpicker'    , $this->plugin_url().'/js/colorpicker/js/colorpicker.js',array('jquery'), $this->version, true);
-		wp_register_script('storm-jq-ui-slider'   , $this->plugin_url().'/js/jquery.ui.slider.min.js'      ,array('jquery', 'jquery-ui-core' ), $this->version, true);
-		wp_register_script('storm-gradient-picker', $this->plugin_url().'/js/jq.gradientpicker.js'         ,array('storm-jq-ui-slider', 'storm-colorpicker' ), $this->version, true);
-		wp_register_script('jqcookie'             , $this->plugin_url().'/js/jquery.cookie.js'             ,array('jquery'), $this->version, true);
+		wp_register_script('storm-colorpicker'    , $this->plugin_url().'/js/colorpicker/js/colorpicker.js',array('jquery'), $this->styles->version, true);
+		wp_register_script('storm-jq-ui-slider'   , $this->plugin_url().'/js/jquery.ui.slider.min.js'      ,array('jquery', 'jquery-ui-core' ), $this->styles->version, true);
+		wp_register_script('storm-gradient-picker', $this->plugin_url().'/js/jq.gradientpicker.js'         ,array('storm-jq-ui-slider', 'storm-colorpicker' ), $this->styles->version, true);
+		wp_register_script('jqcookie'             , $this->plugin_url().'/js/jquery.cookie.js'             ,array('jquery'), $this->styles->version, true);
 
-		wp_register_script('storm-admin-main'     , $this->plugin_url().'/js/admin.js'                     ,array('jqcookie', 'storm-gradient-picker', 'storm-jq-ui-slider', 'storm-colorpicker', 'thickbox', 'media-upload' ), $this->version, true);
+		wp_register_script('storm-admin-main'     , $this->plugin_url().'/js/admin.js'                     ,array('jqcookie', 'storm-gradient-picker', 'storm-jq-ui-slider', 'storm-colorpicker', 'thickbox', 'media-upload' ), $this->styles->version, true);
 	}
 	
 	/**

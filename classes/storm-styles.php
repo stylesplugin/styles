@@ -23,6 +23,13 @@ class Storm_Styles {
 	 * @var int
 	 **/
 	var $db_version = '0.5.0';
+
+	/**
+	 * Basename for the main plugin file.
+	 *
+	 * @var string
+	 **/
+	var $plugin_basename;
 	
 	/**
 	 * Options array containing all options for this plugin
@@ -103,10 +110,11 @@ class Storm_Styles {
 		)
 	*/ );
 	
-	public function __construct() {
+	public function __construct( $args ) {
+		$this->plugin_basename = $args['plugin_basename'];
 
 		// Load WordPress Utilties
-		if ( is_admin() || DOING_AJAX ) {
+		if ( is_admin() || ( defined('DOING_AJAX') && DOING_AJAX ) ) {
 			$this->wp = new Storm_WP_Admin( $this );
 		}else {
 			$this->wp = new Storm_WP_Frontend( $this );
