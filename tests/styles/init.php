@@ -1,13 +1,12 @@
 <?php
 require_once dirname( dirname( dirname(__FILE__) ) ).'/styles.php';
 
-class StylesTest extends WP_UnitTestCase {
-	var $slug = 'styles/styles.php';
-	var $plugin;
+class Tests_Styles_Init extends WP_UnitTestCase {
+	/* Styles Object */
+	var $styles;
 
 	public function setUp() {
 		parent::setUp();
-
 		global $storm_styles;
 		$this->styles = $storm_styles;
 	}
@@ -20,6 +19,12 @@ class StylesTest extends WP_UnitTestCase {
 	public function test_is_plugin_initialized() {
 		$this->assertFalse( null == $this->styles );
 	}
+
+	public function test_styles_version_matches_plugin_header() {
+		$data = get_plugin_data( WP_PLUGIN_DIR .'/'. $this->styles->plugin_basename, false, false);
+		$this->assertEquals( $data['Version'], $this->styles->version );
+	}
+
 }
 
 

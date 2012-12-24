@@ -12,7 +12,7 @@ class Storm_Styles {
 	 *
 	 * @var int
 	 **/
-	var $version = '0.5.2';
+	var $version = '0.5.3';
 	
 	/**
 	 * Plugin DB version
@@ -215,6 +215,7 @@ class Storm_Styles {
 	}
 	
 	function get_cache_file() {
+		global $blog_id;
 		
 		if ( is_multisite() ) {
 			$cache_file = "/styles/cache-$blog_id.css";
