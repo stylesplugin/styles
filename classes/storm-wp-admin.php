@@ -85,7 +85,7 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 		$this->admin_settings = new Storm_WP_Settings( $this->styles );
 
 		// Licenses setup
-		$this->licenses = new Storm_Licenses();
+		$this->licenses = new Storm_Licenses( $this->styles );
 
 		add_action( 'update_option_styles', array($this, 'force_recache') );
 		add_action( 'customize_controls_enqueue_scripts', array( $this, 'customizer_scripts' ) );

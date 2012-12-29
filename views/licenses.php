@@ -3,10 +3,9 @@
 register_setting( 'styles-licenses', 'styles-api-key' );
 
 global $current_user;
-$current_plugin = $this->plugins[$this->plugin_slug];
+$current_plugin = STYLES_SLUG;
 //Perform actions
 if ( isset( $_POST['actionb'] ) ) {
-	$current_plugin = $this->plugins[$this->plugin_slug];
 	$body           = array(
 		'action'   => 'licenses',
 		'actionb'  => $_POST['actionb'],

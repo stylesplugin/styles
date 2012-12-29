@@ -8,9 +8,10 @@
 
 class Storm_Licenses {
 
-	function __construct() {
+	function __construct( $styles ) {
 		if ( current_user_can( 'manage_options' ) ) add_action( 'plugin_action_links_'.STYLES_BASENAME, array( $this, 'license_link' ) );
 		add_action( 'wp_ajax_styles-licenses', array( $this, 'view_licenses' ) );
+		$this->styles = $styles;
 	}
 
 	/**
@@ -33,7 +34,7 @@ class Storm_Licenses {
 	 */
 	function view_licenses() {
 		check_ajax_referer( 'styles-licenses', '_ajax_nonce' );
-		require_once( STYLES_DIR.'/views/licenses.php' );
+		require_once( STYLES_DIR.'/views/licenses-temp.php' );
 
 		die();
 	}
@@ -122,9 +123,9 @@ class Storm_Licenses {
 	}
 
 	// from original styles api
-	public function remote_api() {
+	public function remote_api( $user, $password ) {
 
-		$this->styles->wp->api_options = get_transient( 'styles-api' );
+		/*$this->styles->wp->api_options = get_transient( 'styles-api' );
 		$css                           = get_option( 'styles-'.get_template() );
 
 		if (
@@ -135,28 +136,38 @@ class Storm_Licenses {
 			// Already have CSS for this template
 			// API key isn't being set
 			return true;
-		}
+		}*/
 
 		// Check / Set API key
-		if ( !empty( $_POST['styles_api_key'] ) && wp_verify_nonce( $_POST['_wpnonce'], 'styles-options' ) ) {
+		/*if ( !empty( $_POST['styles_api_key'] ) && wp_verify_nonce( $_POST['_wpnonce'], 'styles-options' ) ) {
 			$api_key                                  = $_POST['styles_api_key'];
 			$this->styles->wp->api_options['api_key'] = $api_key;
 			set_transient( 'styles-api', $this->styles->wp->api_options, 60 * 60 * 24 * 7 );
 		} else {
 			$api_key = $this->styles->wp->get_option( 'api_key' );
-		}
+		}*/
 
 		// Setup verification request
-		$request = array(
+		/*$request = array(
 			'installed_themes' => array_keys( search_theme_directories() ),
 			'active_theme'     => get_template(),
 			'api_key'          => $api_key,
+			'version'          => $this->styles->version,
+		);*/
+
+		$request = array(
+			'installed_themes' => array_keys( search_theme_directories() ),
+			'active_theme'     => get_template(),
+			'username'         => esc_attr( $user ),
+			'password'         => esc_attr( $password ),
 			'version'          => $this->styles->version,
 		);
 
 		$response = wp_remote_get( 'http://stylesplugin.com?'.http_build_query( $request ) );
 
-		if ( $response['response']['code'] != 200 || is_wp_error( $response ) ) {
+		var_dump( $response );
+
+		/*if ( $response['response']['code'] != 200 || is_wp_error( $response ) ) {
 			add_settings_error( 'styles-api-key', '404', 'Could not connect to API host. Please try again later.', 'error' );
 		}
 
@@ -177,7 +188,7 @@ class Storm_Licenses {
 		if ( !empty( $data->css ) ) {
 			delete_option( 'styles-'.get_template() );
 			add_option( 'styles-'.get_template(), $data->css, null, 'no' ); // Don't autoload
-		}
+		}*/
 	}
 
 	function error_notice() {
