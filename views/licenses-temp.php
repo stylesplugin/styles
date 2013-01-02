@@ -26,6 +26,9 @@ $self_url = add_query_arg( array( 'slug' => STYLES_SLUG, 'action' => STYLES_SLUG
 if ( isset( $_POST['username'] ) && isset( $_POST['password'] ) ) {
 	$this->remote_api( $_POST['username'], $_POST['password'] );
 }
+if ( isset( $_POST['license'] ) ) {
+	$this->validate_license( $_POST['license'] );
+}
 
 ?>
 <body>
@@ -65,7 +68,7 @@ if ( isset( $_POST['username'] ) && isset( $_POST['password'] ) ) {
 		$api_key = '';
 		?>
 
-        <input value="<?php esc_attr_e( $api_key ) ?>" name="styles_api_key" id="styles_api_key" type="text" class="regular-text" />
+        <input value="<?php esc_attr_e( $api_key ) ?>" name="license" id="license" type="text" class="regular-text" />
 
         <p>This license key is used for access to theme upgrades and support.
 

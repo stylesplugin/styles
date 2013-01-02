@@ -26,7 +26,6 @@ class Storm_Licenses {
 
 		$value[sizeof( $value )] = '<a href="'.$ajax_url.'" class="thickbox" title="'.esc_html__( 'Styles Licenses', 'styles' ).'">'.esc_html__( 'Licenses', 'styles' ).'</a>';
 		return $value;
-
 	}
 
 	/**
@@ -39,76 +38,31 @@ class Storm_Licenses {
 		die();
 	}
 
-	function validate_license() {
-		// get license option
+	function validate_license( $license ) {
+		$item_name = 'Styles License';
 
-		// check with store site to see if license valid
+		$api_params = array(
+			'edd_action' => 'check_license',
+			'license'    => esc_attr( $license ),
+			'item_name'  => urlencode( $item_name )
+		);
 
+		$response = wp_remote_get( add_query_arg( $api_params, STYLES_API_URL ), array( 'timeout' => 15, 'sslverify' => false ) );
 
-		// return if license is valid or not
-	}
-
-	function get_license_from_login() {
-		// send user/pass to store site, get either error message or license key in return
-
-		// save license key to styles-api-key option
-		if ( isset( $_POST['username'] ) && isset( $_POST['password'] ) ) :
-
-			// check against remote server
-
-			require_once( ABSPATH.WPINC.'/class-IXR.php' );
-
-			$this->client = new IXR_Client( trailingslashit( STYLES_API_URL ).'xmlrpc.php' );
-
-			$client_request_args = array(
-				'username' => $_POST['username'],
-				'password' => $_POST['password'],
-				'plugin'   => STYLES_SLUG,
-				'url'      => site_url()
-			);
-
-			if ( !$this->client->query( 'puengine.is_user_authorized', $client_request_args ) ) :
-
-				add_action( 'admin_notices', array( $this, 'error_notice' ) );
-
-				return false;
-
-			endif;
-
-			$api_options = get_option( 'styles-api-key', array() );
-
-			$api_options['api-key'] = $this->client->getResponse();
-
-			//$api_options['update-permalinks'] = 1;
-
-			update_option( 'styles-api-key', $api_options );
-
-			//header( 'Location: '.admin_url( 'edit.php?post_type=ads' ) );
-
-			die();
-
-		endif;
-
-		//return error message or success message
-	}
-
-	function remote_api_call( $args ) {
-
-		$request = wp_remote_post( STYLES_API_URL, array( 'body' => $args ) );
-
-		if ( is_wp_error( $request ) || wp_remote_retrieve_response_code( $request ) != 200 )
-
+		if ( is_wp_error( $response ) )
 			return false;
 
-		$response = maybe_unserialize( wp_remote_retrieve_body( $request ) );
+		$license_data = json_decode( wp_remote_retrieve_body( $response ) );
 
-		if ( is_object( $response ) ) :
-
-			return $response; else :
-
-			return false;
-
-		endif;
+		if ( $license_data->license == 'valid' ) {
+			echo 'valid';
+			exit;
+			// this license is still valid
+		} else {
+			echo 'invalid';
+			exit;
+			// this license is no longer valid
+		}
 	}
 
 	public function api_key_field() {
@@ -189,11 +143,6 @@ class Storm_Licenses {
 			delete_option( 'styles-'.get_template() );
 			add_option( 'styles-'.get_template(), $data->css, null, 'no' ); // Don't autoload
 		}*/
-	}
-
-	function error_notice() {
-
-		echo '<div class="error"><p>'.esc_html( $this->client->message->faultString ).'</p></div>';
 	}
 
 	// from backup buddy
