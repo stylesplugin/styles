@@ -41,10 +41,11 @@ class Storm_Licenses {
 	function validate_license( $license ) {
 		$item_name = 'Styles License';
 
+		// @todo should we use activate_license instead?
 		$api_params = array(
 			'edd_action' => 'check_license',
 			'license'    => esc_attr( $license ),
-			'item_name'  => urlencode( $item_name )
+			'item_name'  => urlencode( get_template() )
 		);
 
 		$response = wp_remote_get( add_query_arg( $api_params, STYLES_API_URL ), array( 'timeout' => 15, 'sslverify' => false ) );
@@ -55,7 +56,17 @@ class Storm_Licenses {
 		$license_data = json_decode( wp_remote_retrieve_body( $response ) );
 
 		if ( $license_data->license == 'valid' ) {
-			echo 'valid';
+			$this->styles->wp->api_options['api_valid'] = $license_data->license;
+			$this->styles->wp->api_options['license']   = $license_data->type;
+			$this->styles->wp->api_options['api_key'] = $license_data->key; //@todo check what the actual value name returned is
+			update_option( 'styles-api', $this->styles->wp->api_options );
+			if ( !empty( $license_data->supported_themes ) ) {
+				$this->styles->wp->api_options['supported_themes'] = $license_data->supported_themes;
+			}
+			if ( !empty( $license_data->css ) ) {
+				delete_option( 'styles-'.get_template() );
+				add_option( 'styles-'.get_template(), $license_data->css, null, 'no' ); // Don't autoload
+			}
 			exit;
 			// this license is still valid
 		} else {
