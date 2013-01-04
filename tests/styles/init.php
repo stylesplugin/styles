@@ -1,5 +1,5 @@
 <?php
-require_once dirname( dirname( dirname(__FILE__) ) ).'/styles.php';
+// require_once dirname( dirname( dirname(__FILE__) ) ).'/styles.php';
 
 class Tests_Styles_Init extends WP_UnitTestCase {
 	/* Styles Object */

@@ -30,7 +30,7 @@ class Storm_WP_Frontend {
 	 **/
 	var $styles;
 
-	function __construct( $styles ) {
+	function __construct( $styles, $args = array() ) {
 		// Pointer to parent object
 		$this->styles = $styles;
 		

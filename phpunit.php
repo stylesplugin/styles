@@ -14,6 +14,8 @@
 			'[0m[2K',
 			'[0m',
 			'[31;1m',
+			'[30;42m[2K',
+			'[41;37m',
 		);
 
 		$phpunit = '/Applications/MAMP/bin/php/php5.3.14/bin/phpunit';
@@ -28,7 +30,7 @@
 				$line = trim($line);
 			}
 			if ( $start ) {
-				echo str_replace( $remove, '', $line) . '<br>';
+				echo str_replace( $remove, '', $line) . '<br/>';
 			}
 		}
 		?>

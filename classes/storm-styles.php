@@ -115,9 +115,9 @@ class Storm_Styles {
 
 		// Load WordPress Utilties
 		if ( is_admin() || ( defined('DOING_AJAX') && DOING_AJAX ) ) {
-			$this->wp = new Storm_WP_Admin( $this );
+			$this->wp = new Storm_WP_Admin( $this, $args );
 		}else {
-			$this->wp = new Storm_WP_Frontend( $this );
+			$this->wp = new Storm_WP_Frontend( $this, $args );
 		}
 
 		add_action( 'template_redirect', array($this, 'enqueue_css') );
@@ -243,9 +243,9 @@ class Storm_Styles {
 		
 		// Interpret CSS only if:
 		if ( !(
-			is_admin()                    // We're loading the wp-admin Styles page
-			|| isset($_GET['scaffold'])   // Responding to a live redraw via parse_request: site.com/?scaffold
-			|| DOING_AJAX                 // Saving the cache via AJAX
+			is_admin()                                  // We're loading the wp-admin Styles page
+			|| isset($_GET['scaffold'])                 // Responding to a live redraw via parse_request: site.com/?scaffold
+			|| ( defined('DOING_AJAX') && DOING_AJAX )  // Saving the cache via AJAX
 		) ){
 			return false;
 		}
@@ -267,8 +267,8 @@ class Storm_Styles {
 		
 		if ( BSM_DEVELOPMENT === true ){
 			
-			// Development: Force re-render on every CSS load
 			wp_enqueue_style('storm-styles', '/?scaffold', array(), time() );
+			// Development: Force re-render on every CSS load
 			
 		}else if ( file_exists($cache_path) ) {
 			
@@ -278,7 +278,7 @@ class Storm_Styles {
 		}else {
 			
 			// No cache file. Load from DB cache
-			add_action( 'wp_head', array($this, wp_head_output), 999 );
+			add_action( 'wp_head', array($this, 'wp_head_output'), 999 );
 			
 		}
 

@@ -37,7 +37,7 @@ class Storm_WP_Admin extends Storm_WP_Frontend {
 	 *
 	 * @return none
 	 */
-	function __construct( $styles ) {
+	function __construct( $styles, $args = array() ) {
 		parent::__construct( $styles ); // sets $this->styles = $styles
 
 		$defaults = array(
