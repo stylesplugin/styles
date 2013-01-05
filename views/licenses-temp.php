@@ -1,6 +1,6 @@
 <?php
 // @todo: add callback for validation
-register_setting( 'styles-licenses', 'styles-api-key' );
+//register_setting( 'styles-licenses', 'styles-api-key' );
 
 ?>
 
@@ -20,9 +20,6 @@ register_setting( 'styles-licenses', 'styles-api-key' );
 	?>
 </head>
 <?php
-global $current_user;
-$self_url = add_query_arg( array( 'slug' => STYLES_SLUG, 'action' => STYLES_SLUG.'licenses', '_ajax_nonce' => wp_create_nonce( STYLES_SLUG.'licenses' ) ),
-	admin_url( 'admin-ajax.php' ) );
 if ( isset( $_POST['username'] ) && isset( $_POST['password'] ) ) {
 	$this->remote_api( $_POST['username'], $_POST['password'] );
 }
@@ -59,11 +56,11 @@ if ( isset( $_POST['license'] ) ) {
     </div>
 
 	<h2>Manually enter your license key</h2>
-    <form method="post" id="styles-form" action="" name="post">
+    <form method="post" id="styles-form" action="">
 
 		<?php
-		settings_errors();
-		settings_fields( 'styles-licenses' ); // includes nonce
+		//settings_errors();
+		//settings_fields( 'styles-licenses' ); // includes nonce
 		//$api_key = $this->styles->wp->get_option( 'api_key' );
 		$api_key = '';
 		?>
