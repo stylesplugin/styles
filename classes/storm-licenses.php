@@ -43,7 +43,8 @@ class Storm_Licenses {
 		$api_params = array(
 			'edd_action' => 'activate_license',
 			'license'    => esc_attr( $license ),
-			'item_name'  => urlencode( get_template() )
+			'item_name'  => urlencode( get_template() ),
+			//@todo pass version
 		);
 
 		$response = wp_remote_get( add_query_arg( $api_params, STYLES_API_URL ), array( 'timeout' => 15, 'sslverify' => false ) );
@@ -123,12 +124,35 @@ class Storm_Licenses {
 			'active_theme'     => get_template(),
 			'username'         => esc_attr( $user ),
 			'password'         => esc_attr( $password ),
-			'version'          => $this->styles->version,
+			'version'          => $this->styles->version, //@todo do something with version after passed
 		);
 
 		$response = wp_remote_get( 'http://stylesplugin.com?'.http_build_query( $request ) );
 
-		var_dump( $response );
+		if ( is_wp_error( $response ) )
+			return false;
+
+		$license_data = json_decode( wp_remote_retrieve_body( $response ) );
+
+		if ( $license_data->license == 'valid' ) {
+			$this->styles->wp->api_options['api_valid'] = $license_data->license;
+			$this->styles->wp->api_options['license']   = $license_data->item_name;
+			$this->styles->wp->api_options['api_key']   = $license; //@todo need to return license key
+			update_option( 'styles-api', $this->styles->wp->api_options );
+			//if ( !empty( $license_data->supported_themes ) ) {
+			$this->styles->wp->api_options['supported_themes'] = $license_data->item_name;
+			//}
+			if ( !empty( $license_data->css ) ) {
+				delete_option( 'styles-'.get_template() );
+				add_option( 'styles-'.get_template(), $license_data->css, null, 'no' ); // Don't autoload
+			}
+			exit;
+			// this license is still valid
+		} else {
+			echo 'invalid';
+			exit;
+			// this license is no longer valid
+		}
 
 		/*if ( $response['response']['code'] != 200 || is_wp_error( $response ) ) {
 			add_settings_error( 'styles-api-key', '404', 'Could not connect to API host. Please try again later.', 'error' );
