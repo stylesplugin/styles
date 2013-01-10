@@ -10,13 +10,11 @@ class Storm_Licenses {
 
 	function __construct( $styles ) {
 		if ( current_user_can( 'manage_options' ) ) add_action( 'plugin_action_links_'.STYLES_BASENAME, array( $this, 'license_link' ) );
-		add_action( 'wp_ajax_styles-licenses', array( $this, 'view_licenses' ) );
 		$this->styles = $styles;
 	}
 
 	/**
 	 * Add a license link to the plugin actions
-	 *
 	 * @param $value
 	 * @return array
 	 */
@@ -38,7 +36,12 @@ class Storm_Licenses {
 		die();
 	}
 
-	function validate_license( $license ) {
+	/**
+	 * Validate a manually entered license
+	 * @param $license
+	 * @return bool
+	 */
+	function validate_manual_license( $license ) {
 
 		$api_params = array(
 			'edd_action' => 'activate_license',
@@ -57,7 +60,7 @@ class Storm_Licenses {
 		if ( $license_data->license == 'valid' ) {
 			$this->styles->wp->api_options['api_valid'] = $license_data->license;
 			$this->styles->wp->api_options['license']   = $license_data->item_name;
-			$this->styles->wp->api_options['api_key']   = $license;
+			$this->styles->wp->api_options['api_key']   = $license_data->api_key;
 			update_option( 'styles-api', $this->styles->wp->api_options );
 			//if ( !empty( $license_data->supported_themes ) ) {
 				$this->styles->wp->api_options['supported_themes'] = $license_data->item_name;
@@ -66,15 +69,19 @@ class Storm_Licenses {
 				delete_option( 'styles-'.get_template() );
 				add_option( 'styles-'.get_template(), $license_data->css, null, 'no' ); // Don't autoload
 			}
+			esc_html_e( 'License was successfully validated', 'styles' );
 			exit;
 			// this license is still valid
 		} else {
-			echo 'invalid';
+			esc_html__( 'This is not a valid license key', 'styles' );
 			exit;
 			// this license is no longer valid
 		}
 	}
 
+	/**
+	 * Add the field to the view to manually enter a license key
+	 */
 	public function api_key_field() {
 		$api_key = $this->styles->wp->get_option( 'api_key' );
 
@@ -86,45 +93,20 @@ class Storm_Licenses {
 	<?php
 	}
 
-	// from original styles api
-	public function remote_api( $user, $password ) {
-
-		/*$this->styles->wp->api_options = get_transient( 'styles-api' );
-		$css                           = get_option( 'styles-'.get_template() );
-
-		if (
-			!empty( $css ) // Have CSS for the current theme
-			&& !empty( $this->styles->wp->api_options ) // API key doesn't need refreshing
-			&& empty( $_POST['styles_api_key'] )
-		) {
-			// Already have CSS for this template
-			// API key isn't being set
-			return true;
-		}*/
-
-		// Check / Set API key
-		/*if ( !empty( $_POST['styles_api_key'] ) && wp_verify_nonce( $_POST['_wpnonce'], 'styles-options' ) ) {
-			$api_key                                  = $_POST['styles_api_key'];
-			$this->styles->wp->api_options['api_key'] = $api_key;
-			set_transient( 'styles-api', $this->styles->wp->api_options, 60 * 60 * 24 * 7 );
-		} else {
-			$api_key = $this->styles->wp->get_option( 'api_key' );
-		}*/
-
-		// Setup verification request
-		/*$request = array(
-			'installed_themes' => array_keys( search_theme_directories() ),
-			'active_theme'     => get_template(),
-			'api_key'          => $api_key,
-			'version'          => $this->styles->version,
-		);*/
+	/**
+	 * Use the username and password to retrieve a license key for that user
+	 * @param $user
+	 * @param $password
+	 * @return bool
+	 */
+	public function validate_user_pass( $user, $password ) {
 
 		$request = array(
 			'installed_themes' => array_keys( search_theme_directories() ),
 			'active_theme'     => get_template(),
 			'username'         => esc_attr( $user ),
 			'password'         => esc_attr( $password ),
-			'version'          => $this->styles->version, //@todo do something with version after passed
+			'version'          => $this->styles->version, //@todo do something with version after passed?
 		);
 
 		$response = wp_remote_get( 'http://stylesplugin.com?'.http_build_query( $request ) );
@@ -137,7 +119,7 @@ class Storm_Licenses {
 		if ( $license_data->license == 'valid' ) {
 			$this->styles->wp->api_options['api_valid'] = $license_data->license;
 			$this->styles->wp->api_options['license']   = $license_data->item_name;
-			$this->styles->wp->api_options['api_key']   = $license; //@todo need to return license key
+			$this->styles->wp->api_options['api_key']   = $license_data->api_key;
 			update_option( 'styles-api', $this->styles->wp->api_options );
 			//if ( !empty( $license_data->supported_themes ) ) {
 			$this->styles->wp->api_options['supported_themes'] = $license_data->item_name;
@@ -146,158 +128,15 @@ class Storm_Licenses {
 				delete_option( 'styles-'.get_template() );
 				add_option( 'styles-'.get_template(), $license_data->css, null, 'no' ); // Don't autoload
 			}
+			esc_html_e( 'License has been successfully retrieved', 'styles' );
 			exit;
 			// this license is still valid
 		} else {
-			echo 'invalid';
+			esc_html_e( 'This user does not have any valid licenses', 'styles' );
 			exit;
 			// this license is no longer valid
 		}
 
-		/*if ( $response['response']['code'] != 200 || is_wp_error( $response ) ) {
-			add_settings_error( 'styles-api-key', '404', 'Could not connect to API host. Please try again later.', 'error' );
-		}
-
-		$data = json_decode( $response['body'] );
-
-		$this->styles->wp->api_options['api_valid']  = $data->api_valid;
-		$this->styles->wp->api_options['license']    = $data->license;
-		$this->styles->wp->api_options['meta_boxes'] = $data->meta_boxes;
-
-		set_transient( 'styles-api', $this->styles->wp->api_options, $data->transient_expire );
-
-		if ( !empty( $data->message ) ) {
-			add_settings_error( 'styles-api-key', 'api-message', $data->message, $data->type );
-		}
-		if ( !empty( $data->supported_themes ) ) {
-			$this->styles->wp->api_options['supported_themes'] = $data->supported_themes;
-		}
-		if ( !empty( $data->css ) ) {
-			delete_option( 'styles-'.get_template() );
-			add_option( 'styles-'.get_template(), $data->css, null, 'no' ); // Don't autoload
-		}*/
 	}
 
-	// from backup buddy
-	public function perform_remote_request( $args ) {
-
-		$defaults = array(
-			'action'        => false,
-			'body'          => array(),
-			'headers'       => array(),
-			'return_format' => 'json',
-			'remote_url'    => false,
-			'method'        => false,
-		);
-		$args     = wp_parse_args( $args, $defaults );
-
-		extract( $args );
-
-		$remote_url = $remote_url ? $remote_url : $this->remote_url;
-
-		$body = wp_parse_args( $body, array(
-			'product'    => $this->product,
-			'key'        => $this->plugins[$this->plugin_slug]->key,
-			'guid'       => $this->plugins[$this->plugin_slug]->guid,
-			'userhash'   => $this->plugins['userhash'],
-			'username'   => $this->plugins['username'],
-			'action'     => $action,
-			'wp-version' => get_bloginfo( 'version' ),
-			'referer'    => str_replace( 'https://', 'http://', site_url() ),
-			'site'       => str_replace( 'https://', 'http://', site_url() ),
-			'version'    => $this->version,
-		) );
-
-		$body   = apply_filters( "pluginbuddy_remote_body_{$this->plugin_slug}", $body );
-		$method = $method ? $method : $this->method;
-		if ( $method == 'GET' ) {
-			$remote_url = add_query_arg( $body, $remote_url );
-		} else {
-			$body = http_build_query( $body );
-		}
-
-		$headers = wp_parse_args( $headers, array(
-			'Content-Type'   => 'application/x-www-form-urlencoded',
-			'Content-Length' => is_array( $body ) ? 0 : strlen( $body )
-		) );
-		$headers = apply_filters( "pluginbuddy_remote_headers_{$this->plugin_slug}", $headers );
-
-		$post = apply_filters( "pluginbuddy_remote_args_{$this->plugin_slug}", array( 'headers' => $headers, 'body' => $body, 'timeout' => 20 ) );
-
-		//die( '<pre>' . print_r( $post, true ) );
-		//Retrieve response
-		if ( $method == 'GET' ) {
-			$response = wp_remote_get( esc_url_raw( $remote_url ), $post );
-		} else {
-			$response = wp_remote_post( esc_url_raw( $remote_url ), $post );
-		}
-
-		$response_code = wp_remote_retrieve_response_code( $response );
-		$response_body = wp_remote_retrieve_body( $response );
-		//$current_plugin = $this->plugins[ 'pluginbuddy_loopbuddy' ];
-
-		if ( $response_code != 200 || is_wp_error( $response_body ) ) {
-			return false;
-		}
-		switch ( $return_format ) {
-			case 'json':
-				return json_decode( $response_body );
-				break;
-			case 'serialized':
-				return maybe_unserialize( $response_body );
-				break;
-			default:
-				return $response_body;
-				break;
-		} //end switch
-		return false;
-	} //end perform_remote_request
-
-	// from backup buddy
-	private function save_plugin_options( $clearhash = false ) {
-		//echo 'saving';
-
-		//Get plugin options
-		$options                     = $this->get_plugin_options(); //Since multiple plugins are using the same class variable, make sure the class variable is up to date before updating it
-		$options[$this->plugin_slug] = $this->plugins[$this->plugin_slug];
-		if ( !empty( $this->plugins['userhash'] ) ) $options['userhash'] = $this->plugins['userhash'];
-		if ( !empty( $this->plugins['username'] ) ) $options['username'] = $this->plugins['username'];
-		if ( $clearhash == true ) {
-			$this->plugins['userhash'] = $options['userhash'] = '';
-			$this->plugins['username'] = $options['username'] = '';
-		}
-		if ( $this->plugin_slug == 'pluginbuddy_loopbuddy' ) {
-			//die( '<pre>' . print_r( $options[ $this->plugin_slug ], true ) );
-		}
-
-		//echo '<pre>' . print_r( $options, true ) . '</pre>';
-
-		if ( is_multisite() ) {
-			$this->update_site_option( 'pluginbuddy_plugins', $options );
-		} else {
-			$this->update_option( 'pluginbuddy_plugins', $options );
-		}
-	} //end save_plugin_options
-
-	// from backup buddy
-	private function get_defaults() {
-		//Fill out defaults for the global variable
-		if ( !isset( $this->plugins['userhash'] ) ) {
-			$this->plugins['userhash'] = '';
-			$this->plugins['username'] = '';
-		}
-
-		//Fill out defaults for the individual plugin
-		$plugin_options              = new stdClass;
-		$plugin_options->url         = $this->plugin_url;
-		$plugin_options->slug        = $this->plugin_slug;
-		$plugin_options->package     = '';
-		$plugin_options->new_version = $this->version;
-		$plugin_options->last_update = time();
-		$plugin_options->id          = "0";
-		$plugin_options->key         = false;
-		$plugin_options->key_status  = 'not_set';
-		$plugin_options->guid        = uniqid( '' );
-		return $plugin_options;
-	} //end get_defaults
 }

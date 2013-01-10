@@ -21,10 +21,10 @@
 </head>
 <?php
 if ( isset( $_POST['username'] ) && isset( $_POST['password'] ) ) {
-	$this->remote_api( $_POST['username'], $_POST['password'] );
+	$this->validate_user_pass( $_POST['username'], $_POST['password'] );
 }
 if ( isset( $_POST['license'] ) ) {
-	$this->validate_license( $_POST['license'] );
+	$this->validate_manual_license( $_POST['license'] );
 }
 
 ?>
@@ -62,6 +62,7 @@ if ( isset( $_POST['license'] ) ) {
 		//settings_errors();
 		//settings_fields( 'styles-licenses' ); // includes nonce
 		//$api_key = $this->styles->wp->get_option( 'api_key' );
+	    //@todo use api_key_field from class
 		$api_key = '';
 		?>
 
