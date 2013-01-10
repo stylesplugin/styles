@@ -10,6 +10,7 @@ class Storm_Licenses {
 
 	function __construct( $styles ) {
 		if ( current_user_can( 'manage_options' ) ) add_action( 'plugin_action_links_'.STYLES_BASENAME, array( $this, 'license_link' ) );
+		add_action( 'wp_ajax_styles-licenses', array( $this, 'view_licenses' ) );
 		$this->styles = $styles;
 	}
 
@@ -31,7 +32,7 @@ class Storm_Licenses {
 	 */
 	function view_licenses() {
 		check_ajax_referer( 'styles-licenses', '_ajax_nonce' );
-		require_once( STYLES_DIR.'/views/licenses-temp.php' );
+		require_once( STYLES_DIR.'/views/licenses.php' );
 
 		die();
 	}
@@ -47,7 +48,7 @@ class Storm_Licenses {
 			'edd_action' => 'activate_license',
 			'license'    => esc_attr( $license ),
 			'item_name'  => urlencode( get_template() ),
-			//@todo pass version
+			'version' => $this->styles->version, //@todo do something with version after passed?
 		);
 
 		$response = wp_remote_get( add_query_arg( $api_params, STYLES_API_URL ), array( 'timeout' => 15, 'sslverify' => false ) );
@@ -62,9 +63,7 @@ class Storm_Licenses {
 			$this->styles->wp->api_options['license']   = $license_data->item_name;
 			$this->styles->wp->api_options['api_key']   = $license_data->api_key;
 			update_option( 'styles-api', $this->styles->wp->api_options );
-			//if ( !empty( $license_data->supported_themes ) ) {
-				$this->styles->wp->api_options['supported_themes'] = $license_data->item_name;
-			//}
+			$this->styles->wp->api_options['supported_themes'] = $license_data->item_name;
 			if ( !empty( $license_data->css ) ) {
 				delete_option( 'styles-'.get_template() );
 				add_option( 'styles-'.get_template(), $license_data->css, null, 'no' ); // Don't autoload
@@ -83,13 +82,12 @@ class Storm_Licenses {
 	 * Add the field to the view to manually enter a license key
 	 */
 	public function api_key_field() {
-		$api_key = $this->styles->wp->get_option( 'api_key' );
-
+		$this->styles->wp->api_options = get_option( 'styles-api' );
+		$api_key = $this->styles->wp->api_options['api_key'];
 		?>
 
-    <input value="<?php esc_attr_e( $api_key ) ?>" name="styles_api_key" id="styles_api_key" type="text" class="regular-text" />
-    <p>This license key is used for access to theme upgrades and support.
-
+        <input value="<?php esc_attr_e( $api_key ) ?>" name="license" id="license" type="text" class="regular-text" />
+        <p><?php esc_html_e( 'This license key is used for access to theme upgrades and support', 'styles' ); ?>.</p>
 	<?php
 	}
 
@@ -121,9 +119,7 @@ class Storm_Licenses {
 			$this->styles->wp->api_options['license']   = $license_data->item_name;
 			$this->styles->wp->api_options['api_key']   = $license_data->api_key;
 			update_option( 'styles-api', $this->styles->wp->api_options );
-			//if ( !empty( $license_data->supported_themes ) ) {
 			$this->styles->wp->api_options['supported_themes'] = $license_data->item_name;
-			//}
 			if ( !empty( $license_data->css ) ) {
 				delete_option( 'styles-'.get_template() );
 				add_option( 'styles-'.get_template(), $license_data->css, null, 'no' ); // Don't autoload
