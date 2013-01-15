@@ -3,19 +3,35 @@
 class Styles_CSS {
 
 	static public function output_css() {
-		echo '<style id="storm_styles">';
+		global $wp_customize;
 
-		foreach ( Styles_Customizer::get_settings() as $group => $elements ) {
-			foreach ( $elements as $element ) {
-				if ( $class = Styles_Helpers::get_element_class( $element ) ) {
+		$css = false;
 
-					echo $class::get_css( $group, $element );
-				
+		if ( empty( $wp_customize ) ) {
+			$css = get_option( 'styles_cache' );
+		}
+
+		if ( !empty( $wp_customize ) || empty( $css ) ) {
+			// Refresh
+
+			$css = '';
+
+			require_once dirname( __FILE__ ) . '/styles-customizer.php';
+
+			foreach ( Styles_Customizer::get_settings() as $group => $elements ) {
+				foreach ( $elements as $element ) {
+					if ( $class = Styles_Helpers::get_element_class( $element ) ) {
+
+						$css .= $class::get_css( $group, $element );
+					
+					}
 				}
 			}
 		}
 
-		echo '</style>';
+		update_option( 'styles_cache', $css );
+		echo '<style id="storm_styles">' . $css . '</style>';
+
 	}
 
 }
