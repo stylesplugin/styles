@@ -11,6 +11,15 @@ class Styles_Helpers {
 		return $type;
 	}
 
+	function sanitize_element( $group, $element ) {
+		$element['id'] = self::get_element_id( $element );
+		$element['setting'] = self::get_setting_id( $group, $element['id'] );
+
+		if ( empty( $element['selector'] ) ) { return false; }
+
+		return $element;
+	}
+
 	static public function get_group_id( $group ) {
 		return self::$prefix . $group;
 	}

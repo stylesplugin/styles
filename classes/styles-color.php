@@ -11,13 +11,9 @@ class Styles_Color {
 	static public function add_item( $group, $element ) {
 		global $wp_customize;
 
-		$label = $selector = $type = '';
-		extract( $element, EXTR_IF_EXISTS );
-
-		if ( empty( $selector ) ) { return false; }
-		
-		$id = Styles_Helpers::get_element_id( $element );
-		$setting = Styles_Helpers::get_setting_id( $group, $id );
+		$label = $selector = $type = $id = $setting = '';
+		extract( Styles_Helpers::sanitize_element( $group, $element ), EXTR_IF_EXISTS );
+		if ( false === $element ) { return; }
 
 		$wp_customize->add_setting( $setting, array(
 			'default'    => self::$default,

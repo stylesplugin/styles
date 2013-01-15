@@ -2,7 +2,9 @@
 
 class Styles_CSS {
 
-	static public function output_css() {
+	public $google_fonts = '';
+
+	public function output_css() {
 		global $wp_customize;
 
 		$css = false;
@@ -28,6 +30,8 @@ class Styles_CSS {
 				}
 			}
 		}
+
+		$css = $this->google_fonts . $css;
 
 		update_option( 'styles_cache', $css );
 		echo '<style id="storm_styles">' . $css . '</style>';
