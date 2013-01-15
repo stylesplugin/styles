@@ -24,280 +24,298 @@ class Storm_Styles {
 	 **/
 	var $db_version = '0.5.0';
 	
-	/**
-	 * Options array containing all options for this plugin
-	 * 
-	 * @var string
-	 **/
-	var $options;
-	
-	/**
-	 * WordPress plugin utilites & setup
-	 * 
-	 * @var Storm_WP_Admin | Storm_WP_Frontend
-	 **/
-	var $wp;
-	
-	/**
-	 * Paths to search for a source CSS file
-	 * 
-	 * @var array
-	 **/
-	var $search_paths;
-	
-	/**
-	 * CSS source
-	 * 
-	 * @var string
-	 **/
-	var $source;
-	
-	/**
-	 * CSS file info: array('uri', 'path', 'cache_path', 'cache_uri')
-	 * 
-	 * @var array
-	 **/
-	var $file_paths = false;
-	
-	/**
-	 * Stores values from GUI input, outputs GUI fields and parsed CSS
-	 * 
-	 * @var array
-	 **/
-	var $variables    = array( /*
-		'general_window' => array(		// element ID - generated from Group/Label or explicitly set
-			'form_id'    => '', // input element ID
-			'form_name'  => '', // input element name
-			'id'         => '', // repeat of 'general_window'
-			'label'      => '', // Form label
-			'group'      => '', // Form group
-			'selector'   => '', // CSS selector
-			'values' => array(  // Values set by form inputs
-				'active'         => '', // Which elements should be output
-				'css'            => '', // CSS value for the active element (needs refactoring to allow multiple)
-				'image'          => '', // Image URL
-				'image_replace'  => '', // (bool) Whether or not to run the image replace filter
-				'bg_color'       => '', // Solid color background
-				'stops'          => '', // Gradient background
-				'color'           => '', // Font color
-				'font_size'      => '',
-				'font_family'    => '',
-				'font_weight'    => '',
-				'font_style'     => '',
-				'text_transform' => '',
-				'line_height'     => '',
-			),
-		),
-		etc...
-	*/ );
-	
-	/**
-	 * Organizes variable keys by group
-	 * 
-	 * @var array
-	 **/
-	var $groups = array( /*
-		'General' => array(
-			'general_window',
-			'general_link',
-		)
-	*/ );
-	
 	public function __construct() {
 
-		// Load WordPress Utilties
-		if ( is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
-			$this->wp = new Storm_WP_Admin( $this );
-		}else {
-			$this->wp = new Storm_WP_Frontend( $this );
-		}
+		// Setup Customizer
+		add_action( 'customize_register', 'Storm_Styles_Customizer::sections', 10 );
+		// add_action( 'customize_register', 'Storm_Styles_Customizer::items', 11 );
 
-		add_action( 'template_redirect', array($this, 'enqueue_css') );
+
 		
-		add_action( 'styles_init',   array($this, 'load_variables'),  5, 1 );
-		add_action( 'styles_init',   array($this, 'get_file'),       10, 1 );
-		add_action( 'styles_init',   array($this, 'parse_css'),      15, 1 );
-		add_action( 'styles_render', array($this, 'render'),         10, 1 );
+		// Render CSS
+		// Render preview CSS
 		
 	}
-	
-	function search_paths() {
-		if ( !empty( $this->search_paths ) ) {
-			return $this->search_paths;
-		}
-		
-		$upload_dir = wp_upload_dir();
-		
-		if ( !empty($_GET['file']) ) {
-			$search_paths = array(
-				$_GET['file'],
-				trailingslashit(ABSPATH).$_GET['file'],
-			);
-		}
 
-		$search_paths[] = $upload_dir['basedir'].'/styles/'.get_template().'.gui.css';
-		$search_paths[] = get_stylesheet_directory().'/customize.css';
-		// $search_paths[] = $this->wp->plugin_dir_path().'themes/'.get_template().'.gui.css';
-		
-		$this->search_paths = apply_filters('styles_search_paths', $search_paths);
-		
-		return $this->search_paths;
+
+}
+
+
+class Storm_Styles_Customizer {
+	/**
+	 * Register sections with WordPress theme customizer in WordPress 3.4+
+	 * e.g., General, Header, Footer, Content, Sidebar
+	 */
+	static function sections( $wp_customize ) {
+		// Maybe move to storm-wp-admin.php
+		// do_action( 'styles_init', $this->styles );
+		// do_action( 'styles_before_process', $this->styles );
+		// do_action( 'styles_process', $this->styles );
+		// do_action( 'styles_after_process', $this->styles );
+
+		$wp_customize->add_section( 'test', array(
+			'title'    => __( 'Test', 'themename' ),
+			'priority' => 1,
+		) );
+
+
+		//// ------ test
+		$js_id = 'test';
+		$group = 'test';
+		$label = 'test';
+		$id = 'test';
+
+		$suffix = ' Background Color';
+		$wp_customize->add_setting( "styles[$id][values][css]", array(
+			'default'    => '',
+			'type'       => 'option',
+			'capability' => 'edit_theme_options',
+			// 'transport'      => 'postMessage',
+		) );
+		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "storm_$js_id", array(
+			'label'    => __( $label.$suffix, 'styles' ),
+			'section'  => "$group",
+			'settings' => "styles[$id][values][css]",
+			'priority' => $priority.'1',
+		) ) );
+		//// ------ test
+
+		// GUI
+		// $i = 950;
+		// foreach ( $this->styles->groups as $group => $elements ) {
+		// 	$wp_customize->add_section( $group, array( // Namespace as storm_$group in future
+		// 		'title'    => __( $group, 'storm' ),
+		// 		'priority' => $i,
+		// 	) );
+		// 	$i++;
+		// }
 	}
+
 
 	/**
-	 * Load either live or preview options based on $_GET
+	 * Register individual customize fields in WordPress 3.4+
 	 */
-	public function load_variables() {
+	public function items( $wp_customize ) {
+		//FB::log( __FUNCTION__ );
 
-		if ( isset($_GET['preview']) ) {
-			$this->variables = get_option( 'styles-preview' );
-		}else {
-			$this->variables = get_option( 'styles' );
-		}
-		
-	}
+		//FB::log( $this->styles->groups, '$this->styles->groups' );
+		//FB::log($this->styles->variables, '$this->styles->variables');
 
-	/**
-	 * Load path info about first CSS file found in search_paths
-	 * Contains: 'uri', 'path', 'cache_path', 'cache_uri'
-	 * 
-	 * @return array 
-	 */
-	function get_file() {
-		if ( is_array($this->file_paths) ) return $this->file_paths;
-		
-		global $blog_id;
-		
-		$upload_dir = wp_upload_dir();
-		
-		$uri = $path = $cache_path = $cache_uri = false;
-		
-		// Search for CSS file in order of priority and stop at the first one found
-		foreach ($this->search_paths() as $file ) {
-			if ( file_exists($file) ) { $path = $file; break; }
-		}
-
-		if ( empty($path) ) {
-			FB::error('Could not find CSS to load for Styles GUI in '.__FILE__.':'.__LINE__);
-			$path = false;
-			$uri = false;
-		}
-		
-		// URI for enqueing
-		$uri = str_replace( ABSPATH, '', $path );
-
-		// Cache file
-		$cache_file = $this->get_cache_file();
-		
-		// Maybe Create Cache File/Folder
-		$cache_dir = dirname($upload_dir['basedir'].$cache_file);
-		if ( wp_mkdir_p( $cache_dir ) && is_writable( $cache_dir ) ) {
-			$cache_path = $upload_dir['basedir'].$cache_file;
-			$cache_uri = $upload_dir['baseurl'].$cache_file;
-		}else {
-			$cache_path = false;
-		}
-		
-		// Put all info into an array
-		$array = compact('uri', 'path', 'cache_path', 'cache_uri');
-		
-		$this->file_paths = apply_filters( 'styles_file_path', $array );
-
-		return $this->file_paths;
-	}
-	
-	function get_cache_file() {
-		
-		if ( is_multisite() ) {
-			$cache_file = "/styles/cache-$blog_id.css";
-		}else {
-			$cache_file = "/styles/cache.css";
-		}
-		return $cache_file;
-	}
-	
-	/**
-	 * Extract IDs, labels, groups, etc for the GUI from CSS
-	 */
-	function parse_css() {
-		global $wp_settings_errors;
-		
-		// Load options from theme customize.css
-		// or wp-content/uploads/styles if available
-		$contents = @file_get_contents( $this->file_paths['path'] );
-
-		// If no files found, check database for CSS loaded
-		// from remote API
-		if ( empty($contents) ) {
-			$contents = get_option( 'styles-'.get_template() );
-		}
-		if ( empty($contents) && empty($wp_settings_errors) ) {
-			// Just in case the API didn't send this error
-			global $wp_customize;
-			if ( !isset( $wp_customize ) ) {
-				add_settings_error( 'styles-api-key', 'no-css', 'Sorry, '.get_template().' is either not supported or could not be loaded. You can request support for this theme <a href="https://www
-			.google.com/moderator/?authuser=2#16/e=1f6d0a">on this page</a>.', 'error' );
+		// GUI
+		foreach ( $this->styles->variables as $key => $element ) {
+			if ( empty( $element['selector'] ) ) {
+				// Skip items that don't exist in the current theme
+				continue;
 			}
-		}
-		
-		// Interpret CSS only if:
-		if ( !(
-			is_admin()                    // We're loading the wp-admin Styles page
-			|| isset($_GET['scaffold'])   // Responding to a live redraw via parse_request: site.com/?scaffold
-			|| ( defined( 'DOING_AJAX' ) && DOING_AJAX )                // Saving the cache via AJAX
-		) ){
-			return false;
-		}
 
-		$this->css = new Storm_CSS_Processor( $this, $contents );
-		
-	}
-	
-	/**
-	 * Initialize files object based on WordPress style queue
-	 **/
-	function enqueue_css() {
-		global $blog_id;
-		
-		$upload_dir = wp_upload_dir();
-		$cache_file = $this->get_cache_file();
-		$cache_path = $upload_dir['basedir'].$cache_file;
-		$cache_uri = $upload_dir['baseurl'].$cache_file;
-		
-		if ( BSM_DEVELOPMENT === true ){
-			
-			// Development: Force re-render on every CSS load
-			wp_enqueue_style('storm-styles', '/?scaffold', array(), time() );
-			
-		}else if ( file_exists($cache_path) ) {
-			
-			// Enqueue cached output
-			wp_enqueue_style('storm-styles', $cache_uri );
+			if ( !in_array( $element['id'], $this->styles->groups[$element['group']] ) ) {
+				continue;
+			}
 
-		}else {
-			
-			// No cache file. Load from DB cache
-			add_action( 'wp_head', array($this, 'wp_head_output'), 999 );
-			
-		}
+			// $form_id, $form_name, $id, $label, $group,$selector
+			// $values[ active,css,image,bg_color,stops,$color,
+			// 	$font_size, $font_family, $font_weight,
+			// 	$font_style, $text_transform, $line_height ]
+			extract( $element );
+			list( $x, $type) = explode( '_', $id );
+			$js_id = str_replace( '.', '_', $id );
 
-	}
-	
-	function wp_head_output() {
-		$css = get_option('styles-cache');
-		if (!empty($css)) {
-			echo "<style id='storm-scaffold-css'>$css</style>";
+			switch ( $type ) {
+				case 'open-section':
+					$wp_customize->add_setting( "styles[$id][values][subsection]", array(
+						'default'    => '',
+						'type'       => 'option',
+						'capability' => 'edit_theme_options',
+						// 'transport'      => 'postMessage',
+					) );
+
+					$wp_customize->add_control( new Styles_Customize_Subsection_Control( $wp_customize, "storm_$js_id", array(
+						'label'    => "$label",
+						'section'  => "$group",
+						'settings' => "styles[$id][values][subsection]",
+						'priority' => $priority.'0',
+					) ) );
+					break;
+				case 'background-color':
+					$suffix = ' Background Color';
+					$wp_customize->add_setting( "styles[$id][values][css]", array(
+						'default'    => '',
+						'type'       => 'option',
+						'capability' => 'edit_theme_options',
+						// 'transport'      => 'postMessage',
+					) );
+					$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "storm_$js_id", array(
+						'label'    => __( $label.$suffix, 'styles' ),
+						'section'  => "$group",
+						'settings' => "styles[$id][values][css]",
+						'priority' => $priority.'1',
+					) ) );
+					break;
+				/*case 'gradient':
+					$suffix = ' Background Gradient';
+					$wp_customize->add_setting( "styles[$id][values][css]", array(
+						'default'    => '',
+						'type'       => 'option',
+						'capability' => 'edit_theme_options',
+						// 'transport'      => 'postMessage',
+					) );
+					$wp_customize->add_control( new Styles_Customize_Gradient_Control( $wp_customize, "storm_$js_id", array(
+						'label'    => __( $label.$suffix, 'styles' ),
+						'section'  => "$group",
+						'settings' => "styles[$id][values][css]",
+						'priority' => $priority.'1',
+					) ) );
+					break;*/
+				case 'color':
+					$suffix = ' Text Color';
+					$wp_customize->add_setting( "styles[$id][values][css]", array(
+						'default'    => '',
+						'type'       => 'option',
+						'capability' => 'edit_theme_options',
+						// 'transport'      => 'postMessage',
+					) );
+					$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "storm_$js_id", array(
+						'label'    => __( $label.$suffix, 'styles' ),
+						'section'  => "$group",
+						'settings' => "styles[$id][values][css]",
+						'priority' => $priority.'2',
+					) ) );
+					break;
+				case 'font-family':
+					$suffix = ' Font Family';
+					$wp_customize->add_setting( "styles[$id][values][font_family]", array(
+						'default'    => '',
+						'type'       => 'option',
+						'capability' => 'edit_theme_options',
+						// 'transport'      => 'postMessage',
+					) );
+					$wp_customize->add_control( new Styles_Customize_Font_Family_Control( $wp_customize, "storm_$js_id", array(
+						'label'    => __( $label.$suffix, 'styles' ),
+						'section'  => "$group",
+						'settings' => "styles[$id][values][font_family]",
+						'priority' => $priority.'3',
+					) ) );
+					break;
+				case 'font-size':
+					$suffix = ' Font Size';
+					$wp_customize->add_setting( "styles[$id][values][font_size]", array(
+						'default'    => '',
+						'type'       => 'option',
+						'capability' => 'edit_theme_options',
+						// 'transport'      => 'postMessage',
+					) );
+					$wp_customize->add_control( new Styles_Customize_Text_Pixels_Control( $wp_customize, "storm_$js_id", array(
+						'label'    => __( $label.$suffix, 'styles' ),
+						'section'  => "$group",
+						'settings' => "styles[$id][values][font_size]",
+						'priority' => $priority.'4',
+					) ) );
+					break;
+				case 'line-height':
+					$suffix = ' Line Height';
+					$wp_customize->add_setting( "styles[$id][values][line_height]", array(
+						'default'    => '',
+						'type'       => 'option',
+						'capability' => 'edit_theme_options',
+						// 'transport'      => 'postMessage',
+					) );
+					$wp_customize->add_control( new Styles_Customize_Text_Pixels_Control( $wp_customize, "storm_$js_id", array(
+						'label'    => __( $label.$suffix, 'styles' ),
+						'section'  => "$group",
+						'settings' => "styles[$id][values][line_height]",
+						'priority' => $priority.'5',
+						'type'     => 'text'
+					) ) );
+					break;
+				case 'font-weight':
+					$suffix = ' Font Weight';
+					$wp_customize->add_setting( "styles[$id][values][font_weight]", array(
+						'default'    => '',
+						'type'       => 'option',
+						'capability' => 'edit_theme_options',
+						// 'transport'      => 'postMessage',
+					) );
+					$wp_customize->add_control( "storm_$js_id", array(
+						'label'    => __( $label.$suffix, 'styles' ),
+						'section'  => "$group",
+						'settings' => "styles[$id][values][font_weight]",
+						'priority' => $priority.'6',
+						'type'     => 'select',
+						'choices'  => array(
+							'' => 'Default',
+							'100' => '100',
+							'200' => '200',
+							'300' => '300',
+							'400' => '400 (Normal)',
+							'500' => '500',
+							'600' => '600',
+							'700' => '700 (Bold)',
+							'800' => '800',
+							'900' => '900',
+						),
+					) );
+					break;
+				case 'font-style':
+					$suffix = ' Font Style';
+					$wp_customize->add_setting( "styles[$id][values][font_style]", array(
+						'default'    => '',
+						'type'       => 'option',
+						'capability' => 'edit_theme_options',
+						// 'transport'      => 'postMessage',
+					) );
+					$wp_customize->add_control( "storm_$js_id", array(
+						'label'    => __( $label.$suffix, 'styles' ),
+						'section'  => "$group",
+						'settings' => "styles[$id][values][font_style]",
+						'priority' => $priority.'7',
+						'type'     => 'select',
+						'choices'  => array(
+							'normal' => 'Normal',
+							'italic' => 'Italic',
+							'oblique' => 'Oblique',
+						),
+					) );
+					break;
+				case 'text-transform':
+					$suffix = ' Text Transform';
+					$wp_customize->add_setting( "styles[$id][values][text_transform]", array(
+						'default'    => '',
+						'type'       => 'option',
+						'capability' => 'edit_theme_options',
+						// 'transport'      => 'postMessage',
+					) );
+					$wp_customize->add_control( "storm_$js_id", array(
+						'label'    => __( $label.$suffix, 'styles' ),
+						'section'  => "$group",
+						'settings' => "styles[$id][values][text_transform]",
+						'priority' => $priority.'8',
+						'type'     => 'select',
+						'choices'  => array(
+							'none'  => 'None',
+							'capitalize'  => 'Capitalize',
+							'uppercase' => 'Uppercase',
+							'lowercase' => 'Lowercase'
+						),
+					) );
+					break;
+				case 'close-section':
+					$wp_customize->add_setting( "styles[$id][values][]", array(
+						'default'    => '',
+						'type'       => 'option',
+						'capability' => 'edit_theme_options',
+						// 'transport'      => 'postMessage',
+					) );
+
+					$wp_customize->add_control( new Styles_Customize_EndSubsection_Control( $wp_customize, "storm_$js_id", array(
+						'label'    => __( 'End', 'styles' ),
+						'section'  => "$group",
+						'settings' => "styles[$id][values][]",
+						'priority' => $priority.'9',
+						'type'     => 'endsubsection',
+					) ) );
+					break;
+			}
+
 		}
-	}
-	
-	function render() {
-		
-		if ( isset( $_GET['scaffold'] ) ) {
-			// Output to browser
-			header('Content-type: text/css');
-			echo $this->css->contents;
-			exit;
-		}
-		
 	}
 }
