@@ -9,17 +9,7 @@ Author URI: http://brainstormmedia.com
 */
 
 /**
- * This plugin is made possible in part by code reuse from the following authors:
- * 
- *   Anthony Short, Scaffold: https://github.com/anthonyshort/Scaffold
- *   Matt Martz (Sivel), Shadowbox: http://profiles.wordpress.org/sivel/
- *   Joost de Valk (Yoast), WordPress SEO: http://wordpress.org/extend/plugins/wordpress-seo/
- * 
- * Thank you for being generous with your knowledge.
- *
- * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
- * 
- * Copyright 2010 Brainstorm Media
+ * Copyright 2012 Brainstorm Media
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,9 +26,6 @@ Author URI: http://brainstormmedia.com
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-/**
- * Instantiate the $StormStyles object
- */
 function styles_plugin_init() {
 	global $storm_styles;
 
@@ -52,7 +39,6 @@ function styles_plugin_init() {
 
 	if ( !defined( 'STYLES_BASENAME' ) ) define( 'STYLES_BASENAME', plugin_basename( __FILE__ ) );
 
-	require dirname ( __FILE__ ) . '/classes/stormFirePHP/stormFirePHP.php';
 	require dirname ( __FILE__ ) . '/classes/styles-plugin.php';
 	
 	$storm_styles = new Styles_Plugin();
