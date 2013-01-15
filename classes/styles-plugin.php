@@ -88,21 +88,6 @@ switch ( $type ) {
 			'priority' => $priority.'1',
 		) ) );
 		break;
-	case 'color':
-		$suffix = ' Text Color';
-		$wp_customize->add_setting( "styles[$id][values][css]", array(
-			'default'    => '',
-			'type'       => 'option',
-			'capability' => 'edit_theme_options',
-			// 'transport'      => 'postMessage',
-		) );
-		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "storm_$js_id", array(
-			'label'    => __( $label.$suffix, 'styles' ),
-			'section'  => "$group",
-			'settings' => "styles[$id][values][css]",
-			'priority' => $priority.'2',
-		) ) );
-		break;
 	case 'font-family':
 		$suffix = ' Font Family';
 		$wp_customize->add_setting( "styles[$id][values][font_family]", array(

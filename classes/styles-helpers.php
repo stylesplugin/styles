@@ -15,6 +15,10 @@ class Styles_Helpers {
 		return self::$prefix . $group;
 	}
 
+	static public function get_setting_id( $group, $id ) {
+		return "styles[$group][$id]";;
+	}
+
 	/**
 	 * Return name of static class for Customizer Control based on "type"
 	 */

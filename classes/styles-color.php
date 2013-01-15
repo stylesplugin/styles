@@ -1,9 +1,9 @@
 <?php
 
-class Styles_Background_Color {
-	static $suffix = 'Background Color';
+class Styles_Color {
+	static $suffix = 'Text Color';
 	static $default = '';
-	static $group_priority = 1;
+	static $group_priority = 2;
 
 	/**
 	 * Register item with $wp_customize
@@ -41,7 +41,7 @@ class Styles_Background_Color {
 		$selector = $element['selector'];
 		$value = Styles_Helpers::get_element_setting_value( $group, $element );
 
-		return "$selector { background: $value }";
+		return "$selector { color: $value }";
 	}
 
 }
