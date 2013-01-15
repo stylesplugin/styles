@@ -39,7 +39,8 @@ Author URI: http://brainstormmedia.com
 /**
  * Instantiate the $StormStyles object
  */
-function storm_styles_init() {
+function styles_plugin_init() {
+	global $storm_styles;
 
 	if ( is_admin() ) {
 		global $wp_version;
@@ -52,18 +53,9 @@ function storm_styles_init() {
 	if ( !defined( 'STYLES_BASENAME' ) ) define( 'STYLES_BASENAME', plugin_basename( __FILE__ ) );
 
 	require dirname ( __FILE__ ) . '/classes/stormFirePHP/stormFirePHP.php';
-	require dirname ( __FILE__ ) . '/classes/storm-styles.php';
-	FB::log(STYLES_BASENAME, 'STYLES_BASENAME');
-	// require dirname ( __FILE__ ) . '/classes/storm-wp-frontend.php';
+	require dirname ( __FILE__ ) . '/classes/styles-plugin.php';
+	
+	$storm_styles = new Styles_Plugin();
 
-	if ( is_admin() || BSM_DEVELOPMENT || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
-		// Only load heavy files if we're in wp-admin or processing CSS over AJAX
-		// require dirname ( __FILE__ ) . '/classes/storm-css-processor.php';
-		// require dirname ( __FILE__ ) . '/classes/storm-wp-settings.php';
-		// require dirname ( __FILE__ ) . '/classes/storm-wp-admin.php';
-	}
-	
-	$storm_styles = new Storm_Styles();
-	
 }
-add_action( 'init', 'storm_styles_init', 1 );
+add_action( 'init', 'styles_plugin_init', 1 );
