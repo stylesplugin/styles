@@ -25,7 +25,11 @@ class Styles_Helpers {
 	}
 
 	static public function get_setting_id( $group, $id ) {
-		return "styles[$group][$id]";;
+		$id = str_replace( '-', '_', trim( $id, '_' ) );
+
+		$setting_id = "styles[$group][$id]";
+
+		return $setting_id;
 	}
 
 	/**
@@ -56,7 +60,7 @@ class Styles_Helpers {
 	}
 
 	public static function get_element_id( $element ) {
-		return sanitize_key( $element['label'] . '_' . $element['type'] );
+		return trim( sanitize_key( $element['label'] . '_' . $element['type'] ), '_' );
 	}
 
 	public static function get_element_setting_value( $group, $element ) {

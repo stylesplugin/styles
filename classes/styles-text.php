@@ -1,7 +1,7 @@
 <?php
 
-class Styles_Font_Family {
-	static $suffix = 'Font Family';
+class Styles_Text {
+	static $suffix = 'Text Formatting';
 	static $default = '';
 	static $group_priority = 3;
 	static $families = array( 'Arial' => 'Arial, Helvetica, sans-serif', 'Bookman' => 'Bookman, Palatino, Georgia, serif', 'Century Gothic' => '"Century Gothic", Helvetica, Arial, sans-serif', 'Comic Sans MS' => '"Comic Sans MS", Arial, sans-serif', 'Courier' => 'Courier, monospace', 'Garamond' => 'Garamond, Palatino, Georgia, serif', 'Georgia' => 'Georgia, Times, serif', 'Helvetica' => 'Helvetica, Arial, sans-serif', 'Lucida Grande' => '"Lucida Grande","Lucida Sans Unicode",Tahoma,Verdana,sans-serif', 'Palatino' => 'Palatino, Georgia, serif', 'Tahoma' => 'Tahoma, Verdana, Helvetica, sans-serif', 'Times' => 'Times, Georgia, serif', 'Trebuchet MS' => '"Trebuchet MS", Tahoma, Helvetica, sans-serif', 'Verdana' => 'Verdana, Tahoma, sans-serif', );
@@ -17,40 +17,66 @@ class Styles_Font_Family {
 		extract( Styles_Helpers::sanitize_element( $group, $element ), EXTR_IF_EXISTS );
 		if ( false === $element ) { return; }
 
-		$wp_customize->add_setting( $setting, array(
-			'default'    => self::$default,
-			'type'       => 'option',
-			'capability' => 'edit_theme_options',
-			// 'transport'      => 'postMessage',
-		) );
+		$wp_customize->add_setting( $setting.'[font_size]', array( 'default' => self::$default, 'type' => 'option', 'capability' => 'edit_theme_options', ) );
+		$wp_customize->add_setting( $setting.'[font_family]', array( 'default' => self::$default, 'type' => 'option', 'capability' => 'edit_theme_options', ) );
 
-		$wp_customize->add_control( new Styles_Customize_Font_Family_Control( $wp_customize, Styles_Helpers::$prefix . $id, array(
+		$wp_customize->add_control( new Styles_Customize_Text_Control( $wp_customize, Styles_Helpers::$prefix . $id, array(
 			'label'    => __( $label . ' ' . self::$suffix, 'styles' ),
 			'section'  => $group,
-			'settings' => $setting,
+			'settings' => array( 
+				'font_size'    => $setting.'[font_size]',
+				'font_family'    => $setting.'[font_family]',
+			),
 			'priority' => $priority . self::$group_priority,
 		) ) );
 	}
 
 	/**
 	 * Return CSS based on setting value
+	 *
+	 * @return string
 	 */
 	static public function get_css( $group, $element ){
 		$selector = $element['selector'];
 		$value = Styles_Helpers::get_element_setting_value( $group, $element );
 
-		if ( array_key_exists( $value, self::$families ) ) {
-			$value = self::$families[ $value ];
-		}else if ( array_key_exists( $value, self::$google_families ) ) {
+		$css = self::get_css_font_size( $value );
+		$css .= self::get_css_font_family( $value );
 
+		$css = "$selector { $css }";
+
+		return apply_filters( 'styles_css_text', $css );
+	}
+
+	static public function get_css_font_size( $value ) {
+		if ( is_array( $value ) ) { $value = $value['font_size']; }
+
+		$css = '';
+		if ( $value ) { $css = "font-size: {$value}px;"; }
+
+		return apply_filters( 'styles_css_font_size', $css );
+	}
+
+	static public function get_css_font_family( $value ) {
+		if ( is_array( $value ) ) { $value = $value['font_family']; }
+
+		if ( array_key_exists( $value, self::$families ) ) {
+
+			// Standard Font families. Convert values to stacks.
+			$value = self::$families[ $value ];
+		
+		}else if ( array_key_exists( $value, self::$google_families ) ) {
+		
+			// Google Font families
 			global $storm_styles;
 			$src = self::$google_families[ $value ];
+			// Add Google Font @import to beginning of CSS
 			$storm_styles->css->google_fonts .= "@import url(//fonts.googleapis.com/css?family=$src);\r";
-
+		
 		}
 
 		$css = '';
-		if ( $value ) { $css = "$selector { font-family: $value; }"; }
+		if ( $value ) { $css = "font-family: $value;"; }
 
 		return apply_filters( 'styles_css_font_family', $css );
 	}
@@ -59,39 +85,55 @@ class Styles_Font_Family {
 
 if (class_exists('WP_Customize_Control')) :
 
-class Styles_Customize_Font_Family_Control extends WP_Customize_Control {
-	public $type = 'font_family';
+class Styles_Customize_Text_Control extends WP_Customize_Control {
+	public $type = 'text_formatting';
 
 	public function render_content() {
+		?>
+        <span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
+        <?php
+		$this->font_size();
+		$this->font_family();
+	}
 
-		foreach ( Styles_Font_Family::$families as $name => $value ) {
+	public function font_size() {
+		$saved_value = $this->value( 'font_size' );
+
+		?>
+        <label>
+            <input type="text" placeholder="Size" value="<?php echo esc_attr( $saved_value ); ?>" <?php $this->link( 'font_size' ); ?> class="styles-font-size"/> px
+        </label>
+		<?php
+	}
+
+	public function font_family() {
+		$saved_value = $this->value( 'font_family' );
+
+		foreach ( Styles_Text::$families as $name => $value ) {
 			if ( empty( $value ) ) continue;
 			$fonts[esc_attr( $name )] = $name;
 		}
 
-		foreach ( Styles_Font_Family::$google_families as $name => $value ) {
+		foreach ( Styles_Text::$google_families as $name => $value ) {
 			if ( empty( $value ) ) continue;
 			$fonts[esc_attr( $name )] = $name;
 		}
 
 		?>
 
-        <label>
-            <span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
-           
-            <select <?php $this->link(); ?> class="styles_font_select">
+        <label>           
+            <select <?php $this->link( 'font_family' ); ?> class="styles-font-family">
 	            <option class="label first" value="">Select Font</option>
 
 	            <option class="label" value="">Standard Fonts</option>
-				<?php foreach ( Styles_Font_Family::$families as $name => $value ) : if ( empty( $value ) ) continue; ?>
-	           		<option value='<?php esc_attr_e( $name ) ?>' <?php selected( $name, $this->value() ) ?> ><?php echo $name ?></option>
+				<?php foreach ( Styles_Text::$families as $name => $value ) : if ( empty( $value ) ) continue; ?>
+	           		<option value='<?php esc_attr_e( $name ) ?>' <?php selected( $name, $saved_value ) ?> ><?php echo $name ?></option>
 				<?php endforeach; ?>
 
 	            <option class="label" value="">Google Fonts</option>
-				<?php foreach ( Styles_Font_Family::$google_families as $name => $value ) : if ( empty( $value ) ) continue; ?>
-	            	<option value='<?php esc_attr_e( $name ) ?>' <?php selected( $name, $this->value() ) ?> ><?php echo $name ?></option>
+				<?php foreach ( Styles_Text::$google_families as $name => $value ) : if ( empty( $value ) ) continue; ?>
+	            	<option value='<?php esc_attr_e( $name ) ?>' <?php selected( $name, $saved_value ) ?> ><?php echo $name ?></option>
 				<?php endforeach; ?>
-
 	        </select>
         </label>
 		<?php
@@ -99,3 +141,136 @@ class Styles_Customize_Font_Family_Control extends WP_Customize_Control {
 }
 
 endif;
+
+/*
+case 'line-height':
+	$suffix = ' Line Height';
+	$wp_customize->add_setting( "styles[$id][values][line_height]", array(
+		'default'    => '',
+		'type'       => 'option',
+		'capability' => 'edit_theme_options',
+		// 'transport'      => 'postMessage',
+	) );
+	$wp_customize->add_control( new Styles_Customize_Text_Pixels_Control( $wp_customize, "storm_$js_id", array(
+		'label'    => __( $label.$suffix, 'styles' ),
+		'section'  => "$group",
+		'settings' => "styles[$id][values][line_height]",
+		'priority' => $priority.'5',
+		'type'     => 'text'
+	) ) );
+	break;
+case 'font-weight':
+	$suffix = ' Font Weight';
+	$wp_customize->add_setting( "styles[$id][values][font_weight]", array(
+		'default'    => '',
+		'type'       => 'option',
+		'capability' => 'edit_theme_options',
+		// 'transport'      => 'postMessage',
+	) );
+	$wp_customize->add_control( "storm_$js_id", array(
+		'label'    => __( $label.$suffix, 'styles' ),
+		'section'  => "$group",
+		'settings' => "styles[$id][values][font_weight]",
+		'priority' => $priority.'6',
+		'type'     => 'select',
+		'choices'  => array(
+			'' => 'Default',
+			'100' => '100',
+			'200' => '200',
+			'300' => '300',
+			'400' => '400 (Normal)',
+			'500' => '500',
+			'600' => '600',
+			'700' => '700 (Bold)',
+			'800' => '800',
+			'900' => '900',
+		),
+	) );
+	break;
+case 'font-style':
+	$suffix = ' Font Style';
+	$wp_customize->add_setting( "styles[$id][values][font_style]", array(
+		'default'    => '',
+		'type'       => 'option',
+		'capability' => 'edit_theme_options',
+		// 'transport'      => 'postMessage',
+	) );
+	$wp_customize->add_control( "storm_$js_id", array(
+		'label'    => __( $label.$suffix, 'styles' ),
+		'section'  => "$group",
+		'settings' => "styles[$id][values][font_style]",
+		'priority' => $priority.'7',
+		'type'     => 'select',
+		'choices'  => array(
+			'normal' => 'Normal',
+			'italic' => 'Italic',
+			'oblique' => 'Oblique',
+		),
+	) );
+	break;
+case 'text-transform':
+	$suffix = ' Text Transform';
+	$wp_customize->add_setting( "styles[$id][values][text_transform]", array(
+		'default'    => '',
+		'type'       => 'option',
+		'capability' => 'edit_theme_options',
+		// 'transport'      => 'postMessage',
+	) );
+	$wp_customize->add_control( "storm_$js_id", array(
+		'label'    => __( $label.$suffix, 'styles' ),
+		'section'  => "$group",
+		'settings' => "styles[$id][values][text_transform]",
+		'priority' => $priority.'8',
+		'type'     => 'select',
+		'choices'  => array(
+			'none'  => 'None',
+			'capitalize'  => 'Capitalize',
+			'uppercase' => 'Uppercase',
+			'lowercase' => 'Lowercase'
+		),
+	) );
+	break;
+
+
+
+
+
+
+
+
+if (class_exists('WP_Customize_Control')) {
+	class Styles_Customize_Gradient_Control extends WP_Customize_Control {
+		public $type = 'gradient';
+
+		public function render_content() {
+			?>
+            <label>
+                <span class="customize-control-title styles-label"><?php echo esc_html( $this->label ); ?></span>
+                <div class="ui">gradient</div>
+            </label>
+			<?php
+		}
+	}
+
+	class Styles_Customize_Subsection_Control extends WP_Customize_Control {
+		public $type = 'subsection';
+
+		public function render_content() {
+			?>
+        <h3 class="styles-subsection-title"><?php echo esc_html( $this->label ); ?></h3>
+			<ul class="styles-subsection">
+		<?php
+		}
+	}
+
+	class Styles_Customize_EndSubsection_Control extends WP_Customize_Control {
+		public $type = 'endsubsection';
+
+		public function render_content() {
+			?>
+			</ul>
+		<?php
+		}
+	}
+}
+*/

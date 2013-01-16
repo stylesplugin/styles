@@ -1,7 +1,31 @@
-.customize-control input[type="text"].styles-pixels {
-	width: 50px;
+/* Styles_Customize_Text_Control */
+
+#customize-controls input.styles-font-size {
+	width: 40px;
 }
 
+.styles-font-family option {
+	text-indent: 10px;
+}
+
+.styles-font-family option.label {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 11px;
+	color: #666;
+	font-style: normal;
+	font-weight: normal;
+	text-indent: 0;
+	margin-top: 10px;
+}
+
+.styles-font-family option.first {
+	margin-top: 0;
+}
+
+
+/* Subsection */
+
+/*
 .styles-subsection-title:after {
 	border-color: #CCCCCC transparent;
 	border-style: solid;
@@ -52,21 +76,4 @@
 .styles-subsection {
 	padding: 20px 0;
 }
-
-.styles_font_select option {
-	text-indent: 10px;
-}
-
-.styles_font_select option.label {
-	font-family: Helvetica, Arial, sans-serif;
-	font-size: 11px;
-	color: #666;
-	font-style: normal;
-	font-weight: normal;
-	text-indent: 0;
-	margin-top: 10px;
-}
-
-.styles_font_select option.first {
-	margin-top: 0;
-}
+*/

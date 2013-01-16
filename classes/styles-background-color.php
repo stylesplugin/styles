@@ -40,7 +40,7 @@ class Styles_Background_Color {
 		$css = '';
 		if ( $value ) { $css = "$selector { background: $value }"; }
 
-		return apply_filters( 'styles_background_color_css', $css );
+		return apply_filters( 'styles_css_background_color', $css );
 	}
 
 }

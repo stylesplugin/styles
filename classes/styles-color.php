@@ -40,7 +40,7 @@ class Styles_Color {
 		$css = '';
 		if ( $value ) { $css = "$selector { color: $value }"; }
 
-		return apply_filters( 'styles_color_css', $css );
+		return apply_filters( 'styles_css_color', $css );
 	}
 
 }

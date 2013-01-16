@@ -29,9 +29,16 @@ class Styles_Plugin {
 	 */
 	var $css;
 
+	/**
+	 * @var Styles_Customize
+	 */
+	var $customize;
+
 	public function __construct() {
 
-		add_action( 'customize_register', array( $this, 'customize_register' ), 10 );
+		require_once dirname( __FILE__ ) . '/styles-helpers.php';
+
+		add_action( 'customize_register', array( $this, 'customize_register' ), 1 );
 		add_action( 'wp_head', array( $this, 'wp_head' ), 999 );
 		
 	}
@@ -40,19 +47,20 @@ class Styles_Plugin {
 	 * Add settings to WP Customize
 	 */
 	public function customize_register( $wp_customize ) {
-		require_once dirname( __FILE__ ) . '/styles-helpers.php';
-		require_once dirname( __FILE__ ) . '/styles-customize.php';
-
-		Styles_Customize::add_sections( $wp_customize );
+		if ( !is_a( $this->customize, 'Styles_Customize') ) {
+			require_once dirname( __FILE__ ) . '/styles-customize.php';
+			$this->customize = new Styles_Customize( $this );
+		}
 	}
 
 	/**
 	 * Output CSS
 	 */
 	public function wp_head() {
-		require_once dirname( __FILE__ ) . '/styles-helpers.php';
-		require_once dirname( __FILE__ ) . '/styles-css.php';
-		$this->css = new Styles_CSS();
+		if ( !is_a( $this->css, 'Styles_CSS') ) {
+			require_once dirname( __FILE__ ) . '/styles-css.php';
+			$this->css = new Styles_CSS( $this );
+		}
 		$this->css->output_css();
 	}
 

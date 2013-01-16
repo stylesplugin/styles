@@ -1,5 +1,6 @@
 jQuery( document ).ready( function ( $ ) {
 
+	/*
 	$( '.styles-subsection' ).hide();
 
 	$( '.styles-subsection-title' ).click(function () {
@@ -8,5 +9,6 @@ jQuery( document ).ready( function ( $ ) {
 		_this.next().toggle();
 		return false;
 	} ).next().hide();
+	*/
 
 } );

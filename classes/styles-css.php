@@ -2,7 +2,21 @@
 
 class Styles_CSS {
 
+	/**
+	 * @var Styles_Plugin
+	 */
+	var $plugin;
+
+	/**
+	 * @import declarations to be added to top of CSS
+	 *
+	 * @var string
+	 */
 	public $google_fonts = '';
+
+	function __construct( $plugin ) {
+		$this->plugin = $plugin;
+	}
 
 	public function output_css() {
 		global $wp_customize;
@@ -18,9 +32,9 @@ class Styles_CSS {
 
 			$css = '';
 
-			require_once dirname( __FILE__ ) . '/styles-customize.php';
+			$this->plugin->customize_register();
 
-			foreach ( Styles_Customize::get_settings() as $group => $elements ) {
+			foreach ( $this->plugin->customize->get_settings() as $group => $elements ) {
 				foreach ( $elements as $element ) {
 					if ( $class = Styles_Helpers::get_element_class( $element ) ) {
 
