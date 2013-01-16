@@ -37,7 +37,10 @@ class Styles_Color {
 		$selector = $element['selector'];
 		$value = Styles_Helpers::get_element_setting_value( $group, $element );
 
-		return "$selector { color: $value }";
+		$css = '';
+		if ( $value ) { $css = "$selector { color: $value }"; }
+
+		return apply_filters( 'styles_color_css', $css );
 	}
 
 }

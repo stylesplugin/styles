@@ -10,7 +10,7 @@ class Styles_Plugin {
 	 *
 	 * Holds the current plugin version.
 	 *
-	 * @var int
+	 * @var string
 	 **/
 	var $version = '0.5.3';
 	
@@ -20,10 +20,13 @@ class Styles_Plugin {
 	 * Holds the current plugin database version. 
 	 * Not the same as the current plugin version.
 	 * 
-	 * @var int
+	 * @var string
 	 **/
 	var $db_version = '0.5.0';
 
+	/**
+	 * @var Styles_CSS
+	 */
 	var $css;
 
 	public function __construct() {
@@ -34,13 +37,13 @@ class Styles_Plugin {
 	}
 
 	/**
-	 * Add settings to WP Customizer
+	 * Add settings to WP Customize
 	 */
 	public function customize_register( $wp_customize ) {
 		require_once dirname( __FILE__ ) . '/styles-helpers.php';
-		require_once dirname( __FILE__ ) . '/styles-customizer.php';
+		require_once dirname( __FILE__ ) . '/styles-customize.php';
 
-		Styles_Customizer::add_sections( $wp_customize );
+		Styles_Customize::add_sections( $wp_customize );
 	}
 
 	/**

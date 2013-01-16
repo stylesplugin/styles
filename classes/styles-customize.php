@@ -1,38 +1,52 @@
 <?php
 
-class Styles_Customizer {
+class Styles_Customize {
 
 	static public $settings;
 
 	/**
 	 * Load settings as JSON either from transient / API or theme file
+	 *
+	 * @return array
 	 */
 	static public function get_settings() {
 
+		// Return cached settings if they've already been processed
 		if ( !empty( self::$settings ) ) {
 			return self::$settings;
 		}
 
-		$theme_file = trailingslashit( get_stylesheet_directory() ). 'customize.json';
-		$json = '{}';
+		// Load settings from various sources with filters
+		add_filter( 'styles_customize_settings', 'Styles_Customize::load_settings_from_theme_file', 50 );
 
-		// From file
-		if ( file_exists( $theme_file ) ) {
-			$json = file_get_contents( $theme_file );
-		}
-
-		self::$settings = json_decode( $json, true );
+		// Plugin Authors: Filter to override settings sources
+		self::$settings = apply_filters( 'styles_customize_settings', array() );
 
 		return self::$settings;
 	}
 
-	
+	/**
+	 * Load settings from theme file formatted as JSON
+	 */
+	static public function load_settings_from_theme_file( $defaults ) {
+		$settings = array();
+		$theme_file = get_stylesheet_directory() . '/customize.json';
+
+		if ( file_exists( $theme_file ) ) {
+			$json = file_get_contents( $theme_file );
+			$settings = json_decode( $json, true );
+		}
+
+		return wp_parse_args( $settings, $defaults );
+	}
 
 	/**
 	 * Register sections with WordPress theme customizer in WordPress 3.4+
 	 * e.g., General, Header, Footer, Content, Sidebar
 	 */
 	static function add_sections( $wp_customize ) {
+		global $wp_customize;
+
 		$i = 950;
 		foreach ( self::get_settings() as $group => $elements ) {
 			$i++;

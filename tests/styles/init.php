@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Test basic setup, like whether plugin is activated in test environment ;)
+ */
 class Tests_Styles_Init extends WP_UnitTestCase {
 	/* Styles Object */
 	var $styles;

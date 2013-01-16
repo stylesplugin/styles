@@ -49,11 +49,10 @@ class Styles_Font_Family {
 
 		}
 
-		if ( !empty( $value ) ) {
-			return "$selector { font-family: $value; }";
-		}else {
-			return false;
-		}
+		$css = '';
+		if ( $value ) { $css = "$selector { font-family: $value; }"; }
+
+		return apply_filters( 'styles_font_family_css', $css );
 	}
 
 }
@@ -79,132 +78,24 @@ class Styles_Customize_Font_Family_Control extends WP_Customize_Control {
 
         <label>
             <span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
+           
             <select <?php $this->link(); ?> class="styles_font_select">
-            <option class="label first" value="">Select</option>
+	            <option class="label first" value="">Select Font</option>
 
-            <option class="label" value="">Standard Fonts</option>
-			<?php foreach ( Styles_Font_Family::$families as $name => $value ) : if ( empty( $value ) ) continue; ?>
-            <option value='<?php esc_attr_e( $name ) ?>' <?php if ( $name == $this->value() ) echo 'selected'; ?> ><?php echo $name ?></option>
-			<?php endforeach; ?>
+	            <option class="label" value="">Standard Fonts</option>
+				<?php foreach ( Styles_Font_Family::$families as $name => $value ) : if ( empty( $value ) ) continue; ?>
+	           		<option value='<?php esc_attr_e( $name ) ?>' <?php selected( $name, $this->value() ) ?> ><?php echo $name ?></option>
+				<?php endforeach; ?>
 
-            <option class="label" value="">Google Fonts</option>
-			<?php foreach ( Styles_Font_Family::$google_families as $name => $value ) : if ( empty( $value ) ) continue; ?>
-            <option value='<?php esc_attr_e( $name ) ?>' <?php if ( $name == $this->value() ) echo 'selected'; ?> ><?php echo $name ?></option>
-			<?php endforeach; ?>
+	            <option class="label" value="">Google Fonts</option>
+				<?php foreach ( Styles_Font_Family::$google_families as $name => $value ) : if ( empty( $value ) ) continue; ?>
+	            	<option value='<?php esc_attr_e( $name ) ?>' <?php selected( $name, $this->value() ) ?> ><?php echo $name ?></option>
+				<?php endforeach; ?>
 
-        </select>
+	        </select>
         </label>
 		<?php
 	}
 }
 
-
 endif;
-
-
-
-
-/*
-case 'font-size':
-	$suffix = ' Font Size';
-	$wp_customize->add_setting( "styles[$id][values][font_size]", array(
-		'default'    => '',
-		'type'       => 'option',
-		'capability' => 'edit_theme_options',
-		// 'transport'      => 'postMessage',
-	) );
-	$wp_customize->add_control( new Styles_Customize_Text_Pixels_Control( $wp_customize, "storm_$js_id", array(
-		'label'    => __( $label.$suffix, 'styles' ),
-		'section'  => "$group",
-		'settings' => "styles[$id][values][font_size]",
-		'priority' => $priority.'4',
-	) ) );
-	break;
-case 'line-height':
-	$suffix = ' Line Height';
-	$wp_customize->add_setting( "styles[$id][values][line_height]", array(
-		'default'    => '',
-		'type'       => 'option',
-		'capability' => 'edit_theme_options',
-		// 'transport'      => 'postMessage',
-	) );
-	$wp_customize->add_control( new Styles_Customize_Text_Pixels_Control( $wp_customize, "storm_$js_id", array(
-		'label'    => __( $label.$suffix, 'styles' ),
-		'section'  => "$group",
-		'settings' => "styles[$id][values][line_height]",
-		'priority' => $priority.'5',
-		'type'     => 'text'
-	) ) );
-	break;
-case 'font-weight':
-	$suffix = ' Font Weight';
-	$wp_customize->add_setting( "styles[$id][values][font_weight]", array(
-		'default'    => '',
-		'type'       => 'option',
-		'capability' => 'edit_theme_options',
-		// 'transport'      => 'postMessage',
-	) );
-	$wp_customize->add_control( "storm_$js_id", array(
-		'label'    => __( $label.$suffix, 'styles' ),
-		'section'  => "$group",
-		'settings' => "styles[$id][values][font_weight]",
-		'priority' => $priority.'6',
-		'type'     => 'select',
-		'choices'  => array(
-			'' => 'Default',
-			'100' => '100',
-			'200' => '200',
-			'300' => '300',
-			'400' => '400 (Normal)',
-			'500' => '500',
-			'600' => '600',
-			'700' => '700 (Bold)',
-			'800' => '800',
-			'900' => '900',
-		),
-	) );
-	break;
-case 'font-style':
-	$suffix = ' Font Style';
-	$wp_customize->add_setting( "styles[$id][values][font_style]", array(
-		'default'    => '',
-		'type'       => 'option',
-		'capability' => 'edit_theme_options',
-		// 'transport'      => 'postMessage',
-	) );
-	$wp_customize->add_control( "storm_$js_id", array(
-		'label'    => __( $label.$suffix, 'styles' ),
-		'section'  => "$group",
-		'settings' => "styles[$id][values][font_style]",
-		'priority' => $priority.'7',
-		'type'     => 'select',
-		'choices'  => array(
-			'normal' => 'Normal',
-			'italic' => 'Italic',
-			'oblique' => 'Oblique',
-		),
-	) );
-	break;
-case 'text-transform':
-	$suffix = ' Text Transform';
-	$wp_customize->add_setting( "styles[$id][values][text_transform]", array(
-		'default'    => '',
-		'type'       => 'option',
-		'capability' => 'edit_theme_options',
-		// 'transport'      => 'postMessage',
-	) );
-	$wp_customize->add_control( "storm_$js_id", array(
-		'label'    => __( $label.$suffix, 'styles' ),
-		'section'  => "$group",
-		'settings' => "styles[$id][values][text_transform]",
-		'priority' => $priority.'8',
-		'type'     => 'select',
-		'choices'  => array(
-			'none'  => 'None',
-			'capitalize'  => 'Capitalize',
-			'uppercase' => 'Uppercase',
-			'lowercase' => 'Lowercase'
-		),
-	) );
-	break;
-*/

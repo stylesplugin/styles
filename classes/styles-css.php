@@ -18,9 +18,9 @@ class Styles_CSS {
 
 			$css = '';
 
-			require_once dirname( __FILE__ ) . '/styles-customizer.php';
+			require_once dirname( __FILE__ ) . '/styles-customize.php';
 
-			foreach ( Styles_Customizer::get_settings() as $group => $elements ) {
+			foreach ( Styles_Customize::get_settings() as $group => $elements ) {
 				foreach ( $elements as $element ) {
 					if ( $class = Styles_Helpers::get_element_class( $element ) ) {
 
@@ -34,7 +34,7 @@ class Styles_CSS {
 		$css = $this->google_fonts . $css;
 
 		update_option( 'styles_cache', $css );
-		echo '<style id="storm_styles">' . $css . '</style>';
+		echo '<style id="storm-styles">' . $css . '</style>';
 
 	}
 
