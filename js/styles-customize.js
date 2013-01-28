@@ -11,4 +11,7 @@ jQuery( document ).ready( function ( $ ) {
 	} ).next().hide();
 	*/
 
+	var text_color = $('li.customize-control-text_formatting input.color-picker-hex');
+	text_color.wpColorPicker();
+
 } );

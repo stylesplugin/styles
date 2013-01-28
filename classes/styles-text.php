@@ -19,6 +19,7 @@ class Styles_Text {
 
 		$wp_customize->add_setting( $setting.'[font_size]', array( 'default' => self::$default, 'type' => 'option', 'capability' => 'edit_theme_options', ) );
 		$wp_customize->add_setting( $setting.'[font_family]', array( 'default' => self::$default, 'type' => 'option', 'capability' => 'edit_theme_options', ) );
+		$wp_customize->add_setting( $setting.'[color]', array( 'default' => self::$default, 'type' => 'option', 'capability' => 'edit_theme_options', ) );
 
 		$wp_customize->add_control( new Styles_Customize_Text_Control( $wp_customize, Styles_Helpers::$prefix . $id, array(
 			'label'    => __( $label . ' ' . self::$suffix, 'styles' ),
@@ -26,6 +27,7 @@ class Styles_Text {
 			'settings' => array( 
 				'font_size'    => $setting.'[font_size]',
 				'font_family'    => $setting.'[font_family]',
+				'color'    => $setting.'[color]',
 			),
 			'priority' => $priority . self::$group_priority,
 		) ) );
@@ -42,6 +44,7 @@ class Styles_Text {
 
 		$css = self::get_css_font_size( $value );
 		$css .= self::get_css_font_family( $value );
+		$css .= self::get_css_color( $value );
 
 		$css = "$selector { $css }";
 
@@ -81,11 +84,20 @@ class Styles_Text {
 		return apply_filters( 'styles_css_font_family', $css );
 	}
 
+	static public function get_css_color( $value ) {
+		if ( is_array( $value ) ) { $value = $value['color']; }
+
+		$css = '';
+		if ( $value ) { $css = "color: $value;"; }
+
+		return apply_filters( 'styles_css_color', $css );
+	}
+
 }
 
 if (class_exists('WP_Customize_Control')) :
 
-class Styles_Customize_Text_Control extends WP_Customize_Control {
+class Styles_Customize_Text_Control extends WP_Customize_Color_Control {
 	public $type = 'text_formatting';
 
 	public function render_content() {
@@ -94,6 +106,7 @@ class Styles_Customize_Text_Control extends WP_Customize_Control {
         <?php
 		$this->font_size();
 		$this->font_family();
+		$this->color();
 	}
 
 	public function font_size() {
@@ -137,6 +150,23 @@ class Styles_Customize_Text_Control extends WP_Customize_Control {
 	        </select>
         </label>
 		<?php
+	}
+
+	public function color(){
+		$saved_value = $this->value( 'color' );
+
+		$default_attr = '';
+		if ( $saved_value ) {
+			if ( false === strpos( $saved_value, '#' ) )
+				$saved_value = '#' . $saved_value;
+			$default_attr = ' data-default-color="' . esc_attr( $saved_value ) . '"';
+		}
+		// The input's value gets set by JS. Don't fill it.
+		?>
+        <input type="text" placeholder="Hex Value" maxlength="7" <?php echo $default_attr ?> <?php $this->link( 'color' ); ?> class="color-picker-hex"/>
+
+		<?php
+
 	}
 }
 

@@ -15,7 +15,7 @@ class Styles_Customize {
 	function __construct( $plugin ) {
 		$this->plugin = $plugin;
 		
-		add_action( 'customize_register', array( $this, 'add_sections' ), 10 );
+		add_action( 'customize_register', array( $this, 'add_sections' ), 5 );
 		add_action( 'customize_controls_enqueue_scripts',  array( $this, 'enqueue_scripts' ) );
 	
 	}
@@ -23,10 +23,10 @@ class Styles_Customize {
 	public function enqueue_scripts() {
 
 		// Stylesheets
-		wp_enqueue_style(  'styles-customize', plugins_url( '/css/styles-customize.css', STYLES_BASENAME ), array(), $this->plugin->version );
+		wp_enqueue_style(  'styles-customize', plugins_url( '/css/styles-customize.css', STYLES_BASENAME ), array( 'wp-color-picker' ), $this->plugin->version );
 
 		// Javascript
-		wp_enqueue_script( 'styles-customize', plugins_url( '/js/styles-customize.js', STYLES_BASENAME ), array(), $this->plugin->version );
+		wp_enqueue_script( 'styles-customize', plugins_url( '/js/styles-customize.js', STYLES_BASENAME ), array( 'wp-color-picker' ), $this->plugin->version );
 
 	}
 
