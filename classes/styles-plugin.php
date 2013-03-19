@@ -34,13 +34,27 @@ class Styles_Plugin {
 	 */
 	var $customize;
 
+	/**
+	 * License class
+	 *
+	 * @var Styles_Licenses
+	 */
+	var $licenses;
+
+
 	public function __construct() {
 
 		require_once dirname( __FILE__ ) . '/styles-helpers.php';
 
 		add_action( 'customize_register', array( $this, 'customize_register' ), 1 );
 		add_action( 'wp_head', array( $this, 'wp_head' ), 999 );
-		
+
+		if ( is_admin() ) {
+			// Licenses setup
+			require_once dirname( __FILE__ ) . '/styles-licenses.php';
+			$this->licenses = new Styles_Licenses( $this->styles );
+		}
+
 	}
 
 	/**
