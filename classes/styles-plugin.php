@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Common actions between admin and front-end.
+ * Plugin wrapper
  **/
 class Styles_Plugin {
 	
