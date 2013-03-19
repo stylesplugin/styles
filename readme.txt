@@ -19,7 +19,7 @@ Styles allows you to edit the appearance of themes that don't provide an interfa
 * TwentyTen
 * TwentyEleven
 
-Theme support is provided by a remote API, so the plugin will update as more themes are added. We plan to release support for more themes in as a paid add-on to Styles. Have a specific theme you'd like to see supported? [Vote on themes here](https://www.google.com/moderator/?authuser=2#16/e=1f6d0a).
+Theme support is provided by a remote API, so support can be updated as more themes are added. We hope to release support for more themes as add-ons to Styles. Have a specific theme you'd like to see supported? [Vote on themes here](https://www.google.com/moderator/?authuser=2#16/e=1f6d0a).
 
 Styles provides:
 
