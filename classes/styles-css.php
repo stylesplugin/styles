@@ -32,7 +32,7 @@ class Styles_CSS {
 
 			$css = '';
 
-			$this->plugin->customize_register();
+			$this->plugin->customize_register( $wp_customize );
 
 			foreach ( $this->plugin->customize->get_settings() as $group => $elements ) {
 				foreach ( $elements as $element ) {
