@@ -43,7 +43,9 @@ class Styles_Text {
 		$css = self::get_css_font_size( $value );
 		$css .= self::get_css_font_family( $value );
 
-		$css = "$selector { $css }";
+		if ( !empty( $css ) ) {
+			$css = "$selector { $css }";
+		}
 
 		return apply_filters( 'styles_css_text', $css );
 	}
