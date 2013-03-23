@@ -18,6 +18,11 @@ class Styles_Customize {
 		add_action( 'customize_register', array( $this, 'add_sections' ), 10 );
 		add_action( 'customize_controls_enqueue_scripts',  array( $this, 'enqueue_scripts' ) );
 	
+		// Load settings from various sources with filters
+		add_filter( 'styles_customize_settings', array( $this, 'load_settings_from_bundled_themes' ), 5 );
+		add_filter( 'styles_customize_settings', array( $this, 'load_settings_from_plugin' ), 20 );
+		add_filter( 'styles_customize_settings', array( $this, 'load_settings_from_theme' ), 50 );
+
 	}
 
 	public function enqueue_scripts() {
@@ -42,10 +47,6 @@ class Styles_Customize {
 			return $this->settings;
 		}
 
-		// Load settings from various sources with filters
-		add_filter( 'styles_customize_settings', array( $this, 'load_settings_from_plugin' ), 20 );
-		add_filter( 'styles_customize_settings', array( $this, 'load_settings_from_theme' ), 50 );
-
 		// Plugin Authors: Filter to override settings sources
 		$this->settings = apply_filters( 'styles_customize_settings', $this->settings );
 
@@ -64,8 +65,16 @@ class Styles_Customize {
 	 * Load settings from theme file formatted as JSON
 	 */
 	public function load_settings_from_theme( $defaults = array() ) {
-		$theme_file = get_stylesheet_directory() . '/customize.json';
-		return $this->load_settings_from_json_file( $theme_file, $defaults );
+		$json_file = get_stylesheet_directory() . '/customize.json';
+		return $this->load_settings_from_json_file( $json_file, $defaults );
+	}
+
+	/**
+	 * If current theme has JSON included in this plugin, load it.
+	 */
+	public function load_settings_from_bundled_themes() {
+		$json_file = dirname( dirname( __FILE__ ) ) . '/themes/' . get_template() . '.json';
+		return $this->load_settings_from_json_file( $json_file, $defaults );
 	}
 
 	public function load_settings_from_json_file( $json_file, $default_settings = array() ) {

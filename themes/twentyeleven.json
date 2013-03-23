@@ -1,0 +1,35 @@
+{
+	"Header": [
+		{ "selector": "#branding", "type": "background-color", "label": "Background color" },
+		{ "selector": "#site-title a", "type": "text", "label": "Title" },
+		{ "selector": "#site-title a", "type": "color", "label": "Title color" },
+		{ "selector": "#s", "type": "text", "label": "Search" },
+		{ "selector": "#s", "type": "color", "label": "Search color" },
+		{ "selector": "#s", "type": "background-color", "label": "Search background color" },
+		{}
+	],
+	"Content": [
+		{ "selector": ".entry-content h1", "type": "text", "label": "Heading 1" },
+		{ "selector": ".entry-content h1", "type": "color", "label": "Heading 1 color" },
+		{ "selector": ".entry-content h2", "type": "text", "label": "Heading 2" },
+		{ "selector": ".entry-content h2", "type": "color", "label": "Heading 2 color" },
+		{ "selector": ".entry-content h3", "type": "text", "label": "Heading 3" },
+		{ "selector": ".entry-content h3", "type": "color", "label": "Heading 3 color" },
+		{ "selector": ".entry-content h4", "type": "text", "label": "Heading 4" },
+		{ "selector": ".entry-content h4", "type": "color", "label": "Heading 4 color" },
+		{ "selector": ".entry-content h5", "type": "text", "label": "Heading 5" },
+		{ "selector": ".entry-content h5", "type": "color", "label": "Heading 5 color" },
+		{ "selector": ".entry-content h6", "type": "text", "label": "Heading 6" },
+		{ "selector": ".entry-content h6", "type": "color", "label": "Heading 6 color" },
+		{ "selector": ".entry-content p", "type": "text", "label": "Paragraph" },
+		{ "selector": ".entry-content p", "type": "color", "label": "Paragraph color" },
+		{ "selector": ".entry-content pre", "type": "text", "label": "Preformatted" },
+		{ "selector": ".entry-content pre", "type": "color", "label": "Preformatted color" },
+		{ "selector": ".entry-content blockquote, .entry-content blockquote p", "type": "text", "label": "Blockquote" },
+		{ "selector": ".entry-content blockquote, .entry-content blockquote p", "type": "color", "label": "Blockquote color" },
+		{ "selector": ".entry-content address", "type": "text", "label": "Address" },
+		{ "selector": ".entry-content address", "type": "color", "label": "Address color" },
+		{}
+	]
+	
+}
