@@ -42,6 +42,7 @@ class Styles_Helpers {
 	 * Return name of static class for Customizer Control based on "type"
 	 */
 	public static function get_element_class( $element ) {
+		if ( empty( $element['type'] ) ) { return false; }
 		$type = self::sanitize_type( $element['type'] );
 
 		// e.g., Styles_Background_Color
