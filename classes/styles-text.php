@@ -129,7 +129,7 @@ class Styles_Customize_Text_Control extends WP_Customize_Control {
 		?>
 
         <label>           
-            <select <?php $this->link( 'font_family' ); ?> class="styles-font-family">
+            <select <?php $this->link( 'font_family' ); ?> class="styles-font-family" data-selected="<?php echo $saved_value ?>">
 	            <option class="label first" value="">Select Font</option>
 
 	            <option class="label" value="">Standard Fonts</option>
@@ -138,9 +138,7 @@ class Styles_Customize_Text_Control extends WP_Customize_Control {
 				<?php endforeach; ?>
 
 	            <option class="label" value="">Google Fonts</option>
-				<?php foreach ( Styles_Text::$google_families as $name => $value ) : if ( empty( $value ) ) continue; ?>
-	            	<option value='<?php esc_attr_e( $name ) ?>' <?php selected( $name, $saved_value ) ?> ><?php echo $name ?></option>
-				<?php endforeach; ?>
+	            <?php // Google fonts populated by styles-customize.js to save bandwidth ?>
 	        </select>
         </label>
 		<?php

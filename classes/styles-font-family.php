@@ -83,7 +83,7 @@ class Styles_Customize_Font_Family_Control extends WP_Customize_Control {
         <label>
             <span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
            
-            <select <?php $this->link(); ?> class="styles_font_select">
+            <select <?php $this->link(); ?> class="styles_font_select" data-selected="<?php echo $this->value() ?>">
 	            <option class="label first" value="">Select Font</option>
 
 	            <option class="label" value="">Standard Fonts</option>
@@ -92,10 +92,7 @@ class Styles_Customize_Font_Family_Control extends WP_Customize_Control {
 				<?php endforeach; ?>
 
 	            <option class="label" value="">Google Fonts</option>
-				<?php foreach ( Styles_Font_Family::$google_families as $name => $value ) : if ( empty( $value ) ) continue; ?>
-	            	<option value='<?php esc_attr_e( $name ) ?>' <?php selected( $name, $this->value() ) ?> ><?php echo $name ?></option>
-				<?php endforeach; ?>
-
+				<?php // Google fonts populated by styles-customize.js to save bandwidth ?>
 	        </select>
         </label>
 		<?php
