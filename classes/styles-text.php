@@ -57,7 +57,8 @@ class Styles_Text {
 		return apply_filters( 'styles_css_font_size', $css );
 	}
 
-	static public function get_css_font_family( $value ) {
+	static public function get_css_font_family( $value = false ) {
+		if ( !$value ) { return ''; }
 		if ( is_array( $value ) ) { $value = $value['font_family']; }
 
 		if ( array_key_exists( $value, self::$families ) ) {

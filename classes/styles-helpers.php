@@ -27,7 +27,7 @@ class Styles_Helpers {
 	static public function get_setting_id( $group, $id ) {
 		$id = str_replace( '-', '_', trim( $id, '_' ) );
 
-		$setting_id = "styles[$group][$id]";
+		$setting_id = "storm-styles[$group][$id]";
 
 		return $setting_id;
 	}
@@ -64,7 +64,7 @@ class Styles_Helpers {
 	}
 
 	public static function get_element_setting_value( $group, $element ) {
-		$settings = get_option('styles');
+		$settings = get_option( 'storm-styles' );
 
 		$group_id = self::get_group_id( $group );
 		$id = self::get_element_id( $element );

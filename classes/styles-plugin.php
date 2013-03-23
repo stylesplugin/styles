@@ -38,7 +38,8 @@ class Styles_Plugin {
 
 		require_once dirname( __FILE__ ) . '/styles-helpers.php';
 
-		add_action( 'customize_register', array( $this, 'customize_register' ), 1 );
+		add_action( 'customize_register', array( $this, 'disable_option_autoload' ), 1 );
+		add_action( 'customize_register', array( $this, 'customize_register' ), 2 );
 		add_action( 'wp_head', array( $this, 'wp_head' ), 999 );
 		
 	}
@@ -51,6 +52,14 @@ class Styles_Plugin {
 			require_once dirname( __FILE__ ) . '/styles-customize.php';
 			$this->customize = new Styles_Customize( $this );
 		}
+	}
+
+	/**
+	 * Set storm-styles option to not autoload
+	 */
+	public function disable_option_autoload() {
+		// Does nothing if setting already exists
+		add_option( 'storm-styles', '', '', 'no' );
 	}
 
 	/**
