@@ -60,7 +60,8 @@ class Styles_Helpers {
 	}
 
 	public static function get_element_id( $element ) {
-		return trim( sanitize_key( $element['label'] . '_' . $element['type'] ), '_' );
+		$key = trim( sanitize_key( $element['label'] . '_' . $element['type'] ), '_' );
+		return str_replace( '-', '_', $key );
 	}
 
 	public static function get_element_setting_value( $group, $element ) {
