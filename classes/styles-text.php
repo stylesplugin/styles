@@ -20,7 +20,7 @@ class Styles_Text {
 		$wp_customize->add_setting( $setting.'[font_size]', array( 'default' => self::$default, 'type' => 'option', 'capability' => 'edit_theme_options', ) );
 		$wp_customize->add_setting( $setting.'[font_family]', array( 'default' => self::$default, 'type' => 'option', 'capability' => 'edit_theme_options', ) );
 
-		$wp_customize->add_control( new Styles_Customize_Text_Control( $wp_customize, Styles_Helpers::$prefix . $id, array(
+		$wp_customize->add_control( new Styles_Customize_Text_Control( $wp_customize, Styles_Helpers::get_control_id( $id ), array(
 			'label'    => __( $label . ' ' . self::$suffix, 'styles' ),
 			'section'  => $group,
 			'settings' => array( 

@@ -3,6 +3,7 @@
 class Styles_Helpers {
 
 	static public $prefix = 'st_';
+	static public $control_id_counter = 0;
 
 	static public function sanitize_type( $type ) {
 		$type = str_replace( array('-', '_'), ' ', $type );
@@ -22,6 +23,11 @@ class Styles_Helpers {
 
 	static public function get_group_id( $group ) {
 		return self::$prefix . $group;
+	}
+
+	static public function get_control_id( $id ) {
+		self::$control_id_counter++;
+		return self::$prefix . $id . '_' . self::$control_id_counter;
 	}
 
 	static public function get_setting_id( $group, $id ) {

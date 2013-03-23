@@ -22,7 +22,7 @@ class Styles_Color {
 			// 'transport'      => 'postMessage',
 		) );
 
-		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, Styles_Helpers::$prefix . $id, array(
+		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, Styles_Helpers::get_control_id( $id ), array(
 			'label'    => __( $label . ' ' . self::$suffix, 'styles' ),
 			'section'  => $group,
 			'settings' => $setting,
