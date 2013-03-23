@@ -11,9 +11,13 @@ class Styles_Background_Color {
 	static public function add_item( $group, $element ) {
 		global $wp_customize;
 
-		$label = $selector = $type = $id = $setting = '';
+		$label = $selector = $type = $id = $setting = $priority = '';
 		extract( Styles_Helpers::sanitize_element( $group, $element ), EXTR_IF_EXISTS );
 		if ( false === $element ) { return; }
+
+		if ( empty( $label ) ) {
+			$label = $selector . ' ' . self::$suffix;
+		}
 
 		$wp_customize->add_setting( $setting, array(
 			'default'    => self::$default,
@@ -23,7 +27,7 @@ class Styles_Background_Color {
 		) );
 
 		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, Styles_Helpers::get_control_id( $id ), array(
-			'label'    => __( $label . ' ' . self::$suffix, 'styles' ),
+			'label'    => __( $label, 'styles' ),
 			'section'  => $group,
 			'settings' => $setting,
 			'priority' => $priority . self::$group_priority,

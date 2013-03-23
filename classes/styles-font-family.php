@@ -13,9 +13,13 @@ class Styles_Font_Family {
 	static public function add_item( $group, $element ) {
 		global $wp_customize;
 
-		$label = $selector = $type = $id = $setting = '';
+		$label = $selector = $type = $id = $setting = $priority = '';
 		extract( Styles_Helpers::sanitize_element( $group, $element ), EXTR_IF_EXISTS );
 		if ( false === $element ) { return; }
+
+		if ( empty( $label ) ) {
+			$label = $selector . ' ' . self::$suffix;
+		}
 
 		$wp_customize->add_setting( $setting, array(
 			'default'    => self::$default,
@@ -25,7 +29,7 @@ class Styles_Font_Family {
 		) );
 
 		$wp_customize->add_control( new Styles_Customize_Font_Family_Control( $wp_customize, Styles_Helpers::get_control_id( $id ), array(
-			'label'    => __( $label . ' ' . self::$suffix, 'styles' ),
+			'label'    => __( $label, 'styles' ),
 			'section'  => $group,
 			'settings' => $setting,
 			'priority' => $priority . self::$group_priority,

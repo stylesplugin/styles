@@ -1,7 +1,7 @@
 <?php
 
 class Styles_Text {
-	static $suffix = 'Text Formatting';
+	static $suffix = 'Font';
 	static $default = '';
 	static $group_priority = 3;
 	static $families = array( 'Arial' => 'Arial, Helvetica, sans-serif', 'Bookman' => 'Bookman, Palatino, Georgia, serif', 'Century Gothic' => '"Century Gothic", Helvetica, Arial, sans-serif', 'Comic Sans MS' => '"Comic Sans MS", Arial, sans-serif', 'Courier' => 'Courier, monospace', 'Garamond' => 'Garamond, Palatino, Georgia, serif', 'Georgia' => 'Georgia, Times, serif', 'Helvetica' => 'Helvetica, Arial, sans-serif', 'Lucida Grande' => '"Lucida Grande","Lucida Sans Unicode",Tahoma,Verdana,sans-serif', 'Palatino' => 'Palatino, Georgia, serif', 'Tahoma' => 'Tahoma, Verdana, Helvetica, sans-serif', 'Times' => 'Times, Georgia, serif', 'Trebuchet MS' => '"Trebuchet MS", Tahoma, Helvetica, sans-serif', 'Verdana' => 'Verdana, Tahoma, sans-serif', );
@@ -13,15 +13,19 @@ class Styles_Text {
 	static public function add_item( $group, $element ) {
 		global $wp_customize;
 
-		$label = $selector = $type = $id = $setting = '';
+		$label = $selector = $type = $id = $setting = $priority = '';
 		extract( Styles_Helpers::sanitize_element( $group, $element ), EXTR_IF_EXISTS );
 		if ( false === $element ) { return; }
 
 		$wp_customize->add_setting( $setting.'[font_size]', array( 'default' => self::$default, 'type' => 'option', 'capability' => 'edit_theme_options', ) );
 		$wp_customize->add_setting( $setting.'[font_family]', array( 'default' => self::$default, 'type' => 'option', 'capability' => 'edit_theme_options', ) );
 
+		if ( empty( $label ) ) {
+			$label = $selector . ' ' . self::$suffix;
+		}
+
 		$wp_customize->add_control( new Styles_Customize_Text_Control( $wp_customize, Styles_Helpers::get_control_id( $id ), array(
-			'label'    => __( $label . ' ' . self::$suffix, 'styles' ),
+			'label'    => __( $label, 'styles' ),
 			'section'  => $group,
 			'settings' => array( 
 				'font_size'    => $setting.'[font_size]',

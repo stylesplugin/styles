@@ -105,8 +105,10 @@ class Styles_Customize {
 	 * Settings & Controls are within each class (type calls different classes)
 	 */
 	public function add_items( $group_id, $elements ) {
-
+		static $i;
 		foreach ( $elements as $element ) {
+			$i++;
+			$element['priority'] = $i;
 			if ( $class = Styles_Helpers::get_element_class( $element ) ) {
 				$class::add_item( $group_id, $element );
 			}
