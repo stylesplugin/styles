@@ -43,7 +43,8 @@ class Styles_Customize {
 		}
 
 		// Load settings from various sources with filters
-		add_filter( 'styles_customize_settings', array( $this, 'load_settings_from_theme_file' ), 50 );
+		add_filter( 'styles_customize_settings', array( $this, 'load_settings_from_plugin' ), 20 );
+		add_filter( 'styles_customize_settings', array( $this, 'load_settings_from_theme' ), 50 );
 
 		// Plugin Authors: Filter to override settings sources
 		$this->settings = apply_filters( 'styles_customize_settings', $this->settings );
@@ -52,18 +53,28 @@ class Styles_Customize {
 	}
 
 	/**
+	 * Load settings from path provided by plugin
+	 */
+	public function load_settings_from_plugin( $defaults = array() ) {
+		$json_file = apply_filters( 'styles_customize_json_file', null );
+		return $this->load_settings_from_json_file( $json_file, $defaults );
+	}
+
+	/**
 	 * Load settings from theme file formatted as JSON
 	 */
-	public function load_settings_from_theme_file( $defaults ) {
-		$settings = array();
+	public function load_settings_from_theme( $defaults = array() ) {
 		$theme_file = get_stylesheet_directory() . '/customize.json';
+		return $this->load_settings_from_json_file( $theme_file, $defaults );
+	}
 
-		if ( file_exists( $theme_file ) ) {
-			$json = file_get_contents( $theme_file );
+	public function load_settings_from_json_file( $json_file, $default_settings = array() ) {
+		$settings = array();
+		if ( file_exists( $json_file ) ) {
+			$json = file_get_contents( $json_file );
 			$settings = json_decode( $json, true );
 		}
-
-		return wp_parse_args( $settings, $defaults );
+		return wp_parse_args( $settings, $default_settings );
 	}
 
 	/**
