@@ -76,12 +76,16 @@
 		{ "selector": ".edit-link a:hover", "type": "background-color", "label": "Edit link background hover" },
 		{}
 	],
-	"Comments: List": [
-		{ "selector": "#comments-title", "type": "text", "label": "List Title" },
+	"Comment": [
+		{ "selector": "#comments li.comment", "type": "background-color", "label": "Background color", "template": "%1$s { background-color: %2$s; } %1$s:before { content: ''; position:absolute; width: 0px; height: 0px; border-left: 28px solid transparent; border-right: 0px solid transparent; border-top: 27px solid %2$s; }" },
 		{ "selector": "#comments .comment .comment-content", "type": "text", "label": "Content" },
 		{ "selector": "#comments .comment .comment-content", "type": "color", "label": "Content color" },
-		{ "selector": "#comments .comment .comment-content a", "type": "color", "label": "Content link color" },
-		{ "selector": "#comments .comment .comment-content a:hover", "type": "color", "label": "Content link hover color" },
+		{ "selector": "#comments .comment .comment-content a", "type": "color", "label": "Link color" },
+		{ "selector": "#comments .comment .comment-content a:hover", "type": "color", "label": "Link hover color" },
+		{}
+	],
+	"Comment Meta": [
+		{ "selector": "#comments-title", "type": "text", "label": "List Title" },
 		{ "selector": "#comments .comment-meta", "type": "text", "label": "Meta" },
 		{ "selector": "#comments .comment-meta", "type": "color", "label": "Meta color" },
 		{ "selector": "#comments .comment-meta a", "type": "color", "label": "Meta link color" },
@@ -93,7 +97,7 @@
 		{ "selector": "#comments a.comment-reply-link:hover", "type": "background-color", "label": "Reply link hover background color" },
 		{}
 	],
-	"Comments: Response": [
+	"Comment Response": [
 		{ "selector": "#respond", "type": "background-color", "label": "Background color" },
 		{ "selector": "#reply-title", "type": "text", "label": "Title" },
 		{ "selector": "#reply-title a", "type": "color", "label": "Title color" },
@@ -109,6 +113,7 @@
 		{ "selector": "#respond textarea", "type": "color", "label": "Response color" },
 		{ "selector": "#respond textarea", "type": "background-color", "label": "Response background color" },
 		{ "selector": "#respond textarea:focus", "type": "background-color", "label": "Response focused background color" },
+		{ "selector": "#respond textarea", "type": "color", "label": "Response border color", "template": "%s { border-color: %s }" },
 		{ "selector": "#respond input#submit", "type": "text", "label": "Submit button" },
 		{ "selector": "#respond input#submit", "type": "color", "label": "Submit button color" },
 		{ "selector": "#respond input#submit", "type": "background-color", "label": "Submit button background color" },
