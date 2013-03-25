@@ -1,6 +1,7 @@
 {
 	"Header": [
 		{ "selector": "#branding", "type": "background-color", "label": "Background color" },
+		/* CSS template override; there is no dedicated border color module. See http://go.brain.st/ZPbaqE */
 		{ "selector": "#branding", "type": "color", "label": "Top border color", "template": "%s { border-top-color: %s; }" },
 		{ "selector": "#site-title a", "type": "text", "label": "Title" },
 		{ "selector": "#site-title a:link, #site-title a:active, #site-title a:visited", "type": "color", "label": "Title color" },
@@ -8,6 +9,7 @@
 		{}
 	],
 	"Search Form": [
+		/* Applies to header and sidebar */
 		{ "selector": "#s", "type": "text", "label": "Search form" },
 		{ "selector": "#s", "type": "color", "label": "Search form color" },
 		{ "selector": "#s", "type": "background-color", "label": "Search form background color" },
@@ -16,11 +18,13 @@
 	],
 	"Menu: Primary": [
 		{ "selector": "#access", "type": "background-color", "label": "Background color", "template": "%s { background-color: %s; background-image: none; }" },
+		/* Top menu items */
 		{ "selector": "#access ul", "type": "text", "label": "Top item" },
 		{ "selector": "#menu-primary > li > a", "type": "color", "label": "Top item color" },
 		{ "selector": "#menu-primary > li > a:hover", "type": "color", "label": "Top item hover color" },
 		{ "selector": "#menu-primary > li > a", "type": "background-color", "label": "Top item background color" },
 		{ "selector": "#menu-primary > li > a:hover", "type": "background-color", "label": "Top item hover background color", "template": "%s { background-color: %s; background-image: none; }" },
+		/* Sub menu items */
 		{ "selector": "#access ul ul a", "type": "text", "label": "Submenu item" },
 		{ "selector": "#menu-primary > li li a", "type": "color", "label": "Submenu item color" },
 		{ "selector": "#menu-primary > li li a:hover", "type": "color", "label": "Submenu item hover color" },
@@ -38,9 +42,11 @@
 		{}
 	],
 	"Entry Content": [
+		/* Title */
 		{ "selector": ".entry-title, .entry-title a", "type": "text", "label": "Title" },
 		{ "selector": ".entry-title, .entry-title a", "type": "color", "label": "Title color" },
 		{ "selector": ".entry-title, .entry-title a", "type": "color", "label": "Title link hover color" },
+		/* Headers */
 		{ "selector": ".entry-content h1", "type": "text", "label": "Heading 1" },
 		{ "selector": ".entry-content h1", "type": "color", "label": "Heading 1 color" },
 		{ "selector": ".entry-content h2", "type": "text", "label": "Heading 2" },
@@ -53,8 +59,10 @@
 		{ "selector": ".entry-content h5", "type": "color", "label": "Heading 5 color" },
 		{ "selector": ".entry-content h6", "type": "text", "label": "Heading 6" },
 		{ "selector": ".entry-content h6", "type": "color", "label": "Heading 6 color" },
+		/* Paragraph */
 		{ "selector": ".entry-content p, #respond p", "type": "text", "label": "Paragraph" },
 		{ "selector": ".entry-content p, #respond p", "type": "color", "label": "Paragraph color" },
+		/* Links set for content and comments. Comment selection should override */
 		{ "selector": ".entry-content a, #commentform a", "type": "color", "label": "Link color" },
 		{ "selector": ".entry-content a:hover, #commentform a:hover", "type": "color", "label": "Link hover color" },
 		{ "selector": ".entry-content pre", "type": "text", "label": "Preformatted" },
@@ -78,6 +86,7 @@
 		{}
 	],
 	"Comment": [
+		/* Speech bubble PNG replaced with CSS Triangle. Note use of sprintf arguement swapping: http://go.brain.st/16TeLbh */
 		{ "selector": "#comments li.comment", "type": "background-color", "label": "Background color", "template": "%1$s { background-color: %2$s; } %1$s:before { content: ''; position:absolute; width: 0px; height: 0px; border-left: 28px solid transparent; border-right: 0px solid transparent; border-top: 27px solid %2$s; }" },
 		{ "selector": "#comments .comment .comment-content", "type": "text", "label": "Content" },
 		{ "selector": "#comments .comment .comment-content", "type": "color", "label": "Content color" },
