@@ -23,6 +23,9 @@ class Styles_Customize {
 		add_filter( 'styles_customize_settings', array( $this, 'load_settings_from_plugin' ), 20 );
 		add_filter( 'styles_customize_settings', array( $this, 'load_settings_from_theme' ), 50 );
 
+		// Set storm-styles option to not autoload; does nothing if setting already exists
+		add_option( 'storm-styles', '', '', 'no' );
+
 	}
 
 	public function enqueue_scripts() {

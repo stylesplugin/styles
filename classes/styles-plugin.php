@@ -34,14 +34,26 @@ class Styles_Plugin {
 	 */
 	var $customize;
 
+	/**
+	 * @var Styles_Admin
+	 */
+	var $admin;
+
 	public function __construct() {
 
 		require_once dirname( __FILE__ ) . '/styles-helpers.php';
 
-		add_action( 'customize_register', array( $this, 'disable_option_autoload' ), 1 );
-		add_action( 'customize_register', array( $this, 'customize_register' ), 2 );
+		add_action( 'customize_register', array( $this, 'customize_register' ), 1 );
 		add_action( 'wp_head', array( $this, 'wp_head' ), 999 );
+		add_action( 'admin_init', array( $this, 'admin_init' ) );
 		
+	}
+
+	public function admin_init() {
+		if ( !is_a( $this->admin, 'Styles_Admin') ) {
+			require_once dirname( __FILE__ ) . '/styles-admin.php';
+			$this->admin = new Styles_Admin( $this );
+		}
 	}
 
 	/**
@@ -52,14 +64,6 @@ class Styles_Plugin {
 			require_once dirname( __FILE__ ) . '/styles-customize.php';
 			$this->customize = new Styles_Customize( $this );
 		}
-	}
-
-	/**
-	 * Set storm-styles option to not autoload
-	 */
-	public function disable_option_autoload() {
-		// Does nothing if setting already exists
-		add_option( 'storm-styles', '', '', 'no' );
 	}
 
 	/**
