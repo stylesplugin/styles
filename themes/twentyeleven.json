@@ -1,6 +1,7 @@
 {
 	"Header": [
 		{ "selector": "#branding", "type": "background-color", "label": "Background color" },
+		{ "selector": "#branding", "type": "color", "label": "Top border color", "template": "%s { border-top-color: %s; }" },
 		{ "selector": "#site-title a", "type": "text", "label": "Title" },
 		{ "selector": "#site-title a:link, #site-title a:active, #site-title a:visited", "type": "color", "label": "Title color" },
 		{ "selector": "#site-title a:hover", "type": "color", "label": "Title link hover color" },
@@ -121,6 +122,7 @@
 	],
 	"Footer": [
 		{ "selector": "#colophon", "type": "background-color", "label": "Background color" },
+		{ "selector": "#site-generator", "type": "color", "label": "Top border color", "template": "%s { border-top-color: %s; }" },
 		{ "selector": "#site-generator", "type": "text", "label": "Credit" },
 		{ "selector": "#site-generator a", "type": "color", "label": "Credit link color" },
 		{ "selector": "#site-generator a:hover", "type": "color", "label": "Credit link hover color" },
