@@ -48,7 +48,8 @@ class Styles_Text {
 		$css .= self::get_css_font_family( $value );
 
 		if ( !empty( $css ) ) {
-			$css = "$selector { $css }";
+			$template = empty( $element['template'] ) ? '%s { %s }' : $element['template'];
+			$css = sprintf( $template, $selector, $css );
 		}
 
 		return apply_filters( 'styles_css_text', $css );
@@ -58,7 +59,10 @@ class Styles_Text {
 		if ( is_array( $value ) ) { $value = $value['font_size']; }
 
 		$css = '';
-		if ( $value ) { $css = "font-size: {$value}px;"; }
+		if ( $value ) {
+			$template = empty( $element['template-font-size'] ) ? 'font-size: %spx;' : $element['template-font-size'];
+			$css = sprintf( $template, $value );
+		}
 
 		return apply_filters( 'styles_css_font_size', $css );
 	}
@@ -83,7 +87,10 @@ class Styles_Text {
 		}
 
 		$css = '';
-		if ( $value ) { $css = "font-family: $value;"; }
+		if ( $value ) {
+			$template = empty( $element['template-font-family'] ) ? 'font-family: %s;' : $element['template-font-family'];
+			$css = sprintf( $template, $value );
+		}
 
 		return apply_filters( 'styles_css_font_family', $css );
 	}

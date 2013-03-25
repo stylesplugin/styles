@@ -43,7 +43,10 @@ class Styles_Background_Color {
 		$value = Styles_Helpers::get_element_setting_value( $group, $element );
 
 		$css = '';
-		if ( $value ) { $css = "$selector { background: $value }"; }
+		if ( $value ) {
+			$template = empty( $element['template'] ) ? '%s { background-color: %s }' : $element['template'];
+			$css = sprintf( $template, $selector, $value );
+		}
 
 		return apply_filters( 'styles_css_background_color', $css );
 	}

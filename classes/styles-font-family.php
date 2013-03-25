@@ -54,7 +54,10 @@ class Styles_Font_Family {
 		}
 
 		$css = '';
-		if ( $value ) { $css = "$selector { font-family: $value; }"; }
+		if ( $value ) {
+			$template = empty( $element['template'] ) ? '%s { font-family: %s }' : $element['template'];
+			$css = sprintf( $template, $selector, $value );
+		}
 
 		return apply_filters( 'styles_css_font_family', $css );
 	}

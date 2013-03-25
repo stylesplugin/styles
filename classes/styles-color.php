@@ -42,7 +42,10 @@ class Styles_Color {
 		$value = Styles_Helpers::get_element_setting_value( $group, $element );
 
 		$css = '';
-		if ( $value ) { $css = "$selector { color: $value }"; }
+		if ( $value ) {
+			$template = empty( $element['template'] ) ? '%s { color: %s }' : $element['template'];
+			$css = sprintf( $template, $selector, $value );
+		}
 
 		return apply_filters( 'styles_css_color', $css );
 	}
