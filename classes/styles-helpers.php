@@ -83,4 +83,21 @@ class Styles_Helpers {
 			return false;
 		}
 	}
+
+	public static function get_json_error( $json_file ) {
+		switch ( json_last_error() ) {
+			case JSON_ERROR_NONE:           return false; break;
+			case JSON_ERROR_DEPTH:          $error = 'Maximum stack depth exceeded.'; break;
+			case JSON_ERROR_STATE_MISMATCH: $error = 'Underflow or the modes mismatch.'; break;
+			case JSON_ERROR_CTRL_CHAR:      $error = 'Unexpected control character.'; break;
+			case JSON_ERROR_SYNTAX:         $error = 'Malformed JSON. Check for errors. PHP <a href="http://php.net/manual/en/function.json-decode.php" target="_blank">json_decode</a> does not support comments or trailing commas.'; break;
+			case JSON_ERROR_UTF8:           $error = 'Malformed UTF-8 characters, possibly incorrectly encoded.'; break;
+			default:                        $error = 'Unknown JSON error.'; break;
+		}
+
+		$path = str_replace( ABSPATH, '', $json_file );
+		$url = site_url( $path );
+
+		return "<h3>JSON error</h3>$error<p>Please check <code><a href='$url' target='_blank'>$path</a></code></p>";
+	}
 }

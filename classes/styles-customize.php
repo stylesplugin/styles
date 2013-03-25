@@ -80,8 +80,12 @@ class Styles_Customize {
 	public function load_settings_from_json_file( $json_file, $default_settings = array() ) {
 		$settings = array();
 		if ( file_exists( $json_file ) ) {
-			$json = file_get_contents( $json_file );
+			$json =  preg_replace('!/\*.*?\*/!s', '', file_get_contents( $json_file ) ); // strip comments before decoding
 			$settings = json_decode( $json, true );
+
+			if ( $json_error = Styles_Helpers::get_json_error( $json_file ) ) {
+				wp_die( $json_error );
+			}
 		}
 		return wp_parse_args( $settings, $default_settings );
 	}
