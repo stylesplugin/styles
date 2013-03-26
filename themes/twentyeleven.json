@@ -1,11 +1,21 @@
 {
 	"Header": [
+		/*     selector: CSS selector of the element to be edited.
+									 All selectors are prepended with ".styles " to increase specificity. */
+		/*     type:     Type of user interface to display and CSS to output. Can be: color, background-color, text */
+		/*     label:    Name of this element to display in the user interface. First word only should be capitalized */
 		{ "selector": "#branding", "type": "background-color", "label": "Background color" },
-		/* CSS template override; there is no dedicated border color module. See http://go.brain.st/ZPbaqE */
+		/*     
+			template:     (optional) Used to override CSS output. Uses PHP sprintf syntax, where argument 1 is a CSS selector, and argument 2 is the value. 
+							In this case, template is being used to apply this "color" as a border-top-color.
+			border color: This is a setting specific to the TwentyEleven theme. Remove or change appropriate to the theme.
+		*/
 		{ "selector": "#branding", "type": "color", "label": "Top border color", "template": "%s { border-top-color: %s; }" },
+		/* Site title text may not be available in themes that use a logo instead. Modify entries appropriately for the individual theme. */
 		{ "selector": "#site-title a", "type": "text", "label": "Title" },
 		{ "selector": "#site-title a:link, #site-title a:active, #site-title a:visited", "type": "color", "label": "Title color" },
 		{ "selector": "#site-title a:hover", "type": "color", "label": "Title link hover color" },
+		/* Each array of objects must end in WITHOUT a comma after the last item. This empty object is here to make duplicating lines more convenient. */
 		{}
 	],
 	"Search Form": [
@@ -16,7 +26,9 @@
 		{ "selector": "#branding #s:focus, #secondary #s:focus", "type": "background-color", "label": "Search form focused background color" },
 		{}
 	],
+	/* Create multiple Menu sections based on available menus in the theme. Give appropriate names based on template positions. */
 	"Menu: Primary": [
+		/* template used to remove background-image setting from parent theme. */
 		{ "selector": "#access", "type": "background-color", "label": "Background color", "template": "%s { background-color: %s; background-image: none; }" },
 		/* Top menu items */
 		{ "selector": "#access ul", "type": "text", "label": "Top item" },
@@ -32,6 +44,7 @@
 		{ "selector": "#menu-primary > li li a:hover", "type": "background-color", "label": "Submenu item hover background color", "template": "%s { background-color: %s; background-image: none; }" },
 		{}
 	],
+	/* Create multiple sidebar sections if appropriate for the theme */
 	"Sidebar": [
 		{ "selector": "#secondary .widget-title", "type": "text", "label": "Widget title" },
 		{ "selector": "#secondary .widget-title", "type": "color", "label": "Widget title color" },
@@ -86,7 +99,7 @@
 		{}
 	],
 	"Comment": [
-		/* Speech bubble PNG replaced with CSS Triangle. Note use of sprintf arguement swapping: http://go.brain.st/16TeLbh */
+		/* Template used to remove speech bubble PNG and replace with CSS Triangle. Note use of sprintf arguement swapping: http://go.brain.st/16TeLbh */
 		{ "selector": "#comments li.comment", "type": "background-color", "label": "Background color", "template": "%1$s { background-color: %2$s; } %1$s:before { content: ''; position:absolute; width: 0px; height: 0px; border-left: 28px solid transparent; border-right: 0px solid transparent; border-top: 27px solid %2$s; }" },
 		{ "selector": "#comments .comment .comment-content", "type": "text", "label": "Content" },
 		{ "selector": "#comments .comment .comment-content", "type": "color", "label": "Content color" },
