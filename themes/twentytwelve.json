@@ -1,0 +1,390 @@
+{
+	"Header": [
+		/*     selector: CSS selector of the element to be edited.
+		 All selectors are prepended with ".styles " to increase specificity. */
+		/*     type:     Type of user interface to display and CSS to output. Can be: color, background-color, text */
+		/*     label:    Name of this element to display in the user interface. First word only should be capitalized */
+		{
+			"selector": "#masthead",
+			"type"    : "background-color",
+			"label"   : "Background color"
+		},
+		/* Site title text may not be available in themes that use a logo instead. Modify entries appropriately for the individual theme. */
+		{
+			"selector": ".site-title a",
+			"type"    : "text",
+			"label"   : "Title"
+		},
+		{
+			"selector": ".site-title a:link, .site-title a:active, .site-title a:visited",
+			"type"    : "color",
+			"label"   : "Title color",
+			"template": "%s { color: %s !important; }"
+		},
+		{
+			"selector": ".site-title a:hover",
+			"type"    : "color",
+			"label"   : "Title link hover color",
+			"template": "%s { color: %s !important; }"
+		},
+		{
+			"selector": ".site-description",
+			"type"    : "text",
+			"label"   : "Tagline"
+		},
+		{
+			"selector": ".site-description",
+			"type"    : "color",
+			"label"   : "Tagline color",
+			"template": "%s { color: %s !important; }"
+		},
+		/* Each array of objects must end in WITHOUT a comma after the last item. This empty object is here to make duplicating lines more convenient. */
+		{}
+	],
+	/* Create multiple Menu sections based on available menus in the theme. Give appropriate names based on template positions. */
+	"Menu: Primary": [
+		/* template used to remove background-image setting from parent theme. */
+		{
+			"selector": ".main-navigation",
+			"type"    : "background-color",
+			"label"   : "Background color"
+		},
+		{
+			"selector": ".main-navigation ul.nav-menu, .main-navigation div.nav-menu > ul",
+			"type"    : "color",
+			"label"   : "Border color",
+			"template": "%s { border-color: %s; }"
+		},
+		/* Top menu items */
+		{
+			"selector": ".main-navigation ul",
+			"type"    : "text",
+			"label"   : "Top item"
+		},
+		{
+			"selector": ".main-navigation li a",
+			"type"    : "color",
+			"label"   : "Top item color"
+		},
+		{
+			"selector": ".main-navigation li a:hover",
+			"type"    : "color",
+			"label"   : "Top item hover color"
+		},
+		{
+			"selector": ".main-navigation li a",
+			"type"    : "background-color",
+			"label"   : "Top item background color"
+		},
+		{
+			"selector": ".main-navigation li > a:hover",
+			"type"    : "background-color",
+			"label"   : "Top item hover background color"
+		},
+		/* Sub menu items */
+		{
+			"selector": ".main-navigation ul ul a",
+			"type"    : "text",
+			"label"   : "Submenu item"
+		},
+		{
+			"selector": ".main-navigation li li a",
+			"type"    : "color",
+			"label"   : "Submenu item color"
+		},
+		{
+			"selector": ".main-navigation li li a:hover",
+			"type"    : "color",
+			"label"   : "Submenu item hover color"
+		},
+		{
+			"selector": ".main-navigation li li a",
+			"type"    : "background-color",
+			"label"   : "Submenu item background color"
+		},
+		{
+			"selector": ".main-navigation li li a:hover",
+			"type"    : "background-color",
+			"label"   : "Submenu item hover background color"
+		},
+		{
+			"selector": ".main-navigation li ul li a",
+			"type"    : "color",
+			"label"   : "Submenu bottom border color",
+			"template": "%s { border-bottom-color: %s; }"
+		},
+		{}
+	],
+	/* Create multiple sidebar sections if appropriate for the theme */
+	"Sidebar": [
+		{
+			"selector": "#secondary .widget-title",
+			"type"    : "text",
+			"label"   : "Widget title"
+		},
+		{
+			"selector": "#secondary .widget-title",
+			"type"    : "color",
+			"label"   : "Widget title color"
+		},
+		{
+			"selector": "#secondary aside, #secondary aside ul li",
+			"type"    : "text",
+			"label"   : "Widget content"
+		},
+		{
+			"selector": "#secondary aside, #secondary aside ul li",
+			"type"    : "color",
+			"label"   : "Widget content color"
+		},
+		{
+			"selector": "#secondary aside a",
+			"type"    : "color",
+			"label"   : "Widget link color"
+		},
+		{
+			"selector": "#secondary aside a:hover",
+			"type"    : "color",
+			"label"   : "Widget link hover color"
+		},
+		{}
+	],
+	"Sidebar: 1st Front Page Widget Area": [
+		{
+			"selector": "#secondary .first.front-widgets .widget-title",
+			"type"    : "text",
+			"label"   : "Widget title"
+		},
+		{
+			"selector": "#secondary .first.front-widgets .widget-title",
+			"type"    : "color",
+			"label"   : "Widget title color"
+		},
+		{
+			"selector": "#secondary .first.front-widgets aside, #secondary .first.front-widgets aside ul li",
+			"type"    : "text",
+			"label"   : "Widget content"
+		},
+		{
+			"selector": "#secondary .first.front-widgets aside, #secondary .first.front-widgets aside ul li",
+			"type"    : "color",
+			"label"   : "Widget content color"
+		},
+		{
+			"selector": "#secondary .first.front-widgets aside a",
+			"type"    : "color",
+			"label"   : "Widget link color"
+		},
+		{
+			"selector": "#secondary .first.front-widgets aside a:hover",
+			"type"    : "color",
+			"label"   : "Widget link hover color"
+		},
+		{}
+	],
+	"Sidebar: 2nd Front Page Widget Area": [
+		{
+			"selector": "#secondary .second.front-widgets .widget-title",
+			"type"    : "text",
+			"label"   : "Widget title"
+		},
+		{
+			"selector": "#secondary .second.front-widgets .widget-title",
+			"type"    : "color",
+			"label"   : "Widget title color"
+		},
+		{
+			"selector": "#secondary .second.front-widgets aside, #secondary .second.front-widgets aside ul li",
+			"type"    : "text",
+			"label"   : "Widget content"
+		},
+		{
+			"selector": "#secondary .second.front-widgets aside, #secondary .second.front-widgets aside ul li",
+			"type"    : "color",
+			"label"   : "Widget content color"
+		},
+		{
+			"selector": "#secondary .second.front-widgets aside a",
+			"type"    : "color",
+			"label"   : "Widget link color"
+		},
+		{
+			"selector": "#secondary .second.front-widgets aside a:hover",
+			"type"    : "color",
+			"label"   : "Widget link hover color"
+		},
+		{}
+	],
+	"Entry Content": [
+		/* Title */
+		{
+			"selector": ".entry-title, .entry-title a",
+			"type"    : "text",
+			"label"   : "Title"
+		},
+		{
+			"selector": ".entry-title, .entry-title a",
+			"type"    : "color",
+			"label"   : "Title color"
+		},
+		{
+			"selector": ".entry-title a:hover",
+			"type"    : "color",
+			"label"   : "Title link hover color"
+		},
+		/* Headers */
+		{
+			"selector": ".entry-content h1",
+			"type"    : "text",
+			"label"   : "Heading 1"
+		},
+		{
+			"selector": ".entry-content h1",
+			"type"    : "color",
+			"label"   : "Heading 1 color"
+		},
+		{
+			"selector": ".entry-content h2",
+			"type"    : "text",
+			"label"   : "Heading 2"
+		},
+		{
+			"selector": ".entry-content h2",
+			"type"    : "color",
+			"label"   : "Heading 2 color"
+		},
+		{
+			"selector": ".entry-content h3",
+			"type"    : "text",
+			"label"   : "Heading 3"
+		},
+		{
+			"selector": ".entry-content h3",
+			"type"    : "color",
+			"label"   : "Heading 3 color"
+		},
+		{
+			"selector": ".entry-content h4",
+			"type"    : "text",
+			"label"   : "Heading 4"
+		},
+		{
+			"selector": ".entry-content h4",
+			"type"    : "color",
+			"label"   : "Heading 4 color"
+		},
+		{
+			"selector": ".entry-content h5",
+			"type"    : "text",
+			"label"   : "Heading 5"
+		},
+		{
+			"selector": ".entry-content h5",
+			"type"    : "color",
+			"label"   : "Heading 5 color"
+		},
+		{
+			"selector": ".entry-content h6",
+			"type"    : "text",
+			"label"   : "Heading 6"
+		},
+		{
+			"selector": ".entry-content h6",
+			"type"    : "color",
+			"label"   : "Heading 6 color"
+		},
+		/* Paragraph */
+		{
+			"selector": ".entry-content p, #respond p",
+			"type"    : "text",
+			"label"   : "Paragraph"
+		},
+		{
+			"selector": ".entry-content p, #respond p",
+			"type"    : "color",
+			"label"   : "Paragraph color"
+		},
+		/* Links set for content and comments. Comment selection should override */
+		{
+			"selector": ".entry-content a, #commentform a",
+			"type"    : "color",
+			"label"   : "Link color"
+		},
+		{
+			"selector": ".entry-content a:hover, #commentform a:hover",
+			"type"    : "color",
+			"label"   : "Link hover color"
+		},
+		{
+			"selector": ".entry-content pre",
+			"type"    : "text",
+			"label"   : "Preformatted"
+		},
+		{
+			"selector": ".entry-content pre",
+			"type"    : "color",
+			"label"   : "Preformatted color"
+		},
+		{
+			"selector": ".entry-content pre",
+			"type"    : "background-color",
+			"label"   : "Preformatted background color"
+		},
+		{
+			"selector": ".entry-content pre",
+			"type"    : "color",
+			"label"   : "Preformatted border color",
+			"template": "%s { border-color: %s; }"
+		},
+		{
+			"selector": ".entry-content blockquote, .entry-content blockquote p",
+			"type"    : "text",
+			"label"   : "Blockquote"
+		},
+		{
+			"selector": ".entry-content blockquote, .entry-content blockquote p",
+			"type"    : "color",
+			"label"   : "Blockquote color"
+		},
+		{
+			"selector": ".entry-content address",
+			"type"    : "text",
+			"label"   : "Address"
+		},
+		{
+			"selector": ".entry-content address",
+			"type"    : "color",
+			"label"   : "Address color"
+		},
+		{}
+	],
+	"Footer": [
+		{
+			"selector": "#colophon",
+			"type"    : "background-color",
+			"label"   : "Background color"
+		},
+		{
+			"selector": "#colophon",
+			"type"    : "color",
+			"label"   : "Top border color",
+			"template": "%s { border-top-color: %s; }"
+		},
+		{
+			"selector": "#colophon",
+			"type"    : "text",
+			"label"   : "Credit"
+		},
+		{
+			"selector": "#colophon a",
+			"type"    : "color",
+			"label"   : "Credit link color"
+		},
+		{
+			"selector": "#colophon a:hover",
+			"type"    : "color",
+			"label"   : "Credit link hover color"
+		},
+		{}
+	]
+}
