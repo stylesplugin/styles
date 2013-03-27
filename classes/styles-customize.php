@@ -26,6 +26,28 @@ class Styles_Customize {
 		// Set storm-styles option to not autoload; does nothing if setting already exists
 		add_option( 'storm-styles', '', '', 'no' );
 
+
+		add_action('customize_controls_print_footer_scripts', function(){
+
+		?>
+		<script>
+
+		jQuery(document).ready(function($){
+
+		$.wp.wpColorPicker.prototype.options = {
+
+		border: false,
+		palettes: [ '#ffffff', '#000000' ]
+		// other options here...
+
+		};         
+		});   
+
+		</script>
+		<?php
+
+		}); 
+
 	}
 
 	public function enqueue_scripts() {
@@ -34,7 +56,7 @@ class Styles_Customize {
 		wp_enqueue_style(  'styles-customize', plugins_url( '/css/styles-customize.css', STYLES_BASENAME ), array(), $this->plugin->version );
 
 		// Javascript
-		wp_enqueue_script( 'styles-customize', plugins_url( '/js/styles-customize.js', STYLES_BASENAME ), array(), $this->plugin->version );
+		wp_enqueue_script( 'styles-customize', plugins_url( '/js/styles-customize.js', STYLES_BASENAME ), array(), $this->plugin->version, true );
 
 	}
 

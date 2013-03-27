@@ -1,5 +1,17 @@
 jQuery( document ).ready( function ( $ ) {
 	
+
+
+	$.wp.wpColorPicker.prototype.options = {
+
+		border: false,
+		palettes: false
+		// other options here...
+
+	};         
+
+
+
 	populate_google_fonts();
 
 	function populate_google_fonts() {
