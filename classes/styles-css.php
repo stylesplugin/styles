@@ -30,7 +30,13 @@ class Styles_CSS {
 
 	public function selector_prefix( $element ) {
 		if ( !empty( $element['selector'] ) ) {
-			$element['selector'] = '.' . $this->body_class . ' ' . $element['selector'];
+			$selector_array = explode( ',', $element['selector'] );
+
+			foreach( $selector_array as &$sub_selector ) {
+				$sub_selector = '.' . $this->body_class . ' ' . $sub_selector;
+			}
+
+			$element['selector'] = implode( ',', $selector_array );
 		}
 
 		return $element;
