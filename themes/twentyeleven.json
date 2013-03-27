@@ -13,8 +13,10 @@
 		{ "selector": "#branding", "type": "color", "label": "Top border color", "template": "%s { border-top-color: %s; }" },
 		/* Site title text may not be available in themes that use a logo instead. Modify entries appropriately for the individual theme. */
 		{ "selector": "#site-title a", "type": "text", "label": "Title" },
-		{ "selector": "#site-title a:link, #site-title a:active, #site-title a:visited", "type": "color", "label": "Title color" },
-		{ "selector": "#site-title a:hover", "type": "color", "label": "Title link hover color" },
+		{ "selector": "#site-title a:link, #site-title a:active, #site-title a:visited", "type": "color", "label": "Title color", "template": "%s { color: %s !important; }" },
+		{ "selector": "#site-title a:hover", "type": "color", "label": "Title link hover color", "template": "%s { color: %s !important; }" },
+		{ "selector": "#site-description", "type": "text", "label": "Description" },
+		{ "selector": "#site-description", "type": "color", "label": "Description color", "template": "%s { color: %s !important; }" },
 		/* Each array of objects must end in WITHOUT a comma after the last item. This empty object is here to make duplicating lines more convenient. */
 		{}
 	],
