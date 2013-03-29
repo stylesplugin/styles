@@ -26,6 +26,12 @@
 		{ "selector": "#s", "type": "color", "label": "Search form color" },
 		{ "selector": "#s", "type": "background-color", "label": "Search form background color" },
 		{ "selector": "#branding #s:focus, #secondary #s:focus", "type": "background-color", "label": "Search form focused background color" },
+		{
+			"selector": "#s",
+			"type"    : "color",
+			"label"   : "Search form border color",
+			"template": "%s { border-color: %s; }"
+		},
 		{}
 	],
 	/* Create multiple Menu sections based on available menus in the theme. Give appropriate names based on template positions. */
@@ -35,15 +41,21 @@
 		/* Top menu items */
 		{ "selector": "#access ul", "type": "text", "label": "Top item" },
 		{ "selector": "#access ul > li > a", "type": "color", "label": "Top item color" },
-		{ "selector": "#access ul > li > a:hover", "type": "color", "label": "Top item hover color" },
+		{ "selector": "#access ul > li > a:hover, #access li:hover > a, #access ul > li > a:focus", "type": "color", "label": "Top item hover color" },
 		{ "selector": "#access ul > li > a", "type": "background-color", "label": "Top item background color" },
-		{ "selector": "#access ul > li > a:hover", "type": "background-color", "label": "Top item hover background color", "template": "%s { background-color: %s; background-image: none; }" },
+		{ "selector": "#access ul > li > a:hover, #access li:hover > a, #access ul > li > a:focus", "type": "background-color", "label": "Top item hover background color", "template": "%s { background-color: %s; background-image: none; }" },
 		/* Sub menu items */
 		{ "selector": "#access ul ul a", "type": "text", "label": "Submenu item" },
 		{ "selector": "#access ul > li li a", "type": "color", "label": "Submenu item color" },
-		{ "selector": "#access ul > li li a:hover", "type": "color", "label": "Submenu item hover color" },
+		{ "selector": "#access ul > li li a:hover, #access ul > li li a:active, #access ul > li li a:focus, #access li:hover > a", "type": "color", "label": "Submenu item hover color" },
 		{ "selector": "#access ul > li li a", "type": "background-color", "label": "Submenu item background color" },
-		{ "selector": "#access ul > li li a:hover", "type": "background-color", "label": "Submenu item hover background color", "template": "%s { background-color: %s; background-image: none; }" },
+		{ "selector": "#access ul > li li a:hover, #access ul > li li a:active, #access ul > li li a:focus, #access li:hover > a", "type": "background-color", "label": "Submenu item hover background color", "template": "%s { background-color: %s; background-image: none; }" },
+		{
+			"selector": "#access ul ul a",
+			"type"    : "color",
+			"label"   : "Submenu bottom border color",
+			"template": "%s { border-bottom-color: %s; }"
+		},
 		{}
 	],
 	/* Create multiple sidebar sections if appropriate for the theme */
@@ -56,11 +68,71 @@
 		{ "selector": "#secondary aside a:hover", "type": "color", "label": "Widget link hover color" },
 		{}
 	],
+	"Sidebar: Footer Area": [
+		{
+			"selector": "#supplementary",
+			"type"    : "background-color",
+			"label"   : "Sidebar Background"
+		},
+		{
+			"selector": "#supplementary",
+			"type"    : "color",
+			"label"   : "Sidebar Top border color",
+			"template": "%s { border-top-color: %s; }"
+		},
+		{
+			"selector": "#supplementary .widget-title",
+			"type"    : "text",
+			"label"   : "Widget title"
+		},
+		{
+			"selector": "#supplementary .widget-title",
+			"type"    : "color",
+			"label"   : "Widget title color"
+		},
+		{
+			"selector": "#supplementary aside, #supplementary aside ul li",
+			"type"    : "text",
+			"label"   : "Widget content"
+		},
+		{
+			"selector": "#supplementary aside, #supplementary aside ul li",
+			"type"    : "color",
+			"label"   : "Widget content color"
+		},
+		{
+			"selector": "#supplementary aside a",
+			"type"    : "color",
+			"label"   : "Widget link color"
+		},
+		{
+			"selector": "#supplementary aside a:hover",
+			"type"    : "color",
+			"label"   : "Widget link hover color"
+		},
+		{}
+	],
 	"Entry Content": [
 		/* Title */
 		{ "selector": ".entry-title, .entry-title a", "type": "text", "label": "Title" },
 		{ "selector": ".entry-title, .entry-title a", "type": "color", "label": "Title color" },
-		{ "selector": ".entry-title, .entry-title a", "type": "color", "label": "Title link hover color" },
+		{ "selector": ".entry-title a:hover", "type": "color", "label": "Title link hover color" },
+		/* Archive Title */
+		{
+			"selector": ".page-title, .page-title a",
+			"type"    : "text",
+			"label"   : "Archive Title"
+		},
+		{
+			"selector": ".page-title, .page-title a",
+			"type"    : "color",
+			"label"   : "Archive Title color"
+		},
+		{
+			"selector": ".page-title a:hover",
+			"type"    : "color",
+			"label"   : "Archive link hover color"
+		},
 		/* Headers */
 		{ "selector": ".entry-content h1", "type": "text", "label": "Heading 1" },
 		{ "selector": ".entry-content h1", "type": "color", "label": "Heading 1 color" },
@@ -82,10 +154,37 @@
 		{ "selector": ".entry-content a:hover, #commentform a:hover", "type": "color", "label": "Link hover color" },
 		{ "selector": ".entry-content pre", "type": "text", "label": "Preformatted" },
 		{ "selector": ".entry-content pre", "type": "color", "label": "Preformatted color" },
+		{
+			"selector": ".entry-content pre",
+			"type"    : "background-color",
+			"label"   : "Preformatted background color"
+		},
 		{ "selector": ".entry-content blockquote, .entry-content blockquote p", "type": "text", "label": "Blockquote" },
 		{ "selector": ".entry-content blockquote, .entry-content blockquote p", "type": "color", "label": "Blockquote color" },
 		{ "selector": ".entry-content address", "type": "text", "label": "Address" },
 		{ "selector": ".entry-content address", "type": "color", "label": "Address color" },
+		{
+			"selector": ".hentry, .no-results",
+			"type"    : "color",
+			"label"   : "Bottom border color",
+			"template": "%s { border-bottom-color: %s; }"
+		},
+		/* Post Navigation */
+		{
+			"selector": "#content nav a",
+			"type"    : "text",
+			"label"   : "Post Navigation Link"
+		},
+		{
+			"selector": "#content nav a",
+			"type"    : "color",
+			"label"   : "Post Navigation Link color"
+		},
+		{
+			"selector": "#content nav a:hover",
+			"type"    : "color",
+			"label"   : "Post Navigation hover color"
+		},
 		{}
 	],
 	"Entry Meta": [
@@ -93,11 +192,11 @@
 		{ "selector": ".entry-meta", "type": "color", "label": "Entry meta color" },
 		{ "selector": ".entry-meta a", "type": "color", "label": "Entry link color" },
 		{ "selector": ".entry-meta a:hover", "type": "color", "label": "Entry link hover color" },
-		{ "selector": ".edit-link a", "type": "text", "label": "Edit link" },
-		{ "selector": ".edit-link a", "type": "color", "label": "Edit link" },
-		{ "selector": ".edit-link a:hover", "type": "color", "label": "Edit link hover" },
-		{ "selector": ".edit-link a", "type": "background-color", "label": "Edit link background" },
-		{ "selector": ".edit-link a:hover", "type": "background-color", "label": "Edit link background hover" },
+		{ "selector": ".edit-link a, #comments .comment-meta .edit-link a", "type": "text", "label": "Edit link" },
+		{ "selector": ".edit-link a, #comments .comment-meta .edit-link a", "type": "color", "label": "Edit link" },
+		{ "selector": ".edit-link a:hover, #comments .comment-meta .edit-link a:hover", "type": "color", "label": "Edit link hover" },
+		{ "selector": ".edit-link a, #comments .comment-meta .edit-link a", "type": "background-color", "label": "Edit link background" },
+		{ "selector": ".edit-link a:hover, #comments .comment-meta .edit-link a:hover", "type": "background-color", "label": "Edit link background hover" },
 		{}
 	],
 	"Comment": [
@@ -111,6 +210,11 @@
 	],
 	"Comment Meta": [
 		{ "selector": "#comments-title", "type": "text", "label": "List Title" },
+		{
+			"selector": "#comments-title",
+			"type"    : "color",
+			"label"   : "List Title color"
+		},
 		{ "selector": "#comments .comment-meta", "type": "text", "label": "Meta" },
 		{ "selector": "#comments .comment-meta", "type": "color", "label": "Meta color" },
 		{ "selector": "#comments .comment-meta a", "type": "color", "label": "Meta link color" },
@@ -125,23 +229,76 @@
 	"Comment Response": [
 		{ "selector": "#respond", "type": "background-color", "label": "Background color" },
 		{ "selector": "#reply-title", "type": "text", "label": "Title" },
-		{ "selector": "#reply-title a", "type": "color", "label": "Title color" },
+		{ "selector": "#reply-title, #reply-title a", "type": "color", "label": "Title color" },
 		{ "selector": "#respond p", "type": "text", "label": "Description" },
 		{ "selector": "#respond p", "type": "color", "label": "Description color" },
 		{ "selector": "#commentform a", "type": "text", "label": "Description link" },
 		{ "selector": "#commentform a", "type": "color", "label": "Description link color" },
 		{ "selector": "#commentform a:hover", "type": "color", "label": "Description link hover color" },
-		{ "selector": "#respond .comment-form-comment label", "type": "text", "label": "Label" },
+		{ "selector": "#respond label", "type": "text", "label": "Label" },
 		{ "selector": "#respond label", "type": "color", "label": "Label color" },
 		{ "selector": "#respond label", "type": "background-color", "label": "Label background color" },
-		{ "selector": "#respond textarea", "type": "text", "label": "Response" },
-		{ "selector": "#respond textarea", "type": "color", "label": "Response color" },
-		{ "selector": "#respond textarea", "type": "background-color", "label": "Response background color" },
-		{ "selector": "#respond textarea:focus", "type": "background-color", "label": "Response focused background color" },
-		{ "selector": "#respond textarea", "type": "color", "label": "Response border color", "template": "%s { border-color: %s }" },
+		{ "selector": "#respond textarea, #respond input[type='text']", "type": "text", "label": "Response" },
+		{ "selector": "#respond textarea, #respond input[type='text']", "type": "color", "label": "Response color" },
+		{ "selector": "#respond textarea, #respond input[type='text']", "type": "background-color", "label": "Response background color" },
+		{ "selector": "#respond textarea:focus, #respond input[type='text']:focus", "type": "background-color", "label": "Response focused background color" },
+		{ "selector": "#respond textarea, #respond input[type='text']", "type": "color", "label": "Response border color", "template": "%s { border-color: %s }" },
 		{ "selector": "#respond input#submit", "type": "text", "label": "Submit button" },
 		{ "selector": "#respond input#submit", "type": "color", "label": "Submit button color" },
 		{ "selector": "#respond input#submit", "type": "background-color", "label": "Submit button background color" },
+		{}
+	],
+	"Showcase": [
+		{
+			"selector": ".showcase",
+			"type"    : "text",
+			"label"   : "Text"
+		},
+		{
+			"selector": ".showcase",
+			"type"    : "color",
+			"label"   : "Color"
+		},
+		{
+			"selector": "article.intro",
+			"type"    : "background-color",
+			"label"   : "Intro Background color"
+		},
+		{
+			"selector": "article.intro .entry-content p",
+			"type"    : "text",
+			"label"   : "Intro Paragraph"
+		},
+		{
+			"selector": "article.intro .entry-content p",
+			"type"    : "color",
+			"label"   : "Intro Paragraph color"
+		},
+		{
+			"selector": "article.intro .edit-link a",
+			"type"    : "text",
+			"label"   : "Edit link"
+		},
+		{
+			"selector": "article.intro .edit-link a",
+			"type"    : "color",
+			"label"   : "Edit link"
+		},
+		{
+			"selector": "article.intro .edit-link a:hover",
+			"type"    : "color",
+			"label"   : "Edit link hover"
+		},
+		{
+			"selector": "article.intro .edit-link a",
+			"type"    : "background-color",
+			"label"   : "Edit link background"
+		},
+		{
+			"selector": "article.intro .edit-link a:hover",
+			"type"    : "background-color",
+			"label"   : "Edit link background hover"
+		},
 		{}
 	],
 	"Footer": [
