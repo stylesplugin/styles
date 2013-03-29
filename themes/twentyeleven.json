@@ -34,16 +34,16 @@
 		{ "selector": "#access", "type": "background-color", "label": "Background color", "template": "%s { background-color: %s; background-image: none; }" },
 		/* Top menu items */
 		{ "selector": "#access ul", "type": "text", "label": "Top item" },
-		{ "selector": "#menu-primary > li > a", "type": "color", "label": "Top item color" },
-		{ "selector": "#menu-primary > li > a:hover", "type": "color", "label": "Top item hover color" },
-		{ "selector": "#menu-primary > li > a", "type": "background-color", "label": "Top item background color" },
-		{ "selector": "#menu-primary > li > a:hover", "type": "background-color", "label": "Top item hover background color", "template": "%s { background-color: %s; background-image: none; }" },
+		{ "selector": "#access ul > li > a", "type": "color", "label": "Top item color" },
+		{ "selector": "#access ul > li > a:hover", "type": "color", "label": "Top item hover color" },
+		{ "selector": "#access ul > li > a", "type": "background-color", "label": "Top item background color" },
+		{ "selector": "#access ul > li > a:hover", "type": "background-color", "label": "Top item hover background color", "template": "%s { background-color: %s; background-image: none; }" },
 		/* Sub menu items */
 		{ "selector": "#access ul ul a", "type": "text", "label": "Submenu item" },
-		{ "selector": "#menu-primary > li li a", "type": "color", "label": "Submenu item color" },
-		{ "selector": "#menu-primary > li li a:hover", "type": "color", "label": "Submenu item hover color" },
-		{ "selector": "#menu-primary > li li a", "type": "background-color", "label": "Submenu item background color" },
-		{ "selector": "#menu-primary > li li a:hover", "type": "background-color", "label": "Submenu item hover background color", "template": "%s { background-color: %s; background-image: none; }" },
+		{ "selector": "#access ul > li li a", "type": "color", "label": "Submenu item color" },
+		{ "selector": "#access ul > li li a:hover", "type": "color", "label": "Submenu item hover color" },
+		{ "selector": "#access ul > li li a", "type": "background-color", "label": "Submenu item background color" },
+		{ "selector": "#access ul > li li a:hover", "type": "background-color", "label": "Submenu item hover background color", "template": "%s { background-color: %s; background-image: none; }" },
 		{}
 	],
 	/* Create multiple sidebar sections if appropriate for the theme */
