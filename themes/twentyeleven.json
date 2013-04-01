@@ -21,11 +21,11 @@
 		{}
 	],
 	"Search Form": [
-		/* Applies to header and sidebar */
+		/* Applies to header, sidebar, search page */
 		{ "selector": "#s", "type": "text", "label": "Search form" },
 		{ "selector": "#s", "type": "color", "label": "Search form color" },
 		{ "selector": "#s", "type": "background-color", "label": "Search form background color" },
-		{ "selector": "#branding #s:focus, #secondary #s:focus", "type": "background-color", "label": "Search form focused background color" },
+		{ "selector": "#s:focus, #branding #s:focus", "type": "background-color", "label": "Search form focused background color" },
 		{
 			"selector": "#s",
 			"type"    : "color",
@@ -112,6 +112,39 @@
 		},
 		{}
 	],
+	"Sidebar: Showcase": [
+		{
+			"selector": ".showcase .widget-area .widget-title",
+			"type"    : "text",
+			"label"   : "Widget title"
+		},
+		{
+			"selector": ".showcase .widget-area .widget-title",
+			"type"    : "color",
+			"label"   : "Widget title color"
+		},
+		{
+			"selector": ".showcase .widget-area aside, .showcase .widget-area aside ul li",
+			"type"    : "text",
+			"label"   : "Widget content"
+		},
+		{
+			"selector": ".showcase .widget-area aside, .showcase .widget-area aside ul li",
+			"type"    : "color",
+			"label"   : "Widget content color"
+		},
+		{
+			"selector": ".showcase .widget-area aside a",
+			"type"    : "color",
+			"label"   : "Widget link color"
+		},
+		{
+			"selector": ".showcase .widget-area aside a:hover",
+			"type"    : "color",
+			"label"   : "Widget link hover color"
+		},
+		{}
+	],
 	"Entry Content": [
 		/* Title */
 		{ "selector": ".entry-title, .entry-title a", "type": "text", "label": "Title" },
@@ -133,6 +166,17 @@
 			"type"    : "color",
 			"label"   : "Archive link hover color"
 		},
+		/* Post Format */
+		{
+			"selector": ".entry-format",
+			"type"    : "text",
+			"label"   : "Post Format Text"
+		},
+		{
+			"selector": ".entry-format",
+			"type"    : "color",
+			"label"   : "Post Format color"
+		},
 		/* Headers */
 		{ "selector": ".entry-content h1", "type": "text", "label": "Heading 1" },
 		{ "selector": ".entry-content h1", "type": "color", "label": "Heading 1 color" },
@@ -147,8 +191,30 @@
 		{ "selector": ".entry-content h6", "type": "text", "label": "Heading 6" },
 		{ "selector": ".entry-content h6", "type": "color", "label": "Heading 6 color" },
 		/* Paragraph */
-		{ "selector": ".entry-content p, #respond p", "type": "text", "label": "Paragraph" },
-		{ "selector": ".entry-content p, #respond p", "type": "color", "label": "Paragraph color" },
+		{ "selector": ".entry-content p, .entry-summary p, #respond p", "type": "text", "label": "Paragraph" },
+		{ "selector": ".entry-content p, .entry-summary p, #respond p", "type": "color", "label": "Paragraph color" },
+		/* Small Text */
+		{
+			"selector": ".entry-content small",
+			"type"    : "text",
+			"label"   : "Small Text"
+		},
+		{
+			"selector": ".entry-content small",
+			"type"    : "color",
+			"label"   : "Small Text color"
+		},
+		/* List Items */
+		{
+			"selector": ".entry-content li, .entry-content li p",
+			"type"    : "text",
+			"label"   : "List Items"
+		},
+		{
+			"selector": ".entry-content li, .entry-content li p",
+			"type"    : "color",
+			"label"   : "List Items color"
+		},
 		/* Links set for content and comments. Comment selection should override */
 		{ "selector": ".entry-content a, #commentform a", "type": "color", "label": "Link color" },
 		{ "selector": ".entry-content a:hover, #commentform a:hover", "type": "color", "label": "Link hover color" },
@@ -169,6 +235,61 @@
 			"label"   : "Bottom border color",
 			"template": "%s { border-bottom-color: %s; }"
 		},
+		/* Table */
+		{
+			"selector": ".entry-content th",
+			"type"    : "text",
+			"label"   : "Table Headings"
+		},
+		{
+			"selector": ".entry-content th",
+			"type"    : "color",
+			"label"   : "Table Headings color"
+		},
+		{
+			"selector": ".entry-content td, .entry-content td p",
+			"type"    : "text",
+			"label"   : "Table Content"
+		},
+		{
+			"selector": ".entry-content td, .entry-content td p",
+			"type"    : "color",
+			"label"   : "Table Content color"
+		},
+		{
+			"selector": ".entry-content td",
+			"type"    : "color",
+			"label"   : "Table Content top border color",
+			"template": "%s { border-top-color: %s; }"
+		},
+		{
+			"selector": ".entry-content table",
+			"type"    : "color",
+			"label"   : "Table bottom border color",
+			"template": "%s { border-bottom-color: %s; }"
+		},
+		/* Image */
+		{
+			"selector": "img[class*='align'], img[class*='wp-image - '], #content .gallery .gallery-icon img, .wp-caption img",
+			"type"    : "color",
+			"label"   : "Image border color",
+			"template": "%s { border-color: %s; }"
+		},
+		{
+			"selector": ".entry-content .wp-caption-text",
+			"type"    : "text",
+			"label"   : "Caption"
+		},
+		{
+			"selector": ".entry-content .wp-caption-text",
+			"type"    : "color",
+			"label"   : "Caption color"
+		},
+		{
+			"selector": ".wp-caption",
+			"type"    : "background-color",
+			"label"   : "Caption background"
+		},
 		/* Post Navigation */
 		{
 			"selector": "#content nav a",
@@ -184,6 +305,37 @@
 			"selector": "#content nav a:hover",
 			"type"    : "color",
 			"label"   : "Post Navigation hover color"
+		},
+		/* Page Navigation */
+		{
+			"selector": ".page-link, .page-link a",
+			"type"    : "text",
+			"label"   : "Page Navigation Link"
+		},
+		{
+			"selector": ".page-link",
+			"type"    : "color",
+			"label"   : "Page Navigation color"
+		},
+		{
+			"selector": ".page-link a",
+			"type"    : "color",
+			"label"   : "Page Navigation Link color"
+		},
+		{
+			"selector": ".page-link a",
+			"type"    : "background-color",
+			"label"   : "Page Navigation Link backbground color"
+		},
+		{
+			"selector": ".page-link a:hover",
+			"type"    : "color",
+			"label"   : "Page Navigation hover color"
+		},
+		{
+			"selector": ".page-link a:hover",
+			"type"    : "background-color",
+			"label"   : "Page Navigation Link backbground hover color"
 		},
 		{}
 	],
@@ -203,9 +355,44 @@
 		/* Template used to remove speech bubble PNG and replace with CSS Triangle. Note use of sprintf arguement swapping: http://go.brain.st/16TeLbh */
 		{ "selector": "#comments li.comment", "type": "background-color", "label": "Background color", "template": "%1$s { background-color: %2$s; } %1$s:before { content: ''; position:absolute; width: 0px; height: 0px; border-left: 28px solid transparent; border-right: 0px solid transparent; border-top: 27px solid %2$s; }" },
 		{ "selector": "#comments .comment .comment-content", "type": "text", "label": "Content" },
-		{ "selector": "#comments .comment .comment-content", "type": "color", "label": "Content color" },
+		{ "selector": "#comments .comment .comment-content, , .comment-content h1, .comment-content h2, .comment-content blockquote cite, .comment-content th", "type": "color", "label": "Content color" },
 		{ "selector": "#comments .comment .comment-content a", "type": "color", "label": "Link color" },
 		{ "selector": "#comments .comment .comment-content a:hover", "type": "color", "label": "Link hover color" },
+		{
+			"selector": ".comment-content pre",
+			"type"    : "text",
+			"label"   : "Preformatted"
+		},
+		{
+			"selector": ".comment-content pre",
+			"type"    : "color",
+			"label"   : "Preformatted color"
+		},
+		{
+			"selector": ".comment-content pre",
+			"type"    : "background-color",
+			"label"   : "Preformatted background color"
+		},
+		{
+			"selector": "#comments .pingback",
+			"type"    : "text",
+			"label"   : "Pingback"
+		},
+		{
+			"selector": "#comments .pingback",
+			"type"    : "color",
+			"label"   : "Pingback color"
+		},
+		{
+			"selector": "#comments .pingback a",
+			"type"    : "color",
+			"label"   : "Pingback Link color"
+		},
+		{
+			"selector": "#comments .pingback a:hover",
+			"type"    : "color",
+			"label"   : "Pingback Link hover color"
+		},
 		{}
 	],
 	"Comment Meta": [
@@ -298,6 +485,53 @@
 			"selector": "article.intro .edit-link a:hover",
 			"type"    : "background-color",
 			"label"   : "Edit link background hover"
+		},
+		{
+			"selector": ".featured-posts .showcase-heading",
+			"type"    : "text",
+			"label"   : "Featured Post Title"
+		},
+		{
+			"selector": ".featured-posts .showcase-heading",
+			"type"    : "color",
+			"label"   : "Featured Post Title Color"
+		},
+		{
+			"selector": ".featured-posts",
+			"type"    : "color",
+			"label"   : "Featured Post bottom border color",
+			"template": "%s { border-bottom-color: %s; }"
+		},
+		{
+			"selector": ".showcase-heading",
+			"type"    : "text",
+			"label"   : "Recent Posts Title"
+		},
+		{
+			"selector": ".showcase-heading",
+			"type"    : "color",
+			"label"   : "Recent Posts Title Color"
+		},
+		{
+			"selector": "section.recent-posts .other-recent-posts, section.recent-posts .other-recent-posts .entry-title, section.recent-posts .other-recent-posts .comments-link a, section.recent-posts .other-recent-posts .comments-link > span",
+			"type"    : "color",
+			"label"   : "Other Recent Posts border color",
+			"template": "%s { border-color: %s; }"
+		},
+		{
+			"selector": "section.recent-posts .other-recent-posts .entry-title a",
+			"type"    : "text",
+			"label"   : "Other Recent Posts Title"
+		},
+		{
+			"selector": "section.recent-posts .other-recent-posts .entry-title a",
+			"type"    : "color",
+			"label"   : "Other Recent Posts Title Color"
+		},
+		{
+			"selector": "section.recent-posts .other-recent-posts .entry-title a:hover",
+			"type"    : "color",
+			"label"   : "Other Recent Posts Title Hover Color"
 		},
 		{}
 	],
