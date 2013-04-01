@@ -334,6 +334,23 @@
 			"label"   : "Archive Title Border color",
 			"template": "%s { border-bottom-color: %s; }"
 		},
+		/* Featured Post */
+		{
+			"selector": "article.sticky .featured-post",
+			"type"    : "text",
+			"label"   : "Featured Post Title"
+		},
+		{
+			"selector": "article.sticky .featured-post",
+			"type"    : "color",
+			"label"   : "Featured Post Title color"
+		},
+		{
+			"selector": "article.sticky .featured-post",
+			"type"    : "color",
+			"label"   : "Featured Post Border color",
+			"template": "%s { border-color: %s; }"
+		},
 		/* Headers */
 		{
 			"selector": ".entry-content h1",
@@ -465,6 +482,11 @@
 			"label"   : "Blockquote color"
 		},
 		{
+			"selector": ".entry-content blockquote, article.format-quote .entry-content blockquote",
+			"type"    : "background-color",
+			"label"   : "Blockquote background color"
+		},
+		{
 			"selector": ".entry-content address",
 			"type"    : "text",
 			"label"   : "Address"
@@ -479,6 +501,100 @@
 			"type"    : "color",
 			"label"   : "Bottom border color",
 			"template": "%s { border-bottom-color: %s; }"
+		},
+		/* Small Text */
+		{
+			"selector": ".entry-content small",
+			"type"    : "text",
+			"label"   : "Small Text"
+		},
+		{
+			"selector": ".entry-content small",
+			"type"    : "color",
+			"label"   : "Small Text color"
+		},
+		/* List Items */
+		{
+			"selector": ".entry-content li, .entry-content li p",
+			"type"    : "text",
+			"label"   : "List Items"
+		},
+		{
+			"selector": ".entry-content li, .entry-content li p",
+			"type"    : "color",
+			"label"   : "List Items color"
+		},
+		/* Table */
+		{
+			"selector": ".entry-content th",
+			"type"    : "text",
+			"label"   : "Table Headings"
+		},
+		{
+			"selector": ".entry-content th",
+			"type"    : "color",
+			"label"   : "Table Headings color"
+		},
+		{
+			"selector": ".entry-content td, .entry-content td p",
+			"type"    : "text",
+			"label"   : "Table Content"
+		},
+		{
+			"selector": ".entry-content td, .entry-content td p",
+			"type"    : "color",
+			"label"   : "Table Content color"
+		},
+		{
+			"selector": ".entry-content td",
+			"type"    : "color",
+			"label"   : "Table Content top border color",
+			"template": "%s { border-top-color: %s; }"
+		},
+		{
+			"selector": ".entry-content table",
+			"type"    : "color",
+			"label"   : "Table bottom border color",
+			"template": "%s { border-bottom-color: %s; }"
+		},
+		/* Image */
+		{
+			"selector": "img[class*='align'], img[class*='wp-image - '], #content .gallery .gallery-icon img, .wp-caption img",
+			"type"    : "color",
+			"label"   : "Gallery Image border color",
+			"template": "%s { border-color: %s; }"
+		},
+		{
+			"selector": ".entry-content .wp-caption-text",
+			"type"    : "text",
+			"label"   : "Caption"
+		},
+		{
+			"selector": ".entry-content .wp-caption-text",
+			"type"    : "color",
+			"label"   : "Caption color"
+		},
+		/* Aside */
+		{
+			"selector": "article.format-aside .aside, article.format-aside .aside p",
+			"type"    : "text",
+			"label"   : "Aside"
+		},
+		{
+			"selector": "article.format-aside .aside, article.format-aside .aside p",
+			"type"    : "color",
+			"label"   : "Aside color"
+		},
+		{
+			"selector": "article.format-aside .aside",
+			"type"    : "background-color",
+			"label"   : "Aside background color"
+		},
+		{
+			"selector": "article.format-aside .aside",
+			"type"    : "color",
+			"label"   : "Aside left border color",
+			"template": "%s { border-left-color: %s; }"
 		},
 		/* Post Navigation */
 		{
@@ -495,6 +611,27 @@
 			"selector": "#page .site-content nav a:hover",
 			"type"    : "color",
 			"label"   : "Post Navigation hover color"
+		},
+		/* Page Navigation */
+		{
+			"selector": ".page-links, .page-links a",
+			"type"    : "text",
+			"label"   : "Page Navigation Link"
+		},
+		{
+			"selector": ".page-links",
+			"type"    : "color",
+			"label"   : "Page Navigation color"
+		},
+		{
+			"selector": "#page .page-links a",
+			"type"    : "color",
+			"label"   : "Page Navigation Link color"
+		},
+		{
+			"selector": "#page .page-links a:hover",
+			"type"    : "color",
+			"label"   : "Page Navigation hover color"
 		},
 		{}
 	],
@@ -558,7 +695,7 @@
 			"label"   : "Content"
 		},
 		{
-			"selector": "#comments .comment .comment-content",
+			"selector": "#comments .comment .comment-content, .comment-content h1, .comment-content h2, .comment-content blockquote cite, .comment-content th, .comment-content td",
 			"type"    : "color",
 			"label"   : "Content color"
 		},
@@ -571,6 +708,41 @@
 			"selector": "#comments .comment .comment-content a:hover",
 			"type"    : "color",
 			"label"   : "Link hover color"
+		},
+		{
+			"selector": ".comment-content pre",
+			"type"    : "text",
+			"label"   : "Preformatted"
+		},
+		{
+			"selector": ".comment-content pre",
+			"type"    : "color",
+			"label"   : "Preformatted color"
+		},
+		{
+			"selector": ".comment-content pre",
+			"type"    : "background-color",
+			"label"   : "Preformatted background color"
+		},
+		{
+			"selector": "#comments .pingback",
+			"type"    : "text",
+			"label"   : "Pingback"
+		},
+		{
+			"selector": "#comments .pingback",
+			"type"    : "color",
+			"label"   : "Pingback color"
+		},
+		{
+			"selector": "#comments .pingback a",
+			"type"    : "color",
+			"label"   : "Pingback Link color"
+		},
+		{
+			"selector": "#comments .pingback a:hover",
+			"type"    : "color",
+			"label"   : "Pingback Link hover color"
 		},
 		{}
 	],

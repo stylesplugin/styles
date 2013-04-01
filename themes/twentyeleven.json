@@ -355,7 +355,7 @@
 		/* Template used to remove speech bubble PNG and replace with CSS Triangle. Note use of sprintf arguement swapping: http://go.brain.st/16TeLbh */
 		{ "selector": "#comments li.comment", "type": "background-color", "label": "Background color", "template": "%1$s { background-color: %2$s; } %1$s:before { content: ''; position:absolute; width: 0px; height: 0px; border-left: 28px solid transparent; border-right: 0px solid transparent; border-top: 27px solid %2$s; }" },
 		{ "selector": "#comments .comment .comment-content", "type": "text", "label": "Content" },
-		{ "selector": "#comments .comment .comment-content, , .comment-content h1, .comment-content h2, .comment-content blockquote cite, .comment-content th", "type": "color", "label": "Content color" },
+		{ "selector": "#comments .comment .comment-content, .comment-content h1, .comment-content h2, .comment-content blockquote cite, .comment-content th", "type": "color", "label": "Content color" },
 		{ "selector": "#comments .comment .comment-content a", "type": "color", "label": "Link color" },
 		{ "selector": "#comments .comment .comment-content a:hover", "type": "color", "label": "Link hover color" },
 		{
