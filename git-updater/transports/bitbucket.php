@@ -34,7 +34,7 @@ class WordPress_Bitbucket_Updater {
 		$this->tags_url = "https://api.bitbucket.org/1.0/repositories/{$args['username']}/{$args['repository']}/tags";
 		$this->zip_url = "https://bitbucket.org/{$args['username']}/{$args['repository']}/get/";
 
-		foreach( (array) $args as $key => $value ) {
+		foreach( $args as $key => $value ) {
 			$this->$key = $value;
 		}
 
@@ -74,7 +74,7 @@ class WordPress_Bitbucket_Updater {
 			
 		$version = false;
 		$zip_url = false;
-		foreach ( (array) $tags as $name => $tag ) {
+		foreach ( $tags as $name => $tag ) {
 			if ( version_compare($name, $version, '>=') ) {
 				$version = $name;
 				$timestamp = $tag->timestamp;

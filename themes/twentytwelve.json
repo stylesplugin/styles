@@ -1,28 +1,61 @@
 {
+	"Container": [
+		{
+			"selector": "#page",
+			"type"    : "text",
+			"label"   : "Text"
+		},
+		{
+			"selector": "#page",
+			"type"    : "color",
+			"label"   : "Color"
+		},
+		{
+			"selector": "#page",
+			"type"    : "background-color",
+			"label"   : "Background color"
+		},
+		{
+			"selector": "#page a",
+			"type"    : "text",
+			"label"   : "Link text"
+		},
+		{
+			"selector": "#page a",
+			"type"    : "color",
+			"label"   : "Link color"
+		},
+		{
+			"selector": "#page a:hover",
+			"type"    : "color",
+			"label"   : "Link hover color"
+		},
+		{}
+	],
 	"Header": [
 		/*     selector: CSS selector of the element to be edited.
 		 All selectors are prepended with ".styles " to increase specificity. */
 		/*     type:     Type of user interface to display and CSS to output. Can be: color, background-color, text */
 		/*     label:    Name of this element to display in the user interface. First word only should be capitalized */
 		{
-			"selector": "#masthead",
+			"selector": "#page #masthead",
 			"type"    : "background-color",
 			"label"   : "Background color"
 		},
 		/* Site title text may not be available in themes that use a logo instead. Modify entries appropriately for the individual theme. */
 		{
-			"selector": ".site-title a",
+			"selector": "#page .site-title a",
 			"type"    : "text",
 			"label"   : "Title"
 		},
 		{
-			"selector": ".site-title a:link, .site-title a:active, .site-title a:visited",
+			"selector": "#page .site-title a:link, #page .site-title a:active, #page .site-title a:visited",
 			"type"    : "color",
 			"label"   : "Title color",
 			"template": "%s { color: %s !important; }"
 		},
 		{
-			"selector": ".site-title a:hover",
+			"selector": "#page .site-title a:hover",
 			"type"    : "color",
 			"label"   : "Title link hover color",
 			"template": "%s { color: %s !important; }"
@@ -57,17 +90,17 @@
 		},
 		/* Top menu items */
 		{
-			"selector": ".main-navigation ul",
+			"selector": "#page .main-navigation li a",
 			"type"    : "text",
 			"label"   : "Top item"
 		},
 		{
-			"selector": ".main-navigation li a",
+			"selector": "#page .main-navigation li a",
 			"type"    : "color",
 			"label"   : "Top item color"
 		},
 		{
-			"selector": ".main-navigation li a:hover",
+			"selector": "#page .main-navigation li a:hover",
 			"type"    : "color",
 			"label"   : "Top item hover color"
 		},
@@ -83,17 +116,17 @@
 		},
 		/* Sub menu items */
 		{
-			"selector": ".main-navigation ul ul a",
+			"selector": "#page .main-navigation ul ul a",
 			"type"    : "text",
 			"label"   : "Submenu item"
 		},
 		{
-			"selector": ".main-navigation li li a",
+			"selector": "#page .main-navigation li li a",
 			"type"    : "color",
 			"label"   : "Submenu item color"
 		},
 		{
-			"selector": ".main-navigation li li a:hover",
+			"selector": "#page .main-navigation li li a:hover",
 			"type"    : "color",
 			"label"   : "Submenu item hover color"
 		},
@@ -128,7 +161,7 @@
 			"label"   : "Widget title color"
 		},
 		{
-			"selector": "#secondary aside, #secondary aside ul li",
+			"selector": "#secondary aside, #secondary aside ul li, #secondary aside a",
 			"type"    : "text",
 			"label"   : "Widget content"
 		},
@@ -215,22 +248,108 @@
 		},
 		{}
 	],
+	"Search Form": [
+		/* Applies to entry-content and sidebar */
+		{
+			"selector": "#s",
+			"type"    : "text",
+			"label"   : "Search form"
+		},
+		{
+			"selector": "#s",
+			"type"    : "color",
+			"label"   : "Search form color"
+		},
+		{
+			"selector": "#s",
+			"type"    : "background-color",
+			"label"   : "Search form background color"
+		},
+		{
+			"selector": ".entry-content #s:focus, #secondary #s:focus",
+			"type"    : "background-color",
+			"label"   : "Search form focused background color"
+		},
+		{
+			"selector": "#s",
+			"type"    : "color",
+			"label"   : "Search form border color",
+			"template": "%s { border-color: %s; }"
+		},
+		{
+			"selector": "#searchsubmit",
+			"type"    : "text",
+			"label"   : "Submit button"
+		},
+		{
+			"selector": "#searchsubmit",
+			"type"    : "color",
+			"label"   : "Submit button color"
+		},
+		{
+			"selector": "#searchsubmit",
+			"type"    : "background-color",
+			"label"   : "Submit button background color",
+			"template": "%s { background-color: %s; background-image: none; }"
+		},
+		{
+			"selector": "#searchsubmit",
+			"type"    : "color",
+			"label"   : "Submit button border color",
+			"template": "%s { border-color: %s; }"
+		},
+		{}
+	],
 	"Entry Content": [
 		/* Title */
 		{
-			"selector": ".entry-title, .entry-title a",
+			"selector": ".entry-title, #page .entry-title a",
 			"type"    : "text",
 			"label"   : "Title"
 		},
 		{
-			"selector": ".entry-title, .entry-title a",
+			"selector": ".entry-title, #page .entry-title a",
 			"type"    : "color",
 			"label"   : "Title color"
 		},
 		{
-			"selector": ".entry-title a:hover",
+			"selector": "#page .entry-title a:hover",
 			"type"    : "color",
 			"label"   : "Title link hover color"
+		},
+		/* Archive Title */
+		{
+			"selector": ".archive-title",
+			"type"    : "text",
+			"label"   : "Archive Title"
+		},
+		{
+			"selector": ".archive-title",
+			"type"    : "color",
+			"label"   : "Archive Title color"
+		},
+		{
+			"selector": ".archive-header",
+			"type"    : "color",
+			"label"   : "Archive Title Border color",
+			"template": "%s { border-bottom-color: %s; }"
+		},
+		/* Featured Post */
+		{
+			"selector": "article.sticky .featured-post",
+			"type"    : "text",
+			"label"   : "Featured Post Title"
+		},
+		{
+			"selector": "article.sticky .featured-post",
+			"type"    : "color",
+			"label"   : "Featured Post Title color"
+		},
+		{
+			"selector": "article.sticky .featured-post",
+			"type"    : "color",
+			"label"   : "Featured Post Border color",
+			"template": "%s { border-color: %s; }"
 		},
 		/* Headers */
 		{
@@ -293,9 +412,25 @@
 			"type"    : "color",
 			"label"   : "Heading 6 color"
 		},
+		/* Comment Reply Link */
+		{
+			"selector": "#page .entry-header .comments-link a",
+			"type"    : "text",
+			"label"   : "Comment Reply Link"
+		},
+		{
+			"selector": "#page .entry-header .comments-link a",
+			"type"    : "color",
+			"label"   : "Comment Reply Link color"
+		},
+		{
+			"selector": "#page .entry-header .comments-link a:hover",
+			"type"    : "color",
+			"label"   : "Comment Reply Link hover color"
+		},
 		/* Paragraph */
 		{
-			"selector": ".entry-content p, #respond p",
+			"selector": ".entry-content p, #page .entry-content p a, #respond p",
 			"type"    : "text",
 			"label"   : "Paragraph"
 		},
@@ -306,12 +441,12 @@
 		},
 		/* Links set for content and comments. Comment selection should override */
 		{
-			"selector": ".entry-content a, #commentform a",
+			"selector": "#page .entry-content a, #commentform a",
 			"type"    : "color",
 			"label"   : "Link color"
 		},
 		{
-			"selector": ".entry-content a:hover, #commentform a:hover",
+			"selector": "#page .entry-content a:hover, #commentform a:hover",
 			"type"    : "color",
 			"label"   : "Link hover color"
 		},
@@ -347,6 +482,11 @@
 			"label"   : "Blockquote color"
 		},
 		{
+			"selector": ".entry-content blockquote, article.format-quote .entry-content blockquote",
+			"type"    : "background-color",
+			"label"   : "Blockquote background color"
+		},
+		{
 			"selector": ".entry-content address",
 			"type"    : "text",
 			"label"   : "Address"
@@ -355,6 +495,469 @@
 			"selector": ".entry-content address",
 			"type"    : "color",
 			"label"   : "Address color"
+		},
+		{
+			"selector": ".site-content article",
+			"type"    : "color",
+			"label"   : "Bottom border color",
+			"template": "%s { border-bottom-color: %s; }"
+		},
+		/* Small Text */
+		{
+			"selector": ".entry-content small",
+			"type"    : "text",
+			"label"   : "Small Text"
+		},
+		{
+			"selector": ".entry-content small",
+			"type"    : "color",
+			"label"   : "Small Text color"
+		},
+		/* List Items */
+		{
+			"selector": ".entry-content li, .entry-content li p",
+			"type"    : "text",
+			"label"   : "List Items"
+		},
+		{
+			"selector": ".entry-content li, .entry-content li p",
+			"type"    : "color",
+			"label"   : "List Items color"
+		},
+		/* Table */
+		{
+			"selector": ".entry-content th",
+			"type"    : "text",
+			"label"   : "Table Headings"
+		},
+		{
+			"selector": ".entry-content th",
+			"type"    : "color",
+			"label"   : "Table Headings color"
+		},
+		{
+			"selector": ".entry-content td, .entry-content td p",
+			"type"    : "text",
+			"label"   : "Table Content"
+		},
+		{
+			"selector": ".entry-content td, .entry-content td p",
+			"type"    : "color",
+			"label"   : "Table Content color"
+		},
+		{
+			"selector": ".entry-content td",
+			"type"    : "color",
+			"label"   : "Table Content top border color",
+			"template": "%s { border-top-color: %s; }"
+		},
+		{
+			"selector": ".entry-content table",
+			"type"    : "color",
+			"label"   : "Table bottom border color",
+			"template": "%s { border-bottom-color: %s; }"
+		},
+		/* Image */
+		{
+			"selector": "img[class*='align'], img[class*='wp-image - '], #content .gallery .gallery-icon img, .wp-caption img",
+			"type"    : "color",
+			"label"   : "Gallery Image border color",
+			"template": "%s { border-color: %s; }"
+		},
+		{
+			"selector": ".entry-content .wp-caption-text",
+			"type"    : "text",
+			"label"   : "Caption"
+		},
+		{
+			"selector": ".entry-content .wp-caption-text",
+			"type"    : "color",
+			"label"   : "Caption color"
+		},
+		/* Aside */
+		{
+			"selector": "article.format-aside .aside, article.format-aside .aside p",
+			"type"    : "text",
+			"label"   : "Aside"
+		},
+		{
+			"selector": "article.format-aside .aside, article.format-aside .aside p",
+			"type"    : "color",
+			"label"   : "Aside color"
+		},
+		{
+			"selector": "article.format-aside .aside",
+			"type"    : "background-color",
+			"label"   : "Aside background color"
+		},
+		{
+			"selector": "article.format-aside .aside",
+			"type"    : "color",
+			"label"   : "Aside left border color",
+			"template": "%s { border-left-color: %s; }"
+		},
+		/* Post Navigation */
+		{
+			"selector": "#page .site-content nav a",
+			"type"    : "text",
+			"label"   : "Post Navigation Link"
+		},
+		{
+			"selector": "#page .site-content nav a",
+			"type"    : "color",
+			"label"   : "Post Navigation Link color"
+		},
+		{
+			"selector": "#page .site-content nav a:hover",
+			"type"    : "color",
+			"label"   : "Post Navigation hover color"
+		},
+		/* Page Navigation */
+		{
+			"selector": ".page-links, .page-links a",
+			"type"    : "text",
+			"label"   : "Page Navigation Link"
+		},
+		{
+			"selector": ".page-links",
+			"type"    : "color",
+			"label"   : "Page Navigation color"
+		},
+		{
+			"selector": "#page .page-links a",
+			"type"    : "color",
+			"label"   : "Page Navigation Link color"
+		},
+		{
+			"selector": "#page .page-links a:hover",
+			"type"    : "color",
+			"label"   : "Page Navigation hover color"
+		},
+		{}
+	],
+	"Entry Meta": [
+		{
+			"selector": ".entry-meta",
+			"type"    : "text",
+			"label"   : "Entry meta"
+		},
+		{
+			"selector": ".entry-meta",
+			"type"    : "color",
+			"label"   : "Entry meta color"
+		},
+		{
+			"selector": "#page .entry-meta a",
+			"type"    : "color",
+			"label"   : "Entry link color"
+		},
+		{
+			"selector": "#page .entry-meta a:hover",
+			"type"    : "color",
+			"label"   : "Entry link hover color"
+		},
+		{
+			"selector": "#page .edit-link a",
+			"type"    : "text",
+			"label"   : "Edit link"
+		},
+		{
+			"selector": "#page .edit-link a",
+			"type"    : "color",
+			"label"   : "Edit link"
+		},
+		{
+			"selector": "#page .edit-link a:hover",
+			"type"    : "color",
+			"label"   : "Edit link hover"
+		},
+		{
+			"selector": ".edit-link a",
+			"type"    : "background-color",
+			"label"   : "Edit link background"
+		},
+		{
+			"selector": ".edit-link a:hover",
+			"type"    : "background-color",
+			"label"   : "Edit link background hover"
+		},
+		{}
+	],
+	"Comment": [
+		{
+			"selector": "#comments li.comment",
+			"type"    : "background-color",
+			"label"   : "Background color"
+		},
+		{
+			"selector": "#comments .comment .comment-content, #comments .comment .comment-content a",
+			"type"    : "text",
+			"label"   : "Content"
+		},
+		{
+			"selector": "#comments .comment .comment-content, .comment-content h1, .comment-content h2, .comment-content blockquote cite, .comment-content th, .comment-content td",
+			"type"    : "color",
+			"label"   : "Content color"
+		},
+		{
+			"selector": "#comments .comment .comment-content a",
+			"type"    : "color",
+			"label"   : "Link color"
+		},
+		{
+			"selector": "#comments .comment .comment-content a:hover",
+			"type"    : "color",
+			"label"   : "Link hover color"
+		},
+		{
+			"selector": ".comment-content pre",
+			"type"    : "text",
+			"label"   : "Preformatted"
+		},
+		{
+			"selector": ".comment-content pre",
+			"type"    : "color",
+			"label"   : "Preformatted color"
+		},
+		{
+			"selector": ".comment-content pre",
+			"type"    : "background-color",
+			"label"   : "Preformatted background color"
+		},
+		{
+			"selector": "#comments .pingback",
+			"type"    : "text",
+			"label"   : "Pingback"
+		},
+		{
+			"selector": "#comments .pingback",
+			"type"    : "color",
+			"label"   : "Pingback color"
+		},
+		{
+			"selector": "#comments .pingback a",
+			"type"    : "color",
+			"label"   : "Pingback Link color"
+		},
+		{
+			"selector": "#comments .pingback a:hover",
+			"type"    : "color",
+			"label"   : "Pingback Link hover color"
+		},
+		{}
+	],
+	"Comment Meta": [
+		{
+			"selector": ".comments-title",
+			"type"    : "text",
+			"label"   : "List Title"
+		},
+		{
+			"selector": ".comments-title",
+			"type"    : "color",
+			"label"   : "List Title color"
+		},
+		{
+			"selector": "#comments .comment-meta cite, #comments .comment-meta cite a",
+			"type"    : "text",
+			"label"   : "Author Meta"
+		},
+		{
+			"selector": "#comments .comment-meta cite",
+			"type"    : "color",
+			"label"   : "Author Meta color"
+		},
+		{
+			"selector": "#comments .comment-meta cite a",
+			"type"    : "color",
+			"label"   : "Author Meta link color"
+		},
+		{
+			"selector": "#comments .comment-meta cite a:hover",
+			"type"    : "color",
+			"label"   : "Author Meta link hover color"
+		},
+		{
+			"selector": "#comments .comment-meta time",
+			"type"    : "text",
+			"label"   : "Date Meta"
+		},
+		{
+			"selector": "#comments .comment-meta time",
+			"type"    : "color",
+			"label"   : "Date Meta color"
+		},
+		{
+			"selector": "#comments .comment-meta a time",
+			"type"    : "color",
+			"label"   : "Date Meta link color"
+		},
+		{
+			"selector": "#comments .comment-meta a:hover time",
+			"type"    : "color",
+			"label"   : "Date Meta link hover color"
+		},
+		{
+			"selector": ".comments-area li.bypostauthor cite span",
+			"type"    : "text",
+			"label"   : "Post Author Box"
+		},
+		{
+			"selector": ".comments-area li.bypostauthor cite span",
+			"type"    : "color",
+			"label"   : "Post Author Box color"
+		},
+		{
+			"selector": ".comments-area li.bypostauthor cite span",
+			"type"    : "background-color",
+			"label"   : "Post Author Box background color"
+		},
+		{
+			"selector": ".comments-area li.bypostauthor cite span",
+			"type"    : "color",
+			"label"   : "Post Author Box border color",
+			"template": "%s { border-color: %s; }"
+		},
+		{
+			"selector": "#comments a.comment-reply-link",
+			"type"    : "text",
+			"label"   : "Reply link"
+		},
+		{
+			"selector": "#comments a.comment-reply-link",
+			"type"    : "color",
+			"label"   : "Reply link color"
+		},
+		{
+			"selector": "#comments a.comment-reply-link:hover",
+			"type"    : "color",
+			"label"   : "Reply link hover color"
+		},
+		{
+			"selector": "#comments a.comment-reply-link",
+			"type"    : "background-color",
+			"label"   : "Reply link background color"
+		},
+		{
+			"selector": "#comments a.comment-reply-link:hover",
+			"type"    : "background-color",
+			"label"   : "Reply link hover background color"
+		},
+		{}
+	],
+	"Comment Response": [
+		{
+			"selector": "#respond",
+			"type"    : "background-color",
+			"label"   : "Background color"
+		},
+		{
+			"selector": "#respond h3#reply-title",
+			"type"    : "text",
+			"label"   : "Title"
+		},
+		{
+			"selector": "#respond h3#reply-title, #respond h3#reply-title a",
+			"type"    : "color",
+			"label"   : "Title color"
+		},
+		{
+			"selector": "#respond p",
+			"type"    : "text",
+			"label"   : "Description"
+		},
+		{
+			"selector": "#respond p",
+			"type"    : "color",
+			"label"   : "Description color"
+		},
+		{
+			"selector": "#commentform a",
+			"type"    : "text",
+			"label"   : "Description link"
+		},
+		{
+			"selector": "#commentform a",
+			"type"    : "color",
+			"label"   : "Description link color"
+		},
+		{
+			"selector": "#commentform a:hover",
+			"type"    : "color",
+			"label"   : "Description link hover color"
+		},
+		{
+			"selector": "#respond form p.form-allowed-tags",
+			"type"    : "text",
+			"label"   : "Allowed Tags"
+		},
+		{
+			"selector": "#respond form p.form-allowed-tags",
+			"type"    : "color",
+			"label"   : "Allowed Tags color"
+		},
+		{
+			"selector": "#respond label",
+			"type"    : "text",
+			"label"   : "Label"
+		},
+		{
+			"selector": "#respond label",
+			"type"    : "color",
+			"label"   : "Label color"
+		},
+		{
+			"selector": "#respond label",
+			"type"    : "background-color",
+			"label"   : "Label background color"
+		},
+		{
+			"selector": "#respond textarea, #respond input[type='text']",
+			"type"    : "text",
+			"label"   : "Response"
+		},
+		{
+			"selector": "#respond textarea, #respond input[type='text']",
+			"type"    : "color",
+			"label"   : "Response color"
+		},
+		{
+			"selector": "#respond textarea, #respond input[type='text']",
+			"type"    : "background-color",
+			"label"   : "Response background color"
+		},
+		{
+			"selector": "#respond textarea:focus, #respond input[type='text']:focus",
+			"type"    : "background-color",
+			"label"   : "Response focused background color"
+		},
+		{
+			"selector": "#respond textarea, #respond input[type='text']",
+			"type"    : "color",
+			"label"   : "Response border color",
+			"template": "%s { border-color: %s }"
+		},
+		{
+			"selector": "#respond input#submit",
+			"type"    : "text",
+			"label"   : "Submit button"
+		},
+		{
+			"selector": "#respond input#submit",
+			"type"    : "color",
+			"label"   : "Submit button color"
+		},
+		{
+			"selector": "#respond input#submit",
+			"type"    : "background-color",
+			"label"   : "Submit button background color",
+			"template": "%s { background-color: %s; background-image: none; }"
+		},
+		{
+			"selector": "#respond input#submit",
+			"type"    : "color",
+			"label"   : "Submit button border color",
+			"template": "%s { border-color: %s; }"
 		},
 		{}
 	],
@@ -371,7 +974,7 @@
 			"template": "%s { border-top-color: %s; }"
 		},
 		{
-			"selector": "#colophon",
+			"selector": "#colophon a",
 			"type"    : "text",
 			"label"   : "Credit"
 		},
