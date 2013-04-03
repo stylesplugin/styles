@@ -24,7 +24,7 @@ class Styles_Customize {
 		add_filter( 'styles_customize_settings', array( $this, 'load_settings_from_theme' ), 50 );
 
 		// Set storm-styles option to not autoload; does nothing if setting already exists
-		add_option( 'storm-styles', '', '', 'no' );
+		add_option( Styles_Helpers::get_option_key(), '', '', 'no' );
 
 	}
 
@@ -86,7 +86,7 @@ class Styles_Customize {
 			$json =  preg_replace('!/\*.*?\*/!s', '', file_get_contents( $json_file ) ); // strip comments before decoding
 			$settings = json_decode( $json, true );
 
-			if ( $json_error = Styles_Helpers::get_json_error( $json_file ) ) {
+			if ( $json_error = Styles_Helpers::get_json_error( $json_file, $settings ) ) {
 				wp_die( $json_error );
 			}
 		}
@@ -126,7 +126,10 @@ class Styles_Customize {
 			$i++;
 			$element['priority'] = $i;
 			if ( $class = Styles_Helpers::get_element_class( $element ) ) {
-				$class::add_item( $group_id, $element );
+
+				// PHP <= 5.2 support
+				// Otherwise, would be: $class::add_item( $group_id, $element );
+				call_user_func_array( $class.'::add_item', array( $group_id, $element ) );
 			}
 		}
 

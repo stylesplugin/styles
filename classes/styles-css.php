@@ -53,7 +53,7 @@ class Styles_CSS {
 		$css = false;
 
 		if ( empty( $wp_customize ) ) {
-			$css = get_option( 'storm-styles-css' );
+			$css = get_option( Styles_Helpers::get_option_key( 'css' ) );
 		}
 
 		if ( !empty( $wp_customize ) || empty( $css ) ) {
@@ -68,7 +68,7 @@ class Styles_CSS {
 					if ( $class = Styles_Helpers::get_element_class( $element ) ) {
 
 						$element = apply_filters( 'styles_pre_get_css', $element );
-						$css .= $class::get_css( $group, $element );
+						$css .= call_user_func_array( $class . '::get_css', array( $group, $element ) );
 					
 					}
 				}
@@ -77,7 +77,7 @@ class Styles_CSS {
 
 		$css = $this->google_fonts . $css;
 
-		update_option( 'storm-styles-css', $css );
+		update_option( Styles_Helpers::get_option_key( 'css' ), $css );
 		echo '<style id="storm-styles">' . $css . '</style>';
 
 	}
