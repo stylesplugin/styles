@@ -4,6 +4,7 @@ class Styles_Helpers {
 
 	static public $prefix = 'st_';
 	static public $control_id_counter = 0;
+	static private $template;
 
 	static public function sanitize_type( $type ) {
 		$type = str_replace( array('-', '_'), ' ', $type );
@@ -33,7 +34,7 @@ class Styles_Helpers {
 	static public function get_setting_id( $group, $id ) {
 		$id = str_replace( '-', '_', trim( $id, '_' ) );
 
-		$setting_id = "storm-styles[$group][$id]";
+		$setting_id = self::get_option_key() . "[$group][$id]";
 
 		return $setting_id;
 	}
@@ -72,7 +73,7 @@ class Styles_Helpers {
 	}
 
 	public static function get_element_setting_value( $group, $element ) {
-		$settings = get_option( 'storm-styles' );
+		$settings = get_option( self::get_option_key() );
 
 		$group_id = self::get_group_id( $group );
 		$id = self::get_element_id( $element );
@@ -99,5 +100,30 @@ class Styles_Helpers {
 		$url = site_url( $path );
 
 		return "<h3>JSON error</h3>$error<p>Please check <code><a href='$url' target='_blank'>$path</a></code></p>";
+	}
+
+	public static function get_template() {
+		if ( isset( self::$template ) ) {
+			return self::$template;
+		}
+
+		global $wp_customize;
+
+		if ( is_a( $wp_customize, 'WP_Customize_Manager' ) ) {
+			self::$template = $wp_customize->theme()->template;
+		}else {
+			self::$template = get_template();
+		}
+
+		return self::$template;
+
+	}
+
+	public static function get_option_key( $suffix = false ) {
+		if ( $suffix ) {
+			return 'storm-styles-' . self::get_template() . '-' . $suffix;
+		}else {
+			return 'storm-styles-' . self::get_template();
+		}
 	}
 }

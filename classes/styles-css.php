@@ -53,7 +53,7 @@ class Styles_CSS {
 		$css = false;
 
 		if ( empty( $wp_customize ) ) {
-			$css = get_option( 'storm-styles-css' );
+			$css = get_option( Styles_Helpers::get_option_key( 'css' ) );
 		}
 
 		if ( !empty( $wp_customize ) || empty( $css ) ) {
@@ -77,7 +77,7 @@ class Styles_CSS {
 
 		$css = $this->google_fonts . $css;
 
-		update_option( 'storm-styles-css', $css );
+		update_option( Styles_Helpers::get_option_key( 'css' ), $css );
 		echo '<style id="storm-styles">' . $css . '</style>';
 
 	}
