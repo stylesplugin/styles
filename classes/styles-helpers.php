@@ -85,21 +85,33 @@ class Styles_Helpers {
 		}
 	}
 
-	public static function get_json_error( $json_file ) {
+	public static function get_json_error( $json_file, $json_result ) {
+		$path = str_replace( ABSPATH, '', $json_file );
+		$url = site_url( $path );
+		
+		$syntax_error = 'Malformed JSON. Check for errors. PHP <a href="http://php.net/manual/en/function.json-decode.php" target="_blank">json_decode</a> does not support comments or trailing commas.';
+		$template = '<h3>JSON error</h3>%s<p>Please check <code><a href="%s" target="_blank">%s</a></code></p>';
+
+		// PHP 5.2
+		if ( !function_exists( 'json_last_error' ) ) {
+			if ( null == $json_result ) {
+				return sprintf( $template, $syntax_error, $url, $path );
+			}
+			return false;
+		}
+		
+		// PHP 5.3+
 		switch ( json_last_error() ) {
 			case JSON_ERROR_NONE:           return false; break;
 			case JSON_ERROR_DEPTH:          $error = 'Maximum stack depth exceeded.'; break;
 			case JSON_ERROR_STATE_MISMATCH: $error = 'Underflow or the modes mismatch.'; break;
 			case JSON_ERROR_CTRL_CHAR:      $error = 'Unexpected control character.'; break;
-			case JSON_ERROR_SYNTAX:         $error = 'Malformed JSON. Check for errors. PHP <a href="http://php.net/manual/en/function.json-decode.php" target="_blank">json_decode</a> does not support comments or trailing commas.'; break;
+			case JSON_ERROR_SYNTAX:         $error = $syntax_error; break;
 			case JSON_ERROR_UTF8:           $error = 'Malformed UTF-8 characters, possibly incorrectly encoded.'; break;
 			default:                        $error = 'Unknown JSON error.'; break;
 		}
 
-		$path = str_replace( ABSPATH, '', $json_file );
-		$url = site_url( $path );
-
-		return "<h3>JSON error</h3>$error<p>Please check <code><a href='$url' target='_blank'>$path</a></code></p>";
+		return sprintf( $template, $error, $url, $path );
 	}
 
 	public static function get_template() {
