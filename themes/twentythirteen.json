@@ -395,7 +395,7 @@
 			"label"   : "Blockquote color"
 		},
 		{
-			"selector": ".entry-content blockquote, article.format-quote .entry-content blockquote",
+			"selector": ".entry-content blockquote",
 			"type"    : "background-color",
 			"label"   : "Blockquote background color"
 		},
@@ -474,6 +474,55 @@
 			"selector": ".entry-content .wp-caption-text",
 			"type"    : "color",
 			"label"   : "Caption color"
+		},
+		/* Password */
+		{
+			"selector": ".post-password-required input[type='password']",
+			"type"    : "text",
+			"label"   : "Password Input"
+		},
+		{
+			"selector": ".post-password-required input[type='password']",
+			"type"    : "color",
+			"label"   : "Password Input color"
+		},
+		{
+			"selector": ".post-password-required input[type='password']",
+			"type"    : "background-color",
+			"label"   : "Password Input background color"
+		},
+		{
+			"selector": ".post-password-required input[type='password']:focus",
+			"type"    : "background-color",
+			"label"   : "Password Input focused background color"
+		},
+		{
+			"selector": ".post-password-required input[type='password']",
+			"type"    : "color",
+			"label"   : "Password Input border color",
+			"template": "%s { border-color: %s }"
+		},
+		{
+			"selector": ".post-password-required input[type='submit']",
+			"type"    : "text",
+			"label"   : "Password Submit button"
+		},
+		{
+			"selector": ".post-password-required input[type='submit']",
+			"type"    : "color",
+			"label"   : "Password Submit button color"
+		},
+		{
+			"selector": ".post-password-required input[type='submit']",
+			"type"    : "background-color",
+			"label"   : "Password Submit button background color",
+			"template": "%s { background-color: %s; background-image: none; }"
+		},
+		{
+			"selector": ".post-password-required input[type='submit']",
+			"type"    : "color",
+			"label"   : "Password Submit button border color",
+			"template": "%s { border-color: %s; }"
 		},
 		/* Post Navigation */
 		{
@@ -574,7 +623,306 @@
 		{}
 	],
 	"Blog" : [
-
+		/* Gallery */
+		{
+			"selector": ".format-gallery",
+			"type"    : "background-color",
+			"label"   : "Gallery Post Format background color"
+		},
+		{
+			"selector": ".format-gallery .entry-title, #page .format-gallery .entry-title a",
+			"type"    : "color",
+			"label"   : "Gallery Post Format Title color"
+		},
+		{
+			"selector": "#page .format-gallery .entry-title a:hover",
+			"type"    : "color",
+			"label"   : "Gallery Post Format Title hover color"
+		},
+		{
+			"selector": "#page .format-gallery .entry-meta a, #page .format-gallery .entry-meta a:hover",
+			"type"    : "color",
+			"label"   : "Gallery Post Format Meta color"
+		},
+		/* Chat */
+		{
+			"selector": ".format-chat",
+			"type"    : "background-color",
+			"label"   : "Chat Post Format background color"
+		},
+		{
+			"selector": ".format-chat .entry-title, #page .format-chat .entry-title a",
+			"type"    : "color",
+			"label"   : "Chat Post Format Title color"
+		},
+		{
+			"selector": "#page .format-chat .entry-title a:hover",
+			"type"    : "color",
+			"label"   : "Chat Post Format Title hover color"
+		},
+		{
+			"selector": ".format-chat .chat",
+			"type"    : "color",
+			"label"   : "Chat Post Format text color"
+		},
+		{
+			"selector": "#page .format-chat .chat a",
+			"type"    : "color",
+			"label"   : "Chat Post Format link color"
+		},
+		{
+			"selector": "#page .format-chat .chat a:hover",
+			"type"    : "color",
+			"label"   : "Chat Post Format link hover color"
+		},
+		{
+			"selector": "#page .format-chat .entry-meta a, #page .format-chat .entry-meta a:hover",
+			"type"    : "color",
+			"label"   : "Chat Post Format Meta color"
+		},
+		/* Aside */
+		{
+			"selector": ".format-aside",
+			"type"    : "background-color",
+			"label"   : "Aside Post Format background color"
+		},
+		{
+			"selector": ".format-aside .entry-content p",
+			"type"    : "color",
+			"label"   : "Aside Post Format text color"
+		},
+		{
+			"selector": "#page .format-aside .entry-content a",
+			"type"    : "color",
+			"label"   : "Aside Post Format link color"
+		},
+		{
+			"selector": "#page .format-aside .entry-content a:hover",
+			"type"    : "color",
+			"label"   : "Aside Post Format link hover color"
+		},
+		{
+			"selector": "#page .format-aside .entry-meta a, #page .format-aside .entry-meta a:hover",
+			"type"    : "color",
+			"label"   : "Aside Post Format Meta color"
+		},
+		/* Link */
+		{
+			"selector": ".format-link",
+			"type"    : "background-color",
+			"label"   : "Link Post Format background color"
+		},
+		{
+			"selector": ".format-link .entry-title, #page .format-link .entry-title a",
+			"type"    : "color",
+			"label"   : "Link Post Format Title color"
+		},
+		{
+			"selector": "#page .format-link .entry-title a:hover",
+			"type"    : "color",
+			"label"   : "Link Post Format Title hover color"
+		},
+		{
+			"selector": ".format-link .entry-content p",
+			"type"    : "color",
+			"label"   : "Link Post Format text color"
+		},
+		{
+			"selector": "#page .format-link a",
+			"type"    : "color",
+			"label"   : "Link Post Format link color"
+		},
+		{
+			"selector": "#page .format-link a:hover",
+			"type"    : "color",
+			"label"   : "Link Post Format link hover color"
+		},
+		{
+			"selector": "#page .format-link .entry-meta a, #page .format-link .entry-meta a:hover",
+			"type"    : "color",
+			"label"   : "Link Post Format Meta color"
+		},
+		/* Image */
+		{
+			"selector": ".format-image",
+			"type"    : "background-color",
+			"label"   : "Image Post Format background color"
+		},
+		{
+			"selector": ".format-image .entry-title, #page .format-image .entry-title a",
+			"type"    : "color",
+			"label"   : "Image Post Format Title color"
+		},
+		{
+			"selector": "#page .format-image .entry-title a:hover",
+			"type"    : "color",
+			"label"   : "Image Post Format Title hover color"
+		},
+		{
+			"selector": "#page .format-image .entry-meta a, #page .format-image .entry-meta a:hover",
+			"type"    : "color",
+			"label"   : "Image Post Format Meta color"
+		},
+		/* Quote */
+		{
+			"selector": ".format-quote, .format-quote .entry-content blockquote",
+			"type"    : "background-color",
+			"label"   : "Quote Post Format background color"
+		},
+		{
+			"selector": ".format-quote .entry-content blockquote, .format-quote .entry-content blockquote p",
+			"type"    : "color",
+			"label"   : "Quote Post Format text color"
+		},
+		{
+			"selector": "#page .format-quote a",
+			"type"    : "color",
+			"label"   : "Quote Post Format link color"
+		},
+		{
+			"selector": "#page .format-quote a:hover",
+			"type"    : "color",
+			"label"   : "Quote Post Format link hover color"
+		},
+		{
+			"selector": "#page .format-quote .entry-meta a, #page .format-quote .entry-meta a:hover",
+			"type"    : "color",
+			"label"   : "Quote Post Format Meta color"
+		},
+		/* Status */
+		{
+			"selector": ".format-status",
+			"type"    : "background-color",
+			"label"   : "Status Post Format background color"
+		},
+		{
+			"selector": ".format-status .entry-content, .format-status .entry-content p",
+			"type"    : "color",
+			"label"   : "Status Post Format text color"
+		},
+		{
+			"selector": "#page .format-status a",
+			"type"    : "color",
+			"label"   : "Status Post Format link color"
+		},
+		{
+			"selector": "#page .format-status a:hover",
+			"type"    : "color",
+			"label"   : "Status Post Format link hover color"
+		},
+		{
+			"selector": "#page .format-status .entry-meta a, #page .format-status .entry-meta a:hover",
+			"type"    : "color",
+			"label"   : "Status Post Format Meta color"
+		},
+		/* Video */
+		{
+			"selector": ".format-video",
+			"type"    : "background-color",
+			"label"   : "Video Post Format background color"
+		},
+		{
+			"selector": ".format-video .entry-title, #page .format-video .entry-title a",
+			"type"    : "color",
+			"label"   : "Video Post Format Title color"
+		},
+		{
+			"selector": "#page .format-video .entry-title a:hover",
+			"type"    : "color",
+			"label"   : "Video Post Format Title hover color"
+		},
+		{
+			"selector": ".format-video .entry-content p",
+			"type"    : "color",
+			"label"   : "Video Post Format text color"
+		},
+		{
+			"selector": "#page .format-video a",
+			"type"    : "color",
+			"label"   : "Video Post Format link color"
+		},
+		{
+			"selector": "#page .format-video a:hover",
+			"type"    : "color",
+			"label"   : "Video Post Format link hover color"
+		},
+		{
+			"selector": "#page .format-video .entry-meta a, #page .format-video .entry-meta a:hover",
+			"type"    : "color",
+			"label"   : "Video Post Format Meta color"
+		},
+		/* Audio */
+		{
+			"selector": ".format-audio",
+			"type"    : "background-color",
+			"label"   : "Audio Post Format background color"
+		},
+		{
+			"selector": ".format-audio .entry-title, #page .format-audio .entry-title a",
+			"type"    : "color",
+			"label"   : "Audio Post Format Title color"
+		},
+		{
+			"selector": "#page .format-audio .entry-title a:hover",
+			"type"    : "color",
+			"label"   : "Audio Post Format Title hover color"
+		},
+		{
+			"selector": ".format-audio .entry-content p",
+			"type"    : "color",
+			"label"   : "Audio Post Format text color"
+		},
+		{
+			"selector": "#page .format-audio a",
+			"type"    : "color",
+			"label"   : "Audio Post Format link color"
+		},
+		{
+			"selector": "#page .format-audio a:hover",
+			"type"    : "color",
+			"label"   : "Audio Post Format link hover color"
+		},
+		{
+			"selector": "#page .format-audio .entry-meta a, #page .format-audio .entry-meta a:hover",
+			"type"    : "color",
+			"label"   : "Audio Post Format Meta color"
+		},
+		/* Paging Navigation */
+		{
+			"selector": ".paging-navigation",
+			"type"    : "background-color",
+			"label"   : "Navigation background color"
+		},
+		{
+			"selector": ".paging-navigation .meta-nav",
+			"type"    : "background-color",
+			"label"   : "Navigation arrow background color"
+		},
+		{
+			"selector": ".paging-navigation a:hover .meta-nav",
+			"type"    : "background-color",
+			"label"   : "Navigation arrow background hover color"
+		},
+		{
+			"selector": ".paging-navigation .meta-nav",
+			"type"    : "color",
+			"label"   : "Navigation arrow color"
+		},
+		{
+			"selector": "#page .paging-navigation .nav-links a",
+			"type"    : "text",
+			"label"   : "Navigation link "
+		},
+		{
+			"selector": "#page .paging-navigation .nav-links a",
+			"type"    : "color",
+			"label"   : "Navigation link color"
+		},
+		{
+			"selector": "#page .paging-navigation .nav-links a:hover",
+			"type"    : "color",
+			"label"   : "Navigation link hover color"
+		},
 		{}
 	],
 	"Comment"                            : [
@@ -619,22 +967,22 @@
 			"label"   : "Preformatted background color"
 		},
 		{
-			"selector": "#page #comments .trackback",
+			"selector": "#page #comments .pingback",
 			"type"    : "text",
 			"label"   : "Pingback"
 		},
 		{
-			"selector": "#page #comments .trackback",
+			"selector": "#page #comments .pingback",
 			"type"    : "color",
 			"label"   : "Pingback color"
 		},
 		{
-			"selector": "#page #comments .trackback a",
+			"selector": "#page #comments .pingback a",
 			"type"    : "color",
 			"label"   : "Pingback Link color"
 		},
 		{
-			"selector": "#page #comments .trackback a:hover",
+			"selector": "#page #comments .pingback a:hover",
 			"type"    : "color",
 			"label"   : "Pingback Link hover color"
 		},
@@ -705,7 +1053,7 @@
 	],
 	"Comment Response"                   : [
 		{
-			"selector": "#respond",
+			"selector": "#respond, .no-comments",
 			"type"    : "background-color",
 			"label"   : "Background color"
 		},
@@ -720,12 +1068,12 @@
 			"label"   : "Title color"
 		},
 		{
-			"selector": "#respond p",
+			"selector": "#respond p, p.no-comments",
 			"type"    : "text",
 			"label"   : "Description"
 		},
 		{
-			"selector": "#respond p",
+			"selector": "#respond p, p.no-comments",
 			"type"    : "color",
 			"label"   : "Description color"
 		},
