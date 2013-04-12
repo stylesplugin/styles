@@ -537,7 +537,7 @@
 	],
 	"Entry Meta"                         : [
 		{
-			"selector": ".entry-meta",
+			"selector": ".entry-meta, #page .entry-meta a",
 			"type"    : "text",
 			"label"   : "Entry meta"
 		},
@@ -571,16 +571,10 @@
 			"type"    : "color",
 			"label"   : "Edit link hover"
 		},
-		{
-			"selector": ".edit-link a",
-			"type"    : "background-color",
-			"label"   : "Edit link background"
-		},
-		{
-			"selector": ".edit-link a:hover",
-			"type"    : "background-color",
-			"label"   : "Edit link background hover"
-		},
+		{}
+	],
+	"Blog" : [
+
 		{}
 	],
 	"Comment"                            : [
@@ -625,22 +619,22 @@
 			"label"   : "Preformatted background color"
 		},
 		{
-			"selector": "#comments .pingback",
+			"selector": "#page #comments .trackback",
 			"type"    : "text",
 			"label"   : "Pingback"
 		},
 		{
-			"selector": "#comments .pingback",
+			"selector": "#page #comments .trackback",
 			"type"    : "color",
 			"label"   : "Pingback color"
 		},
 		{
-			"selector": "#comments .pingback a",
+			"selector": "#page #comments .trackback a",
 			"type"    : "color",
 			"label"   : "Pingback Link color"
 		},
 		{
-			"selector": "#comments .pingback a:hover",
+			"selector": "#page #comments .trackback a:hover",
 			"type"    : "color",
 			"label"   : "Pingback Link hover color"
 		},
@@ -683,11 +677,6 @@
 			"label"   : "Date Meta"
 		},
 		{
-			"selector": "#comments .comment-meta time",
-			"type"    : "color",
-			"label"   : "Date Meta color"
-		},
-		{
 			"selector": "#comments .comment-meta a time",
 			"type"    : "color",
 			"label"   : "Date Meta link color"
@@ -696,27 +685,6 @@
 			"selector": "#comments .comment-meta a:hover time",
 			"type"    : "color",
 			"label"   : "Date Meta link hover color"
-		},
-		{
-			"selector": ".comments-area li.bypostauthor cite span",
-			"type"    : "text",
-			"label"   : "Post Author Box"
-		},
-		{
-			"selector": ".comments-area li.bypostauthor cite span",
-			"type"    : "color",
-			"label"   : "Post Author Box color"
-		},
-		{
-			"selector": ".comments-area li.bypostauthor cite span",
-			"type"    : "background-color",
-			"label"   : "Post Author Box background color"
-		},
-		{
-			"selector": ".comments-area li.bypostauthor cite span",
-			"type"    : "color",
-			"label"   : "Post Author Box border color",
-			"template": "%s { border-color: %s; }"
 		},
 		{
 			"selector": "#comments a.comment-reply-link",
@@ -732,16 +700,6 @@
 			"selector": "#comments a.comment-reply-link:hover",
 			"type"    : "color",
 			"label"   : "Reply link hover color"
-		},
-		{
-			"selector": "#comments a.comment-reply-link",
-			"type"    : "background-color",
-			"label"   : "Reply link background color"
-		},
-		{
-			"selector": "#comments a.comment-reply-link:hover",
-			"type"    : "background-color",
-			"label"   : "Reply link hover background color"
 		},
 		{}
 	],
@@ -787,12 +745,12 @@
 			"label"   : "Description link hover color"
 		},
 		{
-			"selector": "#respond form p.form-allowed-tags",
+			"selector": "#respond form .form-allowed-tags, #respond form .form-allowed-tags code",
 			"type"    : "text",
 			"label"   : "Allowed Tags"
 		},
 		{
-			"selector": "#respond form p.form-allowed-tags",
+			"selector": "#respond form .form-allowed-tags, #respond form .form-allowed-tags code",
 			"type"    : "color",
 			"label"   : "Allowed Tags color"
 		},
@@ -807,32 +765,27 @@
 			"label"   : "Label color"
 		},
 		{
-			"selector": "#respond label",
-			"type"    : "background-color",
-			"label"   : "Label background color"
-		},
-		{
-			"selector": "#respond textarea, #respond input[type='text']",
+			"selector": "#respond textarea, #respond input[type='text'], #respond input[type='email'], #respond input[type='url']",
 			"type"    : "text",
 			"label"   : "Response"
 		},
 		{
-			"selector": "#respond textarea, #respond input[type='text']",
+			"selector": "#respond textarea, #respond input[type='text'], #respond input[type='email'], #respond input[type='url']",
 			"type"    : "color",
 			"label"   : "Response color"
 		},
 		{
-			"selector": "#respond textarea, #respond input[type='text']",
+			"selector": "#respond textarea, #respond input[type='text'], #respond input[type='email'], #respond input[type='url']",
 			"type"    : "background-color",
 			"label"   : "Response background color"
 		},
 		{
-			"selector": "#respond textarea:focus, #respond input[type='text']:focus",
+			"selector": "#respond textarea:focus, #respond input[type='text']:focus, #respond input[type='email']:focus, #respond input[type='url']:focus",
 			"type"    : "background-color",
 			"label"   : "Response focused background color"
 		},
 		{
-			"selector": "#respond textarea, #respond input[type='text']",
+			"selector": "#respond textarea, #respond input[type='text'], #respond input[type='email'], #respond input[type='url']",
 			"type"    : "color",
 			"label"   : "Response border color",
 			"template": "%s { border-color: %s }"
