@@ -68,7 +68,7 @@ class Styles_Admin {
 	 */
 	public function activate_notice() {
 		$slug = 'styles-' . get_template();
-		$plugin_file = $slug . '/' . $slug . '.php';
+		$plugin_file = $slug . '/' . 'plugin.php';
 
 		if ( is_dir( WP_PLUGIN_DIR . '/' . $slug ) ) {
 			if ( is_plugin_inactive( $plugin_file ) ) {

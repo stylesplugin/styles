@@ -7,20 +7,11 @@ class Styles_Customize {
 	 */
 	var $plugin;
 
-	/**
-	 * @var array
-	 */
-	var $settings = array();
-
 	function __construct( $plugin ) {
 		$this->plugin = $plugin;
-		
+
 		add_action( 'customize_register', array( $this, 'add_sections' ), 10 );
 		add_action( 'customize_controls_enqueue_scripts',  array( $this, 'enqueue_scripts' ) );
-	
-		// Load settings from various sources with filters
-		add_filter( 'styles_customize_settings', array( $this, 'load_settings_from_plugin' ), 20 );
-		add_filter( 'styles_customize_settings', array( $this, 'load_settings_from_theme' ), 50 );
 
 		// Set storm-styles option to not autoload; does nothing if setting already exists
 		add_option( Styles_Helpers::get_option_key(), '', '', 'no' );
@@ -38,53 +29,6 @@ class Styles_Customize {
 	}
 
 	/**
-	 * Load settings as JSON either from transient / API or theme file
-	 *
-	 * @return array
-	 */
-	public function get_settings() {
-
-		// Return cached settings if they've already been processed
-		if ( !empty( $this->settings ) ) {
-			return $this->settings;
-		}
-
-		// Plugin Authors: Filter to override settings sources
-		$this->settings = apply_filters( 'styles_customize_settings', $this->settings );
-
-		return $this->settings;
-	}
-
-	/**
-	 * Load settings from path provided by plugin
-	 */
-	public function load_settings_from_plugin( $defaults = array() ) {
-		$json_file = apply_filters( 'styles_customize_json_file', null );
-		return $this->load_settings_from_json_file( $json_file, $defaults );
-	}
-
-	/**
-	 * Load settings from theme file formatted as JSON
-	 */
-	public function load_settings_from_theme( $defaults = array() ) {
-		$json_file = get_stylesheet_directory() . '/customize.json';
-		return $this->load_settings_from_json_file( $json_file, $defaults );
-	}
-
-	public function load_settings_from_json_file( $json_file, $default_settings = array() ) {
-		$settings = array();
-		if ( file_exists( $json_file ) ) {
-			$json =  preg_replace('!/\*.*?\*/!s', '', file_get_contents( $json_file ) ); // strip comments before decoding
-			$settings = json_decode( $json, true );
-
-			if ( $json_error = Styles_Helpers::get_json_error( $json_file, $settings ) ) {
-				wp_die( $json_error );
-			}
-		}
-		return wp_parse_args( $settings, $default_settings );
-	}
-
-	/**
 	 * Register sections with WordPress theme customizer in WordPress 3.4+
 	 * e.g., General, Header, Footer, Content, Sidebar
 	 */
@@ -92,7 +36,7 @@ class Styles_Customize {
 		global $wp_customize;
 
 		$i = 950;
-		foreach ( $this->get_settings() as $group => $elements ) {
+		foreach ( $this->plugin->theme->get_settings() as $group => $elements ) {
 			$i++;
 			
 			// Groups
