@@ -30,6 +30,11 @@ class Styles_Plugin {
 	var $css;
 
 	/**
+	 * @var Styles_Theme
+	 */
+	var $theme;
+
+	/**
 	 * @var Styles_Customize
 	 */
 	var $customize;
@@ -43,10 +48,19 @@ class Styles_Plugin {
 
 		require_once dirname( __FILE__ ) . '/styles-helpers.php';
 
-		add_action( 'customize_register', array( $this, 'customize_register' ), 1 );
+		add_action( 'init', array( $this, 'init' ) );
 		add_action( 'wp_head', array( $this, 'wp_head' ), 999 );
-		add_action( 'admin_init', array( $this, 'admin_init' ) );
 		
+		add_action( 'admin_init', array( $this, 'admin_init' ) );
+		add_action( 'customize_register', array( $this, 'customize_register' ), 1 );
+		
+	}
+
+	public function init() {
+		if ( !is_a( $this->theme, 'Styles_Theme') ) {
+			require_once dirname( __FILE__ ) . '/styles-theme.php';
+			$this->theme = new Styles_Theme( $this );
+		}
 	}
 
 	public function admin_init() {
