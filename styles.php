@@ -44,6 +44,7 @@ function styles_plugin_init() {
 	}
 
 	if ( !defined( 'STYLES_BASENAME' ) ) define( 'STYLES_BASENAME', plugin_basename( __FILE__ ) );
+	if ( !defined( 'STYLES_DIR' ) ) define( 'STYLES_DIR', dirname( __FILE__ ) );
 
 	require dirname ( __FILE__ ) . '/classes/styles-plugin.php';
 	
