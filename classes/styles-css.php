@@ -63,7 +63,7 @@ class Styles_CSS {
 
 			$this->plugin->customize_register( $wp_customize );
 
-			foreach ( $this->plugin->theme->get_settings() as $group => $elements ) {
+			foreach ( $this->plugin->customize->get_settings() as $group => $elements ) {
 				foreach ( $elements as $element ) {
 					if ( $class = Styles_Helpers::get_element_class( $element ) ) {
 

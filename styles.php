@@ -29,7 +29,7 @@ Git URI: https://updates%40brainstormmedia.com:updates@bitbucket.org/brainstormm
 
 // Beta updates from Git repository
 if ( is_admin() && !class_exists('Storm_Git_Updater') ) {
-	include dirname(__FILE__).'/git-updater/updater.php';
+	include dirname( __FILE__ ) . '/git-updater/updater.php';
 }
 
 function styles_plugin_init() {
@@ -50,4 +50,4 @@ function styles_plugin_init() {
 	$storm_styles = new Styles_Plugin();
 
 }
-add_action( 'init', 'styles_plugin_init', 1 );
+add_action( 'plugins_loaded', 'styles_plugin_init' );

@@ -30,11 +30,6 @@ class Styles_Plugin {
 	var $css;
 
 	/**
-	 * @var Styles_Theme
-	 */
-	var $theme;
-
-	/**
 	 * @var Styles_Customize
 	 */
 	var $customize;
@@ -44,28 +39,45 @@ class Styles_Plugin {
 	 */
 	var $admin;
 
+	/**
+	 * @var Styles_Child
+	 */
+	var $child;
+
 	public function __construct() {
 
 		require_once dirname( __FILE__ ) . '/styles-helpers.php';
 
-		add_action( 'init', array( $this, 'init' ) );
-		add_action( 'wp_head', array( $this, 'wp_head' ), 999 );
+		add_action( 'wp_head', array( $this, 'wp_head' ), 1000 );
 		
-		add_action( 'admin_init', array( $this, 'admin_init' ) );
+		add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ), 15 );
+		add_action( 'admin_menu', array( $this, 'admin_menu' ), 1 );
 		add_action( 'customize_register', array( $this, 'customize_register' ), 1 );
 		
 	}
 
-	public function init() {
-		if ( !is_a( $this->theme, 'Styles_Theme') ) {
-			require_once dirname( __FILE__ ) . '/styles-theme.php';
-			$this->theme = new Styles_Theme( $this );
+	/**
+	 * Set up detection for child plugins that follow common patterns
+	 */
+	public function plugins_loaded() {
+		if ( !is_a( $this->child, 'Styles_Child') ) {
+
+			require_once dirname( __FILE__ ) . '/styles-child.php';
+			require_once dirname( __FILE__ ) . '/styles-child-updatable.php';
+			require_once dirname( __FILE__ ) . '/styles-child-theme.php';
+
+			$this->child = new Styles_Child( $this );
 		}
 	}
 
-	public function admin_init() {
+	/**
+	 * Setup WP Admin user interface
+	 */
+	public function admin_menu() {
 		if ( !is_a( $this->admin, 'Styles_Admin') ) {
+
 			require_once dirname( __FILE__ ) . '/styles-admin.php';
+
 			$this->admin = new Styles_Admin( $this );
 		}
 	}
@@ -75,7 +87,9 @@ class Styles_Plugin {
 	 */
 	public function customize_register( $wp_customize ) {
 		if ( !is_a( $this->customize, 'Styles_Customize') ) {
+
 			require_once dirname( __FILE__ ) . '/styles-customize.php';
+
 			$this->customize = new Styles_Customize( $this );
 		}
 	}
@@ -85,7 +99,9 @@ class Styles_Plugin {
 	 */
 	public function wp_head() {
 		if ( !is_a( $this->css, 'Styles_CSS') ) {
+
 			require_once dirname( __FILE__ ) . '/styles-css.php';
+
 			$this->css = new Styles_CSS( $this );
 		}
 		$this->css->output_css();

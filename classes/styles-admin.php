@@ -13,21 +13,33 @@ class Styles_Admin {
 	var $notices = array();
 
 	var $default_themes = array(
-		// 'twentyten',
+		'twentyten',
 		'twentyeleven',
 		'twentytwelve',
 		'twentythirteen',
 	);
 
+	/**
+	 * @var Styles_License
+	 */
+	var $license;
+
 	function __construct( $plugin ) {
 		$this->plugin = $plugin;
 
+		// Notices
 		add_action( 'admin_init', array( $this, 'install_default_themes_notice' ), 20 );
 		add_action( 'admin_init', array( $this, 'activate_notice' ), 30 );
 		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 
+		// Scripts
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+
+		// Plugin Meta
 		add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 10, 2 );
+
+		// License Menu
+		add_action( 'admin_menu', array( $this, 'license_menu' ) );
 	}
 
 	/**
@@ -39,6 +51,7 @@ class Styles_Admin {
 
 	public function plugin_row_meta( $meta, $basename ) {
 		if ( STYLES_BASENAME == $basename ) {
+			$meta[2] = str_replace( 'Visit plugin site', 'Get More Themes', $meta[2] );
 			$meta[] = '<a class="button button-primary" href="' . network_admin_url( 'customize.php' ) . '">Customize Theme</a>';
 		}
 		return $meta;
@@ -84,5 +97,21 @@ class Styles_Admin {
 			echo "<div class='updated fade' id='styles-$key'>$message</div>";
 		}
 	}
+
+	function license_menu() {
+		$plugins = apply_filters( 'styles_license_form_plugins', array() );
+
+		if ( !empty( $plugins ) ) {
+			add_plugins_page( 'Styles Licenses', 'Styles Licenses', 'manage_options', 'styles-license', array( $this, 'license_page' ) );
+		}
+	}
+
+    /**
+     * Call the view file to display the license modal window
+     */
+    function license_page() {
+        require_once dirname( dirname( __FILE__ ) ) . '/views/licenses.php';
+        exit;
+    }
 
 }
