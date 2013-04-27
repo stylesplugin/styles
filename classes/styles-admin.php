@@ -106,9 +106,6 @@ class Styles_Admin {
 		}
 	}
 
-    /**
-     * Call the view file to display the license modal window
-     */
     function license_page() {
         require_once dirname( dirname( __FILE__ ) ) . '/views/licenses.php';
         exit;
