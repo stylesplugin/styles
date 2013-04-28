@@ -4,13 +4,8 @@ class Styles_Control_Color extends Styles_Control {
 	var $suffix = 'Text Color';
 	var $template = '$selector { color: $value; }';
 
-	var $post_message_part;
-
 	public function __construct( $group, $element ) {
 		parent::__construct( $group, $element );
-
-		$this->post_message_part = file_get_contents( STYLES_DIR . '/js/post-message-part-color.js' );
-
 	}
 
 	/**
@@ -64,7 +59,7 @@ class Styles_Control_Color extends Styles_Control {
 		$js .= str_replace(
 			array( '@setting@', '@selector@' ),
 			array( $this->setting, $this->jquery_selector() ),
-			$this->post_message_part
+			file_get_contents( STYLES_DIR . '/js/post-message-part-color.js' )
 		);
 
 		return $js . PHP_EOL;

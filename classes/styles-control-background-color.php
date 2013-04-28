@@ -3,12 +3,9 @@
 class Styles_Control_Background_Color extends Styles_Control {
 	var $suffix = 'Background Color';
 	var $template = '$selector { background-color: $value; }';
-	var $post_message_part;
 
 	public function __construct( $group, $element ) {
 		parent::__construct( $group, $element );
-
-		$this->post_message_part = file_get_contents( STYLES_DIR . '/js/post-message-part-background-color.js' );
 	}
 
 	/**
@@ -64,7 +61,7 @@ class Styles_Control_Background_Color extends Styles_Control {
 		$js .= str_replace(
 			array( '@setting@', '@selector@' ),
 			array( $this->setting, $selector ),
-			$this->post_message_part
+			file_get_contents( STYLES_DIR . '/js/post-message-part-background-color.js' )
 		);
 
 		return $js . PHP_EOL;
