@@ -2,6 +2,7 @@
 
 class Styles_Control_Color extends Styles_Control {
 	var $suffix = 'Text Color';
+	var $template = '$selector { color: $value; }';
 
 	var $post_message_part;
 
@@ -48,7 +49,11 @@ class Styles_Control_Color extends Styles_Control {
 
 		$css = '';
 		if ( $value ) {
-			$css = sprintf( $this->template, $this->selector, $value );
+			$args = array(
+				'template' => $this->template,
+				'value' => $value,
+			);
+			$css = $this->apply_template( $args );
 		}
 
 		// Filter effects final CSS output, but not postMessage updates

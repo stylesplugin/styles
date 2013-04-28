@@ -2,7 +2,7 @@
 
 class Styles_Control_Background_Color extends Styles_Control {
 	var $suffix = 'Background Color';
-	var $template = '%s { background-color: %s; }';
+	var $template = '$selector { background-color: $value; }';
 	var $post_message_part;
 
 	public function __construct( $group, $element ) {
@@ -47,7 +47,11 @@ class Styles_Control_Background_Color extends Styles_Control {
 
 		$css = '';
 		if ( $value ) {
-			$css = sprintf( $this->template, $this->selector, $value );
+			$args = array(
+				'template' => $this->template,
+				'value' => $value,
+			);
+			$css = $this->apply_template( $args );
 		}
 
 		// Filter effects final CSS output, but not postMessage updates

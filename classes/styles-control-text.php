@@ -4,9 +4,9 @@ class Styles_Control_Text extends Styles_Control {
 	var $suffix = 'Font';
 
 	// CSS Templates
-	var $template = '%s { %s }';
-	var $template_font_size = 'font-size: %spx;';
-	var $template_font_family = 'font-family: %s;';
+	var $template = '$selector { $value }';
+	var $template_font_size = 'font-size: $valuepx;';
+	var $template_font_family = 'font-family: $value;';
 
 	var $post_message_part;
 
@@ -76,7 +76,11 @@ class Styles_Control_Text extends Styles_Control {
 		$css .= $this->get_css_font_family( $value );
 
 		if ( !empty( $css ) ) {
-			$css = sprintf( $this->template, $this->selector, $css );
+			$args = array(
+				'template' => $this->template,
+				'value' => $css,
+			);
+			$css = $this->apply_template( $args );
 		}
 
 		// Filter effects final CSS output, but not postMessage updates
@@ -88,7 +92,11 @@ class Styles_Control_Text extends Styles_Control {
 
 		$css = '';
 		if ( $value ) {
-			$css = sprintf( $this->template_font_size, $value );
+			$args = array(
+				'template' => $this->template_font_size,
+				'value' => $value,
+			);
+			$css = $this->apply_template( $args );
 		}
 
 		// Filter effects final CSS output, but not postMessage updates
@@ -116,7 +124,11 @@ class Styles_Control_Text extends Styles_Control {
 
 		$css = '';
 		if ( $value ) {
-			$css = sprintf( $this->template_font_family, $value );
+			$args = array(
+				'template' => $this->template_font_family,
+				'value' => $value,
+			);
+			$css = $this->apply_template( $args );
 		}
 
 		// Filter effects final CSS output, but not postMessage updates

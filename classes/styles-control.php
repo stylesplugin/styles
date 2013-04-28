@@ -94,6 +94,19 @@ abstract class Styles_Control {
 		}
 	}
 
+	public function apply_template( $args ) {
+		$template = $args['template'];
+		unset( $args['template'] );
+
+		foreach ( $args as $key => $value ) {
+			$template = str_replace( '$'.$key, $value, $template );
+		}
+
+		$template = str_replace( '$selector', $this->selector, $template );
+
+		return $template;
+	}
+
 	/**
 	 * Convert CSS selector into jQuery-compatible selector
 	 */
