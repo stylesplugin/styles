@@ -68,13 +68,18 @@ class Styles_CSS {
 					if ( $class = Styles_Helpers::get_element_class( $element ) ) {
 
 						$element = apply_filters( 'styles_pre_get_css', $element );
-						$css .= call_user_func_array( $class . '::get_css', array( $group, $element ) );
+						$control = new $class( $group, $element );
+
+						$css .= $control->get_css();
+						// $css .= call_user_func_array( $class . '::get_css', array( $group, $element ) );
 					
 					}
 				}
 			}
 		}
 
+		$css = apply_filters( 'styles_css_output', $css );
+		
 		$css = $this->google_fonts . $css;
 
 		update_option( Styles_Helpers::get_option_key( 'css' ), $css );

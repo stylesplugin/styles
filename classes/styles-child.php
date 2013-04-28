@@ -39,16 +39,20 @@ class Styles_Child {
 	}
 
 	/**
-	 *	Build $this->plugins, a list of Github-hosted plugins based on installed plugin headers
+	 *	Build $this->plugins, a list of Styles child plugins based on plugin headers
 	 *
 	 * @return void
 	 */
 	public function plugins_loaded( $plugins ) {
+		if ( !function_exists( 'is_plugin_active') ) {
+			include_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
 		foreach ( $this->get_plugins_meta() as $meta ) {
 
 			$class = $meta['styles class'];
-
-			if ( class_exists( $class ) ) {
+			
+			if ( class_exists( $class ) && is_plugin_active( $meta['slug'] ) ) {
 				// For example,
 				// new Styles_Child_Theme( $meta )
 				$this->plugins[] = new $class( $meta );

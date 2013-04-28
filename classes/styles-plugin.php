@@ -44,6 +44,8 @@ class Styles_Plugin {
 	 */
 	var $child;
 
+	var $query_var = 'styles-action';
+
 	public function __construct() {
 
 		require_once dirname( __FILE__ ) . '/styles-helpers.php';
@@ -53,6 +55,10 @@ class Styles_Plugin {
 		add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ), 15 );
 		add_action( 'admin_menu', array( $this, 'admin_menu' ), 1 );
 		add_action( 'customize_register', array( $this, 'customize_register' ), 1 );
+
+		// Generated javascript from settings for Customize postMessage transport
+		add_filter( 'query_vars', array( $this, 'query_vars' ) );
+		add_action( 'parse_request', array( $this, 'parse_request' ) );
 		
 	}
 
@@ -85,9 +91,10 @@ class Styles_Plugin {
 	/**
 	 * Add settings to WP Customize
 	 */
-	public function customize_register( $wp_customize ) {
+	public function customize_register( $wp_customize = null ) {
 		if ( !is_a( $this->customize, 'Styles_Customize') ) {
 
+			require_once dirname( __FILE__ ) . '/styles-control.php';
 			require_once dirname( __FILE__ ) . '/styles-customize.php';
 
 			$this->customize = new Styles_Customize( $this );
@@ -100,11 +107,38 @@ class Styles_Plugin {
 	public function wp_head() {
 		if ( !is_a( $this->css, 'Styles_CSS') ) {
 
+			require_once dirname( __FILE__ ) . '/styles-control.php';
 			require_once dirname( __FILE__ ) . '/styles-css.php';
 
 			$this->css = new Styles_CSS( $this );
 		}
 		$this->css->output_css();
+	}
+
+	/**
+	 * Whitelist query var to trigger custom requests
+	 */
+	public function query_vars( $vars ) {
+		$vars[] = $this->query_var;
+		return $vars;
+	}
+
+	/**
+	 * Handle custom requests for our custom query_var
+	 */
+	public function parse_request( $wp ) {
+		if ( !array_key_exists( $this->query_var, $wp->query_vars ) ) {
+			return;
+		}
+		switch ( $wp->query_vars[ $this->query_var ] ) {
+			case 'customize-preview-js':
+
+				$this->customize_register();
+				
+				$this->customize->preview_js();
+
+			break;
+		}
 	}
 
 }

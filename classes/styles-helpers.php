@@ -13,30 +13,13 @@ class Styles_Helpers {
 		return $type;
 	}
 
-	function sanitize_element( $group, $element ) {
-		$element['id'] = self::get_element_id( $element );
-		$element['setting'] = self::get_setting_id( $group, $element['id'] );
-
-		if ( empty( $element['selector'] ) ) { return false; }
-
-		return $element;
-	}
-
 	static public function get_group_id( $group ) {
-		return self::$prefix . $group;
+		return self::$prefix . sanitize_key( $group );
 	}
 
 	static public function get_control_id( $id ) {
 		self::$control_id_counter++;
 		return self::$prefix . $id . '_' . self::$control_id_counter;
-	}
-
-	static public function get_setting_id( $group, $id ) {
-		$id = str_replace( '-', '_', trim( $id, '_' ) );
-
-		$setting_id = self::get_option_key() . "[$group][$id]";
-
-		return $setting_id;
 	}
 
 	/**
@@ -46,8 +29,8 @@ class Styles_Helpers {
 		if ( empty( $element['type'] ) ) { return false; }
 		$type = self::sanitize_type( $element['type'] );
 
-		// e.g., Styles_Background_Color
-		$class = "Styles_$type"; 
+		// e.g., Styles_Control_Background_Color
+		$class = "Styles_Control_$type"; 
 
 		if ( class_exists( $class ) ) {
 			return $class;
@@ -59,30 +42,12 @@ class Styles_Helpers {
 				include $file;
 				return $class;
 			}else {
-				trigger_error( 'Could not find class ' . $class, E_USER_ERROR );
+				// trigger_error( 'Could not find class ' . $class, E_USER_ERROR );
 				return false;
 			}
 
 		}
 
-	}
-
-	public static function get_element_id( $element ) {
-		$key = trim( sanitize_key( $element['label'] . '_' . $element['type'] ), '_' );
-		return str_replace( '-', '_', $key );
-	}
-
-	public static function get_element_setting_value( $group, $element ) {
-		$settings = get_option( self::get_option_key() );
-
-		$group_id = self::get_group_id( $group );
-		$id = self::get_element_id( $element );
-
-		if ( !empty( $settings[ $group_id ][ $id ] ) ) {
-			return $settings[ $group_id ][ $id ];
-		}else {
-			return false;
-		}
 	}
 
 	public static function get_json_error( $json_file, $json_result ) {
@@ -121,7 +86,9 @@ class Styles_Helpers {
 
 		global $wp_customize;
 
-		if ( is_a( $wp_customize, 'WP_Customize_Manager' ) ) {
+		if ( isset( $_GET['theme'] ) ) {
+			self::$template = $_GET['theme'];
+		}else if ( is_a( $wp_customize, 'WP_Customize_Manager' ) ) {
 			self::$template = $wp_customize->theme()->template;
 		}else {
 			self::$template = get_template();

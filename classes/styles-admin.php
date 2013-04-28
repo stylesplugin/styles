@@ -107,7 +107,7 @@ class Styles_Admin {
 	}
 
     function license_page() {
-        require_once dirname( dirname( __FILE__ ) ) . '/views/licenses.php';
+        require_once STYLES_DIR . '/views/licenses.php';
         exit;
     }
 
