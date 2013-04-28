@@ -45,10 +45,11 @@ abstract class Styles_Control {
 
 		if ( empty( $this->selector ) ) { return false; }
 
-		// Setup PostMessage callback if available
-		if ( method_exists( $this, 'post_message' ) ) {
+		// postMessage javascript callback
+		if ( 'postMessage' == $this->get_transport() ) {
 			add_filter( 'styles_customize_preview', array( $this, 'post_message' ) );
 		}
+
 	}
 
 	/**
@@ -92,6 +93,21 @@ abstract class Styles_Control {
 		}else {
 			return false;
 		}
+	}
+
+	public function get_transport() {
+		$transport = 'refresh';
+
+		if ( 
+			method_exists( $this, 'post_message' ) 
+			&& empty( $this->element['template'] ) // No custom CSS template set
+			&& false == strpos( $this->selector, ':' ) // jQuery doesn't understand pseudo-selectors like :hover and :focus
+		) {
+			// postMessage supported
+			$transport = 'postMessage';
+		}
+
+		return $transport;
 	}
 
 	public function apply_template( $args ) {

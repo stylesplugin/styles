@@ -78,6 +78,8 @@ class Styles_CSS {
 			}
 		}
 
+		$css = apply_filters( 'styles_css_output', $css );
+		
 		$css = $this->google_fonts . $css;
 
 		update_option( Styles_Helpers::get_option_key( 'css' ), $css );

@@ -86,7 +86,9 @@ class Styles_Helpers {
 
 		global $wp_customize;
 
-		if ( is_a( $wp_customize, 'WP_Customize_Manager' ) ) {
+		if ( isset( $_GET['theme'] ) ) {
+			self::$template = $_GET['theme'];
+		}else if ( is_a( $wp_customize, 'WP_Customize_Manager' ) ) {
 			self::$template = $wp_customize->theme()->template;
 		}else {
 			self::$template = get_template();

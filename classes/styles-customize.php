@@ -38,7 +38,14 @@ class Styles_Customize {
 
 	public function customize_preview_init_enqueue() {
 		// Version set to md5 of settings because JS generated from settings
-		wp_enqueue_script( 'styles-customize-preview', site_url( '/?styles-action=customize-preview-js', STYLES_BASENAME ), array( 'jquery', 'customize-preview' ), md5( serialize( $this->settings ) ), true );
+		$custom_preview_version = md5( serialize( $this->settings ) );
+
+		$custom_preview_url = add_query_arg( 'styles-action', 'customize-preview-js', site_url() );
+		
+		// Account for theme previews
+		$custom_preview_url = add_query_arg( 'theme', Styles_Helpers::get_template(), $custom_preview_url );
+
+		wp_enqueue_script( 'styles-customize-preview', $custom_preview_url, array( 'jquery', 'customize-preview' ), $custom_preview_version, true );
 	}
 
 	public function customize_controls_enqueue() {

@@ -34,12 +34,8 @@ class Styles_Control_Text extends Styles_Control {
 			'default' => $this->default,
 			'type' => 'option',
 			'capability' => 'edit_theme_options',
+			'transport'  => $this->get_transport(),
 		);
-
-		// Only use postMessage if CSS template hasn't been overridden
-		if ( empty( $this->element['template'] ) && empty( $this->element['template-font-size'] ) ) {
-			$args_size[ 'transport' ] = 'postMessage';
-		}
 
 		$args_family = array( 
 			'default' => $this->default, 

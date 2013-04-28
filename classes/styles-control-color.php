@@ -18,12 +18,8 @@ class Styles_Control_Color extends Styles_Control {
 			'default'    => $this->default,
 			'type'       => 'option',
 			'capability' => 'edit_theme_options',
+			'transport'  => $this->get_transport(),
 		);
-
-		// Only use postMessage if CSS template hasn't been overridden
-		if ( empty( $this->element['template'] ) ) {
-			$args[ 'transport' ] = 'postMessage';
-		}
 
 		$wp_customize->add_setting( $this->setting, $args );
 
