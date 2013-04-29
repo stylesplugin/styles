@@ -28,13 +28,6 @@ abstract class Styles_Control {
 		$this->group = $group;
 		$this->element = $element;
 
-		$this->selector = $element['selector'];
-		$this->type     = $element['type'];
-		$this->label    = $element['label'];
-		$this->priority = $element['priority'];
-		$this->id       = $this->get_element_id();
-		$this->setting  = $this->get_setting_id();
-
 		if ( !empty( $element['template'] ) ) {
 			$this->template = $element['template'];
 		}
@@ -43,7 +36,15 @@ abstract class Styles_Control {
 			$this->label = $this->selector;
 		}
 
+		$this->selector = $element['selector'];
+		$this->type     = $element['type'];
+		$this->label    = $element['label'];
+		$this->priority = $element['priority'];
+
 		$this->append_suffix_to_label();
+
+		$this->id       = $this->get_element_id(); // must call append_suffix_to_label first
+		$this->setting  = $this->get_setting_id(); // must call append_suffix_to_label first
 
 		if ( empty( $this->selector ) ) { return false; }
 
@@ -97,7 +98,7 @@ abstract class Styles_Control {
 	 * @return string Unique, sanatized ID for this element based on label and type
 	 */
 	public function get_element_id() {
-		$key = trim( sanitize_key( $this->element['label'] . '_' . $this->element['type'] ), '_' );
+		$key = trim( sanitize_key( $this->label . '_' . $this->type ), '_' );
 		return str_replace( '-', '_', $key );
 	}
 
