@@ -43,14 +43,7 @@ abstract class Styles_Control {
 			$this->label = $this->selector;
 		}
 
-		if ( !empty( $element['suffix'] ) ) {
-			$this->suffix = $element['suffix'];
-		}
-		if ( !empty( $this->suffix ) ) {
-			$this->label .=  '::' . $this->suffix;
-		}
-
-		
+		$this->append_suffix_to_label();
 
 		if ( empty( $this->selector ) ) { return false; }
 
@@ -66,6 +59,38 @@ abstract class Styles_Control {
 	 * @return null
 	 */
 	abstract public function add_item();
+
+	public function append_suffix_to_label() {
+		if ( !empty( $this->element['suffix'] ) ) {
+
+			// A custom suffix has been set in the JSON
+			$this->suffix = $element['suffix'];
+
+		}else if ( !empty( $this->suffix ) ){
+
+			// No custom suffix set
+
+			// Add indications for pseudo-selectors
+			if ( false !== strpos( $this->selector, ':hover' ) ) {
+
+				// Prepend "hover" if in selector
+				$this->suffix = 'hover ' . $this->suffix;
+
+			}else if ( false !== strpos( $this->selector, ':focus' ) ) {
+
+				// Prepend "focus" if in selector
+				$this->suffix = 'focused ' . $this->suffix;
+
+			}
+
+		}
+
+		// We have some suffix; append it to the label
+		if ( !empty( $this->suffix ) ) {
+			$this->label .=  '::' . $this->suffix;
+		}
+
+	}
 
 	/**
 	 * @param array $element Values related to this control, like CSS selector and control type
