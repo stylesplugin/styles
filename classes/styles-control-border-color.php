@@ -5,7 +5,7 @@ if ( !class_exists( 'Styles_Control_Color' ) ) {
 }
 
 class Styles_Control_Border_Color extends Styles_Control_Color {
-	var $suffix = 'Border Color';
+	var $suffix = 'border color';
 	var $property = 'border-color';
 	var $template = '$selector { $property: $value; }';
 

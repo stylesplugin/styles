@@ -1,7 +1,7 @@
 <?php
 
 class Styles_Control_Color extends Styles_Control {
-	var $suffix = 'Text Color';
+	var $suffix = 'color';
 	var $template = '$selector { color: $value; }';
 
 	public function __construct( $group, $element ) {

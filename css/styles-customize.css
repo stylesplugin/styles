@@ -1,3 +1,12 @@
+/* Control Type Labels (override or remove with "suffix" in JSON)*/
+span.styles-type {
+	font-weight:normal;
+	text-transform: uppercase;
+	font-size: 10px;
+	color: #797979;
+	padding-left: 6px;
+}
+
 /* Styles_Customize_Text_Control */
 
 #customize-controls input.styles-font-size {

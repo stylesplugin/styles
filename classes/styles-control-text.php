@@ -1,7 +1,7 @@
 <?php
 
 class Styles_Control_Text extends Styles_Control {
-	var $suffix = 'Font';
+	var $suffix = 'text';
 
 	// CSS Templates
 	var $template = '$selector { $value }';

@@ -5,6 +5,7 @@ if ( !class_exists( 'Styles_Control_Border_Color' ) ) {
 
 class Styles_Control_Border_Right_Color extends Styles_Control_Border_Color {
 	var $property = 'border-right-color';
+	var $suffix = 'right border color';
 
 	public function __construct( $group, $element ) {
 		parent::__construct( $group, $element );

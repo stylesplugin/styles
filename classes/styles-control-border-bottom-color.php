@@ -5,6 +5,7 @@ if ( !class_exists( 'Styles_Control_Border_Color' ) ) {
 
 class Styles_Control_Border_Bottom_Color extends Styles_Control_Border_Color {
 	var $property = 'border-bottom-color';
+	var $suffix = 'bottom border color';
 
 	public function __construct( $group, $element ) {
 		parent::__construct( $group, $element );

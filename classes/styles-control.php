@@ -39,9 +39,18 @@ abstract class Styles_Control {
 			$this->template = $element['template'];
 		}
 
-		if ( empty( $this->label ) ) {
-			$this->label = $this->selector . ' ' . $this->suffix;
+		if ( empty( $this->label) ) {
+			$this->label = $this->selector;
 		}
+
+		if ( !empty( $element['suffix'] ) ) {
+			$this->suffix = $element['suffix'];
+		}
+		if ( !empty( $this->suffix ) ) {
+			$this->label .=  '::' . $this->suffix;
+		}
+
+		
 
 		if ( empty( $this->selector ) ) { return false; }
 

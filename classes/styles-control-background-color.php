@@ -1,7 +1,7 @@
 <?php
 
 class Styles_Control_Background_Color extends Styles_Control {
-	var $suffix = 'Background Color';
+	var $suffix = 'background color';
 	var $template = '$selector { background-color: $value; }';
 
 	public function __construct( $group, $element ) {
