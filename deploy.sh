@@ -62,7 +62,10 @@ README.md
 .gitignore
 css/bg-sprites.psd
 css/font-sprites.psd
-css/admin.scss" "$SVNPATH/trunk/"
+css/admin.scss
+phpunit.php
+phpunit.xml
+tests" "$SVNPATH/trunk/"
 
 echo "Changing directory to SVN and committing to trunk"
 cd $SVNPATH/trunk/
