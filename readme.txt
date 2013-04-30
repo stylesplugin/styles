@@ -43,10 +43,9 @@ Styles and options for all built-in WordPress themes are free. More themes are a
 
 == Screenshots ==
 
-1. Select background images from the WordPress Media Library. Theme elements can also be replaced by images, e.g., Styles can hide the site title text and replace it with an image, and resize it to fit.
-2. Multi-stop gradient picker. Gradients are output in formats for all browsers, including Internet Explorer.
-3. Background color picker.
-4. Google Fonts and other typographic settings.
+1. TwentyEleven header settings.
+2. All TwentyEleven sections.
+3. TwentyEleven menu settings.
 
 == Frequently Asked Questions == 
 
