@@ -1,51 +1,45 @@
 === Styles ===
-Contributors: brainstormmedia, pdclark
+Contributors: brainstormmedia, pdclark, elusivelight
 Plugin URI: http://stylesplugin.com
 Author URI: http://brainstormmedia.com
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=FD4GKBGQFUZC8
-Tags: css, stylesheet, scss, sass, scaffold, less, admin, gui, color picker, gradient, image upload, google fonts, user interface, twentyten, twentyeleven
-Requires at least: 3.1
-Tested up to: 3.4
-Stable tag: 0.5.3
+Tags: css, stylesheet, styles, appearance, customize, customizer, colors, color picker, images, image upload, background, fonts, google fonts, user interface, twentyten, twentyeleven, twentytwelve, twentythirteen
+Requires at least: 3.4
+Tested up to: 3.5.2
+Stable tag: 1.0
 
-Change the appearance of supported themes using zero code. Creates appearance options for images, colors, gradients, and fonts.
+Be creative with colors and fonts in your theme. Styles changes everything.
 
 == Description ==
 
-**Note:** There are plans to modify this plugin to tie-in with the new WordPress 3.4 theme customizer, but it requires a considerable rewrite. The final version would setup the Theme Customizer based on CSS only. If you're interested in contributing, please get in contact.
+WordPress has lots of beautiful themes, but personalizing a design can be difficult and time-intensive. Styles changes that. It gives you control over every part of your theme in one consistent interface – the WordPress theme customizer. Styles lets you make your site your own. :)
 
-Styles allows you to edit the appearance of themes that don't provide an interface in the WordPress admin for doing so. Themes supported by the free version include:
+**Features of the plugin include:**
 
-* TwentyTen
-* TwentyEleven
-
-Theme support is provided by a remote API, so the plugin will update as more themes are added. We plan to release support for more themes in as a paid add-on to Styles. Have a specific theme you'd like to see supported? [Vote on themes here](https://www.google.com/moderator/?authuser=2#16/e=1f6d0a).
-
-Styles provides:
-
-* Transfer of settings between themes
-* Background images using WordPress Media Library
-* Photoshop-like Gradient Picker
-* Color Picker
+* Instant previews
+* Text size
 * Google Fonts
-* Font size, color, styling, and capitalization
-* Replace HTML elements with an image
-* Live preview when site open in a second window
+* Text colors
+* Border colors
+* Background colors
+* Hundreds of options
+* Consistent interface and names in every theme
+* Built on WordPress customizer, so Styles grows as WordPress grows
 
-Enable the plugin to start playing with your site's look under `Appearance > Styles`.
+Styles and options for all built-in WordPress themes are free. More themes are available at [StylesPlugin.com](http://stylesplugin.com).
 
-Here's a quick demo of how it works in TwentyEleven:
+**Free Themes include:**
 
-[youtube http://www.youtube.com/watch?v=2gbRFFxx1GY]
-
-This plugin requires [PHP 5.2](https://codex.wordpress.org/Switching_to_PHP5), the minimum supported version as of WordPress 3.2.
+* [TwentyTen](http://wordpress.org/extend/plugins/styles-twentyten)
+* [TwentyEleven](http://wordpress.org/extend/plugins/styles-twentyeleven)
+* [TwentyTwelve](http://wordpress.org/extend/plugins/styles-twentytwelve)
+* [TwentyThirteen](http://wordpress.org/extend/plugins/styles-twentythirteen)
 
 == Installation ==
 
 1. Upload the `styles` folder to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Start using the plugin under `Appearance > Styles`
-1. Preview your changes by opening your site an a second window.
+1. Install an additional plugin for your current theme.
+1. Edit your site under `Appearance > Customize`
 
 == Screenshots ==
 
@@ -56,73 +50,66 @@ This plugin requires [PHP 5.2](https://codex.wordpress.org/Switching_to_PHP5), t
 
 == Frequently Asked Questions == 
 
-= What features do you plan to charge for? =
+= How can this plugin be free? =
 
-Support for WordPress default themes, such as TwentyTen and TwentyEleven, will always be free. We plan to charge in the future for additional features such as:
+We believe life is better when we work together. :) Support for WordPress default themes, like TwentyTwelve and TwentyTwelve, will always be free. Continued development in Styles will be supported by:
 
-* Additional themes
-* Access to support forums
-* Documentation on how to setup custom themes or additional elements
+* Plugins for additional themes
+* Plugins for add-on features
+* Premium support and updates
+* Documentation for using Styles in your own themes
+
+= Does Styles support my theme? =
+
+Maybe! We have additional themes available available at [StylesPlugin.com](http://stylesplugin.com). If you don't find your theme there, we also have documentation on how to create options using styles available for developers. Adding one option takes only one line of code.
 
 = Will this plugin slow down my site? =
 
-No! Styles is very careful about only loading what is absolutely required to get its job done. CSS settings are processed once when you click the "save" button. After that, all the work is done. A single compressed CSS file is all that's added to your site's front-end.
-
-= Styles says it can't write to a file when I try to save =
-
-That's not a question, but don't worry about it too much. If `wp-content/uploads` is not writable by the server, Styles will cache to the database instead. While caching to a file is ideal, there should not be a significant difference in performance.
-
-= How is WordPress able to interpret CSS this way? =
-
-Styles uses portions of Anthony Short's [Scaffold](https://github.com/anthonyshort/scaffold), which is a CSS pre-processor similar to Less, SASS, or Compass. Basically, Scaffold understands CSS and is written in PHP. WordPress is also written in PHP, so Scaffold is able to communicate to WordPress about the structure and content of CSS files.
-
-= Can I use Styles as a replacement for Less, Sass, or Compass? =
-
-For general purpose CSS processing, you'll be much better off using one of the many desktop-based libraries. We used Styles + Scaffold as our main CSS Processor for a very long time. However, the plugin as it exists today would not be appropriate for that purpose. We've pared the CSS processing libraries down to a bare minimum to keep things as simple and stable as possible. The plugin as it is today is meant only to create a theme user interface.
+No! Styles is very careful about only loading what is needed to get its job done. Once you're done editing, stylesheets are cached and loaded for your sites users as quickly as possible.
 
 == Changelog ==
 
+= 1.0 =
+* New: Completely rewrite Styles to use the WordPress Customizer API. Whew! That was a lot of work, but will allow us to grow closely with WordPress going forward.
+* New: Styles 1.0 does not import 0.5.2 settings. However, you can always [reinstall Styles 0.5.3](http://downloads.wordpress.org/plugin/styles.0.5.3.zip) to get your old settings back. 
+* New: TwentyTwelve support.
+* New: TwentyThirteen support.
+* New: Remove gradients and background images. Sorry! We had to simpify and prioritize in the rewrite. If many users find Styles useful, we hope to bring these features back!
+* New: Instant preview for many options using Customizer postMessage
+
 = 0.5.2 =
-* Fix display of icons in cases where WordPress is installed in a subdirectory or wp-content is moved. Fixes http://bit.ly/Jc7oyd
+* Fix: Display of icons in cases where WordPress is installed in a subdirectory or wp-content is moved. Fixes http://bit.ly/Jc7oyd
 
 = 0.5.1.1 =
-* Fix transparent background option
-* Fix display of unavailable theme options
+* Fix: Transparent background option
+* Fix: Display of unavailable theme options
 
 = 0.5.1 =
-* Fix issue that would prevent Font styles from outputting if another option wasn't set on the same element.
+* Fix: Issue that would prevent Font styles from outputting if another option wasn't set on the same element.
 
 = 0.5.0 =
-* Load themes from API: Allows for theme support to be added without plugin updates.
-* New data structure: Allow settings to migrate from theme to theme
-* Automatically rebuild CSS when theme is switched
-* Wrap font settings into other options. This sets the stage to simplify the user interface in a future version.
-* Add option to hide text and replace with image on any element
-* Expand TwentyTen options
-* Gradient Picker: Fix add marker, drag to remove marker
-* Massive code clean-up: Removed 1,198 lines of code; modified 2,488
-* Minor UI tweaks
+* New: Load themes from API: Allows for theme support to be added without plugin updates.
+* New: Data structure: Allow settings to migrate from theme to theme
+* New: Automatically rebuild CSS when theme is switched
+* New: Wrap font settings into other options. This sets the stage to simplify the user interface in a future version.
+* New: Add option to hide text and replace with image on any element
+* New: Expand TwentyTen options
+* New: Gradient Picker: Fix add marker, drag to remove marker
+* Fix: Massive code clean-up: Removed 1,198 lines of code; modified 2,488
+* Fix: Minor UI tweaks
 
 = 0.4.1 =
-* Fix saved CSS being one update behind
-* Fix initial values of fields & background color picker
-* Fix preview update stall
-* Fix background value when no image selected
-* Fix background replacement matching
+* Fix: Saved CSS being one update behind
+* Fix: Initial values of fields & background color picker
+* Fix: Preview update stall
+* Fix: Background value when no image selected
+* Fix: Background replacement matching
 
 = 0.4.0 =
 * Initial public release.
 
 == Upgrade Notice ==
 
-= 0.5.3 =
-* Allow fonts to load over HTTP or HTTPS
+Completely rewrote Styles to use the WordPress Customizer API. Whew! That was a lot of work, but will allow us to grow closely with WordPress going forward.
 
-= 0.5.2 =
-* Fix transparent background option
-* Fix display of unavailable theme options
-
-== License ==
-
-Copyright 2011 Brainstorm Media - Released under the  GNU General Public License
- - [License details](http://www.gnu.org/licenses/gpl.html)
+Styles 1.0 does not import 0.5.2 settings. However, you can always [reinstall Styles 0.5.3](http://downloads.wordpress.org/plugin/styles.0.5.3.zip) to get your old settings back.
