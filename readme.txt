@@ -50,7 +50,7 @@ Styles and options for all built-in WordPress themes are free. More themes are a
 
 == Frequently Asked Questions == 
 
-= How can this plugin be free? =
+= Why is this plugin free? =
 
 We believe life is better when we work together. :) Support for WordPress default themes, like TwentyTwelve and TwentyTwelve, will always be free. Continued development in Styles will be supported by:
 
