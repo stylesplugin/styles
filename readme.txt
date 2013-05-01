@@ -11,7 +11,7 @@ Be creative with colors and fonts in your theme. Styles changes everything.
 
 == Description ==
 
-WordPress has lots of beautiful themes, but personalizing a design can be difficult and time-intensive. Styles changes that. It gives you control over every part of your theme in one consistent interface – the WordPress theme customizer. Styles lets you make your site your own. :)
+WordPress has lots of beautiful themes, but personalizing a design can be difficult and time-intensive. Styles changes that. Styles gives you creative control in one consistent interface – the WordPress theme customizer. Styles lets you make your site your own. :)
 
 **Features of the plugin include:**
 
