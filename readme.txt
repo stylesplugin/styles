@@ -5,7 +5,7 @@ Author URI: http://brainstormmedia.com
 Tags: css, stylesheet, styles, appearance, customize, customizer, colors, color picker, images, image upload, background, fonts, google fonts, user interface, twentyten, twentyeleven, twentytwelve, twentythirteen
 Requires at least: 3.4
 Tested up to: 3.5.2
-Stable tag: 1.0
+Stable tag: 1.0.1
 
 Be creative with colors and fonts in your theme. Styles changes everything.
 
@@ -67,6 +67,9 @@ Maybe! We have additional themes available available at [StylesPlugin.com](http:
 No! Styles is very careful about only loading what is needed to get its job done. Once you're done editing, stylesheets are cached and loaded for your sites users as quickly as possible.
 
 == Changelog ==
+
+= 1.0.1 =
+* Fix minor PHP notice that would display if WP_DEBUG were enabled.
 
 = 1.0 =
 * New: Completely rewrite Styles to use the WordPress Customizer API. Whew! That was a lot of work, but will allow us to grow closely with WordPress going forward.
