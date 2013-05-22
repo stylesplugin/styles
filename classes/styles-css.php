@@ -33,7 +33,21 @@ class Styles_CSS {
 			$selector_array = explode( ',', $element['selector'] );
 
 			foreach( $selector_array as &$sub_selector ) {
-				$sub_selector = '.' . $this->body_class . ' ' . $sub_selector;
+
+				if ( 'body' == $sub_selector ) {
+					// body selector without class; add it
+					$sub_selector = $sub_selector . '.' . $this->body_class;
+				}else if ( 'body ' == substr( $sub_selector, 0 ) ){
+					// body selector with sub-item without class
+					$sub_selector = str_replace( 'body ', 'body'. $this->body_class . ' ', $sub_selector );
+				}else if ( 'html' == substr( $sub_selector, 0 ) || 'body' == substr( $sub_selector, 0 ) ) {
+					// html or body selector
+					continue;
+				}else {
+					// All others, prepend body class
+					$sub_selector = '.' . $this->body_class . ' ' . $sub_selector;
+				}
+
 			}
 
 			$element['selector'] = implode( ',', $selector_array );
