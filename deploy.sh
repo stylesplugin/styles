@@ -5,7 +5,7 @@
 # The difference is that this script lives in the plugin's git repo & doesn't require an existing SVN repo.
 
 # main config
-PLUGINSLUG="styles"
+PLUGINSLUG=${PWD##*/} # returns basename of current directory
 CURRENTDIR=`pwd`
 MAINFILE="styles.php" # this should be the name of your main php file in the wordpress plugin
 
@@ -14,8 +14,8 @@ GITPATH="$CURRENTDIR/" # this file should be in the base of your git repository
 
 # svn config
 SVNPATH="/tmp/$PLUGINSLUG" # path to a temp SVN repo. No trailing slash required and don't add trunk.
-SVNURL="http://plugins.svn.wordpress.org/styles" # Remote SVN repo on wordpress.org, with no trailing slash
-SVNUSER="brainstormmedia" # your svn username
+SVNURL="http://plugins.svn.wordpress.org/$PLUGINSLUG" # Remote SVN repo on wordpress.org, with no trailing slash
+SVNUSER="pdclark" # your svn username
 
 
 # Let's begin...
@@ -59,13 +59,7 @@ echo "Ignoring github specific files and deployment script"
 svn propset svn:ignore "deploy.sh
 README.md
 .git
-.gitignore
-css/bg-sprites.psd
-css/font-sprites.psd
-css/admin.scss
-phpunit.php
-phpunit.xml
-tests" "$SVNPATH/trunk/"
+.gitignore" "$SVNPATH/trunk/"
 
 echo "Changing directory to SVN and committing to trunk"
 cd $SVNPATH/trunk/

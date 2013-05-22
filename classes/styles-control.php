@@ -38,8 +38,8 @@ abstract class Styles_Control {
 
 		$this->selector = $element['selector'];
 		$this->type     = $element['type'];
-		$this->label    = $element['label'];
-		$this->priority = $element['priority'];
+		$this->label    = @ $element['label'];
+		$this->priority = @ $element['priority'];
 
 		$this->append_suffix_to_label();
 
@@ -121,7 +121,7 @@ abstract class Styles_Control {
 
 		$group_id = Styles_Helpers::get_group_id( $this->group );
 
-		$value = $settings[ $group_id ][ $this->id ];
+		$value = @$settings[ $group_id ][ $this->id ];
 
 		if ( !empty( $value ) ) {
 			return $value;
