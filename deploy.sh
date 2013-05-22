@@ -27,9 +27,9 @@ echo ".........................................."
 echo 
 
 # Check version in readme.txt is the same as plugin file
-NEWVERSION1=`grep "^Stable tag" $GITPATH/readme.txt | awk -F' ' '{print $3}'`
+NEWVERSION1=`grep "^Stable tag" $GITPATH/readme.txt | awk -F' ' '{print $3}' | sed 's/[[:space:]]//g'`
 echo "readme version: $NEWVERSION1"
-NEWVERSION2=`grep "^Version" $GITPATH/$MAINFILE | awk -F' ' '{print $2}'`
+NEWVERSION2=`grep "^Version" $GITPATH/$MAINFILE | awk -F' ' '{print $2}' | sed 's/[[:space:]]//g'`
 echo "$MAINFILE version: $NEWVERSION2"
 
 if [ "$NEWVERSION1" != "$NEWVERSION2" ]; then echo "Versions don't match. Exiting...."; exit 1; fi
@@ -42,7 +42,7 @@ read COMMITMSG
 git commit -am "$COMMITMSG"
 
 echo "Tagging new version in git"
-git tag -a "$NEWVERSION1" -m "Tagging version $NEWVERSION1"
+# git tag -a "$NEWVERSION1" -m "Tagging version $NEWVERSION1"
 
 echo "Pushing latest commit to origin, with tags"
 git push origin master
@@ -69,9 +69,9 @@ svn commit --username=$SVNUSER -m "$COMMITMSG"
 
 echo "Creating new SVN tag & committing it"
 cd $SVNPATH
-svn copy trunk/ tags/$NEWVERSION1/
-cd $SVNPATH/tags/$NEWVERSION1
-svn commit --username=$SVNUSER -m "Tagging version $NEWVERSION1"
+# svn copy trunk/ tags/$NEWVERSION1/
+# cd $SVNPATH/tags/$NEWVERSION1
+# svn commit --username=$SVNUSER -m "Tagging version $NEWVERSION1"
 
 echo "Removing temporary directory $SVNPATH"
 rm -fr $SVNPATH/
