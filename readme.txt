@@ -5,7 +5,7 @@ Author URI: http://brainstormmedia.com
 Tags: css, stylesheet, styles, appearance, customize, customizer, colors, color picker, images, image upload, background, fonts, google fonts, user interface, twentyten, twentyeleven, twentytwelve, twentythirteen
 Requires at least: 3.4
 Tested up to: 3.5.2
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 
 Be creative with colors and fonts in your theme. Styles changes everything.
 
@@ -68,6 +68,9 @@ No! Styles is very careful about only loading what is needed to get its job done
 
 == Changelog ==
 
+= 1.0.3 =
+* Fix: Google fonts loading correctly once saved.
+
 = 1.0.2 =
 * Fix: Remove front-end PHP notice. (Minor; Only matters if WP_DEBUG is enabled.)
 
@@ -115,6 +118,10 @@ No! Styles is very careful about only loading what is needed to get its job done
 
 == Upgrade Notice ==
 
+**1.0.3**
+* Fix: Google fonts loading correctly once saved.
+
+**1.0**
 Completely rewrote Styles to use the WordPress Customizer API. Whew! That was a lot of work, but will allow us to grow closely with WordPress going forward.
 
 Styles 1.0 does not import 0.5.2 settings. However, you can always [reinstall Styles 0.5.3](http://downloads.wordpress.org/plugin/styles.0.5.3.zip) to get your old settings back.
