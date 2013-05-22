@@ -111,7 +111,7 @@ class Styles_Control_Text extends Styles_Control {
 			global $storm_styles;
 			$src = self::$google_families[ $value ];
 			// Add Google Font @import to beginning of CSS
-			$storm_styles->css->google_fonts .= "@import url(//fonts.googleapis.com/css?family=$src);\r";
+			$storm_styles->css->google_fonts[ $value ] = "@import url(//fonts.googleapis.com/css?family=$src);\r";
 		
 		}
 

@@ -19,7 +19,7 @@ class Styles_CSS {
 	 *
 	 * @var string
 	 */
-	public $google_fonts = '';
+	public $google_fonts = array();
 
 	function __construct( $plugin ) {
 		$this->plugin = $plugin;
@@ -76,13 +76,13 @@ class Styles_CSS {
 					}
 				}
 			}
+			$css = apply_filters( 'styles_css_output', $css );
+		
+			$css = implode( '', $this->google_fonts ) . $css;
+
+			update_option( Styles_Helpers::get_option_key( 'css' ), $css );
 		}
 
-		$css = apply_filters( 'styles_css_output', $css );
-		
-		$css = $this->google_fonts . $css;
-
-		update_option( Styles_Helpers::get_option_key( 'css' ), $css );
 		echo '<style id="storm-styles">' . $css . '</style>';
 
 	}
