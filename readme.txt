@@ -7,11 +7,14 @@ Requires at least: 3.4
 Tested up to: 3.5.2
 Stable tag: 1.0.4
 
-Be creative with colors and fonts in your theme. Styles changes everything.
+Be creative with colors and fonts. Styles changes everything.
+
 
 == Description ==
 
 WordPress has lots of beautiful themes, but personalizing a design can be difficult and time-intensive. Styles changes that. Styles gives you creative control in one consistent interface – the WordPress theme customizer. Styles lets you make your site your own. :)
+
+[Try a demo in TwentyTwelve](http://demo.stylesplugin.com/twentytwelve).
 
 **Features of the plugin include:**
 
@@ -29,10 +32,10 @@ Styles and options for all built-in WordPress themes are free. More themes are a
 
 **Free Themes include:**
 
-* [TwentyTen](http://wordpress.org/extend/plugins/styles-twentyten)
-* [TwentyEleven](http://wordpress.org/extend/plugins/styles-twentyeleven)
-* [TwentyTwelve](http://wordpress.org/extend/plugins/styles-twentytwelve)
-* [TwentyThirteen](http://wordpress.org/extend/plugins/styles-twentythirteen)
+* TwentyTen: [Plugin](http://wordpress.org/extend/plugins/styles-twentyten), [Demo](http://demo.stylesplugin.com/twentyten)
+* TwentyEleven: [Plugin](http://wordpress.org/extend/plugins/styles-twentyeleven), [Demo](http://demo.stylesplugin.com/twentyeleven)
+* TwentyTwelve: [Plugin](http://wordpress.org/extend/plugins/styles-twentytwelve), [Demo](http://demo.stylesplugin.com/twentytwelve)
+* TwentyThirteen: [Plugin](http://wordpress.org/extend/plugins/styles-twentythirteen), [Demo](http://demo.stylesplugin.com/twentythirteen)
 
 == Installation ==
 
