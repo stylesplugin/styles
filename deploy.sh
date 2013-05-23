@@ -42,7 +42,7 @@ read COMMITMSG
 git commit -am "$COMMITMSG"
 
 echo "Tagging new version in git"
-# git tag -a "$NEWVERSION1" -m "Tagging version $NEWVERSION1"
+git tag -a "$NEWVERSION1" -m "Tagging version $NEWVERSION1"
 
 echo "Pushing latest commit to origin, with tags"
 git push origin master
@@ -69,9 +69,9 @@ svn commit --username=$SVNUSER -m "$COMMITMSG"
 
 echo "Creating new SVN tag & committing it"
 cd $SVNPATH
-# svn copy trunk/ tags/$NEWVERSION1/
-# cd $SVNPATH/tags/$NEWVERSION1
-# svn commit --username=$SVNUSER -m "Tagging version $NEWVERSION1"
+svn copy trunk/ tags/$NEWVERSION1/
+cd $SVNPATH/tags/$NEWVERSION1
+svn commit --username=$SVNUSER -m "Tagging version $NEWVERSION1"
 
 echo "Removing temporary directory $SVNPATH"
 rm -fr $SVNPATH/
