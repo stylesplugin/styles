@@ -121,7 +121,11 @@ abstract class Styles_Control {
 
 		$group_id = Styles_Helpers::get_group_id( $this->group );
 
-		$value = @$settings[ $group_id ][ $this->id ];
+		$value = false;
+
+		if ( isset( $settings[ $group_id ][ $this->id ] ) ) {
+			$value = $settings[ $group_id ][ $this->id ];
+		}
 
 		if ( !empty( $value ) ) {
 			return $value;
