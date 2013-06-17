@@ -1,3 +1,4 @@
+.svn
 lib/cache/
 !lib/cache/constants.xml
 scaffold/logs/
