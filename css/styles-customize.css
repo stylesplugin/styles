@@ -31,6 +31,11 @@ span.styles-type {
 	margin-top: 0;
 }
 
+/* Notices */
+#customize-info #styles_installation_notices {
+	background: #FFFFDF;
+}
+
 
 /* Subsection */
 
