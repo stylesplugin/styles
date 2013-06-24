@@ -72,6 +72,9 @@ No! Styles is very careful about only loading what is needed to get its job done
 
 == Changelog ==
 
+= 1.0.6 =
+* New: Add installation notice to Customizer.
+
 = 1.0.5 =
 * Fix: Resolve blank screen that could appear when installing on a new theme.
 
@@ -128,4 +131,4 @@ No! Styles is very careful about only loading what is needed to get its job done
 
 == Upgrade Notice ==
 
-Fix: Resolve blank screen that could appear when installing on a new theme.
+Add installation notice to Customizer.
