@@ -31,9 +31,11 @@ class Styles_Admin {
 		add_action( 'admin_init', array( $this, 'install_default_themes_notice' ), 20 );
 		add_action( 'admin_init', array( $this, 'activate_notice' ), 30 );
 		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
+		add_action( 'customize_controls_enqueue_scripts', array( $this, 'customize_notices' ), 11 );
 
 		// Scripts
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+
 
 		// Plugin Meta
 		add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 10, 2 );
@@ -96,6 +98,13 @@ class Styles_Admin {
 		foreach( $this->notices as $key => $message ) {
 			echo "<div class='updated fade' id='styles-$key'>$message</div>";
 		}
+	}
+
+	/**
+	 * Pass notices to styles-customize-controls.js
+	 */
+	public function customize_notices() {
+		wp_localize_script( 'styles-customize-controls', 'wp_styles_notices', $this->notices );
 	}
 
 	function license_menu() {

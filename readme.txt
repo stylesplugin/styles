@@ -5,14 +5,15 @@ Author URI: http://brainstormmedia.com
 Tags: css, stylesheet, styles, appearance, customize, customizer, colors, color picker, images, image upload, background, fonts, google fonts, user interface, twentyten, twentyeleven, twentytwelve, twentythirteen
 Requires at least: 3.4
 Tested up to: 3.5.2
-Stable tag: 1.0.5
+Stable tag: 1.0.6
 
 Be creative with colors and fonts. Styles changes everything.
-
 
 == Description ==
 
 WordPress has lots of beautiful themes, but personalizing a design can be difficult and time-intensive. Styles changes that. Styles gives you creative control in one consistent interface – the WordPress theme customizer. Styles lets you make your site your own. :)
+
+http://www.youtube.com/watch?v=DsQPfX92IgY
 
 [Try a demo in TwentyTwelve](http://demo.stylesplugin.com/twentytwelve).
 
@@ -32,10 +33,10 @@ Styles and options for all built-in WordPress themes are free. More themes are a
 
 **Free Themes include:**
 
-* TwentyTen: [Plugin](http://wordpress.org/extend/plugins/styles-twentyten), [Demo](http://demo.stylesplugin.com/twentyten)
-* TwentyEleven: [Plugin](http://wordpress.org/extend/plugins/styles-twentyeleven), [Demo](http://demo.stylesplugin.com/twentyeleven)
-* TwentyTwelve: [Plugin](http://wordpress.org/extend/plugins/styles-twentytwelve), [Demo](http://demo.stylesplugin.com/twentytwelve)
-* TwentyThirteen: [Plugin](http://wordpress.org/extend/plugins/styles-twentythirteen), [Demo](http://demo.stylesplugin.com/twentythirteen)
+* TwentyTen: [Demo](http://demo.stylesplugin.com/twentyten)
+* TwentyEleven: [Demo](http://demo.stylesplugin.com/twentyeleven)
+* TwentyTwelve: [Demo](http://demo.stylesplugin.com/twentytwelve)
+* TwentyThirteen: [Demo](http://demo.stylesplugin.com/twentythirteen)
 
 == Installation ==
 
