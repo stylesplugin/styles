@@ -2,10 +2,10 @@
 Contributors: brainstormmedia, pdclark, elusivelight
 Plugin URI: http://stylesplugin.com
 Author URI: http://brainstormmedia.com
-Tags: css, stylesheet, styles, appearance, customize, customizer, colors, color picker, images, image upload, background, fonts, google fonts, user interface, twentyten, twentyeleven, twentytwelve, twentythirteen
+Tags: css, stylesheet, appearance, customize, customizer, colors, color picker, background, fonts, google fonts, user interface, twenty ten, twenty eleven, twenty twelve, twenty thirteen
 Requires at least: 3.4
 Tested up to: 3.5.2
-Stable tag: 1.0.6
+Stable tag: 1.0.7
 
 Be creative with colors and fonts. Styles changes everything.
 
@@ -17,7 +17,7 @@ http://www.youtube.com/watch?v=DsQPfX92IgY
 
 [Try a demo in TwentyTwelve](http://demo.stylesplugin.com/twentytwelve).
 
-**Features of the plugin include:**
+**Features of the plugin**
 
 * Instant previews
 * Text size
@@ -31,12 +31,24 @@ http://www.youtube.com/watch?v=DsQPfX92IgY
 
 Styles and options for all built-in WordPress themes are free. More themes are available at [StylesPlugin.com](http://stylesplugin.com).
 
-**Free Themes include:**
+**Free Themes**
 
 * TwentyTen: [Demo](http://demo.stylesplugin.com/twentyten)
 * TwentyEleven: [Demo](http://demo.stylesplugin.com/twentyeleven)
 * TwentyTwelve: [Demo](http://demo.stylesplugin.com/twentytwelve)
 * TwentyThirteen: [Demo](http://demo.stylesplugin.com/twentythirteen)
+
+**Developer Resources**
+
+* [Styles on Github](https://github.com/stylesplugin)
+* [Brainstorm Media on Github](https://github.com/brainstormmedia)
+* Code Walkthrough: [How to add support for your own themes](http://www.youtube.com/playlist?list=PLxj61Fojm1RGevBh10U2qCqjwoH4Awo-P)
+
+**Contact**
+
+* [@stylesplugin](http://twitter.com/stylesplugin) on Twitter
+* [Review this plugin](http://wordpress.org/support/view/plugin-reviews/styles)
+* [Get support](http://wordpress.org/support/plugin/styles)
 
 == Installation ==
 
@@ -64,13 +76,28 @@ We believe life is better when we work together. :) Support for WordPress defaul
 
 = Does Styles support my theme? =
 
-Maybe! We have additional themes available available at [StylesPlugin.com](http://stylesplugin.com). If you don't find your theme there, we also have documentation on how to create options using styles available for developers. Adding one option takes only one line of code.
+Maybe! We have additional themes available available at [StylesPlugin.com](http://stylesplugin.com). If you don't find your theme there, [watch this walkthrough](http://www.youtube.com/playlist?list=PLxj61Fojm1RGevBh10U2qCqjwoH4Awo-P) for a developer's guide on how to add support. Adding one option takes only one line of code.
+
+= I'd like to distribute a theme add-on I created for Styles =
+
+If you [watched the walkthrough](http://www.youtube.com/playlist?list=PLxj61Fojm1RGevBh10U2qCqjwoH4Awo-P) and created an add-on for Styles, please share it with others. It's our goal to make the lives of theme developers and end-users much, much easier.
+
+If you would like to sell your add-on at [stylesplugin.com](http://stylesplugin.com), get in touch! Email us at `styles (at) stylesplugin.com` or find us on Twitter as [@stylesplugin](http://twitter.com/stylesplugin).
 
 = Will this plugin slow down my site? =
 
 No! Styles is very careful about only loading what is needed to get its job done. Once you're done editing, stylesheets are cached and loaded for your sites users as quickly as possible.
 
 == Changelog ==
+
+= 1.0.7 =
+
+* Fix: Clearing a setting now updates the preview without a page refresh.
+* Fix: Settings requiring "!important" are fixed and support live preview.
+* Fix: Plugin header settings no longer conflicts with other plugins.
+* Fix: Remove all options when uninstalling on a site network.
+* Change: 'color' label now says 'text color'.
+* New: Contact links and developer resources added to readme
 
 = 1.0.6 =
 * New: Add installation notice to Customizer.
@@ -131,4 +158,9 @@ No! Styles is very careful about only loading what is needed to get its job done
 
 == Upgrade Notice ==
 
-Add installation notice to Customizer.
+* Fix: Clearing a setting now updates the preview without a page refresh.
+* Fix: Settings requiring "!important" are fixed and support live preview.
+* Fix: Plugin header settings no longer conflicts with other plugins.
+* Fix: Remove all options when uninstalling on a site network.
+* Change: 'color' label now says 'text color'.
+* New: Contact links and developer resources added to readme
