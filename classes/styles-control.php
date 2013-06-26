@@ -42,6 +42,7 @@ abstract class Styles_Control {
 		$this->priority = @ $element['priority'];
 
 		$this->append_suffix_to_label();
+		$this->maybe_add_important_to_template();
 
 		$this->id       = $this->get_element_id(); // must call append_suffix_to_label first
 		$this->setting  = $this->get_setting_id(); // must call append_suffix_to_label first
@@ -91,6 +92,16 @@ abstract class Styles_Control {
 			$this->label .=  '::' . $this->suffix;
 		}
 
+	}
+
+	/**
+	 * If important is set to "true" in the element JSON, 
+	 * add !important to CSS template
+	 */
+	public function maybe_add_important_to_template() {
+		if ( isset( $this->element['important'] ) && !empty( $this->element['important'] ) ) {
+			$this->template = str_replace( ';', ' !important;', $this->template );			
+		}
 	}
 
 	/**

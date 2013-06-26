@@ -11,8 +11,6 @@ if( ! defined ( 'ABSPATH' ) && ! defined ( 'WP_UNINSTALL_PLUGIN' ) )
 
 global $wpdb;
 
-$sql = "DELETE from $wpdb->options WHERE option_name LIKE 'storm-styles-%'";
-
 if( is_multisite() ){
 	
 	// Site network: remove options from each blog
@@ -22,6 +20,8 @@ if( is_multisite() ){
 		foreach( $blog_ids as $id ) {
 			switch_to_blog( $id );
 
+			// $wpdb->options is new for each blog, so we're duplicating SQL in the loop
+			$sql = "DELETE from $wpdb->options WHERE option_name LIKE 'storm-styles-%'";
 			$wpdb->query( $sql );
 			
 			restore_current_blog();
@@ -31,5 +31,6 @@ if( is_multisite() ){
 
 }else {
 	// Single site
+	$sql = "DELETE from $wpdb->options WHERE option_name LIKE 'storm-styles-%'";
 	$wpdb->query( $sql );
 }

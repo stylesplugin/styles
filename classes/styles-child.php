@@ -34,8 +34,12 @@ class Styles_Child {
 	 *
 	 * @return array plugin header search terms
 	 */
-	public function extra_plugin_headers() {
-		return array( 'styles class', 'styles item', 'styles updates' );
+	public function extra_plugin_headers( $headers ) {
+		$headers['Styles Class'] = 'styles class';
+		$headers['Styles Item'] = 'styles item';
+		$headers['Styles Updates'] = 'styles updates';
+
+		return $headers;
 	}
 
 	/**
