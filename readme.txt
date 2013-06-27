@@ -13,7 +13,7 @@ Be creative with colors and fonts. Styles changes everything.
 
 WordPress has lots of beautiful themes, but personalizing a design can be difficult and time-intensive. Styles changes that. Styles gives you creative control in one consistent interface – the WordPress theme customizer. Styles lets you make your site your own. :)
 
-http://www.youtube.com/watch?v=DsQPfX92IgY
+http://youtube.com/watch?v=CpKiZEqpcr8
 
 [Try a demo in TwentyTwelve](http://demo.stylesplugin.com/twentytwelve).
 
