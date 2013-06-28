@@ -66,7 +66,7 @@ class Styles_Plugin {
 	 * Set up detection for child plugins that follow common patterns
 	 */
 	public function plugins_loaded() {
-		if ( !is_a( $this->child, 'Styles_Child') ) {
+		if ( !is_a( $this->child, 'Styles_Child') && is_user_logged_in() ) {
 
 			require_once dirname( __FILE__ ) . '/styles-child.php';
 			require_once dirname( __FILE__ ) . '/styles-child-updatable.php';
