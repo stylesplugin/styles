@@ -26,6 +26,7 @@ class Styles_CSS {
 
 		add_filter( 'styles_pre_get_css', array( $this, 'selector_prefix' ) );
 		add_filter( 'body_class', array( $this, 'body_class' ) );
+
 	}
 
 	public function selector_prefix( $element ) {
@@ -84,7 +85,7 @@ class Styles_CSS {
 				}
 			}
 		}
-		
+
 		$css = apply_filters( 'styles_css_output', $css );
 	
 		$css = implode( '', $this->google_fonts ) . $css;
@@ -98,11 +99,17 @@ class Styles_CSS {
 	}
 
 	/**
-	 * Minimize CSS output using CSS Tidy
+	 * Minimize CSS output using CSS Tidy.
 	 * 
-	 * Adapted from JetPack by Automattic
+	 * @see styles_css_output filter
+	 * @author JetPack by Automattic
 	 */
 	public function minify( $css ) {
+		// Allow minification to be disabled with add_filter( 'styles_minify_css', '__return_false' );
+		if ( !apply_filters( 'styles_minify_css', true ) ) {
+			return $css;
+		}
+
 		if ( !class_exists( 'csstidy') ) {
 			include dirname( __FILE__ ) . '/csstidy/class.csstidy.php';
 		}
@@ -117,7 +124,7 @@ class Styles_CSS {
 		$csstidy->set_cfg( 'case_properties',            true );
 		$csstidy->set_cfg( 'discard_invalid_properties', true );
 		$csstidy->set_cfg( 'css_level',                  'CSS3.0' );
-		$csstidy->set_cfg( 'template', 'highest');
+		$csstidy->set_cfg( 'template',                   'highest');
 		$csstidy->parse( $css );
 
 		$css = $csstidy->print->plain();

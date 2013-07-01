@@ -123,7 +123,7 @@ class Styles_Plugin {
 		}
 
 		if ( !empty( $wp_customize ) || empty( $css ) || apply_filters( 'styles_force_rebuild', false ) ) {
-			// Rebuild needed.
+			// Rebuild
 			$this->init_css();
 			return $this->css->get_css();
 		}else {
