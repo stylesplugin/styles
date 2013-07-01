@@ -8,13 +8,6 @@ class Styles_CSS {
 	var $plugin;
 
 	/**
-	 * Class added to body and all selectors
-	 *
-	 * @var string
-	 */
-	var $body_class = 'styles';
-
-	/**
 	 * @import declarations to be added to top of CSS
 	 *
 	 * @var string
@@ -25,7 +18,6 @@ class Styles_CSS {
 		$this->plugin = $plugin;
 
 		add_filter( 'styles_pre_get_css', array( $this, 'selector_prefix' ) );
-		add_filter( 'body_class', array( $this, 'body_class' ) );
 
 	}
 
@@ -37,16 +29,16 @@ class Styles_CSS {
 
 				if ( 'body' == $sub_selector ) {
 					// body selector without class; add it
-					$sub_selector = $sub_selector . '.' . $this->body_class;
+					$sub_selector = $sub_selector . '.' . $this->plugin->body_class;
 				}else if ( 'body ' == substr( $sub_selector, 0 ) ){
 					// body selector with sub-item without class
-					$sub_selector = str_replace( 'body ', 'body'. $this->body_class . ' ', $sub_selector );
+					$sub_selector = str_replace( 'body ', 'body'. $this->plugin->body_class . ' ', $sub_selector );
 				}else if ( 'html' == substr( $sub_selector, 0 ) || 'body' == substr( $sub_selector, 0 ) ) {
 					// html or body selector
 					continue;
 				}else {
 					// All others, prepend body class
-					$sub_selector = '.' . $this->body_class . ' ' . $sub_selector;
+					$sub_selector = '.' . $this->plugin->body_class . ' ' . $sub_selector;
 				}
 
 			}
@@ -55,11 +47,6 @@ class Styles_CSS {
 		}
 
 		return $element;
-	}
-
-	public function body_class( $classes ) {
-		$classes[] = $this->body_class;
-		return $classes;
 	}
 
 	/**
