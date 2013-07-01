@@ -61,43 +61,36 @@ class Styles_CSS {
 		return $classes;
 	}
 
-	public function output_css() {
+	/**
+	 * Rebuild CSS
+	 *
+	 * Cache check called in Styles_Plugin::get_css to avoid initializing this class
+	 */
+	public function get_css() {
 		global $wp_customize;
 
-		$css = false;
+		$css = '';
 
-		if ( empty( $wp_customize ) ) {
-			$css = get_option( Styles_Helpers::get_option_key( 'css' ) );
-		}
+		$this->plugin->customize_register( $wp_customize );
 
-		if ( !empty( $wp_customize ) || empty( $css ) ) {
-			// Refresh
+		foreach ( $this->plugin->customize->get_settings() as $group => $elements ) {
+			foreach ( $elements as $element ) {
+				if ( $class = Styles_Helpers::get_element_class( $element ) ) {
 
-			$css = '';
+					$element = apply_filters( 'styles_pre_get_css', $element );
+					$control = new $class( $group, $element );
 
-			$this->plugin->customize_register( $wp_customize );
-
-			foreach ( $this->plugin->customize->get_settings() as $group => $elements ) {
-				foreach ( $elements as $element ) {
-					if ( $class = Styles_Helpers::get_element_class( $element ) ) {
-
-						$element = apply_filters( 'styles_pre_get_css', $element );
-						$control = new $class( $group, $element );
-
-						$css .= $control->get_css();
-						// $css .= call_user_func_array( $class . '::get_css', array( $group, $element ) );
-					
-					}
+					$css .= $control->get_css();
 				}
 			}
-			$css = apply_filters( 'styles_css_output', $css );
-		
-			$css = implode( '', $this->google_fonts ) . $css;
-
-			update_option( Styles_Helpers::get_option_key( 'css' ), $css );
 		}
+		$css = apply_filters( 'styles_css_output', $css );
+	
+		$css = implode( '', $this->google_fonts ) . $css;
 
-		echo '<style id="storm-styles">' . $css . '</style>';
+		update_option( Styles_Helpers::get_option_key( 'css' ), $css );
+
+		return $css;
 
 	}
 
