@@ -5,7 +5,7 @@ Author URI: http://brainstormmedia.com
 Tags: css, stylesheet, appearance, customize, customizer, colors, color picker, background, fonts, google fonts, user interface, twenty ten, twenty eleven, twenty twelve, twenty thirteen
 Requires at least: 3.4
 Tested up to: 3.5.2
-Stable tag: 1.0.7
+Stable tag: 1.0.8
 
 Be creative with colors and fonts. Styles changes everything.
 
@@ -90,6 +90,9 @@ No! Styles is very careful about only loading what is needed to get its job done
 
 == Changelog ==
 
+= 1.0.8 =
+* New: Minify CSS outputted in header based on [input on poststat.us](http://poststat.us/styles-plugin-css-customization/).
+
 = 1.0.7 =
 
 * Fix: Clearing a setting now updates the preview without a page refresh.
@@ -157,6 +160,12 @@ No! Styles is very careful about only loading what is needed to get its job done
 * Initial public release.
 
 == Upgrade Notice ==
+
+**1.0.8**
+
+* New: Minify CSS outputted in header based on [input on poststat.us](http://poststat.us/styles-plugin-css-customization/).
+
+**1.0.7**
 
 * Fix: Clearing a setting now updates the preview without a page refresh.
 * Fix: Settings requiring "!important" are fixed and support live preview.
