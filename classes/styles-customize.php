@@ -28,8 +28,8 @@ class Styles_Customize {
 		add_action( 'customize_preview_init',  array( $this, 'customize_preview_init_enqueue' ) );
 
 		// Load settings from various sources with filters
-		add_filter( 'styles_theme_settings', array( $this, 'load_theme_settings_from_plugin' ), 50 );
-		add_filter( 'styles_theme_settings', array( $this, 'load_settings_from_theme' ), 100 );
+		add_filter( 'styles_json_files', array( $this, 'load_settings_from_child_plugin' ), 50 );
+		add_filter( 'styles_json_files', array( $this, 'load_settings_from_theme' ), 70 );
 
 		// Set storm-styles option to not autoload; does nothing if setting already exists
 		add_option( Styles_Helpers::get_option_key(), '', '', 'no' );
@@ -142,39 +142,38 @@ class Styles_Customize {
 			return $this->settings;
 		}
 
-		// Plugin Authors: Filter to override settings sources
-		$this->settings = apply_filters( 'styles_theme_settings', $this->settings );
+		// Plugin Authors: Filter to provide arbitrary JSON file paths
+		foreach( apply_filters( 'styles_json_files', array() ) as $json_file ) {
+			$this->settings = $this->load_settings_from_json_file( $json_file, $this->settings );
+		}
 
-		return $this->settings;
+		// Last-second filter to edit settings as PHP array instead of JSON
+		return apply_filters( 'styles_settings', $this->settings );
 	}
 
 	/**
-	 * Load settings from path provided by plugin
+	 * Load settings from plugin that inherits a Styles class,
+	 * like Styles_Child_Theme, which expects customize.json to be in plugin directory
 	 */
-	public function load_theme_settings_from_plugin( $defaults = array() ) {
+	public function load_settings_from_child_plugin( $json_files ) {
+
+		// Plugins that declare styles class: XXX in header
 		foreach( $this->plugin->child->plugins as $plugin ) {
-
-			if( 
-				is_a( $plugin, 'Styles_Child_Theme') 
-				&& method_exists( $plugin, 'get_json_path' ) 
-			) {
-			
-				$json_file = $plugin->get_json_path();
-				$defaults = $this->load_settings_from_json_file( $json_file, $defaults );
-			
+			// Class contains method get_json_path()
+			if( method_exists( $plugin, 'get_json_path' ) ) {
+				$json_files[] = $plugin->get_json_path();
 			}
-
 		}
 
-		return $defaults;
+		return $json_files;
 	}
 
 	/**
 	 * Load settings from theme file formatted as JSON
 	 */
-	public function load_settings_from_theme( $defaults = array() ) {
-		$json_file = get_stylesheet_directory() . '/customize.json';
-		return $this->load_settings_from_json_file( $json_file, $defaults );
+	public function load_settings_from_theme( $json_files ) {
+		$json_files[] = get_stylesheet_directory() . '/customize.json';
+		return $json_files;
 	}
 
 	public function load_settings_from_json_file( $json_file, $default_settings = array() ) {
