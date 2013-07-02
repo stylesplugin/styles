@@ -28,8 +28,8 @@ class Styles_Customize {
 		add_action( 'customize_preview_init',  array( $this, 'customize_preview_init_enqueue' ) );
 
 		// Load settings from various sources with filters
-		add_filter( 'styles_theme_settings', array( $this, 'load_theme_settings_from_plugin' ), 1 );
-		add_filter( 'styles_theme_settings', array( $this, 'load_settings_from_theme' ), 5 );
+		add_filter( 'styles_theme_settings', array( $this, 'load_theme_settings_from_plugin' ), 50 );
+		add_filter( 'styles_theme_settings', array( $this, 'load_settings_from_theme' ), 100 );
 
 		// Set storm-styles option to not autoload; does nothing if setting already exists
 		add_option( Styles_Helpers::get_option_key(), '', '', 'no' );
