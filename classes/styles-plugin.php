@@ -12,7 +12,7 @@ class Styles_Plugin {
 	 *
 	 * @var string
 	 **/
-	var $version = '1.0.8';
+	var $version = '1.0.9';
 	
 	/**
 	 * Plugin DB version
@@ -46,11 +46,19 @@ class Styles_Plugin {
 
 	var $query_var = 'styles-action';
 
+	/**
+	 * Class added to body and all selectors
+	 *
+	 * @var string
+	 */
+	var $body_class = 'styles';
+
 	public function __construct() {
 
 		require_once dirname( __FILE__ ) . '/styles-helpers.php';
 
 		add_action( 'wp_head', array( $this, 'wp_head' ), 1000 );
+		add_filter( 'body_class', array( $this, 'body_class' ) );
 		
 		add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ), 15 );
 		add_action( 'admin_menu', array( $this, 'admin_menu' ), 1 );
@@ -146,6 +154,14 @@ class Styles_Plugin {
 			'</style>',
 			'',
 		));
+	}
+
+	/**
+	 * Add Styles body_class to <body> tag
+	 */
+	public function body_class( $classes ) {
+		$classes[] = $this->body_class;
+		return $classes;
 	}
 
 	/**
