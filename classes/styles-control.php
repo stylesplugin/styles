@@ -16,6 +16,7 @@ abstract class Styles_Control {
 	var $priority;
 	var $id;      
 	var $setting; 
+	var $section;
 	
 	/**
 	 * Template CSS for $selector and $value to be filled into
@@ -36,10 +37,11 @@ abstract class Styles_Control {
 			$this->label = $this->selector;
 		}
 
-		$this->selector = $element['selector'];
-		$this->type     = $element['type'];
-		$this->label    = @ $element['label'];
-		$this->priority = @ $element['priority'];
+		foreach( array( 'selector', 'type', 'label', 'priority', 'section' ) as $key ) {
+			if ( isset( $element[$key] ) ) {
+				$this->$key = $element[$key];
+			}
+		}
 
 		$this->append_suffix_to_label();
 		$this->maybe_add_important_to_template();
@@ -61,6 +63,34 @@ abstract class Styles_Control {
 	 * @return null
 	 */
 	abstract public function add_item();
+
+	/**
+	 * Return args passed into $wp_customize->add_control()
+	 * @return array
+	 */
+	public function get_control_args() {
+		$args = array(
+			'label'    => __( $this->label, 'styles' ),
+			'section'  => ! empty( $this->section ) ? $this->section : $this->group,
+			'settings' => $this->setting,
+			'priority' => $this->priority . $this->group_priority,
+		);
+		return $args;
+	}
+
+	/**
+	 * Return args passed into $wp_customize->add_control()
+	 * @return array
+	 */
+	public function get_setting_args() {
+		$args = array(
+			'default'    => $this->default,
+			'type'       => 'option',
+			'capability' => 'edit_theme_options',
+			'transport'  => $this->get_transport(),
+		);
+		return $args;
+	}
 
 	public function append_suffix_to_label() {
 		if ( !empty( $this->element['suffix'] ) ) {

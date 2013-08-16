@@ -1,28 +1,28 @@
 <?php
 
-class Styles_Control_Color extends Styles_Control {
-	var $suffix = 'text color';
-	var $template = '$selector { color: $value; }';
+class Styles_Control_Background_Position extends Styles_Control {
+	var $suffix = 'background position';
+	var $template = '$selector { background-position: $value; }';
 
 	public function __construct( $group, $element ) {
 		parent::__construct( $group, $element );
 	}
 
-	/**
-	 * Register item with $wp_customize
-	 */
-	public function add_item() {
-		global $wp_customize;
-
-		$wp_customize->add_setting( $this->setting, $this->get_setting_args() );
-
-		$control = new WP_Customize_Color_Control(
-			$wp_customize,
-			Styles_Helpers::get_control_id( $this->id ),
-			$this->get_control_args()
-		);
-		$wp_customize->add_control( $control );
-	}
+	///**
+	// * Register item with $wp_customize
+	// */
+	//public function add_item() {
+	//	global $wp_customize;
+	//
+	//	$wp_customize->add_setting( $this->setting, $this->get_setting_args() );
+	//
+	//	$control = new WP_Customize_Color_Control(
+	//		$wp_customize,
+	//		Styles_Helpers::get_control_id( $this->id ),
+	//		$this->get_control_args()
+	//	);
+	//	$wp_customize->add_control( $control );
+	//}
 
 	/**
 	 * Return CSS based on setting value
