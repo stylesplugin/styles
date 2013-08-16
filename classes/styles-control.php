@@ -33,6 +33,10 @@ abstract class Styles_Control {
 			$this->template = $element['template'];
 		}
 
+		if ( !empty( $element['default'] ) ) {
+			$this->default = $element['default'];
+		}
+
 		if ( empty( $this->label) ) {
 			$this->label = $this->selector;
 		}
