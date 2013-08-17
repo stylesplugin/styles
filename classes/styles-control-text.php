@@ -30,10 +30,10 @@ class Styles_Control_Text extends Styles_Control {
 	public function add_item() {
 		global $wp_customize;
 
-		$args_size = $this->get_setting_args();
+		$args_size = $this->get_setting_args( 'font_size' );
 		$setting_size = $this->setting . '[font_size]';
 
-		$args_family = $this->get_setting_args();
+		$args_family = $this->get_setting_args( 'font_family' );
 		unset( $args_family['transport'] );
 		$setting_family = $this->setting . '[font_family]';
 

@@ -85,9 +85,18 @@ abstract class Styles_Control {
 	 * Return args passed into $wp_customize->add_control()
 	 * @return array
 	 */
-	public function get_setting_args() {
+	public function get_setting_args( $subsetting = null ) {
+		$default = null;
+		if ( ! empty( $subsetting ) ) {
+			if ( isset( $this->default[$subsetting] ) ) {
+				$default = $this->default[$subsetting];
+			}
+		}
+		else if ( ! is_array( $this->default ) ) {
+			$default = $this->default;
+		}
 		$args = array(
-			'default'    => $this->default,
+			'default'    => $default,
 			'type'       => 'option',
 			'capability' => 'edit_theme_options',
 			'transport'  => $this->get_transport(),
