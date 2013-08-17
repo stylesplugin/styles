@@ -152,7 +152,7 @@ class Styles_Customize_Background_Position_Control extends WP_Customize_Control 
 					class="styles-background-position-unit-keywords"
 					>
 					<?php foreach( $dimension_info['keyword_values'] as $keyword => $info ): ?>
-						<option data-percent="<?php echo esc_attr( $info['percent'] ) ?>" data-keyword="<?php echo esc_attr( $keyword ) ?>" value="%">
+						<option data-percent="<?php echo esc_attr( $info['percent'] ) ?>" data-keyword="<?php echo esc_attr( $keyword ) ?>">
 							<?php echo esc_html( $info['label'] ) ?>
 						</option>
 					<?php endforeach; ?>
