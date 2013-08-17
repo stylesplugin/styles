@@ -40,7 +40,7 @@ class Styles_Customize {
 		// Version set to md5 of settings because JS generated from settings
 		$custom_preview_version = md5( serialize( $this->settings ) );
 
-		$custom_preview_url = add_query_arg( 'styles-action', 'customize-preview-js', site_url() );
+		$custom_preview_url = add_query_arg( 'styles-action', 'customize-preview-js', site_url( '/' ) );
 		
 		// Account for theme previews
 		$custom_preview_url = add_query_arg( 'theme', Styles_Helpers::get_template(), $custom_preview_url );
