@@ -41,6 +41,12 @@ span.styles-type {
 	width: 8ex;
 	min-width: 8ex;
 }
+#customize-controls .background-position-dimension.keyword input.styles-background-position-value {
+	display: none;
+}
+#customize-controls .background-position-dimension.keyword select.styles-background-position-unit {
+	width: 16ex;
+}
 
 /* Notices */
 #customize-info #styles_installation_notices {

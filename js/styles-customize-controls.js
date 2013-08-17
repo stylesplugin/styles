@@ -61,4 +61,16 @@ jQuery( document ).ready( function ( $ ) {
 		} );
 	}
 
+	set_background_position_control_behavior();
+	/**
+	 * Copy array of google fonts into font select element
+	 * Doing it this cuts about 200kb off of page load size
+	 */
+	function set_background_position_control_behavior() {
+		var keywords = [ 'left', 'top', 'center', 'right', 'bottom' ];
+		$( '.styles-background-position-unit' ).on( 'change', function () {
+			var is_keyword = ( -1 !== $.inArray( $(this).val(), keywords ) );
+			$(this).closest('.background-position-dimension').toggleClass( 'keyword', is_keyword );
+		} ).triggerHandler( 'change' );
+	}
 } );

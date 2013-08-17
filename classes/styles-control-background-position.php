@@ -55,11 +55,16 @@ class Styles_Control_Background_Position extends Styles_Control {
 		$css = '';
 		if ( $value ) {
 			$args = array_merge(
-				array(
-					'template' => $this->template,
-				),
+				array( 'template' => $this->template, ),
 				$value
 			);
+			$keywords = array( 'left', 'top', 'center', 'right', 'bottom' );
+			if ( in_array( $args['x_unit'], $keywords ) ) {
+				$args['x_value'] = '';
+			}
+			if ( in_array( $args['y_unit'], $keywords ) ) {
+				$args['y_value'] = '';
+			}
 			$css = $this->apply_template( $args );
 		}
 		// Filter effects final CSS output, but not postMessage updates
@@ -121,22 +126,30 @@ class Styles_Customize_Background_Position_Control extends WP_Customize_Control 
 	public function render_dimension_field( $dimension ) {
 		$dimension_info = $this->dimension_schema[$dimension];
 		$saved_unit = $this->value( sprintf( '%s_unit', $dimension ) );
+		$units = array_merge(
+			$dimension_info['keyword_values'],
+			array_combine( $this->units, $this->units )
+		)
 		?>
-		<label><?php echo esc_attr( $dimension_info['label'] ) ?>
-			<input
-				type="number"
-				value="<?php echo esc_attr( $this->value( sprintf( '%s_value', $dimension ) ) ); ?>"
-				<?php $this->link( sprintf( '%s_value', $dimension ) ); ?>
-				class="styles-background-position-value"
-			/></label><select
-				<?php $this->link( sprintf( '%s_unit', $dimension ) ); ?>
-				class="styles-background-position-unit"
-				>
-				<?php foreach( $this->units as $unit ): ?>
-					<option <?php /*selected( $unit, $saved_unit )*/ ?>><?php echo esc_html( $unit ) ?></option>
-				<?php endforeach; ?>
-			</select>
-		</label>
+		<span class="background-position-dimension">
+			<label><?php echo esc_attr( $dimension_info['label'] ) ?>
+				<input
+					type="number"
+					value="<?php echo esc_attr( $this->value( sprintf( '%s_value', $dimension ) ) ); ?>"
+					<?php $this->link( sprintf( '%s_value', $dimension ) ); ?>
+					class="styles-background-position-value"
+				/><select
+					<?php $this->link( sprintf( '%s_unit', $dimension ) ); ?>
+					class="styles-background-position-unit"
+					>
+					<?php foreach( $units as $value => $text ): ?>
+						<option value="<?php echo esc_attr( $value ) ?>">
+							<?php echo esc_html( $text ) ?>
+						</option>
+					<?php endforeach; ?>
+				</select>
+			</label>
+		</span>
 		<?php
 	}
 }
