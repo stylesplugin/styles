@@ -58,13 +58,6 @@ class Styles_Control_Background_Position extends Styles_Control {
 				array( 'template' => $this->template, ),
 				$value
 			);
-			$keywords = array( 'left', 'top', 'center', 'right', 'bottom' );
-			if ( in_array( $args['x_unit'], $keywords ) ) {
-				$args['x_value'] = '';
-			}
-			if ( in_array( $args['y_unit'], $keywords ) ) {
-				$args['y_value'] = '';
-			}
 			$css = $this->apply_template( $args );
 		}
 		// Filter effects final CSS output, but not postMessage updates
@@ -97,17 +90,35 @@ class Styles_Customize_Background_Position_Control extends WP_Customize_Control 
 			'x' => array(
 				'label' => __( 'X:', 'styles' ),
 				'keyword_values' => array(
-					'left' => _x( 'Left', 'horizontal dimension', 'styles' ),
-					'center' => _x( 'Center', 'horizontal dimension', 'styles' ),
-					'right' => _x( 'Right', 'horizontal dimension', 'styles' ),
+					'left' => array(
+						'percent' => '0',
+						'label' => _x( 'Left', 'horizontal dimension', 'styles' ),
+					),
+					'center' => array(
+						'percent' => '50',
+						'label' => _x( 'Center', 'horizontal dimension', 'styles' ),
+					),
+					'right' => array(
+						'percent' => '100',
+						'label' => _x( 'Right', 'horizontal dimension', 'styles' ),
+					),
 				),
 			),
 			'y' => array(
 				'label' => __( 'Y:', 'styles' ),
 				'keyword_values' => array(
-					'top' => _x( 'Top', 'vertical dimension', 'styles' ),
-					'center' => _x( 'Center', 'vertical dimension', 'styles' ),
-					'bottom' => _x( 'Bottom', 'vertical dimension', 'styles' ),
+					'top' => array(
+						'percent' => '0',
+						'label' => _x( 'Top', 'vertical dimension', 'styles' ),
+					),
+					'center' => array(
+						'percent' => '50',
+						'label' => _x( 'Center', 'vertical dimension', 'styles' ),
+					),
+					'bottom' => array(
+						'percent' => '100',
+						'label' => _x( 'Bottom', 'vertical dimension', 'styles' ),
+					),
 				),
 			),
 		);
@@ -126,12 +137,8 @@ class Styles_Customize_Background_Position_Control extends WP_Customize_Control 
 	public function render_dimension_field( $dimension ) {
 		$dimension_info = $this->dimension_schema[$dimension];
 		$saved_unit = $this->value( sprintf( '%s_unit', $dimension ) );
-		$units = array_merge(
-			$dimension_info['keyword_values'],
-			array_combine( $this->units, $this->units )
-		)
 		?>
-		<span class="background-position-dimension">
+		<span class="<?php echo esc_attr( "background-position-dimension $dimension" ) ?>">
 			<label><?php echo esc_attr( $dimension_info['label'] ) ?>
 				<input
 					type="number"
@@ -139,12 +146,19 @@ class Styles_Customize_Background_Position_Control extends WP_Customize_Control 
 					<?php $this->link( sprintf( '%s_value', $dimension ) ); ?>
 					class="styles-background-position-value"
 				/><select
-					<?php $this->link( sprintf( '%s_unit', $dimension ) ); ?>
-					class="styles-background-position-unit"
+					data-unit-setting="<?php echo esc_attr( $this->settings[ sprintf( '%s_unit', $dimension ) ]->id ) ?>"
+					data-value-setting="<?php echo esc_attr( $this->settings[ sprintf( '%s_value', $dimension ) ]->id ) ?>"
+					data-dimension="<?php echo esc_attr( $dimension ) ?>"
+					class="styles-background-position-unit-keywords"
 					>
-					<?php foreach( $units as $value => $text ): ?>
-						<option value="<?php echo esc_attr( $value ) ?>">
-							<?php echo esc_html( $text ) ?>
+					<?php foreach( $dimension_info['keyword_values'] as $keyword => $info ): ?>
+						<option data-percent="<?php echo esc_attr( $info['percent'] ) ?>" data-keyword="<?php echo esc_attr( $keyword ) ?>" value="%">
+							<?php echo esc_html( $info['label'] ) ?>
+						</option>
+					<?php endforeach; ?>
+					<?php foreach( $this->units as $unit ): ?>
+						<option value="<?php echo esc_attr( $unit ) ?>">
+							<?php echo esc_html( $unit ) ?>
 						</option>
 					<?php endforeach; ?>
 				</select>
