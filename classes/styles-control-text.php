@@ -51,7 +51,7 @@ class Styles_Control_Text extends Styles_Control {
 			Styles_Helpers::get_control_id( $this->id ),
 			$control_args
 		);
-		$wp_customize->add_control( $control  );
+		$wp_customize->add_control( $control );
 	}
 
 	/**
