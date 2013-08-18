@@ -37,15 +37,9 @@ class Styles_Customize {
 	}
 
 	public function customize_preview_init_enqueue() {
-		// Version set to md5 of settings because JS generated from settings
-		$custom_preview_version = md5( serialize( $this->settings ) );
-
-		$custom_preview_url = add_query_arg( 'styles-action', 'customize-preview-js', site_url( '/' ) );
-		
-		// Account for theme previews
-		$custom_preview_url = add_query_arg( 'theme', Styles_Helpers::get_template(), $custom_preview_url );
-
-		wp_enqueue_script( 'styles-customize-preview', $custom_preview_url, array( 'jquery', 'customize-preview' ), $custom_preview_version, true );
+		wp_enqueue_script( 'jquery' );
+		wp_enqueue_script( 'customize-preview' );
+		add_action( 'wp_footer', array( $this, 'preview_js' ), 1000 );
 	}
 
 	public function customize_controls_enqueue() {
@@ -62,24 +56,15 @@ class Styles_Customize {
 	 * Output javascript for WP Customizer preview postMessage transport
 	 */
 	public function preview_js() {
-		// This fires on a very early hook (parse_request)
-		// So we neet to init settings
-		foreach ( $this->get_settings() as $group => $elements ) {
-			$group_id = Styles_Helpers::get_group_id( $group );
-			$this->add_items( $group_id, $elements, false );
-		}
-
-		header( 'content-type: text/javascript' ); ?>
-
+		?>
+		<script>
 ( function( $ ){
 
 	<?php echo apply_filters( 'styles_customize_preview', '' ) ?>
 
 } )( jQuery );
-
+		</script>
 		<?php
-
-		exit;
 	}
 
 	/**
