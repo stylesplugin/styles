@@ -16,7 +16,6 @@ abstract class Styles_Control {
 	var $priority;
 	var $id;      
 	var $setting; 
-	var $section;
 	
 	/**
 	 * Template CSS for $selector and $value to be filled into
@@ -37,7 +36,7 @@ abstract class Styles_Control {
 			$this->label = $this->selector;
 		}
 
-		foreach( array( 'selector', 'type', 'label', 'priority', 'section' ) as $key ) {
+		foreach( array( 'selector', 'type', 'label', 'priority' ) as $key ) {
 			if ( isset( $element[$key] ) ) {
 				$this->$key = $element[$key];
 			}
@@ -71,7 +70,7 @@ abstract class Styles_Control {
 	public function get_control_args() {
 		$args = array(
 			'label'    => __( $this->label, 'styles' ),
-			'section'  => ! empty( $this->section ) ? $this->section : $this->group,
+			'section'  => $this->group,
 			'settings' => $this->setting,
 			'priority' => $this->priority . $this->group_priority,
 		);
