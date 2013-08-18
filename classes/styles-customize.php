@@ -40,7 +40,7 @@ class Styles_Customize {
 		// Version set to md5 of settings because JS generated from settings
 		$custom_preview_version = md5( serialize( $this->settings ) );
 
-		$custom_preview_url = add_query_arg( 'styles-action', 'customize-preview-js', site_url() );
+		$custom_preview_url = add_query_arg( 'styles-action', 'customize-preview-js', site_url( '/' ) );
 		
 		// Account for theme previews
 		$custom_preview_url = add_query_arg( 'theme', Styles_Helpers::get_template(), $custom_preview_url );
@@ -95,10 +95,13 @@ class Styles_Customize {
 			
 			// Groups
 			$group_id = Styles_Helpers::get_group_id( $group );
-			$wp_customize->add_section( $group_id, array(
-				'title'    => __( $group, 'storm' ),
-				'priority' => $i,
-			) );
+			$has_section = (bool) $wp_customize->get_section( $group_id );
+			if ( ! $has_section ) {
+				$wp_customize->add_section( $group_id, array(
+					'title'    => __( $group, 'storm' ),
+					'priority' => $i,
+				) );
+			}
 
 			$this->add_items( $group_id, $elements );
 		}
