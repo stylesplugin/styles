@@ -95,10 +95,13 @@ class Styles_Customize {
 			
 			// Groups
 			$group_id = Styles_Helpers::get_group_id( $group );
-			$wp_customize->add_section( $group_id, array(
-				'title'    => __( $group, 'storm' ),
-				'priority' => $i,
-			) );
+			$has_section = (bool) $wp_customize->get_section( $group_id );
+			if ( ! $has_section ) {
+				$wp_customize->add_section( $group_id, array(
+					'title'    => __( $group, 'storm' ),
+					'priority' => $i,
+				) );
+			}
 
 			$this->add_items( $group_id, $elements );
 		}
