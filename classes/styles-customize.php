@@ -64,7 +64,7 @@ class Styles_Customize {
 	public function preview_js() {
 		// This fires on a very early hook (parse_request)
 		// So we neet to init settings
-		foreach ( $this->get_settings() as $group => $elements ) {
+		foreach ( (array) $this->get_settings() as $group => $elements ) {
 			$group_id = Styles_Helpers::get_group_id( $group );
 			$this->add_items( $group_id, $elements, false );
 		}
@@ -90,7 +90,7 @@ class Styles_Customize {
 		global $wp_customize;
 
 		$i = 950;
-		foreach ( $this->get_settings() as $group => $elements ) {
+		foreach ( (array) $this->get_settings() as $group => $elements ) {
 			$i++;
 			
 			// Groups
@@ -111,7 +111,7 @@ class Styles_Customize {
 	 */
 	public function add_items( $group_id, $elements, $add_item = true ) {
 		static $i;
-		foreach ( $elements as $element ) {
+		foreach ( (array) $elements as $element ) {
 			$i++;
 			$element['priority'] = $i;
 			if ( $class = Styles_Helpers::get_element_class( $element ) ) {
@@ -143,7 +143,7 @@ class Styles_Customize {
 		}
 
 		// Plugin Authors: Filter to provide arbitrary JSON file paths
-		foreach( apply_filters( 'styles_json_files', array() ) as $json_file ) {
+		foreach( (array) apply_filters( 'styles_json_files', array() ) as $json_file ) {
 			$this->settings = $this->load_settings_from_json_file( $json_file, $this->settings );
 		}
 
@@ -158,7 +158,7 @@ class Styles_Customize {
 	public function load_settings_from_child_plugin( $json_files ) {
 
 		// Plugins that declare styles class: XXX in header
-		foreach( $this->plugin->child->plugins as $plugin ) {
+		foreach( (array) $this->plugin->child->plugins as $plugin ) {
 			// Class contains method get_json_path()
 			if( method_exists( $plugin, 'get_json_path' ) ) {
 				$json_files[] = $plugin->get_json_path();
