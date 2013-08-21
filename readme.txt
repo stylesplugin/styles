@@ -5,7 +5,7 @@ Author URI: http://brainstormmedia.com
 Tags: css, stylesheet, appearance, customize, customizer, colors, color picker, background, fonts, google fonts, user interface, twenty ten, twenty eleven, twenty twelve, twenty thirteen
 Requires at least: 3.4
 Tested up to: 3.5.2
-Stable tag: 1.0.9
+Stable tag: 1.0.10
 
 Be creative with colors and fonts. Styles changes everything.
 
@@ -90,6 +90,11 @@ No! Styles is very careful about only loading what is needed to get its job done
 
 == Changelog ==
 
+= 1.0.10 =
+* Fix: Ensure preview javascript works when WordPress installed in a child directory. Props [@westonruter](https://github.com/westonruter) [commit](https://github.com/stylesplugin/styles/commit/a35f6fc8566f45a7bd9387bb7e7793751e074660)
+* Fix: Prevent warnings when no Styles child plugins exist. Thanks [@pictureitsolved](http://go.brain.st/181HisI)
+* New: Add `styles_json_files` filter to allow plugin authors to enqueue arbitrary customize.json files. customize.json in child plugins and themes are still enqueued automatically.
+
 = 1.0.9 =
 * Fix: Resolve regression in 1.0.8 that caused saved styles to not display.
 
@@ -164,18 +169,8 @@ No! Styles is very careful about only loading what is needed to get its job done
 
 == Upgrade Notice ==
 
-**1.0.9**
-* Fix: Resolve regression in 1.0.8 that caused saved styles to not display.
+**1.0.10**
 
-**1.0.8**
-
-* New: Minify CSS outputted in header based on [input on poststat.us](http://poststat.us/styles-plugin-css-customization/).
-
-**1.0.7**
-
-* Fix: Clearing a setting now updates the preview without a page refresh.
-* Fix: Settings requiring "!important" are fixed and support live preview.
-* Fix: Plugin header settings no longer conflicts with other plugins.
-* Fix: Remove all options when uninstalling on a site network.
-* Change: 'color' label now says 'text color'.
-* New: Contact links and developer resources added to readme
+* Fix: Ensure preview javascript works when WordPress installed in a child directory. Props [@westonruter](https://github.com/westonruter) [commit](https://github.com/stylesplugin/styles/commit/a35f6fc8566f45a7bd9387bb7e7793751e074660)
+* Fix: Prevent warnings when no Styles child plugins exist. Thanks [@pictureitsolved](http://go.brain.st/181HisI)
+* New: Add `styles_json_files` filter to allow plugin authors to enqueue arbitrary customize.json files. customize.json in child plugins and themes are still enqueued automatically.
