@@ -44,8 +44,6 @@ class Styles_Plugin {
 	 */
 	var $child;
 
-	var $query_var = 'styles-action';
-
 	/**
 	 * Class added to body and all selectors
 	 *
@@ -65,9 +63,6 @@ class Styles_Plugin {
 		add_action( 'customize_register', array( $this, 'customize_register' ), 1 );
 		add_action( 'customize_save_after', array( $this, 'customize_save_after' ) );
 
-		// Generated javascript from settings for Customize postMessage transport
-		add_filter( 'query_vars', array( $this, 'query_vars' ) );
-		add_action( 'parse_request', array( $this, 'parse_request' ) );
 	}
 
 	/**
@@ -170,32 +165,6 @@ class Styles_Plugin {
 	public function body_class( $classes ) {
 		$classes[] = $this->body_class;
 		return $classes;
-	}
-
-	/**
-	 * Whitelist query var to trigger custom requests
-	 */
-	public function query_vars( $vars ) {
-		$vars[] = $this->query_var;
-		return $vars;
-	}
-
-	/**
-	 * Handle custom requests for our custom query_var
-	 */
-	public function parse_request( $wp ) {
-		if ( !array_key_exists( $this->query_var, $wp->query_vars ) ) {
-			return;
-		}
-		switch ( $wp->query_vars[ $this->query_var ] ) {
-			case 'customize-preview-js':
-
-				$this->customize_register();
-				
-				$this->customize->preview_js();
-
-			break;
-		}
 	}
 
 }
