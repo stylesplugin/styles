@@ -23,6 +23,8 @@ class Styles_Customize {
 	function __construct( $plugin ) {
 		$this->plugin = &$plugin;
 
+		do_action( 'styles_customize_init' );
+
 		add_action( 'customize_register', array( $this, 'add_sections' ), 10 );
 		add_action( 'customize_controls_enqueue_scripts',  array( $this, 'customize_controls_enqueue' ) );
 		add_action( 'customize_preview_init',  array( $this, 'customize_preview_init_enqueue' ) );
