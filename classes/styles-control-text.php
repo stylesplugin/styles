@@ -30,31 +30,28 @@ class Styles_Control_Text extends Styles_Control {
 	public function add_item() {
 		global $wp_customize;
 
-		$args_size = array( 
-			'default' => $this->default,
-			'type' => 'option',
-			'capability' => 'edit_theme_options',
-			'transport'  => $this->get_transport(),
+		$args_size = $this->get_setting_args( 'font_size' );
+		$setting_size = $this->setting . '[font_size]';
+
+		$args_family = $this->get_setting_args( 'font_family' );
+		unset( $args_family['transport'] );
+		$setting_family = $this->setting . '[font_family]';
+
+		$wp_customize->add_setting( $setting_size, $args_size );
+		$wp_customize->add_setting( $setting_family, $args_family );
+
+		$control_args = $this->get_control_args();
+		$control_args['settings'] = array(
+			'font_size'    => $setting_size,
+			'font_family'  => $setting_family,
 		);
 
-		$args_family = array( 
-			'default' => $this->default, 
-			'type' => 'option', 
-			'capability' => 'edit_theme_options', 
+		$control = new Styles_Customize_Text_Control(
+			$wp_customize,
+			Styles_Helpers::get_control_id( $this->id ),
+			$control_args
 		);
-
-		$wp_customize->add_setting( $this->setting.'[font_size]', $args_size );
-		$wp_customize->add_setting( $this->setting.'[font_family]', $args_family );
-
-		$wp_customize->add_control( new Styles_Customize_Text_Control( $wp_customize, Styles_Helpers::get_control_id( $this->id ), array(
-			'label'    => __( $this->label, 'styles' ),
-			'section'  => $this->group,
-			'settings' => array( 
-				'font_size'    => $this->setting.'[font_size]',
-				'font_family'    => $this->setting.'[font_family]',
-			),
-			'priority' => $this->priority . $this->group_priority,
-		) ) );
+		$wp_customize->add_control( $control );
 	}
 
 	/**
