@@ -14,21 +14,14 @@ class Styles_Control_Color extends Styles_Control {
 	public function add_item() {
 		global $wp_customize;
 
-		$args = array(
-			'default'    => $this->default,
-			'type'       => 'option',
-			'capability' => 'edit_theme_options',
-			'transport'  => $this->get_transport(),
+		$wp_customize->add_setting( $this->setting, $this->get_setting_args() );
+
+		$control = new WP_Customize_Color_Control(
+			$wp_customize,
+			Styles_Helpers::get_control_id( $this->id ),
+			$this->get_control_args()
 		);
-
-		$wp_customize->add_setting( $this->setting, $args );
-
-		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, Styles_Helpers::get_control_id( $this->id ), array(
-			'label'    => __( $this->label, 'styles' ),
-			'section'  => $this->group,
-			'settings' => $this->setting,
-			'priority' => $this->priority . $this->group_priority,
-		) ) );
+		$wp_customize->add_control( $control );
 	}
 
 	/**
