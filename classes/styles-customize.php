@@ -23,11 +23,9 @@ class Styles_Customize {
 	function __construct( $plugin ) {
 		$this->plugin = &$plugin;
 
-		do_action( 'styles_customize_init' );
-
 		add_action( 'customize_register', array( $this, 'add_sections' ), 10 );
 		add_action( 'customize_controls_enqueue_scripts',  array( $this, 'customize_controls_enqueue' ) );
-		add_action( 'customize_preview_init',  array( $this, 'customize_preview_init_enqueue' ) );
+		add_action( 'customize_preview_init',  array( $this, 'customize_preview_init' ) );
 
 		// Load settings from various sources with filters
 		add_filter( 'styles_json_files', array( $this, 'load_settings_from_child_plugin' ), 50 );
@@ -38,10 +36,8 @@ class Styles_Customize {
 
 	}
 
-	public function customize_preview_init_enqueue() {
-		wp_enqueue_script( 'jquery' );
-		wp_enqueue_script( 'customize-preview' );
-		add_action( 'wp_footer', array( $this, 'preview_js' ), 1000 );
+	public function customize_preview_init() {
+		add_action( 'wp_footer', array( $this, 'preview_js' ) );
 	}
 
 	public function customize_controls_enqueue() {
@@ -58,13 +54,16 @@ class Styles_Customize {
 	 * Output javascript for WP Customizer preview postMessage transport
 	 */
 	public function preview_js() {
+		// Ensure dependencies have been output by now.
+		wp_print_scripts( array( 'jquery', 'customize-preview' ) );
+
 		?>
 		<script>
-( function( $ ){
+			( function( $ ){
 
-	<?php echo apply_filters( 'styles_customize_preview', '' ) ?>
+				<?php echo apply_filters( 'styles_customize_preview', '' ) ?>
 
-} )( jQuery );
+			} )( jQuery );
 		</script>
 		<?php
 	}
