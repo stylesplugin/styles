@@ -63,11 +63,11 @@ class Styles_Plugin {
 		add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ), 15 );
 		add_action( 'admin_menu', array( $this, 'admin_menu' ), 1 );
 		add_action( 'customize_register', array( $this, 'customize_register' ), 1 );
+		add_action( 'customize_save_after', array( $this, 'customize_save_after' ) );
 
 		// Generated javascript from settings for Customize postMessage transport
 		add_filter( 'query_vars', array( $this, 'query_vars' ) );
 		add_action( 'parse_request', array( $this, 'parse_request' ) );
-		
 	}
 
 	/**
@@ -109,6 +109,14 @@ class Styles_Plugin {
 
 			$this->customize = new Styles_Customize( $this );
 		}
+	}
+
+	/**
+	 * Rebuild CSS whenever customizer is re-saved
+	 */
+	function customize_save_after() {
+		$this->init_css();
+		$this->css->get_css();
 	}
 
 	public function init_css() {
