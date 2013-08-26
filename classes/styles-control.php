@@ -32,14 +32,19 @@ abstract class Styles_Control {
 			$this->template = $element['template'];
 		}
 
+		if ( !empty( $element['default'] ) ) {
+			$this->default = $element['default'];
+		}
+
 		if ( empty( $this->label) ) {
 			$this->label = $this->selector;
 		}
 
-		$this->selector = $element['selector'];
-		$this->type     = $element['type'];
-		$this->label    = @ $element['label'];
-		$this->priority = @ $element['priority'];
+		foreach( array( 'selector', 'type', 'label', 'priority' ) as $key ) {
+			if ( isset( $element[$key] ) ) {
+				$this->$key = $element[$key];
+			}
+		}
 
 		$this->append_suffix_to_label();
 		$this->maybe_add_important_to_template();
@@ -61,6 +66,43 @@ abstract class Styles_Control {
 	 * @return null
 	 */
 	abstract public function add_item();
+
+	/**
+	 * Return args passed into $wp_customize->add_control()
+	 * @return array
+	 */
+	public function get_control_args() {
+		$args = array(
+			'label'    => __( $this->label, 'styles' ),
+			'section'  => $this->group,
+			'settings' => $this->setting,
+			'priority' => $this->priority . $this->group_priority,
+		);
+		return $args;
+	}
+
+	/**
+	 * Return args passed into $wp_customize->add_control()
+	 * @return array
+	 */
+	public function get_setting_args( $subsetting = null ) {
+		$default = null;
+		if ( ! empty( $subsetting ) ) {
+			if ( isset( $this->default[$subsetting] ) ) {
+				$default = $this->default[$subsetting];
+			}
+		}
+		else if ( ! is_array( $this->default ) ) {
+			$default = $this->default;
+		}
+		$args = array(
+			'default'    => $default,
+			'type'       => 'option',
+			'capability' => 'edit_theme_options',
+			'transport'  => $this->get_transport(),
+		);
+		return $args;
+	}
 
 	public function append_suffix_to_label() {
 		if ( !empty( $this->element['suffix'] ) ) {
