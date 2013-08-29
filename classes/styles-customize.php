@@ -23,11 +23,9 @@ class Styles_Customize {
 	function __construct( $plugin ) {
 		$this->plugin = &$plugin;
 
-		do_action( 'styles_customize_init' );
-
 		add_action( 'customize_register', array( $this, 'add_sections' ), 10 );
 		add_action( 'customize_controls_enqueue_scripts',  array( $this, 'customize_controls_enqueue' ) );
-		add_action( 'customize_preview_init',  array( $this, 'customize_preview_init_enqueue' ) );
+		add_action( 'customize_preview_init',  array( $this, 'customize_preview_init' ) );
 
 		// Load settings from various sources with filters
 		add_filter( 'styles_json_files', array( $this, 'load_settings_from_child_plugin' ), 50 );
@@ -38,16 +36,8 @@ class Styles_Customize {
 
 	}
 
-	public function customize_preview_init_enqueue() {
-		// Version set to md5 of settings because JS generated from settings
-		$custom_preview_version = md5( serialize( $this->settings ) );
-
-		$custom_preview_url = add_query_arg( 'styles-action', 'customize-preview-js', site_url( '/' ) );
-		
-		// Account for theme previews
-		$custom_preview_url = add_query_arg( 'theme', Styles_Helpers::get_template(), $custom_preview_url );
-
-		wp_enqueue_script( 'styles-customize-preview', $custom_preview_url, array( 'jquery', 'customize-preview' ), $custom_preview_version, true );
+	public function customize_preview_init() {
+		add_action( 'wp_footer', array( $this, 'preview_js' ) );
 	}
 
 	public function customize_controls_enqueue() {
@@ -64,24 +54,18 @@ class Styles_Customize {
 	 * Output javascript for WP Customizer preview postMessage transport
 	 */
 	public function preview_js() {
-		// This fires on a very early hook (parse_request)
-		// So we neet to init settings
-		foreach ( (array) $this->get_settings() as $group => $elements ) {
-			$group_id = Styles_Helpers::get_group_id( $group );
-			$this->add_items( $group_id, $elements, false );
-		}
+		// Ensure dependencies have been output by now.
+		wp_print_scripts( array( 'jquery', 'customize-preview' ) );
 
-		header( 'content-type: text/javascript' ); ?>
+		?>
+		<script>
+			( function( $ ){
 
-( function( $ ){
+				<?php echo apply_filters( 'styles_customize_preview', '' ) ?>
 
-	<?php echo apply_filters( 'styles_customize_preview', '' ) ?>
-
-} )( jQuery );
-
+			} )( jQuery );
+		</script>
 		<?php
-
-		exit;
 	}
 
 	/**

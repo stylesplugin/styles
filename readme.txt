@@ -4,8 +4,8 @@ Plugin URI: http://stylesplugin.com
 Author URI: http://brainstormmedia.com
 Tags: css, stylesheet, appearance, customize, customizer, colors, color picker, background, fonts, google fonts, user interface, twenty ten, twenty eleven, twenty twelve, twenty thirteen
 Requires at least: 3.4
-Tested up to: 3.5.2
-Stable tag: 1.0.10
+Tested up to: 3.6
+Stable tag: 1.0.11
 
 Be creative with colors and fonts. Styles changes everything.
 
@@ -90,8 +90,14 @@ No! Styles is very careful about only loading what is needed to get its job done
 
 == Changelog ==
 
+= 1.0.11 =
+
+* [This release goes to 11](http://www.youtube.com/watch?v=NrVCjnRdB_k).
+* Fix: Issue detecting add-ons for child themes. Thanks [@JiveDig](http://twitter.com/jivedig) for pointing this out.
+* Enhancement: Enqueue customizer scripts in a way that's easier for plugins to extend. Props [@westonruter](https://github.com/westonruter).
+
 = 1.0.10 =
-* Fix: Ensure preview javascript works when WordPress installed in a child directory. Props [@westonruter](https://github.com/westonruter) [commit](https://github.com/stylesplugin/styles/commit/a35f6fc8566f45a7bd9387bb7e7793751e074660)
+* Fix: Ensure preview javascript works when WordPress installed in a child directory. Props [@westonruter](https://github.com/westonruter).
 * Fix: Prevent warnings when no Styles child plugins exist. Thanks [@pictureitsolved](http://go.brain.st/181HisI)
 * New: Add `styles_json_files` filter to allow plugin authors to enqueue arbitrary customize.json files. customize.json in child plugins and themes are still enqueued automatically.
 
@@ -169,8 +175,8 @@ No! Styles is very careful about only loading what is needed to get its job done
 
 == Upgrade Notice ==
 
-**1.0.10**
+**1.0.11**
 
-* Fix: Ensure preview javascript works when WordPress installed in a child directory. Props [@westonruter](https://github.com/westonruter) [commit](https://github.com/stylesplugin/styles/commit/a35f6fc8566f45a7bd9387bb7e7793751e074660)
-* Fix: Prevent warnings when no Styles child plugins exist. Thanks [@pictureitsolved](http://go.brain.st/181HisI)
-* New: Add `styles_json_files` filter to allow plugin authors to enqueue arbitrary customize.json files. customize.json in child plugins and themes are still enqueued automatically.
+* [This release goes to 11](http://www.youtube.com/watch?v=NrVCjnRdB_k).
+* Fix: Issue detecting add-ons for child themes. Thanks [@JiveDig](http://twitter.com/jivedig) for pointing this out.
+* Enhancement: Enqueue customizer scripts in a way that's easier for plugins to extend. Props [@westonruter](https://github.com/westonruter).
