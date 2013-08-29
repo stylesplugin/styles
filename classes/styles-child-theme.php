@@ -15,7 +15,10 @@ class Styles_Child_Theme extends Styles_Child_Updatable {
 	}
 
 	public function is_active() {
-		if ( Styles_Helpers::get_template() == $this->template ) {
+		if (
+			$this->template == Styles_Helpers::get_template()
+			|| $this->template == get_stylesheet()
+		) {
 			return true;
 		}else {
 			return false;
