@@ -60,10 +60,7 @@ class Styles_Admin {
 	}
 
 	public function install_default_themes_notice() {
-		if ( !in_array( get_template(), $this->default_themes ) 
-			|| 'update.php' == basename( $_SERVER['PHP_SELF'] )
-			|| !current_user_can('install_plugins')
-		) {
+		if ( $this->is_plugin_update_or_delete() ) {
 			return false;
 		}
 
@@ -82,6 +79,9 @@ class Styles_Admin {
 	 * If plugin for this theme is installed, but not activated, display notice.
 	 */
 	public function activate_notice() {
+		if ( $this->is_plugin_update_or_delete() ) {
+			return false;
+		}
 		if ( !is_a( $this->plugin->child, 'Styles_Child' ) ) {
 			return false;
 		}
@@ -95,6 +95,17 @@ class Styles_Admin {
 			}
 		}
 
+	}
+
+	public function is_plugin_update_or_delete() {
+		if ( 'update.php' == basename( $_SERVER['PHP_SELF'] )
+			|| ( isset( $_GET['action'] ) && 'delete-selected' == $_GET['action'] )
+			|| !current_user_can('install_plugins')
+		){
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 	public function admin_notices() {
