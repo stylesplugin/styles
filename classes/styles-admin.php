@@ -60,10 +60,7 @@ class Styles_Admin {
 	}
 
 	public function install_default_themes_notice() {
-		if ( !in_array( get_template(), $this->default_themes ) 
-			|| 'update.php' == basename( $_SERVER['PHP_SELF'] )
-			|| !current_user_can('install_plugins')
-		) {
+		if ( $this->is_plugin_update_or_delete() ) {
 			return false;
 		}
 
@@ -82,15 +79,32 @@ class Styles_Admin {
 	 * If plugin for this theme is installed, but not activated, display notice.
 	 */
 	public function activate_notice() {
-		$slug = 'styles-' . get_template();
-		$plugin_file = $slug . '/' . 'plugin.php';
+		if ( $this->is_plugin_update_or_delete() ) {
+			return false;
+		}
+		if ( !is_a( $this->plugin->child, 'Styles_Child' ) ) {
+			return false;
+		}
 
-		if ( is_dir( WP_PLUGIN_DIR . '/' . $slug ) ) {
-			if ( is_plugin_inactive( $plugin_file ) ) {
-				$theme = wp_get_theme();
-				$url = wp_nonce_url(self_admin_url('plugins.php?action=activate&plugin=' . $plugin_file ), 'activate-plugin_' . $plugin_file );
-				$this->notices[] = "<p><strong>Styles: {$theme->name}</strong> is installed, but not active. Please <a href='$url'>activate Styles: {$theme->name}</a>.</p>";
+		foreach ( (array) $this->plugin->child->inactive_plugins as $plugin ) {
+			if ( $plugin->is_target_theme_active() ) {
+				// This plugin is for the active theme, but is inactive
+				$theme_name = $plugin->theme->get('Name');
+				$url = wp_nonce_url(self_admin_url('plugins.php?action=activate&plugin=' . $plugin->plugin_basename ), 'activate-plugin_' . $plugin->plugin_basename );
+				$this->notices[] = "<p><strong>{$plugin->name}</strong> is installed, but not active. To add Styles support for $theme_name, please <a href='$url'>activate {$plugin->name}</a>.</p>";
 			}
+		}
+
+	}
+
+	public function is_plugin_update_or_delete() {
+		if ( 'update.php' == basename( $_SERVER['PHP_SELF'] )
+			|| ( isset( $_GET['action'] ) && 'delete-selected' == $_GET['action'] )
+			|| !current_user_can('install_plugins')
+		){
+			return true;
+		}else {
+			return false;
 		}
 	}
 
