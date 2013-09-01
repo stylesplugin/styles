@@ -17,6 +17,12 @@ class Styles_Child {
 	 */
 	var $plugins = array();
 
+	/**
+	 * Array of inactive plugin objects
+	 * @var array
+	 */
+	var $inactive_plugins = array();
+
 	public function __construct( $plugin ) {
 		$this->plugin = $plugin;
 
@@ -56,10 +62,14 @@ class Styles_Child {
 
 			$class = $meta['styles class'];
 			
-			if ( class_exists( $class ) && is_plugin_active( $meta['slug'] ) ) {
+			if ( class_exists( $class ) ) {
 				// For example,
 				// new Styles_Child_Theme( $meta )
-				$this->plugins[] = new $class( $meta );
+				if ( is_plugin_active( $meta['slug'] ) ) {
+					$this->plugins[] = new $class( $meta );
+				}else {
+					$this->inactive_plugins[] = new $class( $meta );
+				}
 			}
 		}
 	}
