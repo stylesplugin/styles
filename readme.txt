@@ -5,7 +5,7 @@ Author URI: http://brainstormmedia.com
 Tags: css, stylesheet, appearance, customize, customizer, colors, color picker, background, fonts, google fonts, user interface, twenty ten, twenty eleven, twenty twelve, twenty thirteen
 Requires at least: 3.4
 Tested up to: 3.6
-Stable tag: 1.0.11
+Stable tag: 1.0.12
 
 Be creative with colors and fonts. Styles changes everything.
 
@@ -89,6 +89,26 @@ If you would like to sell your add-on at [stylesplugin.com](http://stylesplugin.
 No! Styles is very careful about only loading what is needed to get its job done. Once you're done editing, stylesheets are cached and loaded for your sites users as quickly as possible.
 
 == Changelog ==
+
+= 1.0.12 =
+
+<ul>
+	<li>Fix: Improve detection of plugins adding support for themes
+		<ul>
+			<li>Add support if `Plugin Name: Styles: NAME` matches `Theme Name: NAME`</li>
+			<li>Add support if directory names `styles-NAME` and `theme/NAME` match</li>
+			<li>Make theme check case-insensitive. Resolves issues for themes with capitalized folder names, like iThemes child themes.</li>
+			<li>Thanks [@JiveDig](http://twitter.com/jivedig) for pointing some of these issues out.</li>
+		</ul>
+	</li>
+	<li>Fix: Improve activation notices for child themes
+		<ul>
+			<li>Add theme options for a parent theme if they're activated, but don't show a notice requiring them.</li>
+			<li>Detect and display which theme a plugin is trying to add support for.</li>
+			<li>Correctly display the plugin name requesting activation in cases where the plugin doesn't follow the recommended naming convention.</li>
+		</ul>
+	</li>
+</ul>
 
 = 1.0.11 =
 
@@ -174,6 +194,26 @@ No! Styles is very careful about only loading what is needed to get its job done
 * Initial public release.
 
 == Upgrade Notice ==
+
+**1.0.12**
+
+<ul>
+	<li>Fix: Improve detection of plugins adding support for themes
+		<ul>
+			<li>Add support if `Plugin Name: Styles: NAME` matches `Theme Name: NAME`</li>
+			<li>Add support if directory names `styles-NAME` and `theme/NAME` match</li>
+			<li>Make theme check case-insensitive. Resolves issues for themes with capitalized folder names, like iThemes child themes.</li>
+			<li>Thanks [@JiveDig](http://twitter.com/jivedig) for pointing some of these issues out.</li>
+		</ul>
+	</li>
+	<li>Fix: Improve activation notices for child themes
+		<ul>
+			<li>Add theme options for a parent theme if they're activated, but don't show a notice requiring them.</li>
+			<li>Detect and display which theme a plugin is trying to add support for.</li>
+			<li>Correctly display the plugin name requesting activation in cases where the plugin doesn't follow the recommended naming convention.</li>
+		</ul>
+	</li>
+</ul>
 
 **1.0.11**
 
