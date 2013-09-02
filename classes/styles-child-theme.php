@@ -66,7 +66,13 @@ class Styles_Child_Theme extends Styles_Child_Updatable {
 	 */
 	public function theme_name_equals_plugin_item_name( $theme ) {
 		if ( !is_a( $theme, 'WP_Theme') ) { return false; }
-		if ( 0 === strcasecmp( $this->item_name, $theme->get('Name') ) ) { return true; }
+
+		// Strip spacing and special characters in theme names
+		// Allows "Twenty Twelve" to match "TwentyTwelve"
+		$santatized_item_name = $this->sanatize_name( $this->item_name );
+		$santatized_theme_name  = $this->sanatize_name( $theme->get('Name') );
+
+		if ( 0 === strcasecmp( $santatized_item_name, $santatized_theme_name ) ) { return true; }
 		return false;
 	}
 
@@ -85,7 +91,13 @@ class Styles_Child_Theme extends Styles_Child_Updatable {
 	 */
 	public function theme_name_equals_plugin_name( $theme ) {
 		if ( !is_a( $theme, 'WP_Theme') ) { return false; }
-		if ( 0 === strcasecmp( $this->plugin_theme_name, $theme->get('Name') ) ) { return true; }
+
+		// Strip spacing and special characters in theme names
+		// Allows "Twenty Twelve" to match "TwentyTwelve"
+		$santatized_plugin_name = $this->sanatize_name( $this->plugin_theme_name );
+		$santatized_theme_name  = $this->sanatize_name( $theme->get('Name') );
+
+		if ( 0 === strcasecmp( $santatized_plugin_name, $santatized_theme_name ) ) { return true; }
 		return false;
 	}
 
@@ -119,6 +131,10 @@ class Styles_Child_Theme extends Styles_Child_Updatable {
 		return $this->plugin_directory_name;
 	}
 
+	public function sanatize_name( $name ) {
+		return preg_replace( '/[^a-zA-Z0-9]/', '', $name );
+	}
+
 	public function get_json_path() {
 		if ( $this->is_target_parent_or_child_theme_active() ) {
 			$json_file = dirname( $this->plugin_file ) . '/customize.json';
@@ -126,7 +142,6 @@ class Styles_Child_Theme extends Styles_Child_Updatable {
 		}else {
 			return false;
 		}
-
 	}
 
 	/**
