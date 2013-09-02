@@ -166,16 +166,18 @@ class Styles_Admin {
 	}
 
 	/**
-	 * Pass notices to styles-customize-controls.js
-	 *
-	 * This allows notices to display in the customize.php sidebar
+	 * Allows notices to display in the customize.php sidebar
+	 * 
+	 * @return null Passes $this->notices array to styles-customize-controls.js
 	 */
 	public function customize_notices() {
 		wp_localize_script( 'styles-customize-controls', 'wp_styles_notices', $this->notices );
 	}
 
 	/**
-	 * Add the Styles Licenses page if any plugins require license keys for updating,
+	 * Add the Styles Licenses page if any plugins require license keys for updating.
+	 * 
+	 * @return null
 	 */
 	function license_menu() {
 		$plugins = apply_filters( 'styles_license_form_plugins', array() );
@@ -187,6 +189,8 @@ class Styles_Admin {
 
 	/**
 	 * Output the Styles License page view.
+	 * 
+	 * @return null Outputs views/licenses.php and exits.
 	 */
   function license_page() {
       require_once STYLES_DIR . '/views/licenses.php';
