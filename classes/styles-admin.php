@@ -12,6 +12,9 @@ class Styles_Admin {
 	 */
 	var $notices = array();
 
+	/**
+	 * List of theme slugs we know have styles plugins on wordpress.org
+	 */
 	var $default_themes = array(
 		'twentyten',
 		'twentyeleven',
@@ -61,6 +64,11 @@ class Styles_Admin {
 
 	public function install_default_themes_notice() {
 		if ( $this->is_plugin_update_or_delete() ) {
+			return false;
+		}
+		// Test for parent themes, but not children
+		// (We don't want an install prompt if someone has created a child plugin)
+		if ( !in_array( get_template(), $this->default_themes ) ) {
 			return false;
 		}
 
