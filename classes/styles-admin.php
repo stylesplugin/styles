@@ -39,7 +39,6 @@ class Styles_Admin {
 		// Scripts
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
-
 		// Plugin Meta
 		add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 10, 2 );
 
@@ -72,12 +71,23 @@ class Styles_Admin {
 			return false;
 		}
 
-		$slug = 'styles-' . get_template();
+		$plugin_installed = false;
+		if ( is_a( $this->plugin->child, 'Styles_Child' ) ) {
 
-		if ( !is_dir( WP_PLUGIN_DIR . '/' . $slug ) ) {
-			// Plugin not installed
+			$all_styles_plugins = array_merge( (array) $this->plugin->child->plugins, (array) $this->plugin->child->inactive_plugins );
+			
+			foreach ( $all_styles_plugins as $plugin ) {
+				if ( $plugin->is_target_theme_active() ) {
+					// This plugin is for the active theme, but is inactive
+					$plugin_installed = true;
+				}
+			}
+		}
+
+		if ( !$plugin_installed ) {
 			$theme = wp_get_theme();
-			$url = wp_nonce_url( self_admin_url( 'update.php?action=install-plugin&plugin=' . $slug), 'install-plugin_' . $slug );
+			$slug = 'styles-' . get_template();
+			$url = wp_nonce_url( self_admin_url( 'update.php?action=install-plugin&plugin=' . $slug ), 'install-plugin_' . $slug );
 			$this->notices[] = "<p>Styles is almost ready! To add theme options for <strong>{$theme->name}</strong>, please <a href='$url'>install Styles: {$theme->name}</a>.</p>";
 			return true;
 		}
