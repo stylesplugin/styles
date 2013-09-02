@@ -48,11 +48,18 @@ class Styles_Admin {
 
 	/**
 	 * Enqueue admin stylesheet
+	 * Adds the blue "Customize" button to the plugin row.
 	 */
 	public function admin_enqueue_scripts() {
 		wp_enqueue_style( 'storm-styles-admin', plugins_url('css/styles-admin.css', STYLES_BASENAME), array(), $this->plugin->version, 'all' );
 	}
 
+	/**
+	 * Add additional links to the plugin row
+	 * For example, "Customize"
+	 *
+	 * Change the title of "Visit plugin site"
+	 */
 	public function plugin_row_meta( $meta, $basename ) {
 		if ( STYLES_BASENAME == $basename ) {
 			$meta[2] = str_replace( 'Visit plugin site', 'Get More Themes', $meta[2] );
@@ -61,6 +68,17 @@ class Styles_Admin {
 		return $meta;
 	}
 
+	/**
+	 * Notice for novice users.
+	 *
+	 * If a default theme is active, but no Styles add-on is active,
+	 * display a prompt with a link to install the add-on from wordpress.org
+	 *
+	 * Does not run if:
+	 *     Filter set to false
+	 *     Active template is not in $this->default_themes
+	 *     Any active or inactive plugin declares support for the current theme
+	 */
 	public function install_default_themes_notice() {
 		if ( $this->is_plugin_update_or_delete() ) {
 			return false;
@@ -94,7 +112,13 @@ class Styles_Admin {
 	}
 
 	/**
-	 * If plugin for this theme is installed, but not activated, display notice.
+	 * Notice for novice users.
+	 * 
+	 * If an inactive plugin declares support for the currently active theme,
+	 * display a notice with a link to active the plugin.
+	 * 
+	 * Does not run if:
+	 *     Filter set to false
 	 */
 	public function activate_notice() {
 		if ( $this->is_plugin_update_or_delete() ) {
@@ -115,6 +139,10 @@ class Styles_Admin {
 
 	}
 
+	/**
+	 * Check whether we're on a screen for updating or deleting plugins.
+	 * If we are, return false to disable notices.
+	 */
 	public function is_plugin_update_or_delete() {
 		if ( 'update.php' == basename( $_SERVER['PHP_SELF'] )
 			|| ( isset( $_GET['action'] ) && 'delete-selected' == $_GET['action'] )
@@ -126,6 +154,9 @@ class Styles_Admin {
 		}
 	}
 
+	/**
+	 * Output all notices that have been added to the $this->notices array
+	 */
 	public function admin_notices() {
 		foreach( $this->notices as $key => $message ) {
 			echo "<div class='updated fade' id='styles-$key'>$message</div>";
@@ -134,11 +165,16 @@ class Styles_Admin {
 
 	/**
 	 * Pass notices to styles-customize-controls.js
+	 *
+	 * This allows notices to display in the customize.php sidebar
 	 */
 	public function customize_notices() {
 		wp_localize_script( 'styles-customize-controls', 'wp_styles_notices', $this->notices );
 	}
 
+	/**
+	 * Add the Styles Licenses page if any plugins require license keys for updating,
+	 */
 	function license_menu() {
 		$plugins = apply_filters( 'styles_license_form_plugins', array() );
 
@@ -147,9 +183,12 @@ class Styles_Admin {
 		}
 	}
 
-    function license_page() {
-        require_once STYLES_DIR . '/views/licenses.php';
-        exit;
-    }
+	/**
+	 * Output the Styles License page view.
+	 */
+  function license_page() {
+      require_once STYLES_DIR . '/views/licenses.php';
+      exit;
+  }
 
 }
