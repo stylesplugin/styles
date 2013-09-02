@@ -84,7 +84,7 @@ class Styles_Admin {
 		if (
 			apply_filters( 'styles_disable_notices', false )
 			|| $this->is_plugin_update_or_delete()
-			|| !in_array( get_template(), $this->default_themes ) // Active theme is a parent and default
+			|| !in_array( get_stylesheet(), $this->default_themes ) // Active theme is a parent and default
 		) {
 			return false;
 		}
