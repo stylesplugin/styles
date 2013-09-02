@@ -75,17 +75,17 @@ class Styles_Admin {
 	 * display a prompt with a link to install the add-on from wordpress.org
 	 *
 	 * Does not run if:
-	 *     Filter set to false
-	 *     Active template is not in $this->default_themes
-	 *     Any active or inactive plugin declares support for the current theme
+	 *   Active template is not in $this->default_themes
+	 *   Any active or inactive plugin declares support for the current theme
+	 *   `styles_disable_notices` filter returns true
+	 *      Example: <code>add_filter( 'styles_disable_notices', '__return_true' );</code>
 	 */
 	public function install_default_themes_notice() {
-		if ( $this->is_plugin_update_or_delete() ) {
-			return false;
-		}
-		// Test for parent themes, but not children
-		// (We don't want an install prompt if someone has created a child plugin)
-		if ( !in_array( get_template(), $this->default_themes ) ) {
+		if (
+			apply_filters( 'styles_disable_notices', false )
+			|| $this->is_plugin_update_or_delete()
+			|| !in_array( get_template(), $this->default_themes ) // Active theme is a parent and default
+		) {
 			return false;
 		}
 
@@ -118,13 +118,15 @@ class Styles_Admin {
 	 * display a notice with a link to active the plugin.
 	 * 
 	 * Does not run if:
-	 *     Filter set to false
+	 *   `styles_disable_notices` filter returns true
+	 *      Example: <code>add_filter( 'styles_disable_notices', '__return_true' );</code>
 	 */
 	public function activate_notice() {
-		if ( $this->is_plugin_update_or_delete() ) {
-			return false;
-		}
-		if ( !is_a( $this->plugin->child, 'Styles_Child' ) ) {
+		if (
+			apply_filters( 'styles_disable_notices', false )
+			|| $this->is_plugin_update_or_delete()
+			|| !is_a( $this->plugin->child, 'Styles_Child' ) // No child plugins installed
+		) {
 			return false;
 		}
 
