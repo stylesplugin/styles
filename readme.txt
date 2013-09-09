@@ -54,7 +54,7 @@ Styles and options for all built-in WordPress themes are free. More themes are a
 
 1. Upload the `styles` folder to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Install an additional plugin for your current theme.
+1. Install and activate your theme's support plugin. If you are running TwentyTen through TwentyThirteen, Styles will prompt you to do this. If you would like to use Styles with other themes, check <a href="http://stylesplugin.com">stylesplugin.com</a> or <a href="http://www.youtube.com/playlist?list=PLxj61Fojm1RGevBh10U2qCqjwoH4Awo-P">program your own</a>.
 1. Edit your site under `Appearance > Customize`
 
 == Screenshots ==
