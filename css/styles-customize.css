@@ -10,32 +10,18 @@ span.styles-type {
 /* Styles_Customize_Text_Control */
 
 #customize-controls input.styles-font-size {
-	width: 32px;
+	width: 40px;
 }
 
-.styles-font-family option {
-	text-indent: 10px;
-}
-
-.styles-font-family option.label {
-	font-family: Helvetica, Arial, sans-serif;
-	font-size: 11px;
-	color: #666;
-	font-style: normal;
-	font-weight: normal;
-	text-indent: 0;
-	margin-top: 10px;
-}
-
-.styles-font-family option.first {
-	margin-top: 0;
+.sfm {
+	width: 100% !important;
+	margin-top:8px;
 }
 
 /* Notices */
 #customize-info #styles_installation_notices {
 	background: #FFFFDF;
 }
-
 
 /* Subsection */
 
