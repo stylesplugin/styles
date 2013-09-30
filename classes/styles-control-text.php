@@ -1,5 +1,7 @@
 <?php
 
+require_once dirname( __FILE__ ) . '/styles-font-menu/plugin.php';
+
 class Styles_Control_Text extends Styles_Control {
 	var $suffix = 'text';
 
@@ -34,7 +36,7 @@ class Styles_Control_Text extends Styles_Control {
 		$setting_size = $this->setting . '[font_size]';
 
 		$args_family = $this->get_setting_args( 'font_family' );
-		unset( $args_family['transport'] );
+		// unset( $args_family['transport'] );
 		$setting_family = $this->setting . '[font_family]';
 
 		$wp_customize->add_setting( $setting_size, $args_size );
@@ -127,11 +129,12 @@ class Styles_Control_Text extends Styles_Control {
 
 	public function post_message( $js ) {
 		$setting_font_size = $this->setting . '[font_size]';
+		$setting_font_family = $this->setting . '[font_family]';
 		$selector = str_replace( "'", "\'", $this->selector );
 
 		$js .= str_replace(
-			array( '@setting_font_size@', '@selector@' ),
-			array( $setting_font_size, $selector ),
+			array( '@setting_font_size@', '@setting_font_family@', '@selector@' ),
+			array( $setting_font_size, $setting_font_family, $selector ),
 			file_get_contents( STYLES_DIR . '/js/post-message-part-text.js' )
 		);
 
@@ -176,8 +179,15 @@ class Styles_Customize_Text_Control extends WP_Customize_Control {
 			$fonts[esc_attr( $name )] = $name;
 		}
 
-		?>
+		ob_start();
+		$this->link( 'font_family' );
+		$attributes = ob_get_clean();
 
+		do_action( 'styles_font_menu', $attributes, $saved_value );
+
+		/*
+		?>
+		
         <label>           
             <select <?php $this->link( 'font_family' ); ?> class="styles-font-family" data-selected="<?php echo $saved_value ?>">
 	            <option class="label first" value="">Select Font</option>
@@ -192,6 +202,7 @@ class Styles_Customize_Text_Control extends WP_Customize_Control {
 	        </select>
         </label>
 		<?php
+		*/
 	}
 }
 
