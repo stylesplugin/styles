@@ -5,7 +5,7 @@ Author URI: http://brainstormmedia.com
 Tags: css, stylesheet, appearance, customize, customizer, colors, color picker, background, fonts, google fonts, user interface, twenty ten, twenty eleven, twenty twelve, twenty thirteen
 Requires at least: 3.4
 Tested up to: 3.6
-Stable tag: 1.0.15
+Stable tag: 1.0.16
 
 Be creative with colors and fonts. Styles changes everything.
 
@@ -89,6 +89,10 @@ If you would like to sell your add-on at [stylesplugin.com](http://stylesplugin.
 No! Styles is very careful about only loading what is needed to get its job done. Once you're done editing, stylesheets are cached and loaded for your sites users as quickly as possible.
 
 == Changelog ==
+
+= 1.0.16 =
+
+* New: Filter `styles_get_group_id` for merging with existing groups.
 
 = 1.0.15 =
 
@@ -212,3 +216,4 @@ No! Styles is very careful about only loading what is needed to get its job done
 
 * Fix: Customize Theme button loads customizer for current site in network. Resolves [#38](https://github.com/stylesplugin/styles/issues/38). Thanks @jivedig.
 * Fix: Child and parent theme options no longer effect each other. Resolves [#29](https://github.com/stylesplugin/styles/issues/29). Thanks @jivedig.
+* New: Filter `styles_get_group_id` for merging with existing groups.
