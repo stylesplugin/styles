@@ -21,7 +21,7 @@ class Styles_Child_Updatable {
 	var $api_url;
 
 	var $default_args = array(
-		'api_url'     => 'http://store.stylesplugin.com',
+		'api_url'     => 'http://stylesplugin.com',
 	);
 
 	public function __construct( $args ) {
