@@ -12,7 +12,7 @@ class Styles_Plugin {
 	 *
 	 * @var string
 	 **/
-	var $version = '1.0.14';
+	var $version = '1.0.15';
 	
 	/**
 	 * Plugin DB version
