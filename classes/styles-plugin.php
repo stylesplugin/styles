@@ -12,7 +12,7 @@ class Styles_Plugin {
 	 *
 	 * @var string
 	 **/
-	var $version = '1.0.15';
+	var $version = '1.0.17';
 	
 	/**
 	 * Plugin DB version
@@ -72,6 +72,10 @@ class Styles_Plugin {
 		if ( ( !is_a( $this->child, 'Styles_Child') && is_user_logged_in() )
 			|| apply_filters( 'styles_force_rebuild', false )
 		) {
+
+			// Only for logged-in users.
+			// Targeting theme preview and customize.php.
+			$this->increase_memory_limit();
 
 			require_once dirname( __FILE__ ) . '/styles-child.php';
 			require_once dirname( __FILE__ ) . '/styles-child-updatable.php';
@@ -165,6 +169,34 @@ class Styles_Plugin {
 	public function body_class( $classes ) {
 		$classes[] = $this->body_class;
 		return $classes;
+	}
+
+	/**
+	 * Increase memory limit; for logged-in users only.
+	 * Not the same as increasing memory *usage*.
+	 * Gives extra padding to customize.php and its preview.
+	 * 
+	 * Based on pluginbuddy.php, a part of iTheme's BackupBuddy.
+	 * 
+	 * @author Dustin Bolton
+	 */
+	public static function increase_memory_limit()  {
+		// Increase the memory limit
+		$current_memory_limit = trim( @ini_get( 'memory_limit' ) );
+		
+		// Make sure a minimum memory limit of 256MB is set.
+		if ( preg_match( '/(\d+)(\w*)/', $current_memory_limit, $matches ) ) {
+			$current_memory_limit = $matches[1];
+			$unit = $matches[2];
+			// Up memory limit if currently lower than 256M.
+			if ( 'g' !== strtolower( $unit ) ) {
+				if ( ( $current_memory_limit < 256 ) || ( 'm' !== strtolower( $unit ) ) )
+					@ini_set('memory_limit', '256M');
+			}
+		} else {
+			// Couldn't determine current limit, set to 256M to be safe.
+			@ini_set('memory_limit', '256M');
+		}
 	}
 
 }
