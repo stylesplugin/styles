@@ -63,7 +63,7 @@ class Styles_Admin {
 	public function plugin_row_meta( $meta, $basename ) {
 		if ( STYLES_BASENAME == $basename ) {
 			$meta[2] = str_replace( 'Visit plugin site', 'Get More Themes', $meta[2] );
-			$meta[] = '<a class="button button-primary" href="' . network_admin_url( 'customize.php' ) . '">Customize Theme</a>';
+			$meta[] = '<a class="button button-primary" href="' . admin_url( 'customize.php' ) . '">Customize Theme</a>';
 		}
 		return $meta;
 	}
