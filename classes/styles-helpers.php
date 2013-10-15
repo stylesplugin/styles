@@ -14,7 +14,8 @@ class Styles_Helpers {
 	}
 
 	static public function get_group_id( $group ) {
-		return self::$prefix . sanitize_key( $group );
+		$id = self::$prefix . sanitize_key( $group );
+		return apply_filters( 'styles_get_group_id', $id, $group );
 	}
 
 	static public function get_control_id( $id ) {
