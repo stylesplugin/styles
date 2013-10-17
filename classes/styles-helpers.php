@@ -80,7 +80,7 @@ class Styles_Helpers {
 		return sprintf( $template, $error, $url, $path );
 	}
 
-	public static function get_theme() {
+	public static function get_template() {
 		if ( isset( self::$template ) ) {
 			return self::$template;
 		}
@@ -90,9 +90,9 @@ class Styles_Helpers {
 		if ( isset( $_GET['theme'] ) ) {
 			self::$template = $_GET['theme'];
 		}else if ( is_a( $wp_customize, 'WP_Customize_Manager' ) ) {
-			self::$template = $wp_customize->theme()->stylesheet;
+			self::$template = $wp_customize->theme()->template;
 		}else {
-			self::$template = get_stylesheet();
+			self::$template = get_template();
 		}
 
 		return self::$template;
@@ -101,9 +101,9 @@ class Styles_Helpers {
 
 	public static function get_option_key( $suffix = false ) {
 		if ( $suffix ) {
-			return 'storm-styles-' . self::get_theme() . '-' . $suffix;
+			return 'storm-styles-' . self::get_template() . '-' . $suffix;
 		}else {
-			return 'storm-styles-' . self::get_theme();
+			return 'storm-styles-' . self::get_template();
 		}
 	}
 }
