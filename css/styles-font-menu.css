@@ -11,9 +11,9 @@
 
 /* Standard Font */
 .sfm .sf {
-	font-size: 48px;
-	height:64px;
-	line-height: 64px !important;
+	font-size: 36px;
+	height:52px;
+	line-height: 52px !important;
 	white-space: nowrap;
 }
 .sfm .sf:hover {
@@ -22,7 +22,7 @@
 
 /* Google Font */
 .sfm .gf {
-	 height:90px;
+	 height:64px;
 	 text-indent: -9999px;
 	 overflow:hidden;
 	 background-repeat: no-repeat;

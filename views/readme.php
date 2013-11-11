@@ -3,7 +3,7 @@
 	<?php screen_icon(); ?>
 	<h2><?php _e('Font Menu', 'styles-font-menu'); ?></h2>
 
-	<p><a href="#" id="generate-previews">Generate Font Previews</a></p>
+	<p><a href="#" id="generate-previews">Generate Missing Font Previews</a></p>
 
 	<h3 class="example-output">Example output</h3>
 	<p><?php do_action( 'styles_font_menu' ); ?></p>
@@ -32,37 +32,67 @@
 	 * Generate Font Previews
 	 */
 	(function($){
-		$('#generate-previews').click( function(){
-			var $first = $('optgroup.google-fonts option:first');
-			generate_preview( $first );
-			return false;
-		} );
 
-		// Testing
-		// setTimeout( function(){ $('#generate-previews').click(); }, 500 );
+		var preview_gen = {
+			"max_connections": 6,
+			"google_fonts": [],
+			"done": false,
 
-		function generate_preview( $option ){
-			var name = $option.text();
+			"init": function(){
+				$.each( styles_google_options.fonts, function( index, font ){
+					// Only generate missing previews
+					if ( undefined === font.png_url ) {
+						preview_gen.google_fonts.push( font.name )
+					}
+				});
 
-			$('#generate-previews').after( '<br/>Generating '+ name );
+				$('#generate-previews').click( function(){
+					for (var i = 0; i < preview_gen.max_connections; i++ ) {
+						preview_gen.generate_preview();
+					};
+					return false;
+				} );
 
-			$.get( styles_google_options.admin_ajax, {
-				"action": "styles-font-preview",
-				"font-family": name
-			}, function( data, textStatus, jqXHR ){
+				// Testing
+				// setTimeout( function(){ $('#generate-previews').click(); }, 500 );
+			},
 
-				var img = $('<img>').attr( 'src', data ).addClass('sfm-preview');
+			"generate_preview": function(){
 
-				$('#generate-previews').after( img ).after( '<br/>' );
-
-				$next = $option.next( 'option' );
-				if ( $next.length > 0 ) {
-					generate_preview( $next );
-				}else {
-					$('#generate-previews').after( '<br/>Done' );
+				if ( preview_gen.done ) {
+					return;
 				}
-			} );
+
+				if ( 0 == preview_gen.google_fonts.length && !preview_gen.done ) {
+					preview_gen.done = true;
+					$('#generate-previews').after( '<p>Done</p>' );
+					return;
+				}
+
+				var name = preview_gen.google_fonts.pop(),
+				    $status_text;
+
+				$status_text = $( '<p>Generating ' + name + '<br/></p>' );
+				$('#generate-previews').after( $status_text );
+
+				$.get( styles_google_options.admin_ajax, {
+					"action": "styles-font-preview",
+					"font-family": name
+				}, function( data, textStatus, jqXHR ){
+
+					var img = $('<img>').attr( 'src', data ).addClass('sfm-preview');
+
+					$status_text.append( img );
+
+					preview_gen.generate_preview();
+
+				} );
+			}
+
 		}
+		
+		preview_gen.init();
+
 	})(jQuery);
 
 	/**
