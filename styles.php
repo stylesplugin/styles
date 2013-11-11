@@ -26,12 +26,11 @@ if ( version_compare( $GLOBALS['wp_version'], '3.4', '>=' ) ) {
 	 * @return void
 	 */
 	function styles_wp_version_notice() {
-		$message = sprintf(
+		echo sprintf(
 			'<div class="error"><p>%s<a href="http://codex.wordpress.org/Upgrading_WordPress">%s</a></p></div>',
 			__( 'Styles requires WordPress 3.4 or newer.', 'styles' ),
 			__( 'Please update.', 'styles' )
 		);
-		return $message;
 	}
 	add_action( 'admin_notices', 'styles_wp_version_notice' );
 
