@@ -18,6 +18,7 @@ class SFM_Admin {
 		// Readme page
 		add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 10, 2 );
 		add_action( 'admin_menu', array( $this, 'add_readme_page' ) );
+		add_action( 'network_admin_menu', array( $this, 'add_readme_page' ) );
 	}
 
 	/**

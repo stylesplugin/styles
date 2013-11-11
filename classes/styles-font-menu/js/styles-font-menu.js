@@ -44,7 +44,7 @@ jQuery( document ).ready( function( $ ){
 					"chosen_settings": {
 						"allow_single_deselect": true,
 						"inherit_select_classes": true,
-						"width": "400px"
+						"width": "280px"
 					}
 				};
 
@@ -78,7 +78,7 @@ jQuery( document ).ready( function( $ ){
 				}
 
 			});
-		}
+		};
 
 		plugin.preview_font_change = function( $target_elements ) {
 			// Clear font-family if nothing selected

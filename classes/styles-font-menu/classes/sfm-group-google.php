@@ -56,10 +56,14 @@ class SFM_Group_Google extends SFM_Group {
 			return $this->font_data;
 		}
 
-		// If no cache, try connecting to Google API
-		if ( apply_filters( 'sfm_update_google_fonts', false ) ) {
-			$this->font_data = $this->remote_get_google_api();
-		}
+		/**
+		 * If no cache, try connecting to Google API
+		 * Requires API key be set:
+		 * 
+		 * @example
+		 *  add_filter( 'styles_google_font_api', create_function('', "return 'XXXXXXXX';" ) );
+		 */
+		$this->font_data = $this->remote_get_google_api();
 
 		// If Google API failed, use the fallback file.
 		if ( !is_object( $this->font_data ) || !is_array( $this->font_data->items ) ) {
@@ -143,10 +147,10 @@ class SFM_Group_Google extends SFM_Group {
 	 */
 	public function remote_get_google_api() {
 		// API key must be set with this filter
-		$api_key = apply_filters( 'styles_google_font_api', '' );
+		$api_key = apply_filters( 'styles_google_font_api', false );
 		
 		// Bail if no API key is set
-		if ( empty( $api_key ) ) { return $this->get_api_fallback(); }
+		if ( false === $api_key ) { return $this->get_api_fallback(); }
 
 		// Construct request
 		$url = add_query_arg( 'sort', apply_filters( 'styles_google_font_sort', 'popularity' ), self::font_api_url );

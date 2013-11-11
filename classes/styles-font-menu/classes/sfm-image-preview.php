@@ -11,11 +11,10 @@ class SFM_Image_Preview {
 	 * @var array Display attributes for the preview image and font
 	 */
 	var $preview_attributes = array(
-		'font_size' => 48,
-		'font_baseline' => 64, // y-coordinate to place font baseline
-		'left_margin' => 5,
-		'width' => 500,
-		'height' => 90,
+		'font_size' => 28,
+		'left_margin' => 3,
+		'width' => 400,
+		'height' => 64,
 		'background_color' => array( 255, 255, 255 ),
 		'font_color' => array( 0, 0, 0 ),
 	);
@@ -55,7 +54,7 @@ class SFM_Image_Preview {
 	 * Create PNG of font name written with font TTF.
 	 */
 	public function generate_image() {
-		$width = $height = $font_size = $left_margin = $font_baseline = $background_color = $font_color = false;
+		$width = $height = $font_size = $left_margin = $background_color = $font_color = false;
 		extract( $this->preview_attributes, EXTR_IF_EXISTS );
 		
 		// Text Mask
@@ -70,7 +69,8 @@ class SFM_Image_Preview {
 		}
 
 		// Text
-		imagettftext($mask, $font_size, 0, $left_margin, $font_baseline, $foreground, $ttf_path, $this->font->family );
+		$y = $this->get_centered_y_coordinate( $font_size, $ttf_path, $this->font->family );
+		imagettftext($mask, $font_size, 0, $left_margin, $y, $foreground, $ttf_path, $this->font->family );
 
 		// White fill
 		$white = imageCreate($width, $height);
@@ -99,6 +99,28 @@ class SFM_Image_Preview {
 
 		// header("Content-type: image/png");
 		// echo $image;
+	}
+
+	/**
+	 * Calculate y-coordinate for centering text vertically.
+	 * 
+	 * @link http://stackoverflow.com/a/15001168
+	 * @return int  y-coordinate
+	 */
+	public function get_centered_y_coordinate( $fontsize, $font, $text ) {
+		$dims = imagettfbbox($fontsize, 0, $font, $text);
+
+		$ascent = abs($dims[7]);
+		$descent = abs($dims[1]);
+
+		// $width = abs( $dims[0] ) + abs( $dims[2] );
+
+		$height = $ascent + $descent;
+		$image_height = $this->preview_attributes['height'];
+
+		$y = ( ( $image_height/2 ) - ( $height/2 ) ) + $ascent;
+
+		return $y;
 	}
 
 	/**

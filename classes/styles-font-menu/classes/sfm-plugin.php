@@ -1,7 +1,5 @@
 <?php
 
-if ( !class_exists( 'SFM_Plugin' ) ) :
-
 require_once dirname(__FILE__) . '/sfm-admin.php';
 require_once dirname(__FILE__) . '/sfm-group.php';
 require_once dirname(__FILE__) . '/sfm-group-standard.php';
@@ -23,7 +21,7 @@ class SFM_Plugin {
 	/**
 	 * @var string The plugin version.
 	 */
-	var $version = '0.1';
+	var $version = '1.0';
 
 	/**
 	 * @var Styles_Font_Menu Instance of the class.
@@ -169,7 +167,3 @@ class SFM_Plugin {
 		}
 	}
 }
-
-SFM_Plugin::get_instance();
-
-endif;
