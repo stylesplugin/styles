@@ -4,6 +4,11 @@
  * Plugin wrapper
  **/
 class Styles_Plugin {
+
+	/**
+	 * @var Styles_Plugin Instance of this class.
+	 */
+	private static $instance = false;
 	
 	/**
 	 * Plugin Version
@@ -13,16 +18,6 @@ class Styles_Plugin {
 	 * @var string
 	 **/
 	var $version = '1.0.18';
-	
-	/**
-	 * Plugin DB version
-	 * 
-	 * Holds the current plugin database version. 
-	 * Not the same as the current plugin version.
-	 * 
-	 * @var string
-	 **/
-	var $db_version = '1.0';
 
 	/**
 	 * @var Styles_CSS
@@ -40,6 +35,11 @@ class Styles_Plugin {
 	var $admin;
 
 	/**
+	 * @var Styles_Upgrade
+	 */
+	var $upgrade;
+
+	/**
 	 * @var Styles_Child
 	 */
 	var $child;
@@ -51,7 +51,33 @@ class Styles_Plugin {
 	 */
 	var $body_class = 'styles';
 
+	/**
+	 * Don't use this. Use ::get_instance() instead.
+	 */
 	public function __construct() {
+		if ( !self::$instance ) {
+			$message = '<code>' . __CLASS__ . '</code> is a singleton.<br/> Please get an instantiate it with <code>' . __CLASS__ . '::get_instance();</code>';
+			wp_die( $message );
+		}       
+	}
+
+	/**
+	 * Maybe instantiate, then return instance of this class.
+	 * @return Styles_Plugin Controller instance.
+	 */
+	public static function get_instance() {
+		if ( !is_a( self::$instance, __CLASS__ ) ) {
+			self::$instance = true;
+			self::$instance = new self();
+			self::$instance->init();
+		}
+		return self::$instance;
+	}
+	
+	/**
+	 * Initial setup. Called by get_instance.
+	 */
+	protected function init() {
 
 		require_once dirname( __FILE__ ) . '/styles-helpers.php';
 
@@ -92,8 +118,12 @@ class Styles_Plugin {
 		if ( !is_a( $this->admin, 'Styles_Admin') ) {
 
 			require_once dirname( __FILE__ ) . '/styles-admin.php';
+			require_once dirname( __FILE__ ) . '/styles-upgrade.php';
 
 			$this->admin = new Styles_Admin( $this );
+
+			$this->upgrade = new Styles_Upgrade();
+			add_action( 'admin_init', array( $this->upgrade, 'maybe_upgrade' ) );
 		}
 	}
 
@@ -169,6 +199,23 @@ class Styles_Plugin {
 	public function body_class( $classes ) {
 		$classes[] = $this->body_class;
 		return $classes;
+	}
+
+	public function get_option( $key = 'version' ) {
+		$options = get_option( 'storm-styles' );
+		if ( isset( $options[ $key ] ) ) {
+			return $options[ $key ];
+		}else {
+			return false;
+		}
+	}
+
+	public function set_option( $key, $value ) {
+		$options = get_option( 'storm-styles' );
+
+		$options[ $key ] = $value;
+
+		update_option( 'storm-styles', $options );
 	}
 
 	/**
