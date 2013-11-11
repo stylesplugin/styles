@@ -60,8 +60,9 @@ Styles and options for all built-in WordPress themes are free. More themes are a
 == Screenshots ==
 
 1. TwentyEleven header settings.
-2. All TwentyEleven sections.
-3. TwentyEleven menu settings.
+1. Google Fonts with preview and search.
+1. All TwentyEleven sections.
+1. TwentyEleven menu settings.
 
 == Frequently Asked Questions == 
 
