@@ -5,7 +5,7 @@ Author URI: http://brainstormmedia.com
 Tags: css, stylesheet, appearance, customize, customizer, colors, color picker, background, fonts, google fonts, user interface, twenty ten, twenty eleven, twenty twelve, twenty thirteen
 Requires at least: 3.4
 Tested up to: 3.6
-Stable tag: 1.0.18
+Stable tag: 1.1
 
 Be creative with colors and fonts. Styles changes everything.
 
@@ -21,7 +21,7 @@ http://youtube.com/watch?v=CpKiZEqpcr8
 
 * Instant previews
 * Text size
-* Google Fonts
+* Google Fonts with previews and search
 * Text colors
 * Border colors
 * Background colors
@@ -60,8 +60,9 @@ Styles and options for all built-in WordPress themes are free. More themes are a
 == Screenshots ==
 
 1. TwentyEleven header settings.
-2. All TwentyEleven sections.
-3. TwentyEleven menu settings.
+1. Google Fonts with preview and search.
+1. All TwentyEleven sections.
+1. TwentyEleven menu settings.
 
 == Frequently Asked Questions == 
 
@@ -89,6 +90,16 @@ If you would like to sell your add-on at [stylesplugin.com](http://stylesplugin.
 No! Styles is very careful about only loading what is needed to get its job done. Once you're done editing, stylesheets are cached and loaded for your sites users as quickly as possible.
 
 == Changelog ==
+
+= 1.1 =
+
+* New: Previews in font menu. [View screenshot](https://raw.github.com/stylesplugin/styles-font-dropdown/master/img/example-output.gif?v3).
+* New: Search to filter font list.
+* New: Updated Google Fonts.
+* New: Google Fonts update in preview without page reload.
+* New: Simplified plugin loader with nice notices for old WordPress versions.
+* New: Update scripts to convert old font format to new format.
+* Note: The update is well-tested, but in case of any issues, the upgrade script backs up old settings in `wp_options` for 30 days as `_transient_storm-styles-THEME-NAME-pre-1.1.0`.
 
 = 1.0.18 =
 
@@ -222,4 +233,12 @@ No! Styles is very careful about only loading what is needed to get its job done
 
 == Upgrade Notice ==
 
-* Critical Fix: Revert [settings change made in 1.0.15](https://github.com/stylesplugin/styles/commit/bb723d489f8f91fee6b15ec4dcf03df8dfebcee3). This was causing some users to no longer see their old settings.
+= 1.1 =
+
+* New: Previews in font menu. [View screenshot](https://raw.github.com/stylesplugin/styles-font-dropdown/master/img/example-output.gif?v3).
+* New: Search to filter font list.
+* New: Updated Google Fonts.
+* New: Google Fonts update in preview without page reload.
+* New: Simplified plugin loader with nice notices for old WordPress versions.
+* New: Update scripts to convert old font format to new format.
+* Note: The update is well-tested, but in case of any issues, the upgrade script backs up old settings in `wp_options` for 30 days as `_transient_storm-styles-THEME-NAME-pre-1.1.0`.
