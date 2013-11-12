@@ -103,8 +103,8 @@ class Styles_Control_Text extends Styles_Control {
 		}
 
 		if ( isset( $font->import_family ) ) {
-			global $storm_styles;
-			$storm_styles->css->google_fonts[ $value ] = "@import url(//fonts.googleapis.com/css?family={$font->import_family});\r";
+			$styles = Styles_Plugin::get_instance();
+			$styles->css->google_fonts[ $value ] = "@import url(//fonts.googleapis.com/css?family={$font->import_family});\r";
 		}
 
 		$css = '';
