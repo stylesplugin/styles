@@ -93,7 +93,7 @@ No! Styles is very careful about only loading what is needed to get its job done
 
 = 1.1.2 =
 
-* Fix: Incompatibility with IIS servers & Google Fonts menu.
+* Fix: Incompatibility with IIS servers & Google Fonts menu. Thanks [@Rivanni](http://wordpress.org/support/topic/version-111-appears-as-version-105-still-no-google-fonts) for the error report.
 
 = 1.1.1 =
 
@@ -243,4 +243,4 @@ No! Styles is very careful about only loading what is needed to get its job done
 
 = 1.1.2 =
 
-* Fix: Incompatibility with IIS servers & Google Fonts menu.
+* Fix: Incompatibility with IIS servers & Google Fonts menu. Thanks [@Rivanni](http://wordpress.org/support/topic/version-111-appears-as-version-105-still-no-google-fonts) for the error report.
