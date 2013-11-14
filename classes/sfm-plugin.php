@@ -21,7 +21,7 @@ class SFM_Plugin {
 	/**
 	 * @var string The plugin version.
 	 */
-	var $version = '1.0';
+	var $version = '1.0.1';
 
 	/**
 	 * @var Styles_Font_Menu Instance of the class.
@@ -105,8 +105,11 @@ class SFM_Plugin {
 	 * Initial setup. Called by get_instance.
 	 */
 	protected function init() {
-		$this->plugin_directory = dirname( dirname( __FILE__ ) );
-		$this->plugin_url = site_url( str_replace( ABSPATH, '', $this->plugin_directory ) );
+		// Fix for IIS
+		$normalized_abspath = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, ABSPATH );
+
+		$this->plugin_directory = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, dirname( dirname( __FILE__ ) ) );
+		$this->plugin_url = site_url( str_replace( $normalized_abspath, '', $this->plugin_directory ) );
 		$this->plugin_basename = plugin_basename( $this->plugin_directory . '/plugin.php' );
 
 		$this->admin = new SFM_Admin( $this );
