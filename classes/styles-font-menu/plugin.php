@@ -3,7 +3,7 @@
 Plugin Name: Styles: Font Menu
 Plugin URI: http://github.com/stylesplugin/styles-font-menu
 Description: Display an up-to-date menu of Google Fonts. Include it in your own plugins and themes, or install as a plugin for testing and a live demo. Uses the Chosen library to allow menu search and styles.
-Version: 1.0
+Version: 1.0.1
 Author: Brainstorm Media
 Author URI: http://brainstormmedia.com
 License: GPLv2
