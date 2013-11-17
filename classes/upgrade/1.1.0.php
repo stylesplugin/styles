@@ -3,8 +3,6 @@
  * Upgrades from versions below 1.1.0
  */
 
-new Styles_Upgrade_1_1_0();
-
 class Styles_Upgrade_1_1_0 extends Styles_Upgrade {
 
 	/**
@@ -163,3 +161,5 @@ class Styles_Upgrade_1_1_0 extends Styles_Upgrade {
 	}
 
 }
+
+new Styles_Upgrade_1_1_0();
