@@ -63,7 +63,7 @@ class Styles_Upgrade_1_1_0 extends Styles_Upgrade {
 
 		$option_keys = $wpdb->get_col( $query );
 
-		foreach( $option_keys as $option_key ) {
+		foreach( (array) $option_keys as $option_key ) {
 
 			$this->old_options = $this->backup_before_upgrade( $option_key, '1.1.0' );
 
@@ -83,8 +83,8 @@ class Styles_Upgrade_1_1_0 extends Styles_Upgrade {
 
 		$groups = get_option( $option_key );
 
-		foreach( $groups as $group_id => &$fields ) {
-			foreach( $fields as $field_id => &$values ) {
+		foreach( (array) $groups as $group_id => &$fields ) {
+			foreach( (array) $fields as $field_id => &$values ) {
 
 				if(
 					'_text' !== substr( $field_id, -5 ) // Only process text fields
@@ -117,7 +117,7 @@ class Styles_Upgrade_1_1_0 extends Styles_Upgrade {
 
 	public function upgrade_standard_fonts( $values ) {
 		$standard_fonts = $this->font_menu->standard_fonts->get_fonts();
-		foreach( $standard_fonts as $font ) {
+		foreach( (array) $standard_fonts as $font ) {
 			if ( $values['font_family'] == $font->name ) {
 
 				return $font->__tostring();
@@ -131,7 +131,7 @@ class Styles_Upgrade_1_1_0 extends Styles_Upgrade {
 	public function upgrade_google_fonts( $values ) {
 		$google_fonts = $this->font_menu->google_fonts->get_fonts();
 
-		foreach( $google_fonts as $font ) {
+		foreach( (array) $google_fonts as $font ) {
 			if ( $values['font_family'] == $font->name ) {
 				
 				return $font->__tostring();
