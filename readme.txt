@@ -5,7 +5,7 @@ Author URI: http://brainstormmedia.com
 Tags: css, stylesheet, appearance, customize, customizer, colors, color picker, background, fonts, google fonts, user interface, twenty ten, twenty eleven, twenty twelve, twenty thirteen
 Requires at least: 3.4
 Tested up to: 3.6
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 
 Be creative with colors and fonts. Styles changes everything.
 
@@ -91,9 +91,16 @@ No! Styles is very careful about only loading what is needed to get its job done
 
 == Changelog ==
 
+= 1.1.3 =
+
+* Fix: Error when attempting to upgrade when no fonts were used.
+* Fix: Issue that would cause saved CSS and previes to not completely apply when a Standard Font with a space in the name was selected.
+* Fix: Some translations would cause CSS to not output completely.
+* Fix: Issue with IIS servers that would cause Google Fonts to not appear. Thanks [@Rivanni](http://wordpress.org/support/topic/version-111-appears-as-version-105-still-no-google-fonts) for the error report.
+
 = 1.1.2 =
 
-* Fix: Incompatibility with IIS servers & Google Fonts menu. Thanks [@Rivanni](http://wordpress.org/support/topic/version-111-appears-as-version-105-still-no-google-fonts) for the error report.
+* Fix: Attempted fix for IIS servers.
 
 = 1.1.1 =
 
@@ -241,6 +248,9 @@ No! Styles is very careful about only loading what is needed to get its job done
 
 == Upgrade Notice ==
 
-= 1.1.2 =
+= 1.1.3 =
 
-* Fix: Incompatibility with IIS servers & Google Fonts menu. Thanks [@Rivanni](http://wordpress.org/support/topic/version-111-appears-as-version-105-still-no-google-fonts) for the error report.
+* Fix: Error when attempting to upgrade when no fonts were used.
+* Fix: Issue that would cause saved CSS and previes to not completely apply when a Standard Font with a space in the name was selected.
+* Fix: Some translations would cause CSS to not output completely.
+* Fix: Issue with IIS servers that would cause Google Fonts to not appear. Thanks [@Rivanni](http://wordpress.org/support/topic/version-111-appears-as-version-105-still-no-google-fonts) for the error report.
