@@ -5,7 +5,7 @@ Author URI: http://brainstormmedia.com
 Tags: css, stylesheet, appearance, customize, customizer, colors, color picker, background, fonts, google fonts, user interface, twenty ten, twenty eleven, twenty twelve, twenty thirteen
 Requires at least: 3.4
 Tested up to: 3.7.1
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 
 Be creative with colors and fonts. Styles changes everything.
 
@@ -90,6 +90,11 @@ If you would like to sell your add-on at [stylesplugin.com](http://stylesplugin.
 No! Styles is very careful about only loading what is needed to get its job done. Once you're done editing, stylesheets are cached and loaded for your sites users as quickly as possible.
 
 == Changelog ==
+
+= 1.1.4 =
+
+* Fix: Support for custom suffixes.
+* New: Detect :active selectors in custom options.
 
 = 1.1.3 =
 
@@ -247,6 +252,11 @@ No! Styles is very careful about only loading what is needed to get its job done
 * Initial public release.
 
 == Upgrade Notice ==
+
+= 1.1.4 =
+
+* Fix: Support for custom suffixes.
+* New: Detect :active selectors in custom options.
 
 = 1.1.3 =
 
