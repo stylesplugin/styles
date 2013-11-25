@@ -57,6 +57,14 @@ class Styles_CSS {
 	public function get_css() {
 		global $wp_customize;
 
+		/**
+		 * Make sure not PHP output occurs during CSS output.
+		 * Related to unknown translation warning.
+		 * @link https://github.com/stylesplugin/styles/issues/42
+		 */
+		$display_errors = ini_get( 'display_errors' );
+		ini_set( 'display_errors', '0' );
+
 		$css = '';
 
 		$this->plugin->customize_register( $wp_customize );
@@ -80,6 +88,9 @@ class Styles_CSS {
 		$css = $this->minify( $css );
 
 		update_option( Styles_Helpers::get_option_key( 'css' ), $css );
+
+		// Restore default error display setting.
+		ini_set( 'display_errors', $display_errors );
 
 		return $css;
 
