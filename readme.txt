@@ -94,7 +94,7 @@ No! Styles is very careful about only loading what is needed to get its job done
 = 1.1.3 =
 
 * Fix: Error when attempting to upgrade when no fonts were used.
-* Fix: Issue that would cause saved CSS and previes to not completely apply when a Standard Font with a space in the name was selected.
+* Fix: Issue that would cause saved CSS and previews to not completely apply when a Standard Font with a space in the name was selected.
 * Fix: Some translations would cause CSS to not output completely.
 * Fix: Issue with IIS servers that would cause Google Fonts to not appear. Thanks [@Rivanni](http://wordpress.org/support/topic/version-111-appears-as-version-105-still-no-google-fonts) for the error report.
 
@@ -251,6 +251,6 @@ No! Styles is very careful about only loading what is needed to get its job done
 = 1.1.3 =
 
 * Fix: Error when attempting to upgrade when no fonts were used.
-* Fix: Issue that would cause saved CSS and previes to not completely apply when a Standard Font with a space in the name was selected.
+* Fix: Issue that would cause saved CSS and previews to not completely apply when a Standard Font with a space in the name was selected.
 * Fix: Some translations would cause CSS to not output completely.
 * Fix: Issue with IIS servers that would cause Google Fonts to not appear. Thanks [@Rivanni](http://wordpress.org/support/topic/version-111-appears-as-version-105-still-no-google-fonts) for the error report.
