@@ -83,8 +83,15 @@ class Styles_Upgrade_1_1_0 extends Styles_Upgrade {
 
 		$groups = get_option( $option_key );
 
-		foreach( (array) $groups as $group_id => &$fields ) {
-			foreach( (array) $fields as $field_id => &$values ) {
+		if ( !is_array( $groups ) ) {
+			return;
+		}
+
+		foreach( $groups as $group_id => &$fields ) {
+			foreach( $fields as $field_id => &$values ) {
+				if ( !is_array( $fields ) ) {
+					continue;
+				}
 
 				if(
 					'_text' !== substr( $field_id, -5 ) // Only process text fields
