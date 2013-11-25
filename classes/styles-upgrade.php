@@ -15,7 +15,7 @@ class Styles_Upgrade {
 	 * 
 	 * @var string
 	 **/
-	var $db_version = '1.1';
+	var $db_version = '1.1.3';
 
 	public function __construct() {
 		$this->plugin = Styles_Plugin::get_instance();
@@ -42,7 +42,15 @@ class Styles_Upgrade {
 			// Check for additional upgrade
 			$this->check_upgrade();
 			
-		} //else if ( $this->version_compare ( array( '0.5.0' => '>', 'X.Y.Z' => '<' ) ) ) {}
+		}else if ( $this->version_compare ( array( '1.1.0' => '>', '1.1.3' => '<' ) ) ) {
+
+			// Upgrades for versions below 1.1.3
+			require_once dirname(__FILE__) . '/upgrade/1.1.3.php'; 
+			
+			// Check for additional upgrade
+			$this->check_upgrade();
+
+		}
 			
 	}
 	
