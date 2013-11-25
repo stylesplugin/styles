@@ -108,7 +108,7 @@ abstract class Styles_Control {
 		if ( !empty( $this->element['suffix'] ) ) {
 
 			// A custom suffix has been set in the JSON
-			$this->suffix = $element['suffix'];
+			$this->suffix = $this->element['suffix'];
 
 		}else if ( !empty( $this->suffix ) ){
 
@@ -124,6 +124,11 @@ abstract class Styles_Control {
 
 				// Prepend "focus" if in selector
 				$this->suffix = 'focused ' . $this->suffix;
+
+			}else if ( false !== strpos( $this->selector, ':active' ) ) {
+
+				// Prepend "focus" if in selector
+				$this->suffix = 'active ' . $this->suffix;
 
 			}
 
