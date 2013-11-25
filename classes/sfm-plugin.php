@@ -105,10 +105,10 @@ class SFM_Plugin {
 	 * Initial setup. Called by get_instance.
 	 */
 	protected function init() {
-		// Fix for IIS
-		$normalized_abspath = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, ABSPATH );
+		// Fix for IIS paths
+		$normalized_abspath = str_replace(array('/', '\\'), '/', ABSPATH );
 
-		$this->plugin_directory = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, dirname( dirname( __FILE__ ) ) );
+		$this->plugin_directory = str_replace(array('/', '\\'), '/', dirname( dirname( __FILE__ ) ) );
 		$this->plugin_url = site_url( str_replace( $normalized_abspath, '', $this->plugin_directory ) );
 		$this->plugin_basename = plugin_basename( $this->plugin_directory . '/plugin.php' );
 
