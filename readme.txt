@@ -5,7 +5,7 @@ Author URI: http://brainstormmedia.com
 Tags: css, stylesheet, appearance, customize, customizer, colors, color picker, background, fonts, google fonts, user interface, twenty ten, twenty eleven, twenty twelve, twenty thirteen
 Requires at least: 3.4
 Tested up to: 3.7.1
-Stable tag: 1.1.4
+Stable tag: 1.1.5
 
 Be creative with colors and fonts. Styles changes everything.
 
@@ -90,6 +90,10 @@ If you would like to sell your add-on at [stylesplugin.com](http://stylesplugin.
 No! Styles is very careful about only loading what is needed to get its job done. Once you're done editing, stylesheets are cached and loaded for your sites users as quickly as possible.
 
 == Changelog ==
+
+= 1.1.5 =
+
+* New: Load standard fonts via javascript to reduce memory usage. This may fix issues with hosts that restrict memory usage, causing the Customizer to not fully load.
 
 = 1.1.4 =
 
@@ -253,14 +257,6 @@ No! Styles is very careful about only loading what is needed to get its job done
 
 == Upgrade Notice ==
 
-= 1.1.4 =
+= 1.1.5 =
 
-* Fix: Support for custom suffixes.
-* New: Detect :active selectors in custom options.
-
-= 1.1.3 =
-
-* Fix: Error when attempting to upgrade when no fonts were used.
-* Fix: Issue that would cause saved CSS and previews to not completely apply when a Standard Font with a space in the name was selected.
-* Fix: Some translations would cause CSS to not output completely.
-* Fix: Issue with IIS servers that would cause Google Fonts to not appear. Thanks [@Rivanni](http://wordpress.org/support/topic/version-111-appears-as-version-105-still-no-google-fonts) for the error report.
+* New: Load standard fonts via javascript to reduce memory usage. This may fix issues with hosts that restrict memory usage, causing the Customizer to not fully load.
