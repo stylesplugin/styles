@@ -5,7 +5,7 @@ Author URI: http://brainstormmedia.com
 Tags: css, stylesheet, appearance, customize, customizer, colors, color picker, background, fonts, google fonts, user interface, twenty ten, twenty eleven, twenty twelve, twenty thirteen
 Requires at least: 3.4
 Tested up to: 3.7.1
-Stable tag: 1.1.6
+Stable tag: 1.1.7
 
 Be creative with colors and fonts. Styles changes everything.
 
