@@ -136,6 +136,7 @@ class SFM_Plugin {
 		// Pass Google Font Families to javascript
 		// This saves on bandwidth by outputing them once,
 		// then appending them to all <select> elements client-side
+		wp_localize_script( 'styles-font-menu', 'styles_standard_fonts', $this->standard_fonts->option_values );
 		wp_localize_script( 'styles-font-menu', 'styles_google_options', $this->google_fonts->option_values );
 
 		// Output scripts and dependencies

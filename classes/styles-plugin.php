@@ -45,6 +45,11 @@ class Styles_Plugin {
 	var $child;
 
 	/**
+	 * @var Styles_Debug
+	 */
+	var $debug;
+
+	/**
 	 * Class added to body and all selectors
 	 *
 	 * @var string
@@ -88,6 +93,11 @@ class Styles_Plugin {
 		add_action( 'admin_menu', array( $this, 'admin_menu' ), 1 );
 		add_action( 'customize_register', array( $this, 'customize_register' ), 1 );
 		add_action( 'customize_save_after', array( $this, 'customize_save_after' ) );
+
+		if ( $this->get_option( 'debug_mode' ) ) {
+			require_once dirname( __FILE__ ) . '/styles-debug.php';
+			$this->debug = new Styles_Debug();
+		}
 
 	}
 
@@ -216,6 +226,23 @@ class Styles_Plugin {
 		$options[ $key ] = $value;
 
 		update_option( 'storm-styles', $options );
+	}
+
+	/**
+	 * Load HTML template from templates directory.
+	 * Contents of $args are turned into variables for use in the template.
+	 * 
+	 * For example, $args = array( 'foo' => 'bar' );
+	 *   becomes variable $foo with value 'bar'
+	 */
+	public static function get_view( $file, $args = array() ) {
+		extract( $args );
+
+		$file = dirname( dirname( __FILE__ ) ) . "/views/$file.php";
+
+		if ( file_exists( $file ) ) {
+			require $file;
+		}
 	}
 
 	/**

@@ -20,7 +20,7 @@ class SFM_Single_Standard {
 	/**
 	 * Values for this font that should go into JSON encoded <option> values
 	 */
-	protected $option_value_whitelist = array( 'family', 'name' );
+	protected $option_value_whitelist = array( 'family', 'name', 'classname' );
 
 	public function __construct( $args ) {
 		$this->name = $args['name'];
@@ -81,7 +81,7 @@ class SFM_Single_Standard {
 		foreach ( $this->option_value_whitelist as $key ) {
 			$value = $this->get( $key );
 			if ( !empty( $value ) ) {
-				$option_values[ $key ] = $value;
+				$option_values[ $key ] = esc_attr( $value );
 			}
 		}
 

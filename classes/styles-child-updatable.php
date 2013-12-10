@@ -92,7 +92,7 @@ class Styles_Child_Updatable {
     function plugin_action_links( $actions, $plugin_file, $plugin_data, $context ) {
     	if ( !current_user_can( 'manage_options' ) ) { return $actions; }
 
-        $admin_url = admin_url( 'plugins.php?page=styles-license' );
+        $admin_url = admin_url( 'options-general.php?page=styles' );
 
         $actions[ sizeof( $actions ) ] = '<a href="' . $admin_url . '" title="' . esc_html__( 'Styles Licenses', 'styles' ) . '">' . esc_html__( 'Licenses', 'styles' ) . '</a>';
         

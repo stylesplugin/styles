@@ -5,7 +5,7 @@ Author URI: http://brainstormmedia.com
 Tags: css, stylesheet, appearance, customize, customizer, colors, color picker, background, fonts, google fonts, user interface, twenty ten, twenty eleven, twenty twelve, twenty thirteen
 Requires at least: 3.4
 Tested up to: 3.7.1
-Stable tag: 1.1.5
+Stable tag: 1.1.7
 
 Be creative with colors and fonts. Styles changes everything.
 
@@ -90,6 +90,16 @@ If you would like to sell your add-on at [stylesplugin.com](http://stylesplugin.
 No! Styles is very careful about only loading what is needed to get its job done. Once you're done editing, stylesheets are cached and loaded for your sites users as quickly as possible.
 
 == Changelog ==
+
+= 1.1.7 =
+
+* New: Option to reset all settings.
+* New: Option to enable debug mode to help when responding to support tickets.
+
+= 1.1.6 =
+
+* Fix: Error in CSS output caused by some WordPress translations, such as Hebrew.
+* New: Include the optimization that was supposed to be in 1.1.5. (Load standard fonts via javascript to reduce memory usage.)
 
 = 1.1.5 =
 
@@ -257,6 +267,7 @@ No! Styles is very careful about only loading what is needed to get its job done
 
 == Upgrade Notice ==
 
-= 1.1.5 =
+= 1.1.7 =
 
-* New: Load standard fonts via javascript to reduce memory usage. This may fix issues with hosts that restrict memory usage, causing the Customizer to not fully load.
+* New: Option to reset all settings.
+* New: Option to enable debug mode to help when responding to support tickets.
