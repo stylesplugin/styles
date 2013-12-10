@@ -204,11 +204,11 @@ class Styles_Admin {
 	 */
 	public function display_setting( $args = array() ) {
 		
-		$id = $args['id'];
-		$type = $args['type'];
+		$id = $type = $default = false;
+		extract( $args, EXTR_IF_EXISTS );
 
 		$options = get_option( 'storm-styles' );
-		
+
 		if ( !isset( $options[$id] ) ) {
 			$options[$id] = $default;
 		}
@@ -228,7 +228,14 @@ class Styles_Admin {
 	public function validate_settings( $input ) {
 
 		// Combine input with general settings
-		$input = array_merge( get_option('storm-styles'), $input );
+		$input = array_merge( (array) get_option('storm-styles'), $input );
+
+		if ( isset( $input['delete_settings'] ) && 'DELETE' == $input['delete_settings'] ) {
+			$this->delete_settings();
+			$input['delete_settings'] = false;
+
+			$this->notices[] = '<p>Styles settings have been deleted.</p>';
+		}
 
 		// Todo: Sanatize.
 		return $input;
@@ -353,6 +360,41 @@ class Styles_Admin {
 	 */
 	public function customize_notices() {
 		wp_localize_script( 'styles-customize-controls', 'wp_styles_notices', $this->notices );
+	}
+
+	/**
+	 * Delete all Styles settings.
+	 * @return void
+	 */
+	public function delete_settings() {
+		global $wpdb;
+
+		if( is_multisite() ){
+			
+			// Site network: remove options from each blog
+			$blog_ids = $wpdb->get_col( "SELECT blog_id FROM $wpdb->blogs" );
+			if( $blog_ids ){
+
+				foreach( $blog_ids as $id ) {
+					switch_to_blog( $id );
+
+					// $wpdb->options is new for each blog, so we're duplicating SQL in the loop
+					$sql = "DELETE from $wpdb->options WHERE option_name LIKE 'storm-styles-%'";
+					$sql = "DELETE from $wpdb->options WHERE option_name LIKE '\_transient%storm-styles-%'";
+					$wpdb->query( $sql );
+					
+					restore_current_blog();
+				}
+
+			}
+
+		}else {
+			// Single site
+			$sql = "DELETE from $wpdb->options WHERE option_name LIKE 'storm-styles-%'";
+			$sql = "DELETE from $wpdb->options WHERE option_name LIKE '\_transient%storm-styles-%'";
+			$wpdb->query( $sql );
+		}
+
 	}
 
 	/**
