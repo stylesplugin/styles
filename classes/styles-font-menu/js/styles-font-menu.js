@@ -5,15 +5,21 @@ jQuery( document ).ready( function( $ ){
 
 });
 
-(function( $, google_fonts ) {
+(function( $, google_fonts, standard_fonts ) {
 	/**
 	 * Build Google Fonts option list only once
 	 */
-	var google_styles = '<style>';
-	var google_options = "<optgroup class='google-fonts' label='Google Fonts'>";
-	var is_readme = ( $('#styles-font-menu-readme').length > 0 );
+	var standard_options = "<optgroup label='Standard Fonts'>",
+		google_options = "<optgroup class='google-fonts' label='Google Fonts'>",
+		google_styles = '<style>',
+		is_readme = ( $('#styles-font-menu-readme').length > 0 ),
+		i;
 
-	for (var i=0; i < google_fonts.fonts.length; i++){
+	for ( i=0; i < standard_fonts.fonts.length; i++ ){
+		standard_options += "<option class='sf " + standard_fonts.fonts[i].classname + "' value='" + JSON.stringify( standard_fonts.fonts[i] ) + "'>" + standard_fonts.fonts[i].name + "</option>";
+	}
+
+	for ( i=0; i < google_fonts.fonts.length; i++ ){
 		// Don't show if no preview
 		if ( !is_readme && undefined === google_fonts.fonts[i].png_url ) {
 			continue;
@@ -23,6 +29,8 @@ jQuery( document ).ready( function( $ ){
 
 		google_styles += ".sfm ." + google_fonts.fonts[i].classname + " { background-image: url(" + google_fonts.fonts[i].png_url + "); }\r";
 	}
+
+	standard_options += "</optgroup>";
 	google_options += "</optgroup>";
 	google_styles += "</style>";
 
@@ -61,12 +69,15 @@ jQuery( document ).ready( function( $ ){
 		};
 
 		plugin.populate_google_fonts = function() {
-			$element.append( google_options ).each( function(){
-				// If a selected option is set in <option data-selected="XXX">, select it.
-				// @todo Not sure why this is here. Carried over from old Styles text selector. Check back when connecting to database.
-				var selected = $(this).data('selected');
-				$(this).find( 'option[value="' + selected + '"]' ).attr('selected', 'selected');
-			} );
+			$element
+				.append( standard_options )
+				.append( google_options )
+				.each( function(){
+					// If a selected option is set in <option data-selected="XXX">, select it.
+					// @todo Not sure why this is here. Carried over from old Styles text selector. Check back when connecting to database.
+					var selected = $(this).data('selected');
+					$(this).find( 'option[value="' + selected + '"]' ).attr('selected', 'selected');
+				} );
 		};
 
 		plugin.set_selected_option = function() {
@@ -121,4 +132,4 @@ jQuery( document ).ready( function( $ ){
 		});
 	};
 
-})( jQuery, styles_google_options );
+})( jQuery, styles_google_options, styles_standard_fonts );

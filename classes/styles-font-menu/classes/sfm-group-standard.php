@@ -18,6 +18,11 @@ class SFM_Group_Standard extends SFM_Group {
 	protected $fonts;
 
 	/**
+	 * Values to pass to javascript
+	 */
+	protected $option_values;
+
+	/**
 	 * Fires when accessing $this->fonts from outside the class.
 	 */
 	public function get_fonts() {
@@ -31,6 +36,22 @@ class SFM_Group_Standard extends SFM_Group {
 		}
 
 		return $this->fonts;
+	}
+
+	/**
+	 * Strip out unecessary metadata for passing to javascript
+	 * 
+	 * @param array $font Font metadata, such as array( 'key', 'import_family', 'font_family', 'font_name' )
+	 * @return array Same array, stripped of extra keys
+	 */
+	public function get_option_values() {
+		if ( !empty( $this->option_values ) ) { return $this->option_values; }
+
+		foreach ( $this->get_fonts() as $font ) {
+			$this->option_values[ 'fonts' ][] = $font->get_option_values();
+		}
+
+		return $this->option_values;
 	}
 
 }
