@@ -15,6 +15,7 @@ class Styles_Debug {
 
 		add_action( 'wp_ajax_styles-errors', array( $this, 'wp_ajax_errors' ) );
 		add_action( 'wp_ajax_nopriv_styles-errors', array( $this, 'wp_ajax_errors' ) );
+		
 	}
 
 	public function wp_ajax_styles_debug() {

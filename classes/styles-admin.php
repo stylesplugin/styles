@@ -32,11 +32,6 @@ class Styles_Admin {
 		'twentythirteen',
 	);
 
-	/**
-	 * @var Styles_License
-	 */
-	var $license;
-
 	function __construct( $plugin ) {
 		$this->plugin = $plugin;
 
@@ -57,10 +52,9 @@ class Styles_Admin {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
 		// Plugin Meta
+		add_filter( 'plugin_action_links_' . STYLES_BASENAME, array( $this, 'plugin_action_links' ) );
 		add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 10, 2 );
 
-		// License Menu
-		add_action( 'admin_menu', array( $this, 'license_menu' ) );
 	}
 
 	/**
@@ -78,8 +72,7 @@ class Styles_Admin {
 	 */
 	public function sections_init() {
 		$this->sections = array(
-			'debug' => __( 'Debug', 'styles' ),
-			'reset' => __( 'Reset', 'styles' ),
+			'general' => __( 'General', 'styles' ),
 		);
 	}
 
@@ -96,7 +89,7 @@ class Styles_Admin {
 				'description' => __( 'Allow information about your settings and WordPress setup to be viewed by Styles support.', 'styles' ),
 				'default'     => 0,
 				'type'        => 'radio',
-				'section'     => 'debug',
+				'section'     => 'general',
 				'class'       => '',
 				'choices'     => array(
 					'Enable' => 1,
@@ -109,7 +102,7 @@ class Styles_Admin {
 				'description' => __( 'Type DELETE into this field and save to verify a reset of all Styles settings.', 'styles' ),
 				'default'     => '',
 				'type'        => 'input',
-				'section'     => 'reset',
+				'section'     => 'general',
 			),
 
 		);
@@ -130,7 +123,7 @@ class Styles_Admin {
 	/**
 	 * Output the options page view.
 	 * 
-	 * @return null Outputs views/licenses.php and exits.
+	 * @return null Outputs views/admin-options.php and exits.
 	 */
 	function admin_options() {
 		$this->plugin->get_view( 'admin-options' );
@@ -240,6 +233,17 @@ class Styles_Admin {
 		// Todo: Sanatize.
 		return $input;
 
+	}
+
+	/**
+	 * Add additional links to the plugin actions.
+	 * For example, "Settings"
+	 */
+	public function plugin_action_links( $links ) {
+
+		$links['settings'] = '<a href="' . admin_url( 'options-general.php?page=styles' ) . '">Settings</a>';
+		
+		return $links;
 	}
 
 	/**
@@ -396,28 +400,5 @@ class Styles_Admin {
 		}
 
 	}
-
-	/**
-	 * Add the Styles Licenses page if any plugins require license keys for updating.
-	 * 
-	 * @return null
-	 */
-	function license_menu() {
-		$plugins = apply_filters( 'styles_license_form_plugins', array() );
-
-		if ( !empty( $plugins ) ) {
-			add_plugins_page( 'Styles Licenses', 'Styles Licenses', 'manage_options', 'styles-license', array( $this, 'license_page' ) );
-		}
-	}
-
-	/**
-	 * Output the Styles License page view.
-	 * 
-	 * @return null Outputs views/licenses.php and exits.
-	 */
-  function license_page() {
-      require_once STYLES_DIR . '/views/licenses.php';
-      exit;
-  }
 
 }
