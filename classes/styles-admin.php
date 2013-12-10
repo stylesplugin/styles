@@ -8,6 +8,16 @@ class Styles_Admin {
 	var $plugin;
 
 	/**
+	 * @var array All sections
+	 */
+	var $sections;
+
+	/**
+	 * @var array All settings
+	 */
+	var $settings;
+
+	/**
 	 * Admin notices
 	 */
 	var $notices = array();
@@ -29,6 +39,13 @@ class Styles_Admin {
 
 	function __construct( $plugin ) {
 		$this->plugin = $plugin;
+
+		// Settings
+		$this->sections_init(); 
+		$this->settings_init(); 
+
+		add_action( 'admin_init', array( $this, 'register_settings' ) );
+		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 
 		// Notices
 		add_action( 'admin_init', array( $this, 'install_default_themes_notice' ), 20 );
@@ -52,6 +69,170 @@ class Styles_Admin {
 	 */
 	public function admin_enqueue_scripts() {
 		wp_enqueue_style( 'storm-styles-admin', plugins_url('css/styles-admin.css', STYLES_BASENAME), array(), $this->plugin->version, 'all' );
+	}
+
+	/**
+	 * Populate $this->sections with all section arguements
+	 * 
+	 * @return void
+	 */
+	public function sections_init() {
+		$this->sections = array(
+			'debug' => __( 'Debug', 'styles' ),
+			'reset' => __( 'Reset', 'styles' ),
+		);
+	}
+
+	/**
+	 * Populate $this->settings with all settings arguements
+	 * 
+	 * @return void
+	 */
+	public function settings_init() {
+		$this->settings = array(
+
+			'debug_mode' => array(
+				'title'       => __( 'Debug Mode', 'styles' ),
+				'description' => __( 'Allow information about your settings and WordPress setup to be viewed by Styles support.', 'styles' ),
+				'default'     => 0,
+				'type'        => 'radio',
+				'section'     => 'debug',
+				'class'       => '',
+				'choices'     => array(
+					'Enable' => 1,
+					'Disable' => 0,
+				),
+			),
+
+			'delete_settings' => array(
+				'title'       => __( 'Reset Settings', 'styles' ),
+				'description' => __( 'Type DELETE into this field and save to verify a reset of all Styles settings.', 'styles' ),
+				'default'     => '',
+				'type'        => 'input',
+				'section'     => 'reset',
+			),
+
+		);
+	}
+
+	public function admin_menu() {
+		
+		add_options_page(
+			'Styles',                       // Page title
+			'Styles',                       // Menu title
+			'manage_options',               // Capability
+			'styles',                       // Menu slug
+			array( $this, 'admin_options' ) // Page display callback
+		);
+
+	}
+
+	/**
+	 * Output the options page view.
+	 * 
+	 * @return null Outputs views/licenses.php and exits.
+	 */
+	function admin_options() {
+		$this->plugin->get_view( 'admin-options' );
+	}
+
+	/**
+	* Register settings
+	*/
+	public function register_settings() {
+		
+		register_setting( 'styles', 'storm-styles', array ( $this, 'validate_settings' ) );
+		
+		foreach ( $this->sections as $slug => $title ) {
+			add_settings_section(
+				$slug,
+				$title,
+				null, // Section display callback
+				'styles'
+			);
+		}
+		
+		foreach ( $this->settings as $id => $setting ) {
+			$setting['id'] = $id;
+			$this->create_setting( $setting );
+		}
+		
+	}
+
+	/**
+	 * Create settings field
+	 *
+	 * @since 1.0
+	 */
+	public function create_setting( $args = array() ) {
+		
+		$defaults = array(
+			'id'          => 'default_field',
+			'title'       => __( 'Default Field', 'styles' ),
+			'description' => __( 'Default description.', 'styles' ),
+			'default'     => '',
+			'type'        => 'text',
+			'section'     => 'general',
+			'choices'     => array(),
+			'class'       => ''
+		);
+			
+		extract( wp_parse_args( $args, $defaults ) );
+		
+		$field_args = array(
+			'type'        => $type,
+			'id'          => $id,
+			'description' => $description,
+			'default'     => $default,
+			'choices'     => $choices,
+			'label_for'   => $id,
+			'class'       => $class
+		);
+		
+		add_settings_field(
+			$id,
+			$title,
+			array( $this, 'display_setting' ),
+			'styles',
+			$section,
+			$field_args
+		);
+	}
+
+	/**
+	 * Load view for setting, passing arguments
+	 */
+	public function display_setting( $args = array() ) {
+		
+		$id = $args['id'];
+		$type = $args['type'];
+
+		$options = get_option( 'storm-styles' );
+		
+		if ( !isset( $options[$id] ) ) {
+			$options[$id] = $default;
+		}
+		
+		$args['option_value'] = $options[ $id ];
+		$args['option_name'] = 'storm-styles' . '[' . $id . ']';
+
+		$template = 'setting-' . $type;
+
+		$this->plugin->get_view( $template, $args );
+		
+	}
+
+	/**
+	* Validate settings
+	*/
+	public function validate_settings( $input ) {
+
+		// Combine input with general settings
+		$input = array_merge( get_option('storm-styles'), $input );
+
+		// Todo: Sanatize.
+		return $input;
+
 	}
 
 	/**

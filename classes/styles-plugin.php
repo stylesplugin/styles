@@ -219,6 +219,23 @@ class Styles_Plugin {
 	}
 
 	/**
+	 * Load HTML template from templates directory.
+	 * Contents of $args are turned into variables for use in the template.
+	 * 
+	 * For example, $args = array( 'foo' => 'bar' );
+	 *   becomes variable $foo with value 'bar'
+	 */
+	public static function get_view( $file, $args = array() ) {
+		extract( $args );
+
+		$file = dirname( dirname( __FILE__ ) ) . "/views/$file.php";
+
+		if ( file_exists( $file ) ) {
+			require $file;
+		}
+	}
+
+	/**
 	 * Increase memory limit; for logged-in users only.
 	 * Not the same as increasing memory *usage*.
 	 * Gives extra padding to customize.php and its preview.
