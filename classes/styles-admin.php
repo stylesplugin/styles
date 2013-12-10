@@ -8,6 +8,16 @@ class Styles_Admin {
 	var $plugin;
 
 	/**
+	 * @var array All sections
+	 */
+	var $sections;
+
+	/**
+	 * @var array All settings
+	 */
+	var $settings;
+
+	/**
 	 * Admin notices
 	 */
 	var $notices = array();
@@ -22,13 +32,15 @@ class Styles_Admin {
 		'twentythirteen',
 	);
 
-	/**
-	 * @var Styles_License
-	 */
-	var $license;
-
 	function __construct( $plugin ) {
 		$this->plugin = $plugin;
+
+		// Settings
+		$this->sections_init(); 
+		$this->settings_init(); 
+
+		add_action( 'admin_init', array( $this, 'register_settings' ) );
+		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 
 		// Notices
 		add_action( 'admin_init', array( $this, 'install_default_themes_notice' ), 20 );
@@ -40,10 +52,9 @@ class Styles_Admin {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
 		// Plugin Meta
+		add_filter( 'plugin_action_links_' . STYLES_BASENAME, array( $this, 'plugin_action_links' ) );
 		add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 10, 2 );
 
-		// License Menu
-		add_action( 'admin_menu', array( $this, 'license_menu' ) );
 	}
 
 	/**
@@ -52,6 +63,187 @@ class Styles_Admin {
 	 */
 	public function admin_enqueue_scripts() {
 		wp_enqueue_style( 'storm-styles-admin', plugins_url('css/styles-admin.css', STYLES_BASENAME), array(), $this->plugin->version, 'all' );
+	}
+
+	/**
+	 * Populate $this->sections with all section arguements
+	 * 
+	 * @return void
+	 */
+	public function sections_init() {
+		$this->sections = array(
+			'general' => __( 'General', 'styles' ),
+		);
+	}
+
+	/**
+	 * Populate $this->settings with all settings arguements
+	 * 
+	 * @return void
+	 */
+	public function settings_init() {
+		$this->settings = array(
+
+			'debug_mode' => array(
+				'title'       => __( 'Debug Mode', 'styles' ),
+				'description' => __( 'Allow information about your settings and WordPress setup to be viewed by Styles support.', 'styles' ),
+				'default'     => 0,
+				'type'        => 'radio',
+				'section'     => 'general',
+				'class'       => '',
+				'choices'     => array(
+					'Enable' => 1,
+					'Disable' => 0,
+				),
+			),
+
+			'delete_settings' => array(
+				'title'       => __( 'Reset Settings', 'styles' ),
+				'description' => __( 'Type DELETE into this field and save to verify a reset of all Styles settings.', 'styles' ),
+				'default'     => '',
+				'type'        => 'input',
+				'section'     => 'general',
+			),
+
+		);
+	}
+
+	public function admin_menu() {
+		
+		add_options_page(
+			'Styles',                       // Page title
+			'Styles',                       // Menu title
+			'manage_options',               // Capability
+			'styles',                       // Menu slug
+			array( $this, 'admin_options' ) // Page display callback
+		);
+
+	}
+
+	/**
+	 * Output the options page view.
+	 * 
+	 * @return null Outputs views/admin-options.php and exits.
+	 */
+	function admin_options() {
+		$this->plugin->get_view( 'admin-options' );
+	}
+
+	/**
+	* Register settings
+	*/
+	public function register_settings() {
+		
+		register_setting( 'styles', 'storm-styles', array ( $this, 'validate_settings' ) );
+		
+		foreach ( $this->sections as $slug => $title ) {
+			add_settings_section(
+				$slug,
+				$title,
+				null, // Section display callback
+				'styles'
+			);
+		}
+		
+		foreach ( $this->settings as $id => $setting ) {
+			$setting['id'] = $id;
+			$this->create_setting( $setting );
+		}
+		
+	}
+
+	/**
+	 * Create settings field
+	 *
+	 * @since 1.0
+	 */
+	public function create_setting( $args = array() ) {
+		
+		$defaults = array(
+			'id'          => 'default_field',
+			'title'       => __( 'Default Field', 'styles' ),
+			'description' => __( 'Default description.', 'styles' ),
+			'default'     => '',
+			'type'        => 'text',
+			'section'     => 'general',
+			'choices'     => array(),
+			'class'       => ''
+		);
+			
+		extract( wp_parse_args( $args, $defaults ) );
+		
+		$field_args = array(
+			'type'        => $type,
+			'id'          => $id,
+			'description' => $description,
+			'default'     => $default,
+			'choices'     => $choices,
+			'label_for'   => $id,
+			'class'       => $class
+		);
+		
+		add_settings_field(
+			$id,
+			$title,
+			array( $this, 'display_setting' ),
+			'styles',
+			$section,
+			$field_args
+		);
+	}
+
+	/**
+	 * Load view for setting, passing arguments
+	 */
+	public function display_setting( $args = array() ) {
+		
+		$id = $type = $default = false;
+		extract( $args, EXTR_IF_EXISTS );
+
+		$options = get_option( 'storm-styles' );
+
+		if ( !isset( $options[$id] ) ) {
+			$options[$id] = $default;
+		}
+		
+		$args['option_value'] = $options[ $id ];
+		$args['option_name'] = 'storm-styles' . '[' . $id . ']';
+
+		$template = 'setting-' . $type;
+
+		$this->plugin->get_view( $template, $args );
+		
+	}
+
+	/**
+	* Validate settings
+	*/
+	public function validate_settings( $input ) {
+
+		// Combine input with general settings
+		$input = array_merge( (array) get_option('storm-styles'), $input );
+
+		if ( isset( $input['delete_settings'] ) && 'DELETE' == $input['delete_settings'] ) {
+			$this->delete_settings();
+			$input['delete_settings'] = false;
+
+			$this->notices[] = '<p>Styles settings have been deleted.</p>';
+		}
+
+		// Todo: Sanatize.
+		return $input;
+
+	}
+
+	/**
+	 * Add additional links to the plugin actions.
+	 * For example, "Settings"
+	 */
+	public function plugin_action_links( $links ) {
+
+		$links['settings'] = '<a href="' . admin_url( 'options-general.php?page=styles' ) . '">Settings</a>';
+		
+		return $links;
 	}
 
 	/**
@@ -175,26 +367,38 @@ class Styles_Admin {
 	}
 
 	/**
-	 * Add the Styles Licenses page if any plugins require license keys for updating.
-	 * 
-	 * @return null
+	 * Delete all Styles settings.
+	 * @return void
 	 */
-	function license_menu() {
-		$plugins = apply_filters( 'styles_license_form_plugins', array() );
+	public function delete_settings() {
+		global $wpdb;
 
-		if ( !empty( $plugins ) ) {
-			add_plugins_page( 'Styles Licenses', 'Styles Licenses', 'manage_options', 'styles-license', array( $this, 'license_page' ) );
+		if( is_multisite() ){
+			
+			// Site network: remove options from each blog
+			$blog_ids = $wpdb->get_col( "SELECT blog_id FROM $wpdb->blogs" );
+			if( $blog_ids ){
+
+				foreach( $blog_ids as $id ) {
+					switch_to_blog( $id );
+
+					// $wpdb->options is new for each blog, so we're duplicating SQL in the loop
+					$sql = "DELETE from $wpdb->options WHERE option_name LIKE 'storm-styles-%'";
+					$sql = "DELETE from $wpdb->options WHERE option_name LIKE '\_transient%storm-styles-%'";
+					$wpdb->query( $sql );
+					
+					restore_current_blog();
+				}
+
+			}
+
+		}else {
+			// Single site
+			$sql = "DELETE from $wpdb->options WHERE option_name LIKE 'storm-styles-%'";
+			$sql = "DELETE from $wpdb->options WHERE option_name LIKE '\_transient%storm-styles-%'";
+			$wpdb->query( $sql );
 		}
-	}
 
-	/**
-	 * Output the Styles License page view.
-	 * 
-	 * @return null Outputs views/licenses.php and exits.
-	 */
-  function license_page() {
-      require_once STYLES_DIR . '/views/licenses.php';
-      exit;
-  }
+	}
 
 }

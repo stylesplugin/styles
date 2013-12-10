@@ -91,6 +91,11 @@ No! Styles is very careful about only loading what is needed to get its job done
 
 == Changelog ==
 
+= 1.1.7 =
+
+* New: Option to reset all settings.
+* New: Option to enable debug mode to help when responding to support tickets.
+
 = 1.1.6 =
 
 * Fix: Error in CSS output caused by some WordPress translations, such as Hebrew.
@@ -262,7 +267,7 @@ No! Styles is very careful about only loading what is needed to get its job done
 
 == Upgrade Notice ==
 
-= 1.1.6 =
+= 1.1.7 =
 
-* Fix: Error in CSS output caused by some WordPress translations, such as Hebrew.
-* New: Include the optimization that was supposed to be in 1.1.5. (Load standard fonts via javascript to reduce memory usage.)
+* New: Option to reset all settings.
+* New: Option to enable debug mode to help when responding to support tickets.
