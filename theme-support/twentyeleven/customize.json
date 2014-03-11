@@ -1,0 +1,319 @@
+{
+	"Global": [
+		/* Global */
+		{ "selector": "html,body", "type": "background-color", "label": "Outer area" },
+		{ "selector": "#page", "type": "background-color", "label": "Inner area" },
+		{ "selector": "#page", "type": "text", "label": "Default" },
+		{ "selector": "#page", "type": "color", "label": "Default" },
+		/* Link */
+		{ "selector": "#page a", "type": "text", "label": "Default link" },
+		{ "selector": "#page a", "type": "color", "label": "Default link" },
+		{ "selector": "#page a:hover", "type": "color", "label": "Default link" },
+		{}
+	],
+	"Header": [
+		/* Background */
+		{ "selector": "#branding", "type": "background-color", "label": "Header" },
+		/* Border -- Specific to the this theme */
+		{ "selector": "#branding", "type": "border-top-color", "label": "Header" },
+		/* Title */
+		{ "selector": "#site-title a", "type": "text", "label": "Title" },
+		{ "selector": "#site-title a:link, #site-title a:active, #site-title a:visited", "type": "color", "label": "Title", "important": true },
+		{ "selector": "#site-title a:hover", "type": "color", "label": "Title", "important": true },
+		/* Tagline */
+		{ "selector": "#site-description", "type": "text", "label": "Tagline" },
+		{ "selector": "#site-description", "type": "color", "label": "Tagline", "important": true },
+		{}
+	],
+	"Search Form": [
+		/* Input */
+		{ "selector": "#s", "type": "text", "label": "Form" },
+		{ "selector": "#s", "type": "color", "label": "Form", "template": "$selector { color: $value; } $selector::-webkit-input-placeholder { color: $value; } $selector:-moz-placeholder { color: $value; } $selector::-moz-placeholder { color: $value; } $selector:-ms-input-placeholder { color: $value; }" },
+		{ "selector": "#s", "type": "background-color", "label": "Form" },
+		/* Focus */
+		{ "selector": "#s:focus, #branding #s:focus", "type": "background-color", "label": "Form", "important": true },
+		/* Border */
+		{ "selector": "#s", "type": "border-color", "label": "Search form" },
+		/* Submit /*
+		/* -- none -- */
+		{}
+	],
+	"Menu – Primary": [
+		/* Background */
+		/* "template": removes background-image setting from parent theme. */
+		/* TODO: Consider 'css' or 'additional' setting. Set with jQuery.attr( 'style' ) */
+		{ "selector": "#access", "type": "background-color", "label": "Area", "template": "$selector { background-color: $value; background-image: none; }" },
+		/* Top items */
+		{ "selector": "#access ul, #access ul > li > a", "type": "text", "label": "Top item" },
+		{ "selector": "#access ul > li > a", "type": "color", "label": "Top item" },
+		{ "selector": "#access ul > li > a:hover, #access li:hover > a, #access ul > li > a:focus", "type": "color", "label": "Top item" },
+		{ "selector": "#access ul > li > a", "type": "background-color", "label": "Top item" },
+		{ "selector": "#access ul > li > a:hover, #access li:hover > a, #access ul > li > a:focus", "type": "background-color", "label": "Top item", "template": "$selector { background-color: $value; background-image: none; }" },
+		/* Sub items */
+		{ "selector": "#access ul ul a", "type": "text", "label": "Submenu item" },
+		{ "selector": "#access ul > li li a", "type": "color", "label": "Submenu item" },
+		{ "selector": "#access ul > li li a:hover, #access ul > li li a:active, #access ul > li li a:focus, #access li:hover > a", "type": "color", "label": "Submenu item" },
+		{ "selector": "#access ul > li li a", "type": "background-color", "label": "Submenu item" },
+		{ "selector": "#access ul > li li a:hover, #access ul > li li a:active, #access ul > li li a:focus, #access li:hover > a", "type": "background-color", "label": "Submenu item", "template": "$selector { background-color: $value; background-image: none; }" },
+		/* Sub item border -- Specific to the this theme */
+		{ "selector": "#access ul ul a", "type": "border-bottom-color", "label": "Submenu item" },
+		{}
+	],
+	"Widgets – Sidebar": [
+		/* Widget Title */
+		{ "selector": "#secondary .widget-title", "type": "text", "label": "Title" },
+		{ "selector": "#secondary .widget-title", "type": "color", "label": "Title" },
+		/* Widget Content */
+		{ "selector": "#secondary aside, #secondary aside ul li, #secondary aside a", "type": "text", "label": "Content" },
+		{ "selector": "#secondary aside, #secondary aside ul li", "type": "color", "label": "Content" },
+		/* Widget Link */
+		{ "selector": "#secondary aside a", "type": "color", "label": "Link" },
+		{ "selector": "#secondary aside a:hover", "type": "color", "label": "Link" },
+		{}  
+	], 
+	"Widgets – Footer": [
+		/* Background */
+		{ "selector": "#supplementary", "type": "background-color", "label": "Area" },
+		{ "selector": "#supplementary", "type": "border-top-color", "label": "Area" },
+		/* Widget Title */
+		{ "selector": "#supplementary .widget-title", "type": "text", "label": "Title" },
+		{ "selector": "#supplementary .widget-title", "type": "color", "label": "Title" },
+		/* Widget Content */
+		{ "selector": "#supplementary aside, #supplementary aside ul li", "type": "text", "label": "Content" },
+		{ "selector": "#supplementary aside, #supplementary aside ul li", "type": "color", "label": "Content" },
+		/* Widget Link */
+		{ "selector": "#supplementary aside a", "type": "color", "label": "Link" },
+		{ "selector": "#supplementary aside a:hover", "type": "color", "label": "Link" },
+		{}
+	],
+	"Widgets – Showcase": [
+		/* Widget Title */
+		{ "selector": ".showcase .widget-area .widget-title", "type": "text", "label": "Title" },
+		{ "selector": ".showcase .widget-area .widget-title", "type": "color", "label": "Title" },
+		/* Widget Content */
+		{ "selector": ".showcase .widget-area aside, .showcase .widget-area aside ul li", "type": "text", "label": "Content" },
+		{ "selector": ".showcase .widget-area aside, .showcase .widget-area aside ul li", "type": "color", "label": "Content" },
+		/* Widget Link */
+		{ "selector": ".showcase .widget-area aside a", "type": "color", "label": "Link" },
+		{ "selector": ".showcase .widget-area aside a:hover", "type": "color", "label": "Link" },
+		{}
+	],
+	"Entry – Headings": [
+		/* Title */
+		{ "selector": ".entry-title, .entry-title a", "type": "text", "label": "Title" },
+		{ "selector": ".entry-title, .entry-title a", "type": "color", "label": "Title" },
+		{ "selector": ".entry-title a:hover", "type": "color", "label": "Title link" },
+		/* Headers */
+		{ "selector": ".entry-content h1", "type": "text", "label": "Heading 1" },
+		{ "selector": ".entry-content h1", "type": "color", "label": "Heading 1" },
+		{ "selector": ".entry-content h2", "type": "text", "label": "Heading 2" },
+		{ "selector": ".entry-content h2", "type": "color", "label": "Heading 2" },
+		{ "selector": ".entry-content h3", "type": "text", "label": "Heading 3" },
+		{ "selector": ".entry-content h3", "type": "color", "label": "Heading 3" },
+		{ "selector": ".entry-content h4", "type": "text", "label": "Heading 4" },
+		{ "selector": ".entry-content h4", "type": "color", "label": "Heading 4" },
+		{ "selector": ".entry-content h5", "type": "text", "label": "Heading 5" },
+		{ "selector": ".entry-content h5", "type": "color", "label": "Heading 5" },
+		{ "selector": ".entry-content h6", "type": "text", "label": "Heading 6" },
+		{ "selector": ".entry-content h6", "type": "color", "label": "Heading 6" },
+		/* Post Format Title */
+		{ "selector": ".entry-format", "type": "text", "label": "Post format title" },
+		{ "selector": ".entry-format", "type": "color", "label": "Post format title" },
+		/* Archive Title */
+		{ "selector": ".page-title, .page-title a", "type": "text", "label": "Archive title" },
+		{ "selector": ".page-title, .page-title a", "type": "color", "label": "Archive title" },
+		{ "selector": ".page-title a:hover", "type": "color", "label": "Archive link" },
+		{}
+	],
+	"Entry – Content": [
+		/* Paragraph */
+		{ "selector": ".entry-content p, .entry-summary p, #respond p", "type": "text", "label": "Paragraph" },
+		{ "selector": ".entry-content p, .entry-summary p, #respond p", "type": "color", "label": "Paragraph" },
+		/* Links set for content and comments. Comment selection should override */
+		{ "selector": ".entry-content a, #comments a", "type": "color", "label": "Link" },
+		{ "selector": ".entry-content a:hover, #comments a:hover", "type": "color", "label": "Link" },
+		/* Lists */
+		{ "selector": ".entry-content li, .entry-content li p", "type": "text", "label": "List" },
+		{ "selector": ".entry-content li, .entry-content li p", "type": "color", "label": "List" },
+		/* Small */
+		{ "selector": ".entry-content small", "type": "text", "label": "Small" },
+		{ "selector": ".entry-content small", "type": "color", "label": "Small" },
+		/* Preformatted & Code - Set for content and comments. Comments section might override */
+		{ "selector": ".entry-content pre, .comment-content pre, .entry-content code, .comment-content code", "type": "text", "label": "Preformatted, code" },
+		{ "selector": ".entry-content pre, .comment-content pre, .entry-content code, .comment-content code", "type": "color", "label": "Preformatted, code" },
+		{ "selector": ".entry-content pre, .comment-content pre, .entry-content code, .comment-content code", "type": "background-color", "label": "Preformatted, code" },
+		/* Blockquote */
+		{ "selector": ".entry-content blockquote, .entry-content blockquote p", "type": "text", "label": "Blockquote" },
+		{ "selector": ".entry-content blockquote, .entry-content blockquote p", "type": "color", "label": "Blockquote" },
+		/* Address */
+		{ "selector": ".entry-content address", "type": "text", "label": "Address" },
+		{ "selector": ".entry-content address", "type": "color", "label": "Address" },
+		/* Table Border    - #content applies to .entry-content and comments */
+		{ "selector": "#content table, #content td", "type": "border-color", "label": "Table" },
+		/* Table Heading */
+		{ "selector": "#content th", "type": "text", "label": "Table heading" },
+		{ "selector": "#content th", "type": "color", "label": "Table heading" },
+		{ "selector": "#content th", "type": "background-color", "label": "Table heading" },
+		/* Table Content */
+		{ "selector": "#content td, #content td p", "type": "text", "label": "Table content" },
+		{ "selector": "#content td, #content td p", "type": "color", "label": "Table content" },
+		{ "selector": "#content td", "type": "background-color", "label": "Table content" },
+		/* Bottom Border -- Specific to this theme */
+		{ "selector": ".hentry, .no-results", "type": "border-bottom-color", "label": "Entry" },
+		{}
+	],
+	/* Not quite ready yet -- conflicts between image border and caption background / caption image hover */
+	/*"Entry Images": [
+		{ "selector": "img[class*='align'], img[class*='wp-image - '], #content .gallery .gallery-icon img, .wp-caption img", "type": "border-color", "label": "Image" },  { "selector": ".entry-content .wp-caption-text", "type": "text", "label": "Caption" },
+		{ "selector": ".entry-content .wp-caption-text", "type": "color", "label": "Caption" },
+		{ "selector": ".wp-caption", "type": "background-color", "label": "Caption" },
+	],*/
+	"Entry – Navigation": [
+		/* Previous/next */
+		{ "selector": "#content nav a", "type": "text", "label": "Previous/next link" },
+		{ "selector": "#content nav a", "type": "color", "label": "Previous/next link" },
+		{ "selector": "#content nav a:hover", "type": "color", "label": "Previous/next link" },
+		/* Paging */
+		{ "selector": ".page-link, .page-link a", "type": "text", "label": "Paging" },
+		{ "selector": ".page-link", "type": "color", "label": "Paging label" },
+		{ "selector": ".page-link a", "type": "color", "label": "Paging link" },
+		{ "selector": ".page-link a:hover", "type": "color", "label": "Paging link" },
+		{ "selector": ".page-link a", "type": "background-color", "label": "Paging link" },
+		{ "selector": ".page-link a:hover", "type": "background-color", "label": "Paging link" },
+		{}
+	],
+	"Entry – Meta": [
+		/* Meta */
+		{ "selector": ".entry-meta", "type": "text", "label": "Meta" },
+		{ "selector": ".entry-meta", "type": "color", "label": "Meta" },
+		{ "selector": ".entry-meta a", "type": "color", "label": "Meta link" },
+		{ "selector": ".entry-meta a:hover", "type": "color", "label": "Meta link" },
+		/* Edit link    - Affects Entry, Comment, Showcase */
+		{ "selector": ".edit-link a", "type": "text", "label": "Edit link" },
+		{ "selector": ".edit-link a", "type": "color", "label": "Edit link" },
+		{ "selector": ".edit-link a:hover", "type": "color", "label": "Edit link" },
+		{ "selector": ".edit-link a", "type": "background-color", "label": "Edit link" },
+		{ "selector": ".edit-link a:hover", "type": "background-color", "label": "Edit link" },
+		{}
+	],
+	"Comments – Content": [
+		/* Template used to remove speech bubble PNG and replace with CSS Triangle. */
+		{ "selector": "#comments ol > li.comment", "type": "background-color", "label": "Area", "template": "$selector { background-color: $value; } $selector:before { content: ''; position:absolute; z-index: 50; left: -21px; top: 25px; width: 0px; height: 0px; border-left: 21px solid transparent; border-right: 0px solid transparent; border-top: 21px solid $value; } $selector li.comment { background-color: $value; }" },
+		{ "selector": "#comments li.comment", "type": "border-color", "label": "Area", "template": "$selector { border-color: $value; } $selector:after { content: ''; position:absolute; z-index: 40; left: -23px; top: 24px; width: 0px; height: 0px; border-left: 23px solid transparent; border-right: 0px solid transparent; border-top: 23px solid $value; } $selector li.comment:after {display:none;} $selector li.comment:before {display:none;}" },
+		/* Comment content    - This may need to change to effect comment meta as well */
+		{ "selector": ".comment-content, .comment-content p", "type": "text", "label": "Content" },
+		{ "selector": ".comment-content, .comment-content p, .comment-content h1, .comment-content h2, .comment-content h3, .comment-content h4, .comment-content h5, .comment-content h6, .comment-content blockquote cite, .comment-content th, .comment-content dt", "type": "color", "label": "Content" },
+		/* Comment link    - Also set in Entry Content 
+		                   - Affects comment content and meta links. Following sections should override */
+		{ "selector": "#comments a", "type": "color", "label": "Link" },
+		{ "selector": "#comments a:hover", "type": "color", "label": "Link" },
+		/* Preformatted & Code - Also set in Entry Content  */
+		/*{ "selector": ".comment-content pre, .comment-content code", "type": "text", "label": "Preformatted, code" },*/
+		/*{ "selector": ".comment-content pre, .comment-content code", "type": "color", "label": "Preformatted, code" },*/
+		/*{ "selector": ".comment-content pre, .comment-content code", "type": "background-color", "label": "Preformatted, code" },*/
+		{}
+	],
+	"Comments – Content (Even)": [
+		/* Template used to remove speech bubble PNG and replace with CSS Triangle. */
+		{ "selector": "#comments ol > li.even", "type": "background-color", "label": "Area", "template": "$selector { background-color: $value; } $selector:before { content: ''; position:absolute; z-index: 50; left: -21px; top: 25px; width: 0px; height: 0px; border-left: 21px solid transparent; border-right: 0px solid transparent; border-top: 21px solid $value; } $selector li.even { background-color: $value; }" },
+		{ "selector": "#comments li.even", "type": "border-color", "label": "Area", "template": "$selector { border-color: $value; } $selector:after { content: ''; position:absolute; z-index: 40; left: -23px; top: 24px; width: 0px; height: 0px; border-left: 23px solid transparent; border-right: 0px solid transparent; border-top: 23px solid $value; } $selector li.even:after {display:none;} $selector li.even:before {display:none;}" },
+		/* Comment content    - This may need to change to effect comment meta as well */
+		{ "selector": ".even .comment-content, .even .comment-content p", "type": "text", "label": "Content" },
+		{ "selector": ".even .comment-content, .even .comment-content p, .even .comment-content h1, .even .comment-content h2, .even .comment-content h3, .even .comment-content h4, .even .comment-content h5, .even .comment-content h6, .even .comment-content blockquote cite, .even .comment-content th, .even .comment-content dt", "type": "color", "label": "Content" },
+		/* Comment link    - Also set in Entry Content
+		                   - Affects comment content and meta links. Following sections should override */
+		{ "selector": "#comments .even a", "type": "color", "label": "Link" },
+		{ "selector": "#comments .even a:hover", "type": "color", "label": "Link" },
+		{}
+	],
+	"Comments – Author": [
+		/* Author */
+		{ "selector": "#comments .comment-author", "type": "text", "label": "Author" },
+		{ "selector": "#comments .comment-author", "type": "color", "label": "Author" },
+		{ "selector": "#comments .comment-author .fn", "type": "color", "label": "Author name" },
+		{ "selector": "#comments .comment-author .fn a", "type": "color", "label": "Author name link" },
+		{ "selector": "#comments .comment-author .fn a:hover", "type": "color", "label": "Author name link" },
+		{}
+	],
+	"Comments – Meta": [
+		/* List title */
+		{ "selector": "#comments-title", "type": "text", "label": "List title" },
+		{ "selector": "#comments-title", "type": "color", "label": "List title" },
+		/* Meta */
+		{ "selector": "#comments .comment-meta", "type": "text", "label": "Meta" },
+		{ "selector": "#comments .comment-meta", "type": "color", "label": "Meta" },
+		{ "selector": "#comments .comment-meta a", "type": "color", "label": "Meta link" },
+		{ "selector": "#comments .comment-meta a:hover", "type": "color", "label": "Meta link" },
+		/* Reply link */
+		{ "selector": "#comments a.comment-reply-link", "type": "text", "label": "Reply link" },
+		{ "selector": "#comments a.comment-reply-link", "type": "color", "label": "Reply link" },
+		{ "selector": "#comments a.comment-reply-link:hover", "type": "color", "label": "Reply link" },
+		{ "selector": "#comments a.comment-reply-link", "type": "background-color", "label": "Reply link" },
+		{ "selector": "#comments a.comment-reply-link:hover", "type": "background-color", "label": "Reply link" },
+		{}
+	],
+	"Comments – Pingback": [
+		/* Pingbacks */
+		{ "selector": "#comments .pingback", "type": "text", "label": "Pingback" },
+		{ "selector": "#comments .pingback", "type": "background-color", "label": "Pingback" },
+		{ "selector": "#comments .pingback", "type": "color", "label": "Pingback" },
+		{ "selector": "#comments .pingback a", "type": "color", "label": "Pingback link" },
+		{ "selector": "#comments .pingback a:hover", "type": "color", "label": "Pingback link" },
+		{}
+	],
+	"Comments – Response Form": [
+		/* Area */
+		{ "selector": "#respond", "type": "background-color", "label": "Area" },
+		/* Title */
+		{ "selector": "#reply-title", "type": "text", "label": "Title" },
+		{ "selector": "#reply-title, #reply-title a", "type": "color", "label": "Title" },
+		/* Description */
+		{ "selector": "#respond p", "type": "text", "label": "Description" },
+		{ "selector": "#respond p", "type": "color", "label": "Description" },
+		{ "selector": "#commentform a", "type": "text", "label": "Description link" },
+		{ "selector": "#commentform a", "type": "color", "label": "Description link" },
+		{ "selector": "#commentform a:hover", "type": "color", "label": "Description link" },
+		/* Label */
+		{ "selector": "#respond label", "type": "text", "label": "Label" },
+		{ "selector": "#respond label", "type": "color", "label": "Label" },
+		{ "selector": "#respond label", "type": "background-color", "label": "Label" },
+		/* Response field (textarea) */
+		{ "selector": "#respond textarea, #respond input[type='text']", "type": "text", "label": "Textarea" },
+		{ "selector": "#respond textarea, #respond input[type='text']", "type": "color", "label": "Textarea" },
+		{ "selector": "#respond textarea, #respond input[type='text']", "type": "background-color", "label": "Textarea" },
+		{ "selector": "#respond textarea:focus, #respond input[type='text']:focus", "type": "background-color", "label": "Textarea" },
+		{ "selector": "#respond textarea, #respond input[type='text']", "type": "border-color", "label": "Textarea" },
+		/* Submit button */
+		{ "selector": "#respond input#submit", "type": "text", "label": "Submit button" },
+		{ "selector": "#respond input#submit", "type": "color", "label": "Submit button" },
+		{ "selector": "#respond input#submit", "type": "background-color", "label": "Submit button" },
+		{}
+	],
+	"Template – Showcase": [
+		/* Intro    - Shows if there's text in the Showcase Page */
+		{ "selector": ".showcase article.intro *", "type": "color", "label": "Intro" },
+		{ "selector": ".showcase article.intro", "type": "background-color", "label": "Intro" },
+		/* Featured Post */
+		{ "selector": ".featured-posts", "type": "border-bottom-color", "label": "Featured" },
+		/* Section Title */
+		{ "selector": ".showcase-heading", "type": "text", "label": "Section title" },
+		{ "selector": ".showcase-heading", "type": "color", "label": "Section title" },
+		/* Post Titles */
+		{ "selector": ".showcase .feature-text .entry-title a, .showcase .recent-posts .entry-title a", "type": "color", "label": "Post title" },
+		{ "selector": ".showcase .feature-text .entry-title a:hover, .showcase .recent-posts .entry-title a:hover", "type": "color", "label": "Post title" },
+		/* Recent Posts */
+		{ "selector": ".showcase .other-recent-posts .entry-title a", "type": "text", "label": "Small title" },
+		{ "selector": ".showcase .other-recent-posts, .showcase .other-recent-posts .entry-title, .showcase .other-recent-posts .comments-link a, .showcase .other-recent-posts .comments-link > span", "type": "border-color", "label": "Small title" },
+		{}
+	],
+	"Footer": [
+		/* Area */
+		{ "selector": "#site-generator", "type": "background-color", "label": "Area" },
+		{ "selector": "#site-generator", "type": "border-top-color", "label": "Area" },
+		/* Credit */
+		{ "selector": "#site-generator", "type": "text", "label": "Credit" },
+		{ "selector": "#site-generator a", "type": "color", "label": "Credit link" },
+		{ "selector": "#site-generator a:hover", "type": "color", "label": "Credit link" },
+		{}
+	]
+}

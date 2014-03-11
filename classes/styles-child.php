@@ -58,6 +58,9 @@ class Styles_Child {
 			include_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 
+		/**
+		 * Load theme support from external plugins
+		 */
 		foreach ( $this->get_plugins_meta() as $meta ) {
 
 			$class = $meta['styles class'];
@@ -71,6 +74,16 @@ class Styles_Child {
 					$this->inactive_plugins[] = new $class( $meta );
 				}
 			}
+		}
+
+		/**
+		 * Load default theme support
+		 */
+		foreach ( glob( STYLES_DIR . '/theme-support/*/plugin.php' ) as $file ) {
+			$meta = get_plugin_data( $file, false );
+			$meta['slug'] = str_replace( STYLES_DIR, STYLES_BASENAME, $file );
+			$meta['plugin_file'] = $file;
+			$this->plugins[] = new Styles_Child_Theme( $meta );
 		}
 	}
 

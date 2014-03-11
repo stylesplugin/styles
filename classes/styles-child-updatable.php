@@ -29,7 +29,13 @@ class Styles_Child_Updatable {
 
 		$this->updates = !empty( $args['styles updates'] );
 		$this->license_option_key = dirname( $args['slug'] ) . '-' . 'license';
-		$this->plugin_file = WP_PLUGIN_DIR . '/' . $args['slug'];
+		
+		if ( isset( $args['plugin_file'] ) ) {
+			$this->plugin_file = $args['plugin_file'];
+		}else {
+			$this->plugin_file = WP_PLUGIN_DIR . '/' . $args['slug'];
+		}
+		
 		$this->plugin_basename = $args[ 'slug' ];
 		$this->item_name = $this->maybe_guess_item_name( $args );
 		$this->api_url = $args['api_url'];

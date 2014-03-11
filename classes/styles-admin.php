@@ -43,8 +43,8 @@ class Styles_Admin {
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 
 		// Notices
-		add_action( 'admin_init', array( $this, 'install_default_themes_notice' ), 20 );
-		add_action( 'admin_init', array( $this, 'activate_notice' ), 30 );
+		// add_action( 'admin_init', array( $this, 'install_default_themes_notice' ), 20 );
+		// add_action( 'admin_init', array( $this, 'activate_notice' ), 30 );
 		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 		add_action( 'customize_controls_enqueue_scripts', array( $this, 'customize_notices' ), 11 );
 

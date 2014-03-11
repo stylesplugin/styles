@@ -1,0 +1,276 @@
+{
+	"Global": [
+		/* Global */
+		{ "selector": "html,body", "type": "background-color", "label": "Outer area" },
+		{ "selector": "#wrapper", "type": "background-color", "label": "Inner area" },
+		{ "selector": "#wrapper", "type": "text", "label": "Default" },
+		{ "selector": "#wrapper", "type": "color", "label": "Default" },
+		/* Link */
+		{ "selector": "#wrapper a", "type": "text", "label": "Default link" },
+		{ "selector": "#wrapper a", "type": "color", "label": "Default link" },
+		{ "selector": "#wrapper a:hover", "type": "color", "label": "Default link" },
+		{}
+	],
+	"Header": [
+		/* Background */
+		{ "selector": "#header", "type": "background-color", "label": "Header" },
+		/* Title */
+		{ "selector": "#site-title a", "type": "text", "label": "Title" },
+		{ "selector": "#site-title a:link, #site-title a:active, #site-title a:visited", "type": "color", "label": "Title" },
+		{ "selector": "#site-title a:hover", "type": "color", "label": "Title" },
+		/* Tagline */
+		{ "selector": "#site-description", "type": "text", "label": "Tagline" }, 
+		{ "selector": "#site-description", "type": "color", "label": "Tagline" },
+		/* Image */
+		{ "selector": "#branding img", "type": "border-color", "label": "Image" },
+		{}
+	],
+	"Search Form": [
+		/* Input */
+		{ "selector": "#s", "type": "text", "label": "Form" },
+		{ "selector": "#s", "type": "color", "label": "Form" },
+		{ "selector": "#s", "type": "background-color", "label": "Form" },
+		/* Focus */
+		{ "selector": "#s:focus", "type": "background-color", "label": "Form", "important": true },
+		/* Border */
+		{ "selector": "#s", "type": "border-color", "label": "Form" },
+		/* Submit */
+		{ "selector": "#searchsubmit", "type": "text", "label": "Button" },
+		{ "selector": "#searchsubmit", "type": "color", "label": "Button" },
+		{ "selector": "#searchsubmit", "type": "background-color", "label": "Button" },
+		{}
+	],
+	"Menu – Primary": [
+		/* Background */
+		{ "selector": "#access", "type": "background-color", "label": "Area" },
+		/* Top items */
+		{ "selector": "#access ul.menu > li > a", "type": "text", "label": "Top item" },
+		{ "selector": "#access ul.menu > li > a", "type": "color", "label": "Top item" },
+		{ "selector": "#access ul.menu > li > a:hover", "type": "color", "label": "Top item" },
+		{ "selector": "#access ul.menu > li > a", "type": "background-color", "label": "Top item" },
+		{ "selector": "#access ul.menu > li > a:hover", "type": "background-color", "label": "Top item" },
+		/* Sub items */
+		{ "selector": "#access ul ul a", "type": "text", "label": "Submenu item" },
+		{ "selector": "#access ul.menu ul > li a", "type": "color", "label": "Submenu item" },
+		{ "selector": "#access ul.menu ul > li a:hover", "type": "color", "label": "Submenu item" },
+		{ "selector": "#access ul.menu ul > li a", "type": "background-color", "label": "Submenu item" },
+		{ "selector": "#access ul.menu ul > li a:hover", "type": "background-color", "label": "Submenu item" },
+		{}
+	],
+	"Widgets – Sidebar": [
+		/* Widget Title */
+		{ "selector": "#primary .widget-title, #secondary .widget-title", "type": "text", "label": "Title" },
+		{ "selector": "#primary .widget-title, #secondary .widget-title", "type": "color", "label": "Title" },
+		/* Widget Content */
+		{ "selector": "#primary ul ul > li, #secondary ul ul > li", "type": "text", "label": "Content" },
+		{ "selector": "#primary ul ul > li, #secondary ul ul > li", "type": "color", "label": "Content" },
+		/* Widget Link */
+		{ "selector": "#primary ul ul > li a, #secondary ul ul > li a", "type": "color", "label": "Link" },
+		{ "selector": "#primary ul ul > li > a:hover, #secondary ul ul > li > a:hover", "type": "color", "label": "Link" },
+		{}
+	],
+	"Widgets – Footer": [
+		/* Widget Title */
+		{ "selector": "#footer-widget-area .widget-title", "type": "text", "label": "Title" },
+		{ "selector": "#footer-widget-area .widget-title", "type": "color", "label": "Title" },
+		/* Widget Content */
+		{ "selector": "#footer-widget-area .widget-area ul > li", "type": "text", "label": "Content" },
+		{ "selector": "#footer-widget-area .widget-area ul > li", "type": "color", "label": "Content" },
+		/* Widget Link */
+		{ "selector": "#footer-widget-area .widget-area ul > li a", "type": "color", "label": "Link" },
+		{ "selector": "#footer-widget-area .widget-area ul > li a:hover", "type": "color", "label": "Link" },
+		{}
+	],
+	"Entry – Headings": [
+		/* Title */
+		{ "selector": "#wrapper .entry-title, #wrapper .entry-title a", "type": "text", "label": "Title" },
+		{ "selector": "#wrapper .entry-title, #wrapper .entry-title a", "type": "color", "label": "Title" },
+		{ "selector": "#wrapper .entry-title, #wrapper .entry-title a:hover", "type": "color", "label": "Title link" },
+		/* Headers */
+		{ "selector": "#content .entry-content h1", "type": "text", "label": "Heading 1" },
+		{ "selector": "#content .entry-content h1", "type": "color", "label": "Heading 1" },
+		{ "selector": "#content .entry-content h2", "type": "text", "label": "Heading 2" },
+		{ "selector": "#content .entry-content h2", "type": "color", "label": "Heading 2" },
+		{ "selector": "#content .entry-content h3", "type": "text", "label": "Heading 3" },
+		{ "selector": "#content .entry-content h3", "type": "color", "label": "Heading 3" },
+		{ "selector": "#content .entry-content h4", "type": "text", "label": "Heading 4" },
+		{ "selector": "#content .entry-content h4", "type": "color", "label": "Heading 4" },
+		{ "selector": "#content .entry-content h5", "type": "text", "label": "Heading 5" },
+		{ "selector": "#content .entry-content h5", "type": "color", "label": "Heading 5" },
+		{ "selector": "#content .entry-content h6", "type": "text", "label": "Heading 6" },
+		{ "selector": "#content .entry-content h6", "type": "color", "label": "Heading 6" },
+		/* Archive Title */
+		{ "selector": ".page-title, .page-title span", "type": "text", "label": "Archive title" },
+		{ "selector": ".page-title, .page-title span", "type": "color", "label": "Archive title" },
+		{}
+	],
+	"Entry – Content": [
+		/* Paragraph */
+		{ "selector": ".entry-content p, #respond p", "type": "text", "label": "Paragraph" },
+		{ "selector": ".entry-content p", "type": "color", "label": "Paragraph" },
+		/* Links - Set for content and comments. Comments section should override */
+		{ "selector": ".entry-content a, #comments a", "type": "color", "label": "Link" },
+		{ "selector": ".entry-content a:hover, #comments a:hover", "type": "color", "label": "Link" },
+		/* Lists */
+		{ "selector": ".entry-content li", "type": "text", "label": "List" },
+		{ "selector": ".entry-content li", "type": "color", "label": "List" },
+		/* Small */
+		{ "selector": ".entry-content small", "type": "text", "label": "Small" },
+		{ "selector": ".entry-content small", "type": "color", "label": "Small" },
+		/* Preformatted & Code - Set for content and comments. Comments section might override */
+		{ "selector": ".entry-content pre, .comment-body pre, .entry-content code, .comment-body code", "type": "text", "label": "Preformatted, code" },
+		{ "selector": ".entry-content pre, .comment-body pre, .entry-content code, .comment-body code", "type": "color", "label": "Preformatted, code" },
+		{ "selector": ".entry-content pre, .comment-body pre, .entry-content code, .comment-body code", "type": "background-color", "label": "Preformatted, code" },
+		/* Blockquote */
+		{ "selector": ".entry-content blockquote, .entry-content blockquote p", "type": "text", "label": "Blockquote" },
+		{ "selector": ".entry-content blockquote p", "type": "color", "label": "Blockquote" },
+		/* Address */
+		{ "selector": ".entry-content address", "type": "text", "label": "Address" },
+		{ "selector": ".entry-content address", "type": "color", "label": "Address" },
+		/* Table Border    - #content applies to .entry-content and comments */
+		{ "selector": "#content table, #content td", "type": "border-color", "label": "Table" },
+		/* Table Heading */
+		{ "selector": "#content th", "type": "text", "label": "Table heading" },
+		{ "selector": "#content th", "type": "color", "label": "Table heading" },
+		{ "selector": "#content th", "type": "background-color", "label": "Table heading" },
+		/* Table Content */
+		{ "selector": "#content td, #content td p", "type": "text", "label": "Table content" },
+		{ "selector": "#content td, #content td p", "type": "color", "label": "Table content" },
+		{ "selector": "#content td", "type": "background-color", "label": "Table content" },
+		{}
+	],
+	"Entry – Navigation": [
+		/* Previous/Next */
+		{ "selector": "#content .navigation a", "type": "text", "label": "Previous/next link" },
+		{ "selector": "#content .navigation a", "type": "color", "label": "Previous/next link" },
+		{ "selector": "#content .navigation a:hover", "type": "color", "label": "Previous/next link" },
+		/* Paging */
+		{ "selector": ".page-link, .page-link a", "type": "text", "label": "Paging" },
+		{ "selector": ".page-link", "type": "color", "label": "Paging label" },
+		{ "selector": ".page-link a", "type": "color", "label": "Paging link" },
+		{ "selector": ".page-link a:hover", "type": "color", "label": "Paging link" },
+		{ "selector": ".page-link a", "type": "background-color", "label": "Paging link" },
+		{ "selector": ".page-link a:hover", "type": "background-color", "label": "Paging link" },
+		{}
+	],
+	"Entry – Meta": [
+		/* Meta */
+		{ "selector": "#wrapper .entry-meta, #wrapper .entry-utility, #wrapper .entry-meta a, #wrapper .entry-utility a", "type": "text", "label": "Meta" },
+		{ "selector": "#wrapper .entry-meta, #wrapper .entry-utility", "type": "color", "label": "Meta" },
+		{ "selector": "#wrapper .entry-meta a, #wrapper .entry-utility a", "type": "color", "label": "Meta link" },
+		{ "selector": "#wrapper .entry-meta a:hover, #wrapper .entry-utility a:hover", "type": "color", "label": "Meta link" },
+		/* Edit link */
+		{ "selector": "#wrapper .edit-link a", "type": "text", "label": "Edit link" },
+		{ "selector": "#wrapper .edit-link a", "type": "color", "label": "Edit link" },
+		{ "selector": "#wrapper .edit-link a:hover", "type": "color", "label": "Edit link" },
+		{ "selector": "#wrapper .edit-link a", "type": "background-color", "label": "Edit link" },
+		{ "selector": "#wrapper .edit-link a:hover", "type": "background-color", "label": "Edit link" },
+		{}
+	],
+	"Comments – Content": [
+		{ "selector": "#comments .comment", "type": "background-color", "label": "Area" },
+		/* Comment content    - This may need to change to effect comment meta as well */
+		{ "selector": ".comment-body, .comment-body p", "type": "text", "label": "Content" },
+		{ "selector": ".comment-body, .comment-body p, .comment-body h1, .comment-body h2, .comment-body h3, .comment-body h4, .comment-body h5, .comment-body h6, .comment-body blockquote cite, .comment-body th, .comment-body dt", "type": "color", "label": "Content" },
+		/* Comment link    - Also set in Entry Content 
+		                   - Affects comment content and meta links. Following sections should override */
+		{ "selector": "#comments a", "type": "color", "label": "Link" },
+		{ "selector": "#comments a:hover", "type": "color", "label": "Link" },
+		/* Preformatted & Code - Also set in Entry Content  */
+		/*{ "selector": ".comment-body pre, .comment-body code", "type": "text", "label": "Preformatted, code" },*/
+		/*{ "selector": ".comment-body pre, .comment-body code", "type": "color", "label": "Preformatted, code" },*/
+		/*{ "selector": ".comment-body pre, .comment-body code", "type": "background-color", "label": "Preformatted, code" },*/
+		{}
+	],
+	"Comments – Content (Even)": [
+		{ "selector": "#comments .odd", "type": "background-color", "label": "Area" },
+		/* Comment content    - This may need to change to effect comment meta as well */
+		{ "selector": ".odd .comment-body, .odd .comment-body p", "type": "text", "label": "Content" },
+		{ "selector": ".odd .comment-body, .odd .comment-body p, .odd .comment-body h1, .odd .comment-body h2, .odd .comment-body h3, .odd .comment-body h4, .odd .comment-body h5, .odd .comment-body h6, .odd .comment-body blockquote cite, .odd .comment-body th, .odd .comment-body dt", "type": "color", "label": "Content" },
+		/* Comment link    - Also set in Entry Content 
+		                   - Affects comment content and meta links. Following sections should override */
+		{ "selector": "#comments .odd a", "type": "color", "label": "Link" },
+		{ "selector": "#comments .odd a:hover", "type": "color", "label": "Link" },
+		{}
+	],
+	"Comments – Author": [
+		/* Author */
+		{ "selector": "#comments .comment-author", "type": "text", "label": "Author" },
+		{ "selector": "#comments .comment-author", "type": "color", "label": "Author" },
+		{ "selector": "#comments .comment-author .fn", "type": "color", "label": "Author name" },
+		{ "selector": "#comments .comment-author .fn a", "type": "color", "label": "Author name link" },
+		{ "selector": "#comments .comment-author .fn a:hover", "type": "color", "label": "Author name link" },
+		{}
+	],
+	"Comments – Meta": [
+		/* List title */
+		{ "selector": "#comments-title", "type": "text", "label": "List title" },
+		{ "selector": "#comments-title", "type": "color", "label": "List title" },
+		/* Meta */
+		{ "selector": "#comments .commentlist .comment-meta", "type": "text", "label": "Meta" },
+		/* TwentyTen has no Meta text that isn't a link */
+		/* { "selector": "#comments .commentlist .comment-meta", "type": "color", "label": "Meta" }, */
+		{ "selector": "#comments .commentlist .comment-meta a", "type": "color", "label": "Meta link" },
+		{ "selector": "#comments .comment-meta a:hover", "type": "color", "label": "Meta link" },
+		/* Reply link */
+		{ "selector": "#comments a.comment-reply-link", "type": "text", "label": "Reply link" },
+		{ "selector": "#comments a.comment-reply-link", "type": "color", "label": "Reply link" },
+		{ "selector": "#comments a.comment-reply-link:hover", "type": "color", "label": "Reply link" },
+		{ "selector": "#comments a.comment-reply-link", "type": "background-color", "label": "Reply link" },
+		{ "selector": "#comments a.comment-reply-link:hover", "type": "background-color", "label": "Reply link" },
+		{}
+	],
+	"Comments – Pingback": [
+		/* Pingbacks */
+		{ "selector": "#comments .pingback, #comments .pingback p, #comments .pingback a", "type": "text", "label": "Pingback" },
+		/* TwentyTen doesn't have padding on .pingback. Possibly override in style.css. */
+		/* { "selector": "#comments .pingback", "type": "background-color", "label": "Pingback" }, */
+		{ "selector": "#comments .pingback", "type": "color", "label": "Pingback" },
+		{ "selector": "#comments .pingback a", "type": "color", "label": "Pingback link" },
+		{ "selector": "#comments .pingback a:hover", "type": "color", "label": "Pingback link" },
+		{}
+	],
+	"Comments – Response Form": [
+		/* Area */
+		/* Theme specific - border-top-color */
+		{ "selector": "#respond", "type": "border-top-color", "label": "Area" },
+		{ "selector": "#respond", "type": "background-color", "label": "Area" },
+		/* Title */
+		{ "selector": "#respond #reply-title", "type": "text", "label": "Title" },
+		{ "selector": "#respond #reply-title", "type": "color", "label": "Title" },
+		/* Description */
+		{ "selector": "#respond p, #respond code", "type": "text", "label": "Description" },
+		{ "selector": "#respond p, #respond code", "type": "color", "label": "Description" },
+		/* { "selector": "#commentform a", "type": "text", "label": "Description link" }, */
+		{ "selector": "#commentform a", "type": "color", "label": "Description link" },
+		{ "selector": "#commentform a:hover", "type": "color", "label": "Description link" },
+		/* Label */
+		{ "selector": "#respond label", "type": "text", "label": "Label" },
+		{ "selector": "#respond label", "type": "color", "label": "Label" },
+		/* Response field (textarea) */
+		{ "selector": "#respond textarea", "type": "text", "label": "Textarea" },
+		{ "selector": "#respond textarea", "type": "color", "label": "Textarea" },
+		{ "selector": "#respond textarea", "type": "background-color", "label": "Textarea" },
+		{ "selector": "#respond textarea:focus", "type": "background-color", "label": "Textarea" },
+		{ "selector": "#respond textarea", "type": "border-color", "label": "Textarea" },
+		/* Submit button */
+		{ "selector": "#respond #submit", "type": "text", "label": "Submit button" },
+		{ "selector": "#respond #submit", "type": "color", "label": "Submit button" },
+		{ "selector": "#respond #submit", "type": "background-color", "label": "Submit button" },
+		{}
+	],
+	"Footer": [
+		/* Area */
+		{ "selector": "#footer", "type": "background-color", "label": "Area" },
+		{ "selector": "#colophon", "type": "border-top-color", "label": "Area" },
+		/* Content */
+		{ "selector": "#footer, #site-info, #footer a, #site-info a", "type": "text", "label": "Footer" },
+		{ "selector": "#footer a", "type": "color", "label": "Footer link" },
+		{ "selector": "#footer a:hover", "type": "color", "label": "Footer link" },
+		/* Credit */
+		{ "selector": "#site-generator, #site-generator a", "type": "text", "label": "Credit" },
+		{ "selector": "#site-generator a", "type": "color", "label": "Credit link" },
+		{ "selector": "#site-generator a:hover", "type": "color", "label": "Credit link" },
+		{}
+	]
+}

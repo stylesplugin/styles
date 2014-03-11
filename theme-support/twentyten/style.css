@@ -1,0 +1,14 @@
+/* Header clearfix */
+#header:before, #header:after {content: ''; display: table; }
+#header:after { clear: both; } 
+#header { zoom: 1; }
+
+/* Replace margin with padding for background-colors */
+.styles #wrapper { padding-left:0; padding-right:0; width: 980px; } 
+.styles #header, .styles #main { padding-left: 20px; padding-right:20px; }
+
+#site-title, #site-description { width: auto; }
+
+#wrapper, .entry-utility, #respond p, #respond code, #respond textarea { line-height: 1.5; }
+
+#site-info, #site-generator, #footer-widget-area { width: auto; line-height: 1.5;}
