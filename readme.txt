@@ -189,7 +189,7 @@ No! Styles is very careful about only loading what is needed to get its job done
 = 1.0.11 =
 
 * [This release goes to 11](http://www.youtube.com/watch?v=NrVCjnRdB_k).
-* Fix: Issue detecting add-ons for child themes. Thanks [@JiveDig](http://twitter.com/jivedig) for pointing this out.
+* Fix: Resolve issues with option to reset settings. Thanks [@violacase](http://wordpress.org/support/topic/reset-with-stylestwentyfourteen) [@JiveDig](https://github.com/JiveDig) for the reports.
 * Enhancement: Enqueue customizer scripts in a way that's easier for plugins to extend. Props [@westonruter](https://github.com/westonruter).
 
 = 1.0.10 =
@@ -273,4 +273,4 @@ No! Styles is very careful about only loading what is needed to get its job done
 
 = 1.1.8 =
 
-* Fix: Resolve issues with option to reset settings. Thanks [@violacase](http://wordpress.org/support/topic/reset-with-stylestwentyfourteen] [@JiveDig](https://github.com/JiveDig) for the reports.
+* Fix: Resolve issues with option to reset settings. Thanks [@violacase](http://wordpress.org/support/topic/reset-with-stylestwentyfourteen) [@JiveDig](https://github.com/JiveDig) for the reports.
