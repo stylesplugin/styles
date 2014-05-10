@@ -93,7 +93,7 @@ No! Styles is very careful about only loading what is needed to get its job done
 
 = 1.1.8 =
 
-* Fix: Resolve issues with option to reset settings. Thanks for [the report](https://github.com/stylesplugin/styles/issues/30#issuecomment-42686083) [@JiveDig](https://github.com/JiveDig).
+* Fix: Resolve issues with option to reset settings. Thanks [@violacase](http://wordpress.org/support/topic/reset-with-stylestwentyfourteen] [@JiveDig](https://github.com/JiveDig) for the reports.
 
 = 1.1.7 =
 
@@ -273,4 +273,4 @@ No! Styles is very careful about only loading what is needed to get its job done
 
 = 1.1.8 =
 
-* Fix: Resolve issues with option to reset settings. Thanks for [the report](https://github.com/stylesplugin/styles/issues/30#issuecomment-42686083) [@JiveDig](https://github.com/JiveDig).
+* Fix: Resolve issues with option to reset settings. Thanks [@violacase](http://wordpress.org/support/topic/reset-with-stylestwentyfourteen] [@JiveDig](https://github.com/JiveDig) for the reports.

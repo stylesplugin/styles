@@ -30,6 +30,7 @@ class Styles_Admin {
 		'twentyeleven',
 		'twentytwelve',
 		'twentythirteen',
+		'twentyfourteen',
 	);
 
 	function __construct( $plugin ) {
