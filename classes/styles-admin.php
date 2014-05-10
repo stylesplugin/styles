@@ -98,8 +98,8 @@ class Styles_Admin {
 			),
 
 			'delete_settings' => array(
-				'title'       => __( 'Reset Settings', 'styles' ),
-				'description' => __( 'Type DELETE into this field and save to verify a reset of all Styles settings.', 'styles' ),
+				'title'       => __( 'Reset Customizer Settings', 'styles' ),
+				'description' => __( 'Type RESET into this field and save to verify a reset of all Styles Customizer settings.', 'styles' ),
 				'default'     => '',
 				'type'        => 'input',
 				'section'     => 'general',
@@ -223,11 +223,38 @@ class Styles_Admin {
 		// Combine input with general settings
 		$input = array_merge( (array) get_option('storm-styles'), $input );
 
-		if ( isset( $input['delete_settings'] ) && 'DELETE' == $input['delete_settings'] ) {
-			$this->delete_settings();
-			$input['delete_settings'] = false;
+		// RESET settings
+		if ( isset( $input['delete_settings'] ) ) {
 
-			$this->notices[] = '<p>Styles settings have been deleted.</p>';
+			if ( 'RESET' == $input['delete_settings'] ) {
+
+				$this->delete_settings();
+
+				// Display of admin message after redirect
+				$input['delete_settings'] = 'done';
+
+			}else if ( 'done' !== $input['delete_settings'] ) {
+
+				$input['delete_settings'] = false;
+
+			}
+
+		}
+
+		// Debug mode: 0 or 1
+		if ( isset( $input['debug_mode'] ) ) {
+			$input['debug_mode'] = preg_replace( '[^01]', '', $input['debug_mode'] );
+		}
+		if ( empty( $input['debug_mode'] ) ) {
+			$input['debug_mode'] = '0';
+		}
+
+		// Remove keys that aren't strings.
+		// Unknown cause -- maybe array_merge above?
+		foreach( $input as $key => $value ) {
+			if ( is_int( $key ) ) {
+				unset( $input[ $key ] );
+			}
 		}
 
 		// Todo: Sanatize.
@@ -352,6 +379,15 @@ class Styles_Admin {
 	 * Output all notices that have been added to the $this->notices array
 	 */
 	public function admin_notices() {
+		$options = get_option( 'storm-styles' );
+
+		// Add notice if settings were deleted on previous page during input validation.
+		if ( isset( $options['delete_settings'] ) && 'done' == $options['delete_settings'] ) {
+			$this->notices[] = '<p>Styles Customizer settings have been reset to defaults.</p>';
+			$options['delete_settings'] = false;
+			update_option( 'storm-styles', $options );
+		}
+
 		foreach( $this->notices as $key => $message ) {
 			echo "<div class='updated fade' id='styles-$key'>$message</div>";
 		}
@@ -374,7 +410,6 @@ class Styles_Admin {
 		global $wpdb;
 
 		if( is_multisite() ){
-			
 			// Site network: remove options from each blog
 			$blog_ids = $wpdb->get_col( "SELECT blog_id FROM $wpdb->blogs" );
 			if( $blog_ids ){
@@ -383,9 +418,7 @@ class Styles_Admin {
 					switch_to_blog( $id );
 
 					// $wpdb->options is new for each blog, so we're duplicating SQL in the loop
-					$sql = "DELETE from $wpdb->options WHERE option_name LIKE 'storm-styles-%'";
-					$sql = "DELETE from $wpdb->options WHERE option_name LIKE '\_transient%storm-styles-%'";
-					$wpdb->query( $sql );
+					$this->delete_settings_single_site();
 					
 					restore_current_blog();
 				}
@@ -393,9 +426,28 @@ class Styles_Admin {
 			}
 
 		}else {
-			// Single site
-			$sql = "DELETE from $wpdb->options WHERE option_name LIKE 'storm-styles-%'";
-			$sql = "DELETE from $wpdb->options WHERE option_name LIKE '\_transient%storm-styles-%'";
+			$this->delete_settings_single_site();
+		}
+
+	}
+
+	protected function delete_settings_single_site() {
+		global $wpdb;
+
+		$option_values = array(
+			'= "_transient_styles_child_plugins"',
+			'= "_transient_timeout_styles_child_plugins"',
+			'= "_site_transient_styles_child_plugins"',
+			'= "_site_transient_timeout_styles_child_plugins"',
+			'= "_transient_styles_google_font_data"',
+			'= "_transient_timeout_styles_google_font_data"',
+			// '= "storm-styles"',   // Don't delete main settings, because it stores reset status.
+			'LIKE "storm-styles-%"', // Must have hyphen to avoid main settings
+			'LIKE "\_transient%storm-styles-%"'
+		);
+
+		foreach ( $option_values as $value ) {
+			$sql = "DELETE from $wpdb->options WHERE option_name $value";
 			$wpdb->query( $sql );
 		}
 
