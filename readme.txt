@@ -1,11 +1,11 @@
 === Styles ===
-Contributors: 10up, pdclark, elusivelight
+Contributors: pdclark, elusivelight, 10up
 Plugin URI: http://stylesplugin.com
 Author URI: http://pdclark.com
 Tags: css, stylesheet, appearance, customize, customizer, colors, color picker, background, fonts, google fonts, user interface, twenty ten, twenty eleven, twenty twelve, twenty thirteen
 Requires at least: 3.4
-Tested up to: 3.7.1
-Stable tag: 1.1.7
+Tested up to: 3.9
+Stable tag: 1.1.8
 
 Be creative with colors and fonts. Styles changes everything.
 
@@ -90,6 +90,10 @@ If you would like to sell your add-on at [stylesplugin.com](http://stylesplugin.
 No! Styles is very careful about only loading what is needed to get its job done. Once you're done editing, stylesheets are cached and loaded for your sites users as quickly as possible.
 
 == Changelog ==
+
+= 1.1.8 =
+
+* Fix: Resolve issues with option to reset settings. Thanks for [the report](https://github.com/stylesplugin/styles/issues/30#issuecomment-42686083) [@JiveDig](https://github.com/JiveDig).
 
 = 1.1.7 =
 
@@ -267,7 +271,6 @@ No! Styles is very careful about only loading what is needed to get its job done
 
 == Upgrade Notice ==
 
-= 1.1.7 =
+= 1.1.8 =
 
-* New: Option to reset all settings.
-* New: Option to enable debug mode to help when responding to support tickets.
+* Fix: Resolve issues with option to reset settings. Thanks for [the report](https://github.com/stylesplugin/styles/issues/30#issuecomment-42686083) [@JiveDig](https://github.com/JiveDig).
