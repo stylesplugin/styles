@@ -30,7 +30,8 @@ if (
 	}
 
 }else if (
-	apply_filters( 'styles_font_menu_exit_on_php_version_error', true )
+	version_compare( $GLOBALS['wp_version'], '3.4', '<' )
+	&& apply_filters( 'styles_font_menu_exit_on_php_version_error', true )
 	&& !function_exists( 'styles_font_menu_wp_version_notice' )
 ) {
 
