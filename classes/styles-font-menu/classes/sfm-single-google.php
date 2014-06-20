@@ -107,8 +107,8 @@ class SFM_Single_Google extends SFM_Single_Standard {
 
 		$this->file_paths = array(
 			'plugin' => array(
-				'path' => $plugin->plugin_directory . $fonts_dir,
-				'url'  => $plugin->plugin_url . $fonts_dir,
+				'path' => $plugin->get_plugin_directory() . $fonts_dir,
+				'url'  => $plugin->get_plugin_url() . $fonts_dir,
 			),
 			'uploads' => array(
 				'path' => $uploads['basedir'] . $fonts_dir,

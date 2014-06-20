@@ -105,12 +105,7 @@ class SFM_Plugin {
 	 * Initial setup. Called by get_instance.
 	 */
 	protected function init() {
-		// Fix for IIS paths
-		$normalized_abspath = str_replace(array('/', '\\'), '/', ABSPATH );
-
-		$this->plugin_directory = str_replace(array('/', '\\'), '/', dirname( dirname( __FILE__ ) ) );
-		$this->plugin_url = site_url( str_replace( $normalized_abspath, '', $this->plugin_directory ) );
-		$this->plugin_basename = plugin_basename( $this->plugin_directory . '/plugin.php' );
+		$this->plugin_basename = plugin_basename( $this->get_plugin_directory() . '/plugin.php' );
 
 		$this->admin = new SFM_Admin( $this );
 		$this->google_fonts = new SFM_Group_Google();
@@ -124,14 +119,67 @@ class SFM_Plugin {
 		add_action( 'styles_font_menu', array( $this, 'get_view_menu' ), 10, 2 );
 	}
 
+	/**
+	 * Used in favor of plugin_dir_path() because plugin might be installed in a theme.
+	 * 
+	 * @return string Path to this plugin's directory.
+	 */
+	public function get_plugin_directory() {
+		if ( isset( $this->plugin_directory ) ) {
+			return $this->plugin_directory;
+		}
+
+		$this->plugin_directory = realpath( dirname( dirname( __FILE__ ) ) );
+		// Sanitize for Win32 installs
+		$this->plugin_directory = str_replace( array( '/', '\\' ), '/', $this->plugin_directory );
+		$this->plugin_directory = preg_replace('|/+|', '/', $this->plugin_directory );
+
+		return $this->plugin_directory;
+	}
+
+	/**
+	 * Used in favor of plugin_dir_path() because plugin might be installed in a theme.
+	 * 
+	 * @return string URL to this plugin's directory
+	 */
+	public function get_plugin_url() {
+		if ( isset( $this->plugin_url ) ) {
+			return $this->plugin_url;
+		}
+
+		$template_directory   = realpath( get_template_directory() );
+		$stylesheet_directory = realpath( get_stylesheet_directory() );
+
+		if ( false !== strpos( $this->get_plugin_directory(), $template_directory ) ) {
+
+			// Parent theme
+			$path_in_theme = str_replace( $template_directory, '', $this->get_plugin_directory() );
+			$this->plugin_url = get_template_directory_uri() . $path_in_theme; 
+
+		}else if ( false !== strpos( $this->get_plugin_directory(), $stylesheet_directory ) ) {
+			
+			// Child theme
+			$path_in_theme = str_replace( $stylesheet_directory, '', $this->get_plugin_directory() );
+			$this->plugin_url = get_stylesheet_directory_uri() . $path_in_theme; 
+
+		}else {
+			
+			// Plugins or mu-plugins
+			$this->plugin_url = plugins_url( '', $this->get_plugin_directory() . '/plugin.php' );
+
+		}
+
+		return $this->plugin_url;
+	}
+
 	public function print_scripts() {
 		if ( $this->scripts_printed ) { return false; }
 
-		wp_register_script( 'styles-chosen', $this->plugin_url . '/js/chosen/chosen.jquery.min.js', array( 'jquery' ), $this->version );
-		wp_register_script( 'styles-font-menu', $this->plugin_url . '/js/styles-font-menu.js', array( 'jquery', 'styles-chosen' ), $this->version );
-		wp_register_style( 'styles-chosen', $this->plugin_url . '/js/chosen/chosen.css', array(), $this->version );
-		wp_register_style( 'styles-font-menu', $this->plugin_url . '/css/styles-font-menu.css', array(), $this->version );
-		// wp_register_style( 'styles-chosen', $this->plugin_url . '/js/chosen/chosen.min.css', array(), $this->version );
+		wp_register_script( 'styles-chosen', $this->get_plugin_url() . '/js/chosen/chosen.jquery.min.js', array( 'jquery' ), $this->version );
+		wp_register_script( 'styles-font-menu', $this->get_plugin_url() . '/js/styles-font-menu.js', array( 'jquery', 'styles-chosen' ), $this->version );
+		wp_register_style( 'styles-chosen', $this->get_plugin_url() . '/js/chosen/chosen.css', array(), $this->version );
+		wp_register_style( 'styles-font-menu', $this->get_plugin_url() . '/css/styles-font-menu.css', array(), $this->version );
+		// wp_register_style( 'styles-chosen', $this->get_plugin_url() . '/js/chosen/chosen.min.css', array(), $this->version );
 
 		// Pass Google Font Families to javascript
 		// This saves on bandwidth by outputing them once,
