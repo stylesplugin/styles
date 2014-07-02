@@ -3,7 +3,7 @@
 Plugin Name: Styles
 Plugin URI: http://stylesplugin.com
 Description: Change the appearance of your theme using the <a href="customize.php">WordPress Customizer</a>. Styles changes everything.
-Version: 1.1.8
+Version: 1.1.9
 Author: Paul Clark, 10up
 Author URI: http://pdclark.com
 License: GPLv2
