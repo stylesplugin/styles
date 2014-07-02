@@ -2,10 +2,10 @@
 Contributors: pdclark, elusivelight, 10up
 Plugin URI: http://stylesplugin.com
 Author URI: http://pdclark.com
-Tags: css, stylesheet, appearance, customize, customizer, colors, color picker, background, fonts, google fonts, user interface, twenty ten, twenty eleven, twenty twelve, twenty thirteen
+Tags: css, stylesheet, appearance, customize, customizer, colors, color picker, background, fonts, google fonts, user interface, twenty ten, twenty eleven, twenty twelve, twenty thirteen, genesis
 Requires at least: 3.4
 Tested up to: 3.9
-Stable tag: 1.1.8
+Stable tag: 1.1.9
 
 Be creative with colors and fonts. Styles changes everything.
 
@@ -38,6 +38,10 @@ Styles and options for all built-in WordPress themes are free. More themes are a
 * TwentyTwelve: [Demo](http://demo.stylesplugin.com/twentytwelve)
 * TwentyThirteen: [Demo](http://demo.stylesplugin.com/twentythirteen)
 
+**Styles for Genesis**
+
+A third-party developer, The Stiz Media, maintains [Styles add-ons for Genesis themes](http://thestizmedia.com/styles-genesis-add-ons/).
+
 **Developer Resources**
 
 * [Styles on Github](https://github.com/stylesplugin)
@@ -64,7 +68,7 @@ Styles and options for all built-in WordPress themes are free. More themes are a
 1. All TwentyEleven sections.
 1. TwentyEleven menu settings.
 
-== Frequently Asked Questions == 
+== Frequently Asked Questions ==
 
 = Why is this plugin free? =
 
@@ -90,6 +94,12 @@ If you would like to sell your add-on at [stylesplugin.com](http://stylesplugin.
 No! Styles is very careful about only loading what is needed to get its job done. Once you're done editing, stylesheets are cached and loaded for your sites users as quickly as possible.
 
 == Changelog ==
+
+= 1.1.9 =
+
+* Fix: Account for symlinks in plugin path for systems like [Evermore WordPress Hosting](http://evermo.re).
+* Fix: Only output version Font Menu notice if WordPress/PHP is out of date.
+* New: Add link to [Genesis theme support from The Stiz Media](http://thestizmedia.com/styles-genesis-add-ons/) to readme.
 
 = 1.1.8 =
 
@@ -232,7 +242,7 @@ No! Styles is very careful about only loading what is needed to get its job done
 
 = 1.0 =
 * New: Completely rewrite Styles to use the WordPress Customizer API. Whew! That was a lot of work, but will allow us to grow closely with WordPress going forward.
-* New: Styles 1.0 does not import 0.5.2 settings. However, you can always [reinstall Styles 0.5.3](http://downloads.wordpress.org/plugin/styles.0.5.3.zip) to get your old settings back. 
+* New: Styles 1.0 does not import 0.5.2 settings. However, you can always [reinstall Styles 0.5.3](http://downloads.wordpress.org/plugin/styles.0.5.3.zip) to get your old settings back.
 * New: TwentyTwelve support.
 * New: TwentyThirteen support.
 * New: Remove gradients and background images. Sorry! We had to simpify and prioritize in the rewrite. If many users find Styles useful, we hope to bring these features back!
@@ -271,6 +281,8 @@ No! Styles is very careful about only loading what is needed to get its job done
 
 == Upgrade Notice ==
 
-= 1.1.8 =
+= 1.1.9 =
 
-* Fix: Resolve issues with option to reset settings. Thanks [@violacase](http://wordpress.org/support/topic/reset-with-stylestwentyfourteen) [@JiveDig](https://github.com/JiveDig) for the reports.
+* Fix: Account for symlinks in plugin path for systems like [Evermore WordPress Hosting](http://evermo.re).
+* Fix: Only output version Font Menu notice if WordPress/PHP is out of date.
+* New: Add link to [Genesis theme support from The Stiz Media](http://thestizmedia.com/styles-genesis-add-ons/) to readme.
