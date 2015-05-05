@@ -19,6 +19,23 @@ if ( version_compare( $GLOBALS['wp_version'], '3.4', '>=' ) ) {
 
 	add_action( 'plugins_loaded', 'Styles_Plugin::get_instance' );
 
+	/**
+	 * Additional headers to identify Styles child plugins.
+	 * Filter needs to run before plugins_loaded to avoid conflicts
+	 *
+	 * @return array plugin header search terms
+	 */
+	function styles_extra_plugin_headers( $headers ) {
+		$headers['Styles Class'] = 'styles class';
+		$headers['Styles Item'] = 'styles item';
+		$headers['Styles Updates'] = 'styles updates';
+
+		return $headers;
+	}
+
+	// High priority to avoid conflicts with plugins that don't return the header array correctly.
+	add_filter( 'extra_plugin_headers', 'styles_extra_plugin_headers', PHP_INT_MAX );
+
 }else if ( is_admin() ) {
 
 	/**
