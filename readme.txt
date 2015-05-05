@@ -4,8 +4,8 @@ Plugin URI: http://stylesplugin.com
 Author URI: http://pdclark.com
 Tags: css, stylesheet, appearance, customize, customizer, colors, color picker, background, fonts, google fonts, user interface, twenty ten, twenty eleven, twenty twelve, twenty thirteen, genesis
 Requires at least: 3.4
-Tested up to: 4.0.1
-Stable tag: 1.1.9
+Tested up to: 4.3
+Stable tag: 1.1.10
 
 Be creative with colors and fonts. Styles changes everything.
 
@@ -33,10 +33,12 @@ Styles and options for all built-in WordPress themes are free. More themes are a
 
 **Free Themes**
 
-* TwentyTen: [Demo](http://demo.stylesplugin.com/twentyten)
-* TwentyEleven: [Demo](http://demo.stylesplugin.com/twentyeleven)
-* TwentyTwelve: [Demo](http://demo.stylesplugin.com/twentytwelve)
-* TwentyThirteen: [Demo](http://demo.stylesplugin.com/twentythirteen)
+* TwentyTen
+* TwentyEleven
+* TwentyTwelve
+* TwentyThirteen
+* TwentyFourteen
+* TwentyFifteen
 
 **Styles for Genesis**
 
@@ -45,7 +47,7 @@ A third-party developer, The Stiz Media, maintains [Styles add-ons for Genesis t
 **Developer Resources**
 
 * [Styles on Github](https://github.com/stylesplugin)
-* [Brainstorm Media on Github](https://github.com/brainstormmedia)
+* [pdclark on Github](https://github.com/pdclark)
 * Code Walkthrough: [How to add support for your own themes](http://www.youtube.com/playlist?list=PLxj61Fojm1RGevBh10U2qCqjwoH4Awo-P)
 
 **Contact**
@@ -94,6 +96,11 @@ If you would like to sell your add-on at [stylesplugin.com](http://stylesplugin.
 No! Styles is very careful about only loading what is needed to get its job done. Once you're done editing, stylesheets are cached and loaded for your sites users as quickly as possible.
 
 == Changelog ==
+
+= 1.1.10 =
+
+* New: Linked auto-install for styles-twentyfifteen by @dim.
+* Fix: Avoid "Styles is almost ready" notice caused by plugins such as usernoise.
 
 = 1.1.9 =
 
@@ -281,8 +288,7 @@ No! Styles is very careful about only loading what is needed to get its job done
 
 == Upgrade Notice ==
 
-= 1.1.9 =
+= 1.1.10 =
 
-* Fix: Account for symlinks in plugin path for systems like [Evermore WordPress Hosting](http://evermo.re).
-* Fix: Only output version Font Menu notice if WordPress/PHP is out of date.
-* New: Add link to [Genesis theme support from The Stiz Media](http://thestizmedia.com/styles-genesis-add-ons/) to readme.
+* New: Linked auto-install for styles-twentyfifteen by @dim.
+* Fix: Avoid "Styles is almost ready" notice caused by plugins such as usernoise.

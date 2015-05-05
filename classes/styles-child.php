@@ -27,25 +27,11 @@ class Styles_Child {
 		$this->plugin = $plugin;
 
 		add_action( 'plugins_loaded', array( $this, 'plugins_loaded'), 20 );
-		add_filter( 'extra_plugin_headers', array( $this, 'extra_plugin_headers') );
 		add_action( 'update_option_active_plugins', array( $this, 'update_option_active_plugins' ) );
 
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 			$this->update_option_active_plugins();
 		}
-	}
-
-	/**
-	 * Additional headers
-	 *
-	 * @return array plugin header search terms
-	 */
-	public function extra_plugin_headers( $headers ) {
-		$headers['Styles Class'] = 'styles class';
-		$headers['Styles Item'] = 'styles item';
-		$headers['Styles Updates'] = 'styles updates';
-
-		return $headers;
 	}
 
 	/**
