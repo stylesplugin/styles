@@ -4,7 +4,7 @@ Plugin URI: http://stylesplugin.com
 Author URI: http://pdclark.com
 Tags: css, stylesheet, appearance, customize, customizer, colors, color picker, background, fonts, google fonts, user interface, twenty ten, twenty eleven, twenty twelve, twenty thirteen, genesis
 Requires at least: 3.4
-Tested up to: 4.0.1
+Tested up to: 4.3
 Stable tag: 1.1.9
 
 Be creative with colors and fonts. Styles changes everything.
