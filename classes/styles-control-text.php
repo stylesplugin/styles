@@ -81,6 +81,7 @@ class Styles_Control_Text extends Styles_Control {
 
 		$css = '';
 		if ( $value ) {
+			$value = $this->encodeCssValue($value);
 			$args = array(
 				'template' => $this->template_font_size,
 				'value' => $value,
@@ -103,12 +104,14 @@ class Styles_Control_Text extends Styles_Control {
 		}
 
 		if ( isset( $font->import_family ) ) {
+			$import_family = $this->encodeCssValue($font->import_family);
 			$styles = Styles_Plugin::get_instance();
-			$styles->css->google_fonts[ $value ] = "@import url(//fonts.googleapis.com/css?family={$font->import_family});\r";
+			$styles->css->google_fonts[ $value ] = "@import url(//fonts.googleapis.com/css?family={$import_family});\r";
 		}
 
 		$css = '';
 		if ( $value ) {
+			$value = $this->encodeCssValue($value);
 			$args = array(
 				'template' => $this->template_font_family,
 				'value' => $value,
@@ -118,6 +121,50 @@ class Styles_Control_Text extends Styles_Control {
 
 		// Filter effects final CSS output, but not postMessage updates
 		return apply_filters( 'styles_css_font_family', $css );
+	}
+
+	private function encodePregMatch($matches) {
+		$return = mb_convert_encoding('', 'UTF-8');
+		// Convert from UTF-8 to UTF-32BE for easy ord()'ing.
+		foreach ($matches as $match) {
+			// 32-bit unsigned integer in big endian order.
+			$char = mb_convert_encoding( $match, 'UTF-32BE', 'UTF-8' );
+			// Unpack will read the 32-bit integer in Network order (BE) and
+			// return the resulting integer value as a numeric.
+			list( , $ord ) = unpack( 'N', $char );
+			// Convert to hex and return.
+			$return .= '\\' . dechex( $ord );
+		}
+		return $return;
+	}
+
+	private function encodeCssValue($value) {
+		// Ensure UTF-8.
+		if (preg_match('/^./us', $value) !== 1) {
+			$value = mb_convert_encoding($value, 'UTF-8');
+		}
+		// Replace most non-alphanumeric characters with their hex equivalents.
+		// Special handling for spaces and quotes, which we'll balance at the end of
+		// processing. Also allow for hyphens, commas, and #.
+		$value = preg_replace_callback('/[^ a-z0-9\'"",#-]|#(?!([a-f0-9]{3}){1,2}\b)/iu', array($this, 'encodePregMatch'), $value);
+		// Balance quotes. We can't just count occurrences of " or ' because then
+		// mismatching quotes (i.e. '"'"breakout) could result in a break.
+		$len = mb_strlen($value);
+		$in_quote = FALSE;
+		for ( $i = 0; $i < $len; ++ $i ) {
+			$char = mb_substr( $value, $i, 1 );
+			if (!!$in_quote && $char === $in_quote) {
+				$in_quote = FALSE;
+			}
+			else if (!$in_quote && ($char === '"' || $char === "'")) {
+				$in_quote = $char;
+			}
+		}
+		// Make sure all quotes close at the end of the string.
+		if (!!$in_quote) {
+			$value .= $in_quote;
+		}
+		return $value;
 	}
 
 	public function post_message( $js ) {

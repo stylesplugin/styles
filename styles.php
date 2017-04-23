@@ -2,10 +2,10 @@
 /*
 Plugin Name: Styles
 Plugin URI: http://stylesplugin.com
-Description: Change the appearance of your theme using the <a href="customize.php">WordPress Customizer</a>. Styles changes everything.
-Version: 1.1.10
+Description: Change the appearance of your theme using the <a href="customize.php">Customizer</a>. Most default themes supported via free add-ons on WordPress.org (see <a href="http://wordpress.org/plugins/styles" target="_blank">links in readme</a>). Custom support and theme additions available via <a href="http://stylesplugin.com/support">Styles Support Services</a>.
+Version: 1.2
 Author: Paul Clark
-Author URI: http://pdclark.com
+Author URI: http://profiles.wordpress.org/pdclark
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */

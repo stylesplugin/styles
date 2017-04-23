@@ -35,6 +35,11 @@ class Styles_Plugin {
 	var $admin;
 
 	/**
+	 * @var Styles_Admin_Ajax
+	 */
+	var $admin_ajax;
+
+	/**
 	 * @var Styles_Upgrade
 	 */
 	var $upgrade;
@@ -93,6 +98,12 @@ class Styles_Plugin {
 		add_action( 'admin_menu', array( $this, 'admin_menu' ), 1 );
 		add_action( 'customize_register', array( $this, 'customize_register' ), 1 );
 		add_action( 'customize_save_after', array( $this, 'customize_save_after' ) );
+
+		if ( ( defined('DOING_AJAX') && DOING_AJAX ) ) {
+			require_once dirname( __FILE__ ) . '/styles-admin-ajax.php';
+
+			$this->admin_ajax = new Styles_Admin_Ajax( $this );
+		}
 
 		if ( $this->get_option( 'debug_mode' ) ) {
 			require_once dirname( __FILE__ ) . '/styles-debug.php';
