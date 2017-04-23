@@ -220,7 +220,7 @@ class Markdown_Parser {
 	var $escape_chars_re;
 
 
-	function Markdown_Parser() {
+	function __construct() {
 	#
 	# Constructor function. Initialize appropriate member variables.
 	#
