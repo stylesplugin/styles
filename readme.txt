@@ -1,11 +1,11 @@
 === Styles ===
 Contributors: pdclark, elusivelight
 Plugin URI: http://stylesplugin.com
-Author URI: http://pdclark.com
+Author URI: http://profiles.wordpress.org/pdclark
 Tags: css, stylesheet, appearance, customize, customizer, colors, color picker, background, fonts, google fonts, user interface, twenty ten, twenty eleven, twenty twelve, twenty thirteen, genesis
 Requires at least: 3.4
-Tested up to: 4.3
-Stable tag: 1.1.10
+Tested up to: 4.7.4
+Stable tag: 1.2
 
 Be creative with colors and fonts. Styles changes everything.
 
@@ -31,14 +31,14 @@ http://youtube.com/watch?v=CpKiZEqpcr8
 
 Styles and options for all built-in WordPress themes are free. More themes are available at [StylesPlugin.com](http://stylesplugin.com).
 
-**Free Themes**
+**Free Theme Support Add-ons**
 
-* TwentyTen
-* TwentyEleven
-* TwentyTwelve
-* TwentyThirteen
-* TwentyFourteen
-* TwentyFifteen
+* [Twenty Ten](https://wordpress.org/plugins/styles-twentyten/)
+* [Twenty Eleven](https://wordpress.org/plugins/styles-twentyeleven/)
+* [Twenty Twelve](https://wordpress.org/plugins/styles-twentytwelve/)
+* [Twenty Thirteen](https://wordpress.org/plugins/styles-twentythirteen/)
+* [Twenty Fourteen](https://wordpress.org/plugins/styles-twentyfourteen/)
+* [Twenty Fifteen](https://wordpress.org/plugins/styles-twentyfifteen/)
 
 **Styles for Genesis**
 
@@ -52,9 +52,8 @@ A third-party developer, The Stiz Media, maintains [Styles add-ons for Genesis t
 
 **Contact**
 
-* [@stylesplugin](http://twitter.com/stylesplugin) on Twitter
+* [Support Services](http://stylesplugin.com/support)
 * [Review this plugin](http://wordpress.org/support/view/plugin-reviews/styles)
-* [Get support](http://wordpress.org/support/plugin/styles)
 
 == Installation ==
 
@@ -74,28 +73,34 @@ A third-party developer, The Stiz Media, maintains [Styles add-ons for Genesis t
 
 = Why is this plugin free? =
 
-We believe life is better when we work together. :) Support for WordPress default themes, like TwentyTwelve and TwentyThirteen, will always be free. Continued development in Styles will be supported by:
-
-* Plugins for additional themes
-* Plugins for add-on features
-* Premium support and updates
-* Documentation for using Styles in your own themes
+Styles provides an interface for quickly adding options to the WordPress Customizer.
+This framework is free. Small add-on plugins connect it to themes.
+[Paid Support Services](http://stylesplugin.com/support) allow us to extend the plugin, adding options for themes or site features according to your requests.
 
 = Does Styles support my theme? =
 
 Maybe! We have additional themes available available at [StylesPlugin.com](http://stylesplugin.com). If you don't find your theme there, [watch this walkthrough](http://www.youtube.com/playlist?list=PLxj61Fojm1RGevBh10U2qCqjwoH4Awo-P) for a developer's guide on how to add support. Adding one option takes only one line of code.
 
+If coding isn't for you, [contact us for help](http://stylesplugin.com/support) adding options to your theme.
+
 = I'd like to distribute a theme add-on I created for Styles =
 
 If you [watched the walkthrough](http://www.youtube.com/playlist?list=PLxj61Fojm1RGevBh10U2qCqjwoH4Awo-P) and created an add-on for Styles, please share it with others. It's our goal to make the lives of theme developers and end-users much, much easier.
 
-If you would like to sell your add-on at [stylesplugin.com](http://stylesplugin.com), get in touch! Email us at `styles (at) stylesplugin.com` or find us on Twitter as [@stylesplugin](http://twitter.com/stylesplugin).
-
 = Will this plugin slow down my site? =
 
-No! Styles is very careful about only loading what is needed to get its job done. Once you're done editing, stylesheets are cached and loaded for your sites users as quickly as possible.
+No! Styles is very careful about only loading what is needed to get its job done.
+Once done editing, stylesheets are cached and loaded for your sites users as quickly as possible.
+In non-editing mode, Styles only outputs one cached CSS block to your site's header.
 
 == Changelog ==
+
+= 1.2 =
+
+* New: Links to [support services](http://stylesplugin.com/support).
+* New: Links to free themes in readme.
+* New: Dismissable notices.
+* New: PHP7 compatability. Thanks [@davidbe929](https://wordpress.org/support/topic/php7-non-compatibility/).
 
 = 1.1.10 =
 

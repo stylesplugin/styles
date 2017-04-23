@@ -47,6 +47,7 @@ class Styles_Admin {
 		// Notices
 		add_action( 'admin_init', array( $this, 'install_default_themes_notice' ), 20 );
 		add_action( 'admin_init', array( $this, 'activate_notice' ), 30 );
+		add_action( 'admin_init', array( $this, 'support_notice' ) );
 		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 		add_action( 'customize_controls_enqueue_scripts', array( $this, 'customize_notices' ), 11 );
 
@@ -285,6 +286,7 @@ class Styles_Admin {
 		if ( STYLES_BASENAME == $basename ) {
 			$meta[2] = str_replace( 'Visit plugin site', 'Get More Themes', $meta[2] );
 			$meta[] = '<a class="button button-primary" href="' . admin_url( 'customize.php' ) . '">Customize Theme</a>';
+			$meta[] = '<a class="button button-secondary" href="http://stylesplugin.com/support">Order Theme Support</a>';
 		}
 		return $meta;
 	}
@@ -363,6 +365,17 @@ class Styles_Admin {
 	}
 
 	/**
+	 * Display link to Support services.
+	 */
+	public function support_notice() {
+		if ( apply_filters( 'styles_disable_notices', false )  ) {
+			return false;
+		}
+
+		$this->notices[] = "<p><strong>Styles</strong> now offers support services for <strong>adding editing options</strong>!</p><p>If you'd like Customizer options added for a theme or other part of your site, please visit us: <a href='http://stylesplugin.com/support' target='_blank'>stylesplugin.com/support</a></p>";
+	}
+
+	/**
 	 * Check whether we're on a screen for updating or deleting plugins.
 	 * If we are, return false to disable notices.
 	 */
@@ -390,8 +403,21 @@ class Styles_Admin {
 			update_option( 'storm-styles', $options );
 		}
 
+		$this->md5_notices();
+
 		foreach( $this->notices as $key => $message ) {
-			echo "<div class='updated fade' id='styles-$key'>$message</div>";
+			?>
+			<div 
+				class='updated notice fade is-dismissible styles-notice' 
+				data-key='<?php esc_attr_e( $key ) ?>'
+			>
+				<?php echo $message ?>
+			</div>
+			<?php
+		}
+
+		if ( ! empty( $this->notices ) ) {
+			wp_enqueue_script( 'styles-admin-notices', plugins_url( '/js/admin-notices.js', STYLES_BASENAME ), array(), $this->plugin->version );
 		}
 	}
 
@@ -401,7 +427,35 @@ class Styles_Admin {
 	 * @return null Passes $this->notices array to styles-customize-controls.js
 	 */
 	public function customize_notices() {
+		$this->md5_notices();
 		wp_localize_script( 'styles-customize-controls', 'wp_styles_notices', $this->notices );
+		wp_enqueue_script( 'styles-admin-notices', plugins_url( '/js/admin-notices.js', STYLES_BASENAME ), array( 'styles-customize-controls' ), $this->plugin->version );
+	}
+
+	public function md5_notices() {
+		$notices = array();
+		$options = get_option( 'storm-styles' );
+
+		foreach ( $this->notices as $message ) {
+			$key = md5( $message );
+
+			// Clear dismissed notices
+			if ( ! $this->is_notice_dismissed( $key, $options ) ) {
+				$notices[ $key ] = $message;
+			}
+		}
+
+		$this->notices = $notices;
+	}
+
+	public function is_notice_dismissed( $key, $options ) {
+		if ( isset( $options['notices_dismissed'] ) ) {
+			$notices_dismissed = $options['notices_dismissed'];
+		}else {
+			$notices_dismissed = array();
+		}
+
+		return in_array( $key, $notices_dismissed );
 	}
 
 	/**

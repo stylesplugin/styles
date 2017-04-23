@@ -14,7 +14,15 @@ jQuery( document ).ready( function ( $ ) {
 		             .show();
 
 		jQuery.each( wp_styles_notices, function( index, value ){
-			$notices.append( value );
+			var $notice = $( '<div>' + value + '</div>' )
+							.addClass( 'styles-notice' );
+
+			// Duplicate functionality of styles-admin.php::admin_notices()
+			$notice.data( 'key', index );
+			// Duplicate functionality of WP Core .is-dismissable
+			$notice.append( '<button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button>' );
+
+			$notices.append( $notice );
 		});
 
 		$( '#customize-info' ).prepend( $notices );
