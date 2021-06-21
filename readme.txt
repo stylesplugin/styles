@@ -5,7 +5,7 @@ Author URI: http://profiles.wordpress.org/pdclark
 Tags: css, stylesheet, appearance, customize, customizer, colors, color picker, background, fonts, google fonts, user interface, twenty ten, twenty eleven, twenty twelve, twenty thirteen, genesis
 Requires at least: 3.4
 Tested up to: 4.7.4
-Stable tag: 1.2
+Stable tag: 1.2.1
 
 Be creative with colors and fonts. Styles changes everything.
 
@@ -39,10 +39,6 @@ Styles and options for all built-in WordPress themes are free. More themes are a
 * [Twenty Thirteen](https://wordpress.org/plugins/styles-twentythirteen/)
 * [Twenty Fourteen](https://wordpress.org/plugins/styles-twentyfourteen/)
 * [Twenty Fifteen](https://wordpress.org/plugins/styles-twentyfifteen/)
-
-**Styles for Genesis**
-
-A third-party developer, The Stiz Media, maintains [Styles add-ons for Genesis themes](http://thestizmedia.com/styles-genesis-add-ons/).
 
 **Developer Resources**
 
@@ -79,9 +75,7 @@ This framework is free. Small add-on plugins connect it to themes.
 
 = Does Styles support my theme? =
 
-Maybe! We have additional themes available available at [StylesPlugin.com](http://stylesplugin.com). If you don't find your theme there, [watch this walkthrough](http://www.youtube.com/playlist?list=PLxj61Fojm1RGevBh10U2qCqjwoH4Awo-P) for a developer's guide on how to add support. Adding one option takes only one line of code.
-
-If coding isn't for you, [contact us for help](http://stylesplugin.com/support) adding options to your theme.
+[Watch this walkthrough](http://www.youtube.com/playlist?list=PLxj61Fojm1RGevBh10U2qCqjwoH4Awo-P) for a developer's guide on how to add support. Adding one option takes only one line of code.
 
 = I'd like to distribute a theme add-on I created for Styles =
 
@@ -94,6 +88,12 @@ Once done editing, stylesheets are cached and loaded for your sites users as qui
 In non-editing mode, Styles only outputs one cached CSS block to your site's header.
 
 == Changelog ==
+
+= 1.2.1 =
+
+* Fix: jQuery Migrate compatibility.
+* Fix: PHP8 Compatibility.
+* New: Remove Admin Notices.
 
 = 1.2 =
 
@@ -293,7 +293,8 @@ In non-editing mode, Styles only outputs one cached CSS block to your site's hea
 
 == Upgrade Notice ==
 
-= 1.1.10 =
+= 1.2.1 =
 
-* New: Linked auto-install for styles-twentyfifteen by @dim.
-* Fix: Avoid "Styles is almost ready" notice caused by plugins such as usernoise.
+* Fix: jQuery Migrate compatibility.
+* Fix: PHP8 Compatibility.
+* New: Remove Admin Notices.
