@@ -19,7 +19,7 @@
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *   GNU Lesser General Public License for more details.
- * 
+ *
  *   You should have received a copy of the GNU Lesser General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
@@ -27,7 +27,7 @@
  * @package csstidy
  * @author Florian Schmitz (floele at gmail dot com) 2005-2007
  * @author Brett Zamir (brettz9 at yahoo dot com) 2007
- * @author Cedric Morin (cedric at yterium dot com) 2010
+ * @author Cedric Morin (cedric at yterium dot com) 2010-2012
  */
 
 /**
@@ -37,28 +37,34 @@
  *
  * @package csstidy
  * @author Florian Schmitz (floele at gmail dot com) 2005-2006
- * @version 1.0.1
+ * @version 1.1.0
  */
 class csstidy_print {
+
+	/**
+	 * csstidy object
+	 * @var object
+	 */
+	public $parser;
 
 	/**
 	 * Saves the input CSS string
 	 * @var string
 	 * @access private
 	 */
-	var $input_css = '';
+	public $input_css = '';
 	/**
 	 * Saves the formatted CSS string
 	 * @var string
 	 * @access public
 	 */
-	var $output_css = '';
+	public $output_css = '';
 	/**
 	 * Saves the formatted CSS string (plain text)
 	 * @var string
 	 * @access public
 	 */
-	var $output_css_plain = '';
+	public $output_css_plain = '';
 
 	/**
 	 * Constructor
@@ -66,8 +72,8 @@ class csstidy_print {
 	 * @access private
 	 * @version 1.0
 	 */
-	function __construct(&$css) {
-		$this->parser = & $css;
+	public function __construct($css) {
+		$this->parser = $css;
 		$this->css = & $css->css;
 		$this->template = & $css->template;
 		$this->tokens = & $css->tokens;
@@ -81,7 +87,7 @@ class csstidy_print {
 	 * @access private
 	 * @version 1.0
 	 */
-	function _reset() {
+	public function _reset() {
 		$this->output_css = '';
 		$this->output_css_plain = '';
 	}
@@ -93,7 +99,7 @@ class csstidy_print {
 	 * @access public
 	 * @version 1.0
 	 */
-	function plain($default_media='') {
+	public function plain($default_media='') {
 		$this->_print(true, $default_media);
 		return $this->output_css_plain;
 	}
@@ -105,7 +111,7 @@ class csstidy_print {
 	 * @access public
 	 * @version 1.0
 	 */
-	function formatted($default_media='') {
+	public function formatted($default_media='') {
 		$this->_print(false, $default_media);
 		return $this->output_css;
 	}
@@ -120,9 +126,12 @@ class csstidy_print {
 	 * @access public
 	 * @version 1.4
 	 */
-	function formatted_page($doctype='xhtml1.1', $externalcss=true, $title='', $lang='en') {
+	public function formatted_page($doctype='html5', $externalcss=true, $title='', $lang='en') {
 		switch ($doctype) {
-			case 'xhtml1.0strict':
+			case 'html5':
+				$doctype_output = '<!DOCTYPE html>';
+				break;
+				case 'xhtml1.0strict':
 				$doctype_output = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
 				break;
@@ -147,7 +156,6 @@ class csstidy_print {
 			$output .= "\n</style>";
 		} else {
 			$output .= "\n" . '    <link rel="stylesheet" type="text/css" href="cssparsed.css" />';
-//			}
 		}
 		$output .= "\n</head>\n<body><code id=\"copytext\">";
 		$output .= $this->formatted();
@@ -162,7 +170,7 @@ class csstidy_print {
 	 * @access private
 	 * @version 2.0
 	 */
-	function _print($plain = false, $default_media='') {
+	public function _print($plain = false, $default_media='') {
 		if ($this->output_css && $this->output_css_plain) {
 			return;
 		}
@@ -183,44 +191,53 @@ class csstidy_print {
 		}
 
 		if (!empty($this->charset)) {
-			$output .= $template[0] . '@charset ' . $template[5] . $this->charset . $template[6];
+			$output .= $template[0] . '@charset ' . $template[5] . $this->charset . $template[6] . $template[13];
 		}
 
 		if (!empty($this->import)) {
 			for ($i = 0, $size = count($this->import); $i < $size; $i++) {
-				$import_components = explode(' ', $this->import[$i]);
-				if (substr($import_components[0], 0, 4) === 'url(' && substr($import_components[0], -1, 1) === ')') {
-					$import_components[0] = '\'' . trim(substr($import_components[0], 4, -1), "'\"") . '\'';
-					$this->import[$i] = implode(' ', $import_components);
+				if (substr($this->import[$i], 0, 4) === 'url(' && substr($this->import[$i], -1, 1) === ')') {
+					$this->import[$i] = '"' . substr($this->import[$i], 4, -1) . '"';
 					$this->parser->log('Optimised @import : Removed "url("', 'Information');
 				}
-				$output .= $template[0] . '@import ' . $template[5] . $this->import[$i] . $template[6];
+				else if (!preg_match('/^".+"$/',$this->import[$i])) {
+					// fixes a bug for @import ".." instead of the expected @import url("..")
+					// If it comes in due to @import ".." the "" will be missing and the output will become @import .. (which is an error)
+					$this->import[$i] = '"' . $this->import[$i] . '"';
+				}
+
+				$output .= $template[0] . '@import ' . $template[5] . $this->import[$i] . $template[6] . $template[13];
 			}
 		}
 
 		if (!empty($this->namespace)) {
-			if (substr($this->namespace, 0, 4) === 'url(' && substr($this->namespace, -1, 1) === ')') {
-				$this->namespace = '\'' . substr($this->namespace, 4, -1) . '\'';
+			if (($p=strpos($this->namespace,"url("))!==false && substr($this->namespace, -1, 1) === ')') {
+				$this->namespace = substr_replace($this->namespace,'"',$p,4);
+				$this->namespace = substr($this->namespace, 0, -1) . '"';
 				$this->parser->log('Optimised @namespace : Removed "url("', 'Information');
 			}
-			$output .= $template[0] . '@namespace ' . $template[5] . $this->namespace . $template[6];
+			$output .= $template[0] . '@namespace ' . $template[5] . $this->namespace . $template[6] . $template[13];
 		}
 
-		$output .= $template[13];
-		$in_at_out = '';
+		$in_at_out = [];
 		$out = & $output;
+		$indent_level = 0;
 
 		foreach ($this->tokens as $key => $token) {
 			switch ($token[0]) {
 				case AT_START:
 					$out .= $template[0] . $this->_htmlsp($token[1], $plain) . $template[1];
-					$out = & $in_at_out;
+					$indent_level++;
+					if (!isset($in_at_out[$indent_level])) {
+						$in_at_out[$indent_level] = '';
+					}
+					$out = & $in_at_out[$indent_level];
 					break;
 
 				case SEL_START:
 					if ($this->parser->get_cfg('lowercase_s'))
 						$token[1] = strtolower($token[1]);
-					$out .= ( $token[1]{0} !== '@') ? $template[2] . $this->_htmlsp($token[1], $plain) : $template[0] . $this->_htmlsp($token[1], $plain);
+					$out .= ( $token[1][0] !== '@') ? $template[2] . $this->_htmlsp($token[1], $plain) : $template[0] . $this->_htmlsp($token[1], $plain);
 					$out .= $template[3];
 					break;
 
@@ -249,12 +266,31 @@ class csstidy_print {
 					break;
 
 				case AT_END:
-					$out = & $output;
-					$out .= $template[10] . str_replace("\n", "\n" . $template[10], $in_at_out);
-					$in_at_out = '';
-					$out .= $template[9];
+					if (strlen($template[10])) {
+						// indent the bloc we are closing
+						$out = str_replace("\n\n", "\r\n", $out); // don't fill empty lines
+						$out = str_replace("\n", "\n" . $template[10], $out);
+						$out = str_replace("\r\n", "\n\n", $out);
+					}
+					if ($indent_level > 1) {
+						$out = & $in_at_out[$indent_level-1];
+					}
+					else {
+						$out = & $output;
+					}
+					$out .= $template[10] . $in_at_out[$indent_level];
+					if ($this->_seeknocomment($key, 1) != AT_END) {
+						$out .= $template[9];
+					}
+					else {
+						$out .= rtrim($template[9]);
+					}
+
+					unset($in_at_out[$indent_level]);
+					$indent_level--;
 					break;
 
+				case IMPORTANT_COMMENT:
 				case COMMENT:
 					$out .= $template[11] . '/*' . $this->_htmlsp($token[1], $plain) . '*/' . $template[12];
 					break;
@@ -280,7 +316,7 @@ class csstidy_print {
 	 * @access private
 	 * @version 1.0
 	 */
-	function _seeknocomment($key, $move) {
+	public function _seeknocomment($key, $move) {
 		$go = ($move > 0) ? 1 : -1;
 		for ($i = $key + 1; abs($key - $i) - 1 < abs($move); $i += $go) {
 			if (!isset($this->tokens[$i])) {
@@ -300,36 +336,72 @@ class csstidy_print {
 	 * @access private
 	 * @version 1.0
 	 */
-	function _convert_raw_css($default_media='') {
+	public function _convert_raw_css($default_media='') {
 		$this->tokens = array();
+		$sort_selectors = $this->parser->get_cfg('sort_selectors');
+		$sort_properties = $this->parser->get_cfg('sort_properties');
+
+		// important comment section ?
+		if (isset($this->css['!'])) {
+			$this->parser->_add_token(IMPORTANT_COMMENT, rtrim($this->css['!']), true);
+			unset($this->css['!']);
+		}
 
 		foreach ($this->css as $medium => $val) {
-			if ($this->parser->get_cfg('sort_selectors'))
+			if ($sort_selectors)
 				ksort($val);
 			if (intval($medium) < DEFAULT_AT) {
-				$this->parser->_add_token(AT_START, $medium, true);
-			}
-			elseif ($default_media) {
+				// un medium vide (contenant @font-face ou autre @) ne produit aucun conteneur
+				if (strlen(trim($medium))) {
+					$parts_to_open = explode('{', $medium);
+					foreach ($parts_to_open as $part) {
+						$this->parser->_add_token(AT_START, $part, true);
+					}
+				}
+			} elseif ($default_media) {
 				$this->parser->_add_token(AT_START, $default_media, true);
 			}
-			
+
 			foreach ($val as $selector => $vali) {
-				if ($this->parser->get_cfg('sort_properties'))
+				if ($sort_properties)
 					ksort($vali);
 				$this->parser->_add_token(SEL_START, $selector, true);
 
+				$invalid = array(
+					'*' => array(), // IE7 hacks first
+					'_' => array(), // IE6 hacks
+					'/' => array(), // IE6 hacks
+					'-' => array()  // IE6 hacks
+				);
 				foreach ($vali as $property => $valj) {
-					$this->parser->_add_token(PROPERTY, $property, true);
-					$this->parser->_add_token(VALUE, $valj, true);
+					if (strncmp($property,"//",2)!==0) {
+						$matches = array();
+						if ($sort_properties && preg_match('/^(\*|_|\/|-)(?!(ms|moz|o\b|xv|atsc|wap|khtml|webkit|ah|hp|ro|rim|tc)-)/', $property, $matches)) {
+							$invalid[$matches[1]][$property] = $valj;
+						} else {
+							$this->parser->_add_token(PROPERTY, $property, true);
+							$this->parser->_add_token(VALUE, $valj, true);
+						}
+					}
 				}
-
+				foreach ($invalid as $prefix => $props) {
+					foreach ($props as $property => $valj) {
+						$this->parser->_add_token(PROPERTY, $property, true);
+						$this->parser->_add_token(VALUE, $valj, true);
+					}
+				}
 				$this->parser->_add_token(SEL_END, $selector, true);
 			}
 
 			if (intval($medium) < DEFAULT_AT) {
-				$this->parser->_add_token(AT_END, $medium, true);
-			}
-			elseif ($default_media) {
+				// un medium vide (contenant @font-face ou autre @) ne produit aucun conteneur
+				if (strlen(trim($medium))) {
+					$parts_to_close = explode('{', $medium);
+					foreach (array_reverse($parts_to_close) as $part) {
+						$this->parser->_add_token(AT_END, $part, true);
+					}
+				}
+			} elseif ($default_media) {
 				$this->parser->_add_token(AT_END, $default_media, true);
 			}
 		}
@@ -344,7 +416,7 @@ class csstidy_print {
 	 * @access private
 	 * @version 1.0
 	 */
-	function _htmlsp($string, $plain) {
+	public function _htmlsp($string, $plain) {
 		if (!$plain) {
 			return htmlspecialchars($string, ENT_QUOTES, 'utf-8');
 		}
@@ -357,7 +429,7 @@ class csstidy_print {
 	 * @return float
 	 * @version 1.2
 	 */
-	function get_ratio() {
+	public function get_ratio() {
 		if (!$this->output_css_plain) {
 			$this->formatted();
 		}
@@ -370,7 +442,7 @@ class csstidy_print {
 	 * @return string
 	 * @version 1.1
 	 */
-	function get_diff() {
+	public function get_diff() {
 		if (!$this->output_css_plain) {
 			$this->formatted();
 		}
@@ -393,7 +465,7 @@ class csstidy_print {
 	 * @return integer
 	 * @version 1.0
 	 */
-	function size($loc = 'output') {
+	public function size($loc = 'output') {
 		if ($loc === 'output' && !$this->output_css) {
 			$this->formatted();
 		}

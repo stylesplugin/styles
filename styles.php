@@ -2,8 +2,8 @@
 /*
 Plugin Name: Styles
 Plugin URI: http://stylesplugin.com
-Description: Change the appearance of your theme using the <a href="customize.php">Customizer</a>. Most default themes supported via free add-ons on WordPress.org (see <a href="http://wordpress.org/plugins/styles" target="_blank">links in readme</a>). Custom support and theme additions available via <a href="http://stylesplugin.com/support">Styles Support Services</a>.
-Version: 1.2
+Description: Change the appearance of your theme using the <a href="customize.php">Customizer</a>. Most default themes supported via free add-ons on WordPress.org (see <a href="http://wordpress.org/plugins/styles" target="_blank">links in readme</a>).
+Version: 1.2.3
 Author: Paul Clark
 Author URI: http://profiles.wordpress.org/pdclark
 License: GPLv2

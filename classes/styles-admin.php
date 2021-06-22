@@ -284,9 +284,7 @@ class Styles_Admin {
 	 */
 	public function plugin_row_meta( $meta, $basename ) {
 		if ( STYLES_BASENAME == $basename ) {
-			$meta[2] = str_replace( 'Visit plugin site', 'Get More Themes', $meta[2] );
 			$meta[] = '<a class="button button-primary" href="' . admin_url( 'customize.php' ) . '">Customize Theme</a>';
-			$meta[] = '<a class="button button-secondary" href="http://stylesplugin.com/support">Order Theme Support</a>';
 		}
 		return $meta;
 	}
@@ -313,6 +311,7 @@ class Styles_Admin {
 		}
 
 		$plugin_installed = false;
+
 		if ( is_a( $this->plugin->child, 'Styles_Child' ) ) {
 
 			$all_styles_plugins = array_merge( (array) $this->plugin->child->plugins, (array) $this->plugin->child->inactive_plugins );
@@ -371,8 +370,6 @@ class Styles_Admin {
 		if ( apply_filters( 'styles_disable_notices', false )  ) {
 			return false;
 		}
-
-		$this->notices[] = "<p><strong>Styles</strong> now offers support services for <strong>adding editing options</strong>!</p><p>If you'd like Customizer options added for a theme or other part of your site, please visit us: <a href='http://stylesplugin.com/support' target='_blank'>stylesplugin.com/support</a></p>";
 	}
 
 	/**

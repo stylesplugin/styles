@@ -6,3 +6,4 @@ scaffold/logs/
 example/sender.html
 example/receiver.html
 data.txt
+.DS_Store

@@ -2,7 +2,7 @@ jQuery( document ).ready( function ( $ ) {
 
 	// $('#styles_installation_notices').remove();
 
-	$( 'div.styles-notice .notice-dismiss' ).click( function(){
+	$( 'div.styles-notice .notice-dismiss' ).on( 'click', function(){
 		$.get( 
 			ajaxurl, 
 			{
