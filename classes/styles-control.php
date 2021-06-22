@@ -136,7 +136,7 @@ abstract class Styles_Control {
 
 		// We have some suffix; append it to the label
 		if ( !empty( $this->suffix ) ) {
-			$this->label .=  '::' . $this->suffix;
+			$this->label .=  ' — ' . $this->suffix;
 		}
 
 	}

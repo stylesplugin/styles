@@ -1,21 +1,17 @@
 === Styles ===
 Contributors: pdclark, elusivelight
-Plugin URI: http://stylesplugin.com
+Plugin URI: http://github.com/stylesplugin/styles/
 Author URI: http://profiles.wordpress.org/pdclark
 Tags: css, stylesheet, appearance, customize, customizer, colors, color picker, background, fonts, google fonts, user interface, twenty ten, twenty eleven, twenty twelve, twenty thirteen, genesis
 Requires at least: 3.4
-Tested up to: 4.7.4
-Stable tag: 1.2.1
+Tested up to: 5.6
+Stable tag: 1.2.3
 
 Be creative with colors and fonts. Styles changes everything.
 
 == Description ==
 
 WordPress has lots of beautiful themes, but personalizing a design can be difficult and time-intensive. Styles changes that. Styles gives you creative control in one consistent interface – the WordPress theme customizer. Styles lets you make your site your own. :)
-
-http://youtube.com/watch?v=CpKiZEqpcr8
-
-[Try a demo in TwentyTwelve](http://demo.stylesplugin.com/twentytwelve).
 
 **Features of the plugin**
 
@@ -29,7 +25,7 @@ http://youtube.com/watch?v=CpKiZEqpcr8
 * Consistent interface and names in every theme
 * Built on WordPress customizer, so Styles grows as WordPress grows
 
-Styles and options for all built-in WordPress themes are free. More themes are available at [StylesPlugin.com](http://stylesplugin.com).
+Styles and options for all built-in WordPress themes are free.
 
 **Free Theme Support Add-ons**
 
@@ -43,19 +39,17 @@ Styles and options for all built-in WordPress themes are free. More themes are a
 **Developer Resources**
 
 * [Styles on Github](https://github.com/stylesplugin)
-* [pdclark on Github](https://github.com/pdclark)
 * Code Walkthrough: [How to add support for your own themes](http://www.youtube.com/playlist?list=PLxj61Fojm1RGevBh10U2qCqjwoH4Awo-P)
 
 **Contact**
 
-* [Support Services](http://stylesplugin.com/support)
 * [Review this plugin](http://wordpress.org/support/view/plugin-reviews/styles)
 
 == Installation ==
 
 1. Upload the `styles` folder to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Install and activate your theme's support plugin. If you are running TwentyTen through TwentyThirteen, Styles will prompt you to do this. If you would like to use Styles with other themes, check <a href="http://stylesplugin.com">stylesplugin.com</a> or <a href="http://www.youtube.com/playlist?list=PLxj61Fojm1RGevBh10U2qCqjwoH4Awo-P">program your own</a>.
+1. Install and activate your theme's support plugin. If you are running TwentyTen through TwentyThirteen, Styles will prompt you to do this. If you would like to use Styles with other themes, check <a href="http://www.youtube.com/playlist?list=PLxj61Fojm1RGevBh10U2qCqjwoH4Awo-P">code your own</a>.
 1. Edit your site under `Appearance > Customize`
 
 == Screenshots ==
@@ -67,19 +61,11 @@ Styles and options for all built-in WordPress themes are free. More themes are a
 
 == Frequently Asked Questions ==
 
-= Why is this plugin free? =
-
-Styles provides an interface for quickly adding options to the WordPress Customizer.
-This framework is free. Small add-on plugins connect it to themes.
-[Paid Support Services](http://stylesplugin.com/support) allow us to extend the plugin, adding options for themes or site features according to your requests.
-
 = Does Styles support my theme? =
 
 [Watch this walkthrough](http://www.youtube.com/playlist?list=PLxj61Fojm1RGevBh10U2qCqjwoH4Awo-P) for a developer's guide on how to add support. Adding one option takes only one line of code.
 
-= I'd like to distribute a theme add-on I created for Styles =
-
-If you [watched the walkthrough](http://www.youtube.com/playlist?list=PLxj61Fojm1RGevBh10U2qCqjwoH4Awo-P) and created an add-on for Styles, please share it with others. It's our goal to make the lives of theme developers and end-users much, much easier.
+If coding isn't for you, [contact us for help](http://stylesplugin.com/support) adding options to your theme.
 
 = Will this plugin slow down my site? =
 
@@ -89,15 +75,17 @@ In non-editing mode, Styles only outputs one cached CSS block to your site's hea
 
 == Changelog ==
 
-= 1.2.1 =
+= 1.2.3 =
 
 * Fix: jQuery Migrate compatibility.
-* Fix: PHP8 Compatibility.
-* New: Remove Admin Notices.
+* Fix: PHP 8 compatibility.
+
+= 1.2.1 =
+
+* Fix: Remove notices.
 
 = 1.2 =
 
-* New: Links to [support services](http://stylesplugin.com/support).
 * New: Links to free themes in readme.
 * New: Dismissable notices.
 * New: PHP7 compatability. Thanks [@davidbe929](https://wordpress.org/support/topic/php7-non-compatibility/).
@@ -293,8 +281,7 @@ In non-editing mode, Styles only outputs one cached CSS block to your site's hea
 
 == Upgrade Notice ==
 
-= 1.2.1 =
+= 1.2.3 =
 
 * Fix: jQuery Migrate compatibility.
-* Fix: PHP8 Compatibility.
-* New: Remove Admin Notices.
+* Fix: PHP 8 compatibility.

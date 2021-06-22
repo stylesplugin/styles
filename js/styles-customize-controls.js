@@ -34,7 +34,7 @@ jQuery( document ).ready( function ( $ ) {
 	 */
 	function add_control_label_spans() {
 		// Long dash, not hyphen
-		var delimeter = '::';
+		var delimeter = '—';
 
 		$( 'span.customize-control-title:contains(' + delimeter + ')' ).each( function(){
 			var html, parts;

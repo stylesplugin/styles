@@ -61,13 +61,7 @@ class Styles_Child {
 	}
 
 	public function get_plugins_meta() {
-		$child_plugins_meta = get_site_transient( 'styles_child_plugins' );
-
-		if ( false !== $child_plugins_meta ) {
-			return $child_plugins_meta;
-		}
-
-		if ( !function_exists( 'get_plugins') ) {
+		if ( ! function_exists( 'get_plugins') ) {
 			require_once ABSPATH . '/wp-admin/includes/plugin.php';
 		}
 
@@ -82,9 +76,6 @@ class Styles_Child {
 			$child_plugins_meta[] = $meta;
 		}
 
-		// Refresh plugin list and metadata every 6 hours (or on activate/deactivate)
-		set_site_transient( 'styles_child_plugins', $child_plugins_meta, 60*60*6 );
-		
 		return $child_plugins_meta;
 	}
 
