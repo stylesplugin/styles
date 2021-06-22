@@ -9,7 +9,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: WordPress Plugin Deploy
-      uses: rtCamp/action-wordpress-org-plugin-deploy@master
+      uses: pdclark/action-wordpress-org-plugin-deploy@master
       env:
         EXCLUDE_LIST: .github .gitignore .eslintignore phpunit.xml phpcs.xml tests README.md 
         SLUG: styles
